@@ -349,6 +349,90 @@ input,select{font-family:inherit;}
 .life{transition:all .2s;}
 .life.empty{opacity:.2;}
 
+
+/* MODO PLANTÃO NOTURNO — ativado entre 22h e 6h */
+body.night-mode {
+  --rose: #c41e4a;
+  --cyan: #06a8a5;
+  --amber: #d4a700;
+  --fuchsia: #a8487c;
+}
+body.night-mode {
+  background: radial-gradient(ellipse at center,rgba(40,30,60,0.4) 0%,transparent 60%),
+              linear-gradient(180deg,#050208 0%,#0a0612 50%,#050208 100%) !important;
+}
+body.night-mode::after {
+  /* Reduz scanlines à noite (cansa os olhos) */
+  opacity: 0.4;
+}
+body.night-mode .pulse-neon {
+  animation: none; /* sem pulsações cansativas */
+  filter: drop-shadow(0 0 4px currentColor);
+}
+body.night-mode .btn {
+  box-shadow: 0 4px 0 var(--rose-deep), 0 0 12px rgba(255,46,99,0.2);
+}
+.night-indicator {
+  position: fixed; top: 12px; right: 12px; z-index: 50;
+  padding: 6px 12px; background: rgba(0,0,0,0.7); border: 1px solid rgba(167,123,142,0.5);
+  font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--mauve);
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* CARTA DE APROVAÇÃO — modal especial */
+.approval-cert-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 250;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  overflow-y: auto;
+}
+.approval-cert {
+  max-width: 540px; width: 100%; background: linear-gradient(135deg,#fff8e7 0%,#f4e4c1 100%);
+  color: #2a1a0a; padding: 32px 28px; border: 6px double #8b1538;
+  position: relative; box-shadow: 0 0 80px rgba(255,215,0,0.5);
+  font-family: 'Rajdhani', serif;
+}
+.approval-cert::before {
+  content: ''; position: absolute; inset: 8px;
+  border: 1px solid rgba(139,21,56,0.3); pointer-events: none;
+}
+.approval-cert .cert-header {
+  text-align: center; border-bottom: 2px solid #8b1538; padding-bottom: 16px; margin-bottom: 20px;
+}
+.approval-cert .cert-title {
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 26px;
+  color: #8b1538; letter-spacing: 2px; text-transform: uppercase;
+}
+.approval-cert .cert-edital {
+  font-family: 'Press Start 2P', monospace; font-size: 10px; color: #5c1a2b;
+  margin-top: 6px; letter-spacing: 1px;
+}
+.approval-cert .cert-body {
+  font-size: 15px; line-height: 1.7; text-align: justify;
+}
+.approval-cert .cert-name {
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 22px;
+  text-align: center; color: #8b1538; padding: 12px 0; text-transform: uppercase;
+  letter-spacing: 1px; border-top: 1px solid rgba(139,21,56,0.3);
+  border-bottom: 1px solid rgba(139,21,56,0.3); margin: 16px 0;
+}
+.approval-cert .cert-grade {
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 40px;
+  color: #8b1538; text-align: center; margin: 12px 0;
+}
+.approval-cert .cert-footer {
+  text-align: center; margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid rgba(139,21,56,0.3); font-size: 12px; color: #5c1a2b;
+}
+.approval-cert .cert-seal {
+  position: absolute; bottom: 20px; right: 20px; width: 80px; height: 80px;
+  border: 3px double #8b1538; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.5); transform: rotate(-12deg);
+  font-family: 'Press Start 2P', monospace; font-size: 7px; color: #8b1538;
+  text-align: center; line-height: 1.3;
+}
+
+/* Streak chama */
 /* Streak chama */
 .fire{color:#fb923c;}
 </style>
@@ -482,7 +566,8 @@ input,select{font-family:inherit;}
         <div class="hud-stats">
           <div class="hud-stat"><span style="color:var(--amber);">⚡</span><span id="hud-xp" class="font-orbit" style="color:var(--amber);font-weight:700;">0</span><span style="color:rgba(255,255,255,.4);font-size:11px;">XP</span></div>
           <div class="hud-stat" id="hud-lives"></div>
-          <div class="hud-stat"><span class="fire">🔥</span><span id="hud-streak" class="font-orbit fire" style="font-weight:700;">0</span><span style="color:rgba(255,255,255,.4);font-size:11px;">DIAS</span></div>
+          <div class="hud-stat" title="Streak diário"><span class="fire">🔥</span><span id="hud-streak" class="font-orbit fire" style="font-weight:700;">0</span><span style="color:rgba(255,255,255,.4);font-size:11px;">DIAS</span></div>
+          <div class="hud-stat" id="hud-freezes-wrap" style="display:none;" title="Freezes acumulados — protegem sua chama"><span>🧊</span><span id="hud-freezes" class="font-orbit" style="color:#7dd3fc;font-weight:700;">0</span></div>
           <div class="hud-actions">
             <button onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
             <button onclick="goFlashcards()" title="Lei Seca">🃏</button>
@@ -1823,8 +1908,32 @@ const defaultProgress = () => ({
   srsQueue:[], collectedCards:[], soundOn:true, avatar:'👮‍♀️', avatarColor:'#ff2e63',
   myPile:[], // FEATURE 3: marcar pra rever
   flashcardsSeen:{}, // FEATURE 1: progresso lei seca {id: 'easy'|'medium'|'hard', lastSeen: date}
+  streakFreezes:0, // FEATURE: streak freeze (1 a cada 7 dias de chama)
+  freezeUsedDate:null, // último dia que usou um freeze
 });
 
+
+
+/* ============================================================
+   FEATURE — MODO PLANTÃO NOTURNO
+============================================================ */
+function checkNightMode() {
+  const hour = new Date().getHours();
+  const isNight = hour >= 22 || hour < 6;
+  document.body.classList.toggle('night-mode', isNight);
+  // Indicador visual sutil
+  let indicator = document.querySelector('.night-indicator');
+  if (isNight && !indicator) {
+    indicator = document.createElement('div');
+    indicator.className = 'night-indicator';
+    indicator.innerHTML = '🌙 PLANTÃO NOTURNO';
+    document.body.appendChild(indicator);
+  } else if (!isNight && indicator) {
+    indicator.remove();
+  }
+}
+// Checa ao carregar e a cada 5min
+setInterval(checkNightMode, 300000);
 
 /* ============================================================
    SUPABASE — sincronização na nuvem (login real)
@@ -2107,7 +2216,18 @@ const loadAll = () => {
     if (progress.lastPlayDate !== today) {
       progress.lives = 3;
       const yest = new Date(); yest.setDate(yest.getDate()-1);
-      if (progress.lastPlayDate !== null && progress.lastPlayDate !== toDateKey(yest)) progress.streak = 0;
+      if (progress.lastPlayDate !== null && progress.lastPlayDate !== toDateKey(yest)) {
+        // Pulou 1+ dia. Calcula quantos dias pularam
+        const diasPulados = daysBetween(new Date(progress.lastPlayDate), new Date()) - 1;
+        if (diasPulados === 1 && (progress.streakFreezes || 0) > 0) {
+          // Usa 1 freeze pra preservar streak
+          progress.streakFreezes--;
+          progress.freezeUsedDate = today;
+          progress.__freezeJustUsed = true; // flag pra mostrar notificação
+        } else {
+          progress.streak = 0;
+        }
+      }
     }
   }
 };
@@ -2371,6 +2491,29 @@ const renderMap = () => {
   $('hud-patente').textContent = `${info.atual.icon} ${info.atual.nome}`;
   $('hud-xp').textContent = progress.xp;
   $('hud-streak').textContent = progress.streak;
+  // Exibir freezes (se houver)
+  const fz = progress.streakFreezes || 0;
+  if (fz > 0) {
+    $('hud-freezes-wrap').style.display = 'flex';
+    $('hud-freezes').textContent = fz;
+  } else {
+    $('hud-freezes-wrap').style.display = 'none';
+  }
+  // Notificação se freeze foi usado/ganho
+  if (progress.__freezeJustUsed) {
+    delete progress.__freezeJustUsed;
+    saveProgress();
+    setTimeout(() => openModal({
+      title:'🧊 STREAK PROTEGIDO!',
+      msg:'Você faltou um dia, mas usamos um Freeze pra preservar sua chama de '+progress.streak+' dias. Você ainda tem '+(progress.streakFreezes||0)+' freeze(s).',
+      hideCancel:true,
+      onConfirm:()=>closeModal()
+    }), 800);
+  } else if (progress.__freezeJustEarned) {
+    delete progress.__freezeJustEarned;
+    saveProgress();
+    // Será mostrado no finishPhase
+  }
   $('hud-sound').textContent = progress.soundOn ? '🔊' : '🔇';
 
   $('hud-lives').innerHTML = [0,1,2].map(i => `<span class="life" style="color:${i < progress.lives ? '#fb7185' : 'rgba(255,255,255,.15)'};font-size:16px;">❤</span>`).join('');
@@ -2799,7 +2942,15 @@ function finishPhase() {
   if (!passed) progress.lives = Math.max(0, progress.lives - (ph.type === 'boss' ? 2 : 1));
 
   const today = toDateKey();
-  if (progress.lastPlayDate !== today) progress.streak++;
+  if (progress.lastPlayDate !== today) {
+    progress.streak++;
+    // STREAK FREEZE: ganha 1 a cada 7 dias seguidos (máx 3 estocados)
+    if (progress.streak > 0 && progress.streak % 7 === 0) {
+      const novosFreezes = (progress.streakFreezes || 0) + 1;
+      progress.streakFreezes = Math.min(3, novosFreezes);
+      progress.__freezeJustEarned = true;
+    }
+  }
   progress.lastPlayDate = today;
 
   // Stats por matéria E por banca
@@ -2884,6 +3035,11 @@ function finishPhase() {
 
   phaseState = {...ps, stage:'results', passed, xpGanho, percent, levelUp: levelUp ? newPat : null, earnedCard, ambushPhase};
   renderResults();
+
+  // CARTA DE APROVAÇÃO: passou com 80%+? mostra com delay (após confete)
+  if (passed && percent >= 80 && (ph.type === 'boss' || ph.mode === 'finalboss')) {
+    setTimeout(() => showApprovalCertificate(ph, ps.score, total, percent), earnedCard ? 2400 : 1200);
+  }
 
   if (earnedCard) setTimeout(() => showCardReveal(earnedCard), 600);
 }
@@ -3442,6 +3598,115 @@ function renderBancaHeatmap() {
   }).join('');
 }
 
+
+/* ============================================================
+   FEATURE — CARTA DE APROVAÇÃO (compartilhável)
+============================================================ */
+function showApprovalCertificate(phase, score, total, percent) {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+  const editalNum = String(phase.id || 1).padStart(2, '0') + '/' + today.getFullYear();
+  const matLabel = phase.subject === 'const' ? 'Direito Constitucional' :
+                   phase.subject === 'adm' ? 'Direito Administrativo' :
+                   phase.subject === 'penal' ? 'Direito Penal' : 'Conhecimentos Gerais';
+  const cleanTitle = (phase.title || '').replace(/^[⚡🔥💀☠️🛡️🏛️⚔️📚🎯]+\s*/, '').replace(/^Aprofundamento:\s*/, '');
+  const userName = (user.name || 'Recruta').toUpperCase();
+  const info = xpInfo(progress.xp);
+
+  const html = `
+    <div class="approval-cert pixel-corners" id="cert-content">
+      <div class="cert-header">
+        <div class="cert-title">⚖️ Edital de Aprovação ⚖️</div>
+        <div class="cert-edital">Edital nº ${editalNum} • JURIS QUEST</div>
+      </div>
+      <div class="cert-body">
+        <p>Pela presente, atesta-se que a/o concursando(a):</p>
+        <div class="cert-name">${esc(userName)}</div>
+        <p style="text-align:center;margin-bottom:8px;">obteve <strong>aprovação</strong> na disciplina de</p>
+        <p style="text-align:center;font-weight:700;font-size:18px;margin-bottom:12px;">${esc(matLabel)} — ${esc(cleanTitle)}</p>
+        <div class="cert-grade">${Math.round(percent)}%</div>
+        <p style="text-align:center;margin-bottom:12px;">com <strong>${score} acertos em ${total}</strong> questões, alcançando o patamar de</p>
+        <p style="text-align:center;font-weight:700;color:#8b1538;">${info.atual.icon} ${esc(info.atual.nome)}</p>
+      </div>
+      <div class="cert-footer">
+        Petrolina-PE, ${dateStr}<br>
+        <em>Banca examinadora — JURIS QUEST</em>
+      </div>
+      <div class="cert-seal">APROVADO<br>★★★</div>
+    </div>
+    <div style="text-align:center;margin-top:20px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn cyan" onclick="downloadCertImage()">📸 BAIXAR IMAGEM</button>
+      <button class="btn ghost" onclick="closeCertificate()">FECHAR</button>
+    </div>
+  `;
+
+  let modal = document.getElementById('approval-cert-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'approval-cert-modal';
+    modal.className = 'approval-cert-modal';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = '<div style="max-width:560px;width:100%;">' + html + '</div>';
+  modal.style.display = 'flex';
+}
+
+function closeCertificate() {
+  snd.click();
+  const modal = document.getElementById('approval-cert-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function downloadCertImage() {
+  snd.click();
+  // Usa a API nativa do navegador pra "imprimir" a div como imagem
+  const cert = document.getElementById('cert-content');
+  if (!cert) return;
+
+  // Solução nativa: abrir em nova janela e o usuário tira screenshot/print
+  // (Mais robusto que html2canvas que exige biblioteca externa)
+  const w = window.open('', '_blank');
+  if (!w) {
+    alert('Permita pop-ups para baixar a imagem.');
+    return;
+  }
+  const certHtml = cert.outerHTML;
+  // CSS embedded
+  const allStyles = Array.from(document.styleSheets).map(sheet => {
+    try {
+      return Array.from(sheet.cssRules).map(r => r.cssText).join('\n');
+    } catch(e) { return ''; }
+  }).join('\n');
+
+  w.document.write(`
+    <html>
+      <head>
+        <title>Certificado JURIS QUEST</title>
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <style>${allStyles}</style>
+        <style>
+          body { background:#0a0410; padding:40px; display:flex; flex-direction:column; align-items:center; gap:20px; }
+          .approval-cert { max-width:540px; }
+          .info { color:#fff; font-family:'Rajdhani',sans-serif; text-align:center; max-width:540px; padding:16px; background:rgba(255,255,255,0.05); }
+          .info h3 { color:var(--rose); font-family:'Press Start 2P',monospace; font-size:12px; margin-bottom:8px; }
+          @media print { body{background:white;} .info{display:none;} }
+        </style>
+      </head>
+      <body>
+        ${certHtml}
+        <div class="info">
+          <h3>💾 PARA SALVAR COMO IMAGEM</h3>
+          <p><strong>No celular:</strong> use o Print Screen do sistema (Power + Volume).<br>
+          <strong>No PC:</strong> aperte Ctrl+P → escolha "Salvar como PDF"<br>
+          ou use a Ferramenta de Captura do Windows (Win+Shift+S).</p>
+        </div>
+      </body>
+    </html>
+  `);
+  w.document.close();
+}
+
 /* ============================================================
    MODAL
 ============================================================ */
@@ -3467,6 +3732,7 @@ function closeModal() {
    INIT
 ============================================================ */
 window.addEventListener('load', async () => {
+  checkNightMode();
   const sbOk = initSupabase();
 
   // Tenta restaurar sessão do Supabase
@@ -3543,6 +3809,10 @@ window.removeFromMyPile = removeFromMyPile;
 window.clearMyPile = clearMyPile;
 window.startMyPilePractice = startMyPilePractice;
 window.isInMyPile = isInMyPile;
+window.showApprovalCertificate = showApprovalCertificate;
+window.closeCertificate = closeCertificate;
+window.downloadCertImage = downloadCertImage;
+window.checkNightMode = checkNightMode;
 </script>
 
 </body>
