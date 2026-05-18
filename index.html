@@ -343,7 +343,7 @@ input,select{font-family:inherit;}
 .container-form{max-width:480px;margin:0 auto;}
 
 /* Logo glow */
-.fluently-tag{color:var(--cyan);font-family:'Press Start 2P',monospace;font-size:10px;letter-spacing:2px;margin-bottom:12px;}
+.arcade-tag{color:var(--cyan);font-family:'Press Start 2P',monospace;font-size:10px;letter-spacing:2px;margin-bottom:12px;}
 
 /* Lives badge */
 .life{transition:all .2s;}
@@ -373,7 +373,7 @@ input,select{font-family:inherit;}
 <div id="screen-splash" class="screen splash">
   <div class="stars-bg"></div>
   <div style="position:relative;z-index:2;text-align:center;max-width:600px;">
-    <div class="fluently-tag">FLUENTLY ARCADE PRESENTS</div>
+    <div class="arcade-tag">JURIS QUEST ARCADE</div>
     <h1 class="font-arcade splash-title pulse-neon" style="color:var(--rose);">JURIS QUEST</h1>
     <div class="font-orbit" style="color:var(--amber);font-size:18px;margin-top:12px;letter-spacing:2px;">⚖️ A JORNADA DA APROVAÇÃO ⚖️</div>
     <div style="margin-top:8px;color:rgba(255,255,255,.7);">Concurso Soldado PM • Constitucional, Administrativo e Penal</div>
@@ -381,7 +381,7 @@ input,select{font-family:inherit;}
       <div class="font-arcade" style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:16px;">« PRESS START »</div>
       <button class="btn" onclick="goLogin()">▶ INICIAR MISSÃO</button>
     </div>
-    <div style="margin-top:48px;font-size:12px;color:rgba(255,255,255,.4);">v2.0 • feito com 💜 para Isa & a próxima geração</div>
+    <div style="margin-top:48px;font-size:12px;color:rgba(255,255,255,.4);">v3.0 • feito com 💜 para Murillo Souza & a próxima geração</div>
   </div>
 </div>
 
@@ -413,7 +413,7 @@ input,select{font-family:inherit;}
         <div id="login-mode-label" style="text-align:center;margin-bottom:16px;font-family:'Press Start 2P',monospace;font-size:11px;color:var(--cyan);">▸ ENTRAR ◂</div>
         <div id="signup-name-wrap" style="margin-bottom:14px;display:none;">
           <label style="display:block;font-family:'Press Start 2P',monospace;font-size:10px;color:#fda4af;margin-bottom:8px;">NOME DE GUERRA</label>
-          <input id="inp-name" class="input" placeholder="Ex.: Isa" maxlength="40">
+          <input id="inp-name" class="input" placeholder="Ex.: Murillo Souza" maxlength="40">
           <div id="err-name" style="color:var(--rose);font-size:12px;margin-top:4px;display:none;"></div>
         </div>
         <div style="margin-bottom:14px;">
@@ -485,6 +485,8 @@ input,select{font-family:inherit;}
           <div class="hud-stat"><span class="fire">🔥</span><span id="hud-streak" class="font-orbit fire" style="font-weight:700;">0</span><span style="color:rgba(255,255,255,.4);font-size:11px;">DIAS</span></div>
           <div class="hud-actions">
             <button onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
+            <button onclick="goFlashcards()" title="Lei Seca">🃏</button>
+            <button onclick="goMyPile()" title="Minha Pilha">🚩</button>
             <button onclick="goRanking()" title="Ranking">🏆</button>
             <button onclick="goStats()" title="Stats">📊</button>
             <button onclick="logout()" title="Sair">🚪</button>
@@ -515,6 +517,18 @@ input,select{font-family:inherit;}
           <div style="color:var(--cyan);margin-top:4px;">🎯 Meta hoje: <strong id="cron-meta">—</strong></div>
         </div>
       </div>
+    </div>
+
+    <!-- FEATURE 2 — Painel HOJE VOCÊ PRECISA -->
+    <div id="today-panel" class="hidden card pixel-corners" style="margin-bottom:16px;border-color:var(--emerald);background:linear-gradient(to right,rgba(16,185,129,.1),rgba(8,217,214,.05));">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="font-size:28px;">🎯</div>
+        <div>
+          <div class="font-arcade" style="color:var(--emerald);font-size:11px;">HOJE VOCÊ PRECISA</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;">Seu plano do dia em 1 olhar</div>
+        </div>
+      </div>
+      <div id="today-tasks" style="display:grid;gap:8px;"></div>
     </div>
 
     <!-- Modos especiais -->
@@ -579,11 +593,17 @@ input,select{font-family:inherit;}
       </div>
     </div>
 
-    <!-- Heatmap -->
+    <!-- Heatmap por matéria -->
     <div class="card pixel-corners" style="margin-bottom:16px;border-color:rgba(167,123,142,.4);">
       <div class="font-arcade" style="font-size:11px;color:var(--mauve);margin-bottom:16px;">📊 SUAS FRAQUEZAS POR MATÉRIA</div>
       <div id="stats-heatmap" class="heatmap"></div>
       <div id="stats-rec" style="margin-top:16px;padding:12px;background:rgba(0,0,0,.4);border-left:3px solid var(--amber);font-size:13px;color:rgba(255,255,255,.85);"></div>
+    </div>
+
+    <!-- Heatmap por banca (FEATURE 4) -->
+    <div class="card pixel-corners" style="margin-bottom:16px;border-color:rgba(167,123,142,.4);">
+      <div class="font-arcade" style="font-size:11px;color:var(--mauve);margin-bottom:16px;">🏆 SEU DESEMPENHO POR BANCA</div>
+      <div id="stats-heatmap-banca" class="heatmap"></div>
     </div>
 
     <!-- Cartas -->
@@ -626,6 +646,46 @@ input,select{font-family:inherit;}
     <div id="ranking-empty" class="hidden card pixel-corners" style="text-align:center;padding:32px;">
       <div style="font-size:32px;">🤷‍♀️</div>
       <div style="margin-top:12px;color:rgba(255,255,255,.7);">Ninguém apareceu no ranking ainda.<br>Seja a primeira! Ative "Aparecer no ranking" nas suas configurações.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE 1 — Lei Seca (Flashcards) -->
+<div id="screen-flashcards" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="goMap()">← voltar ao mapa</button>
+    <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:var(--fuchsia);">
+      <div style="text-align:center;">
+        <div style="font-size:48px;margin-bottom:8px;">🃏</div>
+        <div class="font-arcade" style="color:var(--fuchsia);font-size:14px;">LEI SECA</div>
+        <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;">Flashcards de artigos críticos</div>
+        <div id="flash-counter" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5);"></div>
+      </div>
+    </div>
+    <div id="flashcard-container"></div>
+  </div>
+</div>
+
+<!-- FEATURE 3 — Minha Pilha (questões marcadas) -->
+<div id="screen-mypile" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="goMap()">← voltar ao mapa</button>
+    <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:#fb923c;">
+      <div style="text-align:center;">
+        <div style="font-size:48px;margin-bottom:8px;">🚩</div>
+        <div class="font-arcade" style="color:#fb923c;font-size:14px;">MINHA PILHA</div>
+        <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;">Questões que você marcou pra rever</div>
+        <div id="mypile-counter" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5);"></div>
+      </div>
+    </div>
+    <div id="mypile-list"></div>
+    <div id="mypile-empty" class="hidden card pixel-corners" style="text-align:center;padding:32px;">
+      <div style="font-size:32px;">🤷‍♀️</div>
+      <div style="margin-top:12px;color:rgba(255,255,255,.7);">Sua pilha está vazia.<br>Durante os bosses, clique em <strong>🚩 Marcar pra rever</strong> ao final de cada questão pra adicionar aqui.</div>
+    </div>
+    <div id="mypile-actions" class="hidden" style="margin-top:16px;display:flex;gap:8px;">
+      <button class="btn ghost" style="flex:1;" onclick="startMyPilePractice()">▶ TREINAR TODAS</button>
+      <button class="btn ghost" style="flex:1;" onclick="clearMyPile()">🗑️ LIMPAR PILHA</button>
     </div>
   </div>
 </div>
@@ -1613,6 +1673,122 @@ const CARDS = [
   {id:'aprovada',tier:'gold',icon:'🏆',name:'Carta da Aprovação',desc:'Recompensa do boss final.',rarity:'Lendária'},
 ];
 
+
+/* ============================================================
+   LEI SECA — Flashcards de artigos críticos
+============================================================ */
+const FLASHCARDS = [
+  // ============ CONSTITUCIONAL ============
+  {id:'art1cf', subject:'const', law:'CF/88', article:'Art. 1º',
+   prompt:'Quais são os 5 fundamentos da República?',
+   answer:'SO-CI-DI-VA-PLU: SOberania, CIdadania, DIgnidade da pessoa humana, VAlores sociais do trabalho e da livre iniciativa, PLUralismo político.',
+   tip:'Mnemônico clássico — não confunda com objetivos (art. 3º).'},
+  {id:'art3cf', subject:'const', law:'CF/88', article:'Art. 3º',
+   prompt:'Quais são os 4 objetivos fundamentais da República?',
+   answer:'(I) Construir sociedade livre, justa e solidária; (II) Garantir o desenvolvimento nacional; (III) Erradicar a pobreza e reduzir desigualdades; (IV) Promover o bem de todos, sem preconceitos.',
+   tip:'Sempre começam com VERBO (construir, garantir, erradicar, promover).'},
+  {id:'art4cf', subject:'const', law:'CF/88', article:'Art. 4º',
+   prompt:'Cite 5 princípios das relações internacionais do Brasil.',
+   answer:'Independência nacional; prevalência dos direitos humanos; autodeterminação dos povos; não-intervenção; igualdade entre os Estados; defesa da paz; solução pacífica dos conflitos; repúdio ao terrorismo e ao racismo; cooperação entre os povos; concessão de asilo político.',
+   tip:'A pegadinha é trocar com os FUNDAMENTOS (art. 1º).'},
+  {id:'art5xi', subject:'const', law:'CF/88', article:'Art. 5º, XI',
+   prompt:'Quais são as 4 hipóteses para entrar em casa sem mandado?',
+   answer:'(1) Flagrante delito; (2) desastre; (3) prestar socorro — qualquer hora; e (4) por ordem judicial, mas só DURANTE O DIA.',
+   tip:'À noite, NUNCA por ordem judicial. STF RE 603.616: justa causa.'},
+  {id:'art5lxiii', subject:'const', law:'CF/88', article:'Art. 5º, LXIII',
+   prompt:'Quais direitos o preso tem ao ser preso?',
+   answer:'Ser informado dos direitos; permanecer calado; assistência da família e de advogado; identificação dos responsáveis pela prisão ou interrogatório; comunicação imediata ao juiz e à família.',
+   tip:'Decora os 5 — cai SEMPRE em prova de PM.'},
+  {id:'art144cf', subject:'const', law:'CF/88', article:'Art. 144',
+   prompt:'Quais são os 6 órgãos da segurança pública?',
+   answer:'(I) Polícia Federal; (II) Polícia Rodoviária Federal; (III) Polícia Ferroviária Federal; (IV) Polícias Civis; (V) Polícias Militares e Corpos de Bombeiros Militares; (VI) Polícias Penais (EC 104/19).',
+   tip:'Não esqueça da Polícia Penal — incluída pela EC 104/19.'},
+  {id:'art144p5', subject:'const', law:'CF/88', article:'Art. 144, §5º',
+   prompt:'Qual a competência da Polícia Militar?',
+   answer:'Polícia OSTENSIVA e a PRESERVAÇÃO DA ORDEM PÚBLICA. Aos Corpos de Bombeiros: defesa civil, além das atribuições definidas em lei.',
+   tip:'PM ≠ Polícia Civil (judiciária). PM = preventiva/ostensiva.'},
+  {id:'art142p3', subject:'const', law:'CF/88', article:'Art. 142, §3º, IV',
+   prompt:'Quais direitos são VEDADOS aos militares?',
+   answer:'Sindicalização e GREVE são VEDADAS aos militares. (Aplica-se também aos militares estaduais por força do art. 42, §1º.)',
+   tip:'Militar não faz greve nunca — nem com lei.'},
+
+  // ============ ADMINISTRATIVO ============
+  {id:'art37limpe', subject:'adm', law:'CF/88', article:'Art. 37, caput',
+   prompt:'O que significa LIMPE?',
+   answer:'Princípios da Adm Pública: Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência. A eficiência foi incluída pela EC 19/98.',
+   tip:'Motivação NÃO está no LIMPE — é implícita.'},
+  {id:'sum473', subject:'adm', law:'STF', article:'Súmula 473',
+   prompt:'O que diz a Súmula 473 do STF?',
+   answer:'A Administração pode ANULAR seus próprios atos quando eivados de vícios que os tornem ilegais, e pode REVOGÁ-LOS por motivo de conveniência ou oportunidade, respeitados os direitos adquiridos.',
+   tip:'Autotutela. Anular = ilegal (ex tunc). Revogar = conveniência (ex nunc).'},
+  {id:'art37xvi', subject:'adm', law:'CF/88', article:'Art. 37, XVI',
+   prompt:'Quais são as 3 hipóteses de acumulação remunerada de cargos?',
+   answer:'(a) Dois cargos de PROFESSOR; (b) um cargo de professor com outro técnico ou científico; (c) dois cargos privativos de PROFISSIONAIS DE SAÚDE com profissões regulamentadas. Todos exigem compatibilidade de horários.',
+   tip:'Sempre compatibilidade + teto do XI.'},
+  {id:'art41cf', subject:'adm', law:'CF/88', article:'Art. 41',
+   prompt:'Quantos anos para o servidor adquirir estabilidade?',
+   answer:'3 ANOS de efetivo exercício + avaliação especial de desempenho por comissão. (EC 19/98 mudou de 2 para 3 anos.)',
+   tip:'Servidor estável só perde o cargo: (I) sentença judicial; (II) PAD; (III) avaliação periódica; (IV) excesso de gastos.'},
+  {id:'lei14230', subject:'adm', law:'Lei 14.230/21', article:'Improbidade',
+   prompt:'O que mudou na Lei de Improbidade com a Lei 14.230/21?',
+   answer:'(1) Eliminou a modalidade CULPOSA — exige DOLO específico; (2) Prescrição: 8 anos; (3) Legitimidade: só MP propõe; (4) Sanções: perda do cargo, suspensão direitos políticos (não automática), multa, ressarcimento.',
+   tip:'Reforma 2021 — caiu em todas as últimas provas.'},
+
+  // ============ PENAL ============
+  {id:'art1cp', subject:'penal', law:'CP', article:'Art. 1º',
+   prompt:'Qual o princípio fundamental do art. 1º do CP?',
+   answer:'LEGALIDADE: "Não há crime sem lei anterior que o defina. Não há pena sem prévia cominação legal." (Repetido no art. 5º, XXXIX da CF.)',
+   tip:'Subprincípios: lex praevia, scripta, stricta, certa.'},
+  {id:'art2cp', subject:'penal', law:'CP', article:'Art. 2º',
+   prompt:'Como a lei penal se aplica no tempo?',
+   answer:'Ninguém pode ser punido por fato que lei posterior deixou de considerar crime (abolitio criminis). A lei posterior que de qualquer modo favorecer o agente APLICA-SE A FATOS ANTERIORES, ainda que decididos por sentença condenatória transitada em julgado.',
+   tip:'Retroatividade da lei BENÉFICA é regra absoluta (art. 5º, XL CF).'},
+  {id:'art4cp', subject:'penal', law:'CP', article:'Art. 4º',
+   prompt:'Qual teoria adota o CP para o TEMPO do crime?',
+   answer:'Teoria da ATIVIDADE: considera-se praticado o crime no momento da ação ou omissão, AINDA QUE OUTRO SEJA O MOMENTO DO RESULTADO.',
+   tip:'Não confunde com o LUGAR (art. 6º — ubiquidade).'},
+  {id:'art6cp', subject:'penal', law:'CP', article:'Art. 6º',
+   prompt:'Qual teoria adota o CP para o LUGAR do crime?',
+   answer:'Teoria da UBIQUIDADE: considera-se praticado o crime no lugar em que ocorreu a ação ou omissão, no todo ou em parte, BEM COMO onde se produziu ou deveria ter-se produzido o resultado.',
+   tip:'Tempo = atividade. Lugar = ubiquidade. Decora os 2 juntos.'},
+  {id:'art121cp', subject:'penal', law:'CP', article:'Art. 121',
+   prompt:'Quais são as qualificadoras do homicídio (art. 121, §2º)?',
+   answer:'(I) Mediante paga ou promessa de recompensa, ou motivo torpe; (II) Motivo fútil; (III) Meio insidioso/cruel/perigoso; (IV) Recurso que dificulte a defesa; (V) Conexão; (VI) FEMINICÍDIO (Lei 13.104/15); (VII) Contra autoridade ou agente da segurança pública em função.',
+   tip:'Pena qualificada: 12 a 30 anos.'},
+  {id:'art157cp', subject:'penal', law:'CP', article:'Art. 157',
+   prompt:'O que diferencia FURTO de ROUBO?',
+   answer:'FURTO (155): subtração SEM violência ou ameaça. ROUBO (157): subtração COM violência, grave ameaça ou meio que reduza a vítima à impossibilidade de resistência.',
+   tip:'Latrocínio = roubo + morte = juiz singular (Súm. 603 STF), não júri.'},
+  {id:'art28drogas', subject:'penal', law:'Lei 11.343/06', article:'Art. 28',
+   prompt:'Quais as penas para o USUÁRIO de drogas (porte para consumo)?',
+   answer:'(I) Advertência sobre os efeitos; (II) Prestação de serviços à comunidade; (III) Medida educativa de comparecimento a programa. NÃO TEM PENA PRIVATIVA DE LIBERDADE.',
+   tip:'STF: art. 28 é DESPENALIZADO, não descriminalizado.'},
+  {id:'art33drogas', subject:'penal', law:'Lei 11.343/06', article:'Art. 33',
+   prompt:'Qual a pena do tráfico de drogas (caput)?',
+   answer:'Reclusão de 5 a 15 anos + multa. Equiparado a HEDIONDO (Lei 8.072/90).',
+   tip:'Tráfico privilegiado (§4º): primário + bons antecedentes + não dedicado + não orgcrim. STF: NÃO é hediondo (HC 118.533).'},
+  {id:'art7mp', subject:'penal', law:'Lei 11.340/06', article:'Art. 7º',
+   prompt:'Quais são as 5 formas de violência da Lei Maria da Penha?',
+   answer:'(I) Física; (II) Psicológica; (III) Sexual; (IV) Patrimonial; (V) Moral.',
+   tip:'Decora as 5 — independem de coabitação. Homem pode ser agressor, mas só MULHER pode ser vítima.'},
+  {id:'sum589', subject:'penal', law:'STJ', article:'Súmula 589',
+   prompt:'Cabe princípio da insignificância em violência doméstica?',
+   answer:'NÃO. Súmula 589 STJ: "É inaplicável o princípio da insignificância nos crimes ou contravenções penais praticados contra a mulher no âmbito das relações domésticas."',
+   tip:'Decorre da Lei Maria da Penha + STJ.'},
+  {id:'art14arma', subject:'penal', law:'Lei 10.826/03', article:'Art. 14',
+   prompt:'Qual a pena para PORTE ilegal de arma de fogo de uso permitido?',
+   answer:'Reclusão de 2 a 4 anos + multa.',
+   tip:'POSSE (12, em residência): 1-3 anos. PORTE (14, fora): 2-4. RESTRITO (16): 3-6.'},
+  {id:'art1tort', subject:'penal', law:'Lei 9.455/97', article:'Tortura',
+   prompt:'A tortura é HEDIONDO ou EQUIPARADO?',
+   answer:'EQUIPARADO a hediondo (CF, art. 5º, XLIII). Inafiançável, insuscetível de graça ou anistia. Aceita progressão de regime (STF: regime inicial fechado obrigatório é inconstitucional - HC 111.840).',
+   tip:'A vedação à insignificância e a inafiançabilidade caem demais.'},
+  {id:'art2eca', subject:'penal', law:'Lei 8.069/90 (ECA)', article:'Art. 2º',
+   prompt:'Como o ECA define criança e adolescente?',
+   answer:'CRIANÇA: até 12 anos incompletos. ADOLESCENTE: entre 12 e 18 anos de idade. (Ambos são INIMPUTÁVEIS penalmente — art. 27 CP.)',
+   tip:'Criança = medidas de PROTEÇÃO. Adolescente = medidas SOCIOEDUCATIVAS (até 3 anos de internação).'},
+];
+
 const BADGES = [
   {id:'def_const',name:'Defensor da Constituição',icon:'⚖️',desc:'Venceu o boss do Ato I'},
   {id:'guard_limpe',name:'Guardião do LIMPE',icon:'🏛️',desc:'Venceu o boss do Ato II'},
@@ -1643,7 +1819,10 @@ const defaultProgress = () => ({
   xp:0, lives:3, streak:0, completedPhases:[], currentPhase:1, lastPlayDate:null,
   badges:[], questionsAnswered:0, correctAnswers:0,
   statsBySubject:{const:{right:0,total:0},adm:{right:0,total:0},penal:{right:0,total:0},mix:{right:0,total:0}},
+  statsByBanca:{}, // FEATURE 4: por banca
   srsQueue:[], collectedCards:[], soundOn:true, avatar:'👮‍♀️', avatarColor:'#ff2e63',
+  myPile:[], // FEATURE 3: marcar pra rever
+  flashcardsSeen:{}, // FEATURE 1: progresso lei seca {id: 'easy'|'medium'|'hard', lastSeen: date}
 });
 
 
@@ -2283,6 +2462,7 @@ const renderMap = () => {
     </div>`;
   $('map-phases').innerHTML = html;
   $('footer-info').textContent = `📚 ${user.cargo || '—'} • ${user.banca || '—'}`;
+  renderTodayPanel();
 };
 
 const getSrsDue = () => {
@@ -2524,7 +2704,10 @@ function renderPhase() {
             <div class="q-explanation-title">${last.correct ? '✓ ACERTOU!' : '✗ NA PRÓXIMA!'} • EXPLICAÇÃO</div>
             <div style="font-size:14px;line-height:1.5;color:rgba(255,255,255,.9);">${esc(q.explanation)}</div>
           </div>
-          <button class="btn cyan full" style="margin-top:16px;" onclick="nextQ()">${ps.qIdx + 1 >= ph.questions.length ? '🏆 VER RESULTADO →' : 'PRÓXIMA →'}</button>
+          <div style="display:flex;gap:8px;margin-top:16px;">
+            <button class="btn ghost" style="flex:0 0 auto;" onclick="toggleMyPile()" id="btn-flag-pile">${isInMyPile(q) ? '🚩 NA PILHA' : '🚩 MARCAR'}</button>
+            <button class="btn cyan" style="flex:1;" onclick="nextQ()">${ps.qIdx + 1 >= ph.questions.length ? '🏆 VER RESULTADO →' : 'PRÓXIMA →'}</button>
+          </div>
         ` : ''}
       </div>`;
   } else if (ps.stage === 'results') {
@@ -2619,12 +2802,20 @@ function finishPhase() {
   if (progress.lastPlayDate !== today) progress.streak++;
   progress.lastPlayDate = today;
 
-  // Stats por matéria
+  // Stats por matéria E por banca
+  if (!progress.statsByBanca) progress.statsByBanca = {};
   ps.answers.forEach(a => {
     const subj = ph.subject;
     if (progress.statsBySubject[subj]) {
       progress.statsBySubject[subj].total++;
       if (a.correct) progress.statsBySubject[subj].right++;
+    }
+    // Por banca
+    const banca = a.q && a.q.banca;
+    if (banca) {
+      if (!progress.statsByBanca[banca]) progress.statsByBanca[banca] = {right:0,total:0};
+      progress.statsByBanca[banca].total++;
+      if (a.correct) progress.statsByBanca[banca].right++;
     }
   });
   progress.questionsAnswered += total;
@@ -2828,6 +3019,7 @@ function renderStats() {
   else if (worstPct < 80) rec += `Bom desempenho! Para subir nível, dê atenção extra a ${worstSubj} (${worstPct}%).`;
   else rec += 'Excelente desempenho em todas as matérias! Continue assim. 💎';
   $('stats-rec').textContent = rec;
+  renderBancaHeatmap();
 
   // Cartas
   $('stats-cards-count').textContent = `${progress.collectedCards.length}/${CARDS.length}`;
@@ -2915,7 +3107,7 @@ function exportProgress() {
     `Horas/dia: ${user.horasDia || '—'}`,
     '',
     '═══════════════════════════════════════',
-    '   Feito com 💜 pela Fluently — Build your fluent self',
+    '   Feito com 💜 — Construa sua jornada de aprovação',
     '═══════════════════════════════════════',
   ];
   const blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
@@ -2925,6 +3117,329 @@ function exportProgress() {
   a.download = `juris-quest-${toDateKey()}.txt`;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+
+/* ============================================================
+   FEATURE 1 — LEI SECA (Flashcards)
+============================================================ */
+let flashState = null;
+
+function goFlashcards() {
+  snd.click();
+  // Inicializar estado: embaralhar todos os flashcards, priorizar os que a aluna marcou como "hard"
+  if (!progress.flashcardsSeen) progress.flashcardsSeen = {};
+  const todos = [...FLASHCARDS];
+  // Ordem: nunca vistos primeiro, depois hard, depois medium, depois easy
+  todos.sort((a, b) => {
+    const sa = progress.flashcardsSeen[a.id];
+    const sb = progress.flashcardsSeen[b.id];
+    const wa = !sa ? 0 : sa.level === 'hard' ? 1 : sa.level === 'medium' ? 2 : 3;
+    const wb = !sb ? 0 : sb.level === 'hard' ? 1 : sb.level === 'medium' ? 2 : 3;
+    return wa - wb;
+  });
+  flashState = { deck: todos, idx: 0, flipped: false, sessionCount: 0 };
+  renderFlashcard();
+  showScreen('screen-flashcards');
+}
+
+function renderFlashcard() {
+  const total = flashState.deck.length;
+  const card = flashState.deck[flashState.idx];
+  if (!card) {
+    $('flashcard-container').innerHTML = `<div class="card pixel-corners" style="text-align:center;padding:32px;">
+      <div style="font-size:48px;">🎉</div>
+      <div class="font-arcade" style="color:var(--amber);font-size:13px;margin-top:12px;">PARABÉNS!</div>
+      <div style="margin-top:12px;color:rgba(255,255,255,.8);">Você revisou ${flashState.sessionCount} flashcards nesta sessão.</div>
+      <button class="btn full" style="margin-top:24px;" onclick="goFlashcards()">RECOMEÇAR</button>
+      <button class="btn ghost full" style="margin-top:8px;" onclick="goMap()">VOLTAR AO MAPA</button>
+    </div>`;
+    return;
+  }
+
+  $('flash-counter').textContent = `${flashState.idx + 1} de ${total} • ${flashState.sessionCount} revisados nesta sessão`;
+
+  const subjColor = card.subject === 'const' ? 'var(--cyan)' : card.subject === 'adm' ? 'var(--amber)' : 'var(--rose)';
+  const subjLabel = card.subject === 'const' ? 'CONSTITUCIONAL' : card.subject === 'adm' ? 'ADMINISTRATIVO' : 'PENAL';
+
+  if (!flashState.flipped) {
+    // Frente
+    $('flashcard-container').innerHTML = `<div class="card pixel-corners" style="border-color:${subjColor};padding:32px 24px;min-height:360px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <span class="tag" style="border-color:${subjColor};color:${subjColor};background:${subjColor}15;">${esc(subjLabel)}</span>
+          <span style="font-family:'Press Start 2P',monospace;font-size:9px;color:rgba(255,255,255,.4);">${esc(card.law)} • ${esc(card.article)}</span>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:12px;font-family:'Press Start 2P',monospace;">PERGUNTA:</div>
+        <div style="font-size:18px;line-height:1.5;font-weight:600;">${esc(card.prompt)}</div>
+      </div>
+      <div>
+        <div style="text-align:center;color:rgba(255,255,255,.4);font-size:13px;margin-bottom:12px;">Tente lembrar mentalmente, depois clique abaixo</div>
+        <button class="btn cyan full" onclick="flipFlashcard()">▼ VIRAR CARTA</button>
+      </div>
+    </div>`;
+  } else {
+    // Verso (resposta)
+    $('flashcard-container').innerHTML = `<div class="card pixel-corners" style="border-color:${subjColor};padding:24px;min-height:360px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <span class="tag" style="border-color:${subjColor};color:${subjColor};background:${subjColor}15;">${esc(subjLabel)}</span>
+        <span style="font-family:'Press Start 2P',monospace;font-size:9px;color:rgba(255,255,255,.4);">${esc(card.law)} • ${esc(card.article)}</span>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:8px;font-family:'Press Start 2P',monospace;">PERGUNTA:</div>
+      <div style="font-size:15px;color:rgba(255,255,255,.85);margin-bottom:20px;font-style:italic;">${esc(card.prompt)}</div>
+      <div style="font-size:13px;color:var(--emerald);margin-bottom:8px;font-family:'Press Start 2P',monospace;">RESPOSTA:</div>
+      <div style="font-size:15px;line-height:1.6;margin-bottom:16px;">${esc(card.answer)}</div>
+      ${card.tip ? `<div style="padding:12px;background:rgba(255,215,0,.1);border-left:3px solid var(--amber);font-size:13px;color:rgba(255,255,255,.85);"><strong style="color:var(--amber);">💡 DICA:</strong> ${esc(card.tip)}</div>` : ''}
+      <div style="margin-top:24px;">
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px;text-align:center;">Como foi? (define quando volta na fila)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+          <button class="btn" style="background:linear-gradient(180deg,#ef4444 0%,#b91c1c 100%);border-color:#ef4444;font-size:10px;" onclick="rateFlashcard('hard')">❌ ESQUECI</button>
+          <button class="btn" style="background:linear-gradient(180deg,#f59e0b 0%,#d97706 100%);border-color:#f59e0b;color:#1a0e00;font-size:10px;" onclick="rateFlashcard('medium')">😐 QUASE</button>
+          <button class="btn" style="background:linear-gradient(180deg,#10b981 0%,#059669 100%);border-color:#10b981;font-size:10px;" onclick="rateFlashcard('easy')">✅ LEMBREI</button>
+        </div>
+      </div>
+    </div>`;
+  }
+}
+
+function flipFlashcard() {
+  snd.click();
+  flashState.flipped = true;
+  renderFlashcard();
+}
+
+function rateFlashcard(level) {
+  if (level === 'easy') snd.correct();
+  else if (level === 'hard') snd.wrong();
+  else snd.click();
+  const card = flashState.deck[flashState.idx];
+  if (!progress.flashcardsSeen) progress.flashcardsSeen = {};
+  progress.flashcardsSeen[card.id] = { level, lastSeen: toDateKey() };
+  // XP por revisão
+  const xpGain = level === 'easy' ? 15 : level === 'medium' ? 10 : 5;
+  progress.xp += xpGain;
+  flashState.sessionCount++;
+  saveProgress();
+  // Próximo
+  flashState.idx++;
+  flashState.flipped = false;
+  renderFlashcard();
+}
+
+/* ============================================================
+   FEATURE 3 — MINHA PILHA (marcar pra rever)
+============================================================ */
+function isInMyPile(q) {
+  if (!progress.myPile || !q) return false;
+  // Usa o statement como chave única
+  return progress.myPile.some(p => p.statement === q.statement);
+}
+
+function toggleMyPile() {
+  if (!phaseState || !activePhase) return;
+  const q = activePhase.questions[phaseState.qIdx];
+  if (!q) return;
+  if (!progress.myPile) progress.myPile = [];
+
+  const idx = progress.myPile.findIndex(p => p.statement === q.statement);
+  if (idx >= 0) {
+    progress.myPile.splice(idx, 1);
+    snd.click();
+  } else {
+    progress.myPile.push({ ...q, addedAt: toDateKey() });
+    snd.correct();
+  }
+  saveProgress();
+  // Atualiza botão imediatamente
+  const btn = document.getElementById('btn-flag-pile');
+  if (btn) btn.textContent = isInMyPile(q) ? '🚩 NA PILHA' : '🚩 MARCAR';
+}
+
+function goMyPile() {
+  snd.click();
+  if (!progress.myPile) progress.myPile = [];
+  const total = progress.myPile.length;
+  $('mypile-counter').textContent = `${total} questão${total !== 1 ? 'ões' : ''} marcada${total !== 1 ? 's' : ''}`;
+
+  if (total === 0) {
+    $('mypile-empty').classList.remove('hidden');
+    $('mypile-list').innerHTML = '';
+    $('mypile-actions').classList.add('hidden');
+  } else {
+    $('mypile-empty').classList.add('hidden');
+    $('mypile-actions').classList.remove('hidden');
+    $('mypile-list').innerHTML = progress.myPile.map((q, i) => {
+      const bancaColor = q.banca && BANCAS[q.banca] ? BANCAS[q.banca].color : '#94a3b8';
+      const bancaName = q.banca && BANCAS[q.banca] ? BANCAS[q.banca].name : (q.banca || '—');
+      return `<div class="card pixel-corners" style="margin-bottom:8px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:8px;">
+          <span class="tag" style="border-color:${bancaColor};color:${bancaColor};background:${bancaColor}15;font-size:9px;">🏆 ${esc(bancaName)}</span>
+          <button onclick="removeFromMyPile(${i})" style="background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:18px;" title="Remover">✕</button>
+        </div>
+        <div style="font-size:14px;line-height:1.5;margin-bottom:8px;">${esc(q.statement)}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);padding:8px;background:rgba(0,0,0,.4);border-left:2px solid var(--amber);">
+          <strong style="color:var(--amber);">Gabarito:</strong> ${q.type === 'cebraspe' ? (q.correct === 0 ? 'CERTO' : 'ERRADO') : String.fromCharCode(65 + q.correct)}) ${q.type !== 'cebraspe' && q.options ? esc(q.options[q.correct]) : ''}
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:8px;"><em>${esc(q.explanation || '')}</em></div>
+      </div>`;
+    }).join('');
+  }
+  showScreen('screen-mypile');
+}
+
+function removeFromMyPile(idx) {
+  snd.click();
+  progress.myPile.splice(idx, 1);
+  saveProgress();
+  goMyPile();
+}
+
+function clearMyPile() {
+  openModal({
+    title:'LIMPAR MINHA PILHA?',
+    msg:`Tem certeza que quer apagar todas as ${progress.myPile.length} questões da pilha? Esta ação não pode ser desfeita.`,
+    danger:true,
+    onConfirm: () => {
+      progress.myPile = [];
+      saveProgress();
+      goMyPile();
+    }
+  });
+}
+
+function startMyPilePractice() {
+  snd.click();
+  if (!progress.myPile || progress.myPile.length === 0) return;
+  // Cria uma fase fake só pra treinar
+  activePhase = {
+    id: 'mypile',
+    type: 'mypile',
+    mode: 'mypile',
+    subject: 'mix',
+    title: '🚩 Treino: Minha Pilha',
+    subtitle: `${progress.myPile.length} questões marcadas`,
+    briefing: 'Você marcou essas questões durante os bosses pra rever. Acertar ou errar aqui NÃO afeta vidas nem progresso — é só treino livre. Recompensa: 10 XP por questão certa.',
+    questions: [...progress.myPile].sort(() => Math.random() - 0.5),
+  };
+  phaseState = { stage:'briefing', qIdx:0, answers:[], score:0 };
+  renderPhase();
+  showScreen('screen-phase');
+}
+
+/* ============================================================
+   FEATURE 2 — PAINEL "HOJE VOCÊ PRECISA"
+============================================================ */
+function renderTodayPanel() {
+  const panel = $('today-panel');
+  if (!panel) return;
+  const tasksDiv = $('today-tasks');
+  if (!tasksDiv) return;
+
+  const tasks = [];
+
+  // Tarefa 1: próximo dia da jornada (se houver não completado)
+  const nextPhase = PHASES.find(p => !progress.completedPhases.includes(p.id));
+  if (nextPhase) {
+    tasks.push({
+      icon: nextPhase.mode === 'finalboss' ? '☠️' : nextPhase.mode === 'review' ? '⚡' : nextPhase.mode === 'deepening' ? '🔥' : '💀',
+      title: `Dia ${nextPhase.id}: ${nextPhase.title}`,
+      sub: '30 questões • boss principal do dia',
+      action: () => startPhase(nextPhase.id),
+      color: 'var(--rose)',
+      bg: 'rgba(255,46,99,.1)',
+    });
+  }
+
+  // Tarefa 2: SRS pendentes
+  const srsDue = getSrsDue();
+  if (srsDue.length > 0) {
+    tasks.push({
+      icon: '🧠',
+      title: `${srsDue.length} revisão${srsDue.length>1?'ões':''} SRS pendente${srsDue.length>1?'s':''}`,
+      sub: 'Questões erradas voltando — não pula!',
+      action: () => startSrsReview(),
+      color: 'var(--emerald)',
+      bg: 'rgba(16,185,129,.1)',
+    });
+  }
+
+  // Tarefa 3: Flashcards pendentes (5 não vistos hoje)
+  if (!progress.flashcardsSeen) progress.flashcardsSeen = {};
+  const today = toDateKey();
+  const flashTodo = FLASHCARDS.filter(c => {
+    const s = progress.flashcardsSeen[c.id];
+    return !s || s.lastSeen !== today;
+  });
+  if (flashTodo.length > 0) {
+    tasks.push({
+      icon: '🃏',
+      title: `${Math.min(flashTodo.length, 5)} flashcard${flashTodo.length>1?'s':''} de Lei Seca`,
+      sub: 'Decora artigo + súmula em 5 min',
+      action: () => goFlashcards(),
+      color: 'var(--fuchsia)',
+      bg: 'rgba(232,121,249,.1)',
+    });
+  }
+
+  // Tarefa 4: Pilha (se tiver coisa)
+  if (progress.myPile && progress.myPile.length > 0) {
+    tasks.push({
+      icon: '🚩',
+      title: `${progress.myPile.length} na sua pilha`,
+      sub: 'Treine as questões marcadas',
+      action: () => goMyPile(),
+      color: '#fb923c',
+      bg: 'rgba(251,146,60,.1)',
+    });
+  }
+
+  if (tasks.length === 0) {
+    panel.classList.add('hidden');
+    return;
+  }
+  panel.classList.remove('hidden');
+
+  tasksDiv.innerHTML = tasks.slice(0, 4).map((t, i) => `
+    <button onclick="window.__todayActions[${i}]()" style="display:flex;align-items:center;gap:12px;padding:12px;background:${t.bg};border:1px solid ${t.color};border-left:4px solid ${t.color};cursor:pointer;text-align:left;width:100%;color:inherit;font:inherit;transition:transform .15s;" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform='translateX(0)'">
+      <div style="font-size:24px;">${t.icon}</div>
+      <div style="flex:1;">
+        <div style="font-weight:600;color:${t.color};font-size:14px;">${esc(t.title)}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;">${esc(t.sub)}</div>
+      </div>
+      <div style="color:${t.color};font-size:18px;">▸</div>
+    </button>
+  `).join('');
+
+  window.__todayActions = tasks.map(t => t.action);
+}
+
+/* ============================================================
+   FEATURE 4 — HEATMAP POR BANCA
+============================================================ */
+function renderBancaHeatmap() {
+  const container = $('stats-heatmap-banca');
+  if (!container) return;
+  if (!progress.statsByBanca) progress.statsByBanca = {};
+
+  const entries = Object.entries(progress.statsByBanca).filter(([_, s]) => s.total > 0);
+  if (entries.length === 0) {
+    container.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,.5);padding:16px;font-size:13px;">Resolva questões pra ver suas fraquezas por banca.</div>';
+    return;
+  }
+
+  entries.sort((a, b) => (a[1].right/a[1].total) - (b[1].right/b[1].total));
+
+  container.innerHTML = entries.map(([bancaKey, s]) => {
+    const banca = BANCAS[bancaKey];
+    if (!banca) return '';
+    const pct = Math.round((s.right / s.total) * 100);
+    const color = pct >= 80 ? 'var(--emerald)' : pct >= 60 ? 'var(--amber)' : 'var(--rose)';
+    return `<div class="heat-cell" style="border-color:${banca.color};background:${banca.color}15;">
+      <div class="heat-subj" style="color:${banca.color};">🏆 ${esc(banca.name)}</div>
+      <div class="heat-pct" style="color:${color};">${pct}%</div>
+      <div class="heat-count">${s.right}/${s.total} acertos</div>
+    </div>`;
+  }).join('');
 }
 
 /* ============================================================
@@ -3019,6 +3534,15 @@ window.renderOnboarding = renderOnboarding;
 window.toggleLoginMode = toggleLoginMode;
 window.goRanking = goRanking;
 window.toggleRanking = toggleRanking;
+window.goFlashcards = goFlashcards;
+window.flipFlashcard = flipFlashcard;
+window.rateFlashcard = rateFlashcard;
+window.goMyPile = goMyPile;
+window.toggleMyPile = toggleMyPile;
+window.removeFromMyPile = removeFromMyPile;
+window.clearMyPile = clearMyPile;
+window.startMyPilePractice = startMyPilePractice;
+window.isInMyPile = isInMyPile;
 </script>
 
 </body>
