@@ -1357,35 +1357,129 @@ const TOPICS = [
 // ============================================================
 // Padrão: Const → Adm → Penal → Const → Adm → Penal → ...
 // Como temos 4 tópicos Const, 4 Adm, 9 Penal, distribuímos
-const DAY_ORDER = [
-  'const-principios','adm-principios-limpe','penal-principios',
-  'const-art5-direitos-pessoais','adm-poderes','penal-aplicacao-tempo-lugar',
-  'const-remedios-constitucionais','adm-atos-administrativos','penal-crimes-pessoa',
-  'const-seguranca-publica','adm-servidores-improbidade','penal-patrimonio',
-  // Repete tópicos para completar 30 dias com revisão por matéria
-  'const-principios','adm-principios-limpe','penal-administracao',
-  'const-art5-direitos-pessoais','adm-poderes','penal-lei-drogas',
-  'const-remedios-constitucionais','adm-atos-administrativos','penal-maria-da-penha',
-  'const-seguranca-publica','adm-servidores-improbidade','penal-armas-tortura-hediondos',
-  'const-principios','adm-poderes','penal-eca-dh',
-  'const-seguranca-publica','adm-atos-administrativos','penal-crimes-pessoa',
+// ============================================================
+// JORNADA DE 30 DIAS — Distribuição:
+//   • 16 dias Penal (9 originais + 5 aprofundamento + 2 revisão exclusiva)
+//   • 5 dias Const (4 originais + 1 revisão exclusiva)
+//   • 5 dias Adm   (4 originais + 1 revisão exclusiva)
+//   • 4 dias Mistos (revisões combinadas + simulação + boss final)
+// Estrutura: cada item descreve um dia. Tipos:
+//   'topic'      → 30 questões do banco do tópico (boss normal)
+//   'deepening'  → 30 questões re-sorteadas do mesmo tópico (selo APROFUNDAMENTO)
+//   'review'     → 30 questões misturando vários tópicos relacionados
+//   'finalboss'  → 30 questões aleatórias do banco inteiro, peso maior em Penal
+// ============================================================
+const JOURNEY = [
+  // BLOCO 1 — Fundamentos (Dias 1-9)
+  {type:'topic', topicId:'penal-principios'},
+  {type:'topic', topicId:'const-principios'},
+  {type:'topic', topicId:'penal-aplicacao-tempo-lugar'},
+  {type:'topic', topicId:'adm-principios-limpe'},
+  {type:'topic', topicId:'penal-crimes-pessoa'},
+  {type:'topic', topicId:'const-art5-direitos-pessoais'},
+  {type:'topic', topicId:'penal-patrimonio'},
+  {type:'review', subject:'mix', title:'⚡ Revisão Bloco 1', subtitle:'Tudo dos dias 1 a 7',
+    briefing:'Revisão integrada das matérias estudadas até aqui — princípios penais, aplicação da lei, crimes contra pessoa e patrimônio, fundamentos constitucionais, art. 5º e LIMPE. 30 questões misturadas das 7 matérias. Ideal para fixar o que você aprendeu.',
+    pool:['penal-principios','const-principios','penal-aplicacao-tempo-lugar','adm-principios-limpe','penal-crimes-pessoa','const-art5-direitos-pessoais','penal-patrimonio']},
+  {type:'topic', topicId:'adm-poderes'},
+
+  // BLOCO 2 — Aprofundamento (Dias 10-18)
+  {type:'topic', topicId:'penal-maria-da-penha'},
+  {type:'topic', topicId:'const-remedios-constitucionais'},
+  {type:'topic', topicId:'penal-lei-drogas'},
+  {type:'topic', topicId:'adm-atos-administrativos'},
+  {type:'topic', topicId:'penal-administracao'},
+  {type:'review', subject:'mix', title:'⚡ Revisão Bloco 2', subtitle:'Adm + Penal especiais',
+    briefing:'Revisão das leis especiais e da Administração Pública: Maria da Penha, Drogas, crimes contra a Administração, atos administrativos e poderes. 30 questões mistas reforçando o que mais cai em prova.',
+    pool:['penal-maria-da-penha','penal-lei-drogas','penal-administracao','adm-atos-administrativos','adm-poderes','const-remedios-constitucionais']},
+  {type:'topic', topicId:'const-seguranca-publica'},
+  {type:'topic', topicId:'penal-armas-tortura-hediondos'},
+  {type:'topic', topicId:'adm-servidores-improbidade'},
+
+  // BLOCO 3 — Especializações (Dias 19-25)
+  {type:'topic', topicId:'penal-eca-dh'},
+  {type:'deepening', topicId:'penal-crimes-pessoa'},
+  {type:'review', subject:'const', title:'🛡️ Revisão Constitucional', subtitle:'Os 4 grandes blocos da CF',
+    briefing:'Revisão de TODO o conteúdo constitucional — princípios fundamentais, art. 5º (direitos pessoais), remédios constitucionais e segurança pública (art. 144). 30 questões para você dominar a parte da Constituição.',
+    pool:['const-principios','const-art5-direitos-pessoais','const-remedios-constitucionais','const-seguranca-publica']},
+  {type:'deepening', topicId:'penal-lei-drogas'},
+  {type:'review', subject:'adm', title:'🏛️ Revisão Administrativo', subtitle:'Todo o LIMPE em ação',
+    briefing:'Revisão completa de Direito Administrativo: princípios LIMPE, poderes administrativos, atos administrativos, servidores públicos e improbidade. 30 questões para garantir a parte de Adm.',
+    pool:['adm-principios-limpe','adm-poderes','adm-atos-administrativos','adm-servidores-improbidade']},
+  {type:'deepening', topicId:'penal-patrimonio'},
+  {type:'deepening', topicId:'penal-principios'},
+
+  // BLOCO 4 — Preparação Final (Dias 26-30)
+  {type:'review', subject:'penal', title:'⚔️ Revisão Penal — Parte Geral', subtitle:'Princípios + Aplicação + Crimes do CP',
+    briefing:'Revisão da Parte Geral do Direito Penal: princípios, aplicação da lei no tempo e no espaço, crimes contra a pessoa, patrimônio e Administração. 30 questões para fixar o CP.',
+    pool:['penal-principios','penal-aplicacao-tempo-lugar','penal-crimes-pessoa','penal-patrimonio','penal-administracao']},
+  {type:'review', subject:'penal', title:'📚 Revisão Legislação Penal Especial', subtitle:'Drogas + MP + Armas + ECA',
+    briefing:'Revisão das leis penais especiais cobradas em prova de PM: Lei de Drogas (11.343/06), Lei Maria da Penha (11.340/06), Estatuto do Desarmamento (10.826/03), Tortura (9.455/97), Hediondos (8.072/90) e ECA. 30 questões reforçando as armadilhas.',
+    pool:['penal-lei-drogas','penal-maria-da-penha','penal-armas-tortura-hediondos','penal-eca-dh']},
+  {type:'deepening', topicId:'penal-maria-da-penha'},
+  {type:'review', subject:'mix', title:'🎯 SIMULÃO PMPE', subtitle:'30 questões mistas — ensaio geral',
+    briefing:'SIMULAÇÃO FINAL antes do boss. 30 questões aleatórias misturando TODAS as matérias e bancas. Use como termômetro do seu preparo. Foco extra em Penal, que tem maior peso na prova de PM.',
+    pool:'ALL_WEIGHTED'},
+  {type:'finalboss'},
 ];
 
-// PHASES recalculadas: 30 dias, cada um é BOSS de 30 questões
-const PHASES = DAY_ORDER.map((topicId, idx) => {
-  const t = TOPICS.find(x => x.id === topicId);
-  const ato = t.subject === 'const' ? 1 : t.subject === 'adm' ? 2 : 3;
-  return {
-    id: idx + 1,
-    type: 'boss',  // todo dia é BOSS
-    subject: t.subject,
-    ato,
-    topicId,
-    title: t.title,
-    subtitle: t.subtitle,
-    briefing: t.briefing,
-    questionCount: 30, // sorteia 30 do banco
-  };
+// Conversão: JOURNEY → PHASES com toda a metadata necessária
+const PHASES = JOURNEY.map((day, idx) => {
+  const dayId = idx + 1;
+
+  if (day.type === 'topic') {
+    const t = TOPICS.find(x => x.id === day.topicId);
+    return {
+      id: dayId, type: 'boss', mode: 'topic',
+      subject: t.subject,
+      ato: t.subject === 'const' ? 1 : t.subject === 'adm' ? 2 : 3,
+      topicId: day.topicId,
+      title: t.title,
+      subtitle: t.subtitle,
+      briefing: t.briefing,
+      questionCount: 30,
+    };
+  }
+
+  if (day.type === 'deepening') {
+    const t = TOPICS.find(x => x.id === day.topicId);
+    return {
+      id: dayId, type: 'boss', mode: 'deepening',
+      subject: t.subject,
+      ato: t.subject === 'const' ? 1 : t.subject === 'adm' ? 2 : 3,
+      topicId: day.topicId,
+      title: '🔥 Aprofundamento: ' + t.title,
+      subtitle: 'Rodada 2 — questões diferentes do mesmo tema',
+      briefing: '🔥 APROFUNDAMENTO. Você já estudou este tema antes. Agora vão aparecer 30 questões NOVAS (do mesmo banco), com foco nas pegadinhas e detalhes que mais derrubam concurseiras. Mostre que dominou! ' + t.briefing,
+      questionCount: 30,
+    };
+  }
+
+  if (day.type === 'review') {
+    return {
+      id: dayId, type: 'boss', mode: 'review',
+      subject: day.subject,
+      ato: day.subject === 'const' ? 1 : day.subject === 'adm' ? 2 : 3,
+      reviewPool: day.pool,
+      title: day.title,
+      subtitle: day.subtitle,
+      briefing: day.briefing,
+      questionCount: 30,
+    };
+  }
+
+  if (day.type === 'finalboss') {
+    return {
+      id: dayId, type: 'boss', mode: 'finalboss',
+      subject: 'mix',
+      ato: 3,
+      title: '☠️ BOSS FINAL — A PROVA',
+      subtitle: 'Tudo que você aprendeu, em 30 questões',
+      briefing: '☠️ BOSS FINAL DA JORNADA. 30 questões aleatórias misturando TODAS as 17 matérias e as 7 bancas. Peso maior em Penal (proporção real da prova de PM). Sua recompensa: 800 XP + carta lendária garantida + medalha "Soldado da Constituição". Vai, recruta!',
+      questionCount: 30,
+      reviewPool: 'ALL_WEIGHTED',
+    };
+  }
 });
 
 // ============================================================
@@ -1442,9 +1536,35 @@ function formatBankQuestion(q) {
 
 // Para um dia normal (boss), monta as questões do banco do tópico
 function buildDayQuestions(phase) {
-  const bank = QBANK[phase.topicId] || [];
-  // Embaralha e pega N
-  const shuffled = [...bank].sort(() => Math.random() - 0.5);
+  let pool = [];
+
+  // Modo topic/deepening: questões do tópico
+  if (phase.mode === 'topic' || phase.mode === 'deepening' || phase.topicId) {
+    pool = [...(QBANK[phase.topicId] || [])];
+  }
+  // Modo review: junta questões de vários tópicos do pool
+  else if (phase.mode === 'review' && Array.isArray(phase.reviewPool)) {
+    phase.reviewPool.forEach(tid => {
+      const bank = QBANK[tid] || [];
+      pool = pool.concat(bank);
+    });
+  }
+  // Modo finalboss ou review com pool 'ALL_WEIGHTED': mistura tudo com peso maior em Penal
+  else if (phase.reviewPool === 'ALL_WEIGHTED' || phase.mode === 'finalboss') {
+    Object.entries(QBANK).forEach(([tid, qs]) => {
+      // Peso: Penal entra 2x; Const e Adm entram 1x
+      const weight = tid.startsWith('penal-') ? 2 : 1;
+      for (let w = 0; w < weight; w++) pool = pool.concat(qs);
+    });
+  }
+
+  // Fallback se algo deu errado
+  if (pool.length === 0) {
+    pool = Object.values(QBANK).flat();
+  }
+
+  // Embaralhar e pegar N
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
   const picked = shuffled.slice(0, Math.min(phase.questionCount || 30, shuffled.length));
   return picked.map(formatBankQuestion);
 }
@@ -1972,7 +2092,7 @@ const ONB_STEPS = [
     opts:['Soldado PM','Soldado Bombeiro Militar','Polícia Penal','Outro']},
   {title:'QUAL A BANCA?', sub:'Examinadora do concurso', icon:'🏆', color:'amber', key:'banca', type:'opts',
     opts:['CESPE/CEBRASPE','FGV','FCC','VUNESP','IBFC','AOCP','Outra']},
-  {title:'QUANDO É A BATALHA?', sub:'Data prevista da prova', icon:'📅', color:'cyan', key:'dataProva', type:'date'},
+  {title:'QUANDO É A BATALHA?', sub:'Data prevista da prova (opcional — deixe em branco se ainda não souber)', icon:'📅', color:'cyan', key:'dataProva', type:'date'},
   {title:'TREINO DIÁRIO', sub:'Horas por dia (1 a 16)', icon:'⏰', color:'rose', key:'horasDia', type:'number'},
   {title:'SEU NÍVEL', sub:'Para calibrar o jogo', icon:'📚', color:'fuchsia', key:'nivel', type:'opts',
     opts:['Iniciante — nunca estudei Direito','Intermediário — já vi o básico','Avançado — quero revisar']},
@@ -2033,10 +2153,10 @@ const onbNext = () => {
   let err = '';
   if (s.type === 'opts' && !onbData[s.key]) err = 'Escolha uma opção';
   else if (s.type === 'date') {
-    if (!onbData[s.key]) err = 'Informe a data';
-    else {
+    // Data da prova é OPCIONAL — só valida se foi preenchida
+    if (onbData[s.key]) {
       const d = new Date(onbData[s.key]), hoje = new Date(); hoje.setHours(0,0,0,0);
-      if (isNaN(d.getTime()) || d < hoje) err = 'Data inválida (deve ser futura)';
+      if (isNaN(d.getTime()) || d < hoje) err = 'Data inválida (deve ser futura). Deixe em branco se ainda não souber.';
     }
   } else if (s.type === 'number') {
     const n = parseInt(onbData[s.key]);
@@ -2129,18 +2249,35 @@ const renderMap = () => {
         const completed = isCompleted(ph);
         const unlocked = isUnlocked(ph);
         const current = ph.id === progress.currentPhase && !completed;
+
+        // Ícone do tipo no canto + texto de status
+        let topIcon = '💀'; // padrão boss normal
+        if (ph.mode === 'deepening') topIcon = '🔥';
+        else if (ph.mode === 'review') topIcon = '⚡';
+        else if (ph.mode === 'finalboss') topIcon = '☠️';
+
+        let modeBadge = '';
+        if (ph.mode === 'deepening') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:#fb923c;">APROF.</div>`;
+        else if (ph.mode === 'review') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--emerald);">REVISÃO</div>`;
+        else if (ph.mode === 'finalboss') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--amber);">FINAL ★</div>`;
+
         let statusHtml;
         if (completed) statusHtml = `<span style="color:var(--emerald);font-size:9px;">✓ OK</span>`;
         else if (!unlocked) statusHtml = `<span style="color:rgba(255,255,255,.3);">🔒</span>`;
         else if (current) statusHtml = `<span style="color:var(--rose);font-size:9px;animation:pulse-neon 2s infinite;">★ HOJE</span>`;
+        else if (ph.mode === 'finalboss') statusHtml = `<span style="color:var(--amber);font-size:9px;">★ FINAL</span>`;
+        else if (ph.mode === 'review') statusHtml = `<span style="color:var(--emerald);font-size:10px;">▸ REV</span>`;
+        else if (ph.mode === 'deepening') statusHtml = `<span style="color:#fb923c;font-size:10px;">▸ 2X</span>`;
         else statusHtml = `<span style="color:rgba(255,255,255,.4);font-size:10px;">▸ BOSS</span>`;
 
-        return `<button class="phase ${ph.subject} ${completed?'completed':''} ${current?'current':''} pixel-corners" ${!unlocked?'disabled':''} onclick="startPhase(${ph.id})">
-          <div class="phase-type-icon">💀</div>
+        // Pra revisões/finalboss, força a cor pela "subject" do dia
+        return `<button class="phase ${ph.subject} ${completed?'completed':''} ${current?'current':''} pixel-corners" ${!unlocked?'disabled':''} onclick="startPhase(${ph.id})" style="position:relative;">
+          <div class="phase-type-icon">${topIcon}</div>
           <div class="phase-icon">${SUBJ[ph.subject].icon}</div>
           <div class="phase-num">DIA ${ph.id}</div>
           <div class="phase-title">${esc(ph.title)}</div>
           <div class="phase-status">${statusHtml}</div>
+          ${modeBadge}
         </button>`;
       }).join('')}
     </div>`;
@@ -2292,7 +2429,7 @@ function renderPhase() {
   const sc = SUBJ[ph.subject];
 
   if (ps.stage === 'briefing') {
-    const xpRew = ph.type === 'boss' ? 500 : ph.type === 'ambush' ? 250 : ph.type === 'bonus' ? 150 : ph.type === 'sim' ? 400 : ph.type === 'trap' ? 200 : ph.type === 'srs' ? 50 : 100;
+    const xpRew = ph.mode === 'finalboss' ? 800 : ph.mode === 'review' ? 350 : ph.mode === 'deepening' ? 400 : ph.type === 'boss' ? 500 : ph.type === 'ambush' ? 250 : ph.type === 'bonus' ? 150 : ph.type === 'sim' ? 400 : ph.type === 'trap' ? 200 : ph.type === 'srs' ? 50 : 100;
     const typeLabel = ph.type === 'boss' ? ' — BOSS' : ph.type === 'bonus' ? ' — REVISÃO' : ph.type === 'srs' ? ' — SRS' : ph.type === 'trap' ? ' — PEGADINHA' : ph.type === 'sim' ? ' — SIMULADO' : '';
     const dayLabel = typeof ph.id === 'number' ? `DIA ${ph.id}` : 'MODO ESPECIAL';
 
@@ -2460,7 +2597,7 @@ function finishPhase() {
 
   let xpGanho = 0;
   if (passed) {
-    const base = ph.type === 'boss' ? 500 : ph.type === 'ambush' ? 250 : ph.type === 'bonus' ? 150 : ph.type === 'sim' ? 400 : ph.type === 'trap' ? 200 : ph.type === 'srs' ? 50 : 100;
+    const base = ph.mode === 'finalboss' ? 800 : ph.mode === 'review' ? 350 : ph.mode === 'deepening' ? 400 : ph.type === 'boss' ? 500 : ph.type === 'ambush' ? 250 : ph.type === 'bonus' ? 150 : ph.type === 'sim' ? 400 : ph.type === 'trap' ? 200 : ph.type === 'srs' ? 50 : 100;
     xpGanho = base + (ps.score * 20);
   } else xpGanho = ps.score * 10;
 
