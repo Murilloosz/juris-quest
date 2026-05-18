@@ -2710,13 +2710,18 @@ const onbNext = () => {
 const goMap = () => {
   showScreen('screen-map');
   renderMap();
-  // Verifica roleta (1x por dia)
+  // Verifica roleta — só mostra automaticamente UMA VEZ por sessão de login
+  // (Se quiser girar de novo, vai ter o botão visível no painel HOJE.)
   setTimeout(() => {
-    if (canSpinRoulette()) {
+    if (canSpinRoulette() && !window.__rouletteShownThisSession) {
+      window.__rouletteShownThisSession = true;
       showRouletteModal();
     } else {
-      // Sem roleta? Tenta missão relâmpago
-      maybeTriggerMission();
+      // Sem roleta? Tenta missão relâmpago (só 1x por sessão também)
+      if (!window.__missionAttemptedThisSession) {
+        window.__missionAttemptedThisSession = true;
+        maybeTriggerMission();
+      }
     }
   }, 600);
 };
@@ -3769,6 +3774,18 @@ function renderTodayPanel() {
   if (!tasksDiv) return;
 
   const tasks = [];
+
+  // Tarefa 0: ROLETA DIÁRIA (se ainda não girou hoje, fica no topo)
+  if (canSpinRoulette()) {
+    tasks.push({
+      icon: '🎡',
+      title: '🎁 Sua roleta diária está esperando!',
+      sub: 'Gire para ganhar um prêmio surpresa (XP, carta, freeze ou JACKPOT)',
+      action: () => showRouletteModal(),
+      color: 'var(--amber)',
+      bg: 'rgba(255,215,0,.15)',
+    });
+  }
 
   // Tarefa 1: próximo dia da jornada (se houver não completado)
   const nextPhase = PHASES.find(p => !progress.completedPhases.includes(p.id));
