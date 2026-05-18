@@ -432,6 +432,196 @@ body.night-mode .btn {
   text-align: center; line-height: 1.3;
 }
 
+
+/* ROLETA DIÁRIA */
+.roulette-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 300;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.roulette-box {
+  max-width: 420px; width: 100%; text-align: center; padding: 24px;
+  background: linear-gradient(180deg, #1d0c3d 0%, #0a0410 100%);
+  border: 3px solid var(--amber); box-shadow: 0 0 80px rgba(255,215,0,0.6);
+}
+.wheel-container {
+  width: 280px; height: 280px; margin: 16px auto; position: relative;
+}
+.wheel {
+  width: 100%; height: 100%; border-radius: 50%; position: relative;
+  border: 4px solid var(--amber);
+  box-shadow: 0 0 30px rgba(255,215,0,0.5);
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.21, 1);
+  background:
+    conic-gradient(
+      #ff2e63 0deg 45deg,
+      #08d9d6 45deg 90deg,
+      #ffd700 90deg 135deg,
+      #a77b8e 135deg 180deg,
+      #e879f9 180deg 225deg,
+      #10b981 225deg 270deg,
+      #fb923c 270deg 315deg,
+      #fff 315deg 360deg
+    );
+}
+.wheel-pointer {
+  position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 28px solid var(--amber);
+  z-index: 10;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,0.8));
+}
+.wheel-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 70px; height: 70px; background: #0a0410; border: 3px solid var(--amber);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+.wheel-label {
+  position: absolute; color: white; font-family: 'Press Start 2P', monospace;
+  font-size: 9px; text-shadow: 1px 1px 2px rgba(0,0,0,0.9); pointer-events: none;
+  white-space: nowrap;
+}
+
+/* MISSÃO RELÂMPAGO */
+.mission-banner {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+  z-index: 80; max-width: 92%; width: 380px;
+  background: linear-gradient(90deg, rgba(255,46,99,0.95), rgba(255,215,0,0.95));
+  color: white; padding: 12px 16px; border: 2px solid #fff;
+  box-shadow: 0 0 30px rgba(255,46,99,0.6);
+  font-family: 'Rajdhani', sans-serif;
+  animation: shake 0.5s ease-in-out;
+}
+.mission-banner.collapsed { width: auto; padding: 8px 12px; cursor: pointer; }
+.mission-title {
+  font-family: 'Press Start 2P', monospace; font-size: 10px;
+  letter-spacing: 1px; margin-bottom: 4px;
+}
+.mission-desc { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.mission-timer {
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.mission-close {
+  position: absolute; top: 4px; right: 6px; cursor: pointer;
+  background: none; border: none; color: rgba(255,255,255,0.7); font-size: 16px;
+}
+@keyframes prize-burst {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.prize-reveal { animation: prize-burst 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* SUPERADMIN — dashboard */
+.admin-card {
+  background: rgba(0,0,0,0.6); border: 1px solid rgba(255,215,0,0.4);
+  padding: 14px; margin-bottom: 10px;
+}
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.admin-table th { text-align: left; padding: 8px; color: var(--amber);
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
+  border-bottom: 1px solid rgba(255,215,0,0.3); }
+.admin-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+/* Streak chama */
+/* Streak chama */
+
+/* ROLETA DIÁRIA */
+.roulette-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 300;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.roulette-box {
+  max-width: 420px; width: 100%; text-align: center; padding: 24px;
+  background: linear-gradient(180deg, #1d0c3d 0%, #0a0410 100%);
+  border: 3px solid var(--amber); box-shadow: 0 0 80px rgba(255,215,0,0.6);
+}
+.wheel-container {
+  width: 280px; height: 280px; margin: 16px auto; position: relative;
+}
+.wheel {
+  width: 100%; height: 100%; border-radius: 50%; position: relative;
+  border: 4px solid var(--amber);
+  box-shadow: 0 0 30px rgba(255,215,0,0.5);
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.21, 1);
+  background:
+    conic-gradient(
+      #ff2e63 0deg 45deg,
+      #08d9d6 45deg 90deg,
+      #ffd700 90deg 135deg,
+      #a77b8e 135deg 180deg,
+      #e879f9 180deg 225deg,
+      #10b981 225deg 270deg,
+      #fb923c 270deg 315deg,
+      #fff 315deg 360deg
+    );
+}
+.wheel-pointer {
+  position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 28px solid var(--amber);
+  z-index: 10;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,0.8));
+}
+.wheel-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 70px; height: 70px; background: #0a0410; border: 3px solid var(--amber);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+.wheel-label {
+  position: absolute; color: white; font-family: 'Press Start 2P', monospace;
+  font-size: 9px; text-shadow: 1px 1px 2px rgba(0,0,0,0.9); pointer-events: none;
+  white-space: nowrap;
+}
+
+/* MISSÃO RELÂMPAGO */
+.mission-banner {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+  z-index: 80; max-width: 92%; width: 380px;
+  background: linear-gradient(90deg, rgba(255,46,99,0.95), rgba(255,215,0,0.95));
+  color: white; padding: 12px 16px; border: 2px solid #fff;
+  box-shadow: 0 0 30px rgba(255,46,99,0.6);
+  font-family: 'Rajdhani', sans-serif;
+  animation: shake 0.5s ease-in-out;
+}
+.mission-banner.collapsed { width: auto; padding: 8px 12px; cursor: pointer; }
+.mission-title {
+  font-family: 'Press Start 2P', monospace; font-size: 10px;
+  letter-spacing: 1px; margin-bottom: 4px;
+}
+.mission-desc { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.mission-timer {
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.mission-close {
+  position: absolute; top: 4px; right: 6px; cursor: pointer;
+  background: none; border: none; color: rgba(255,255,255,0.7); font-size: 16px;
+}
+@keyframes prize-burst {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.prize-reveal { animation: prize-burst 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* SUPERADMIN — dashboard */
+.admin-card {
+  background: rgba(0,0,0,0.6); border: 1px solid rgba(255,215,0,0.4);
+  padding: 14px; margin-bottom: 10px;
+}
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.admin-table th { text-align: left; padding: 8px; color: var(--amber);
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
+  border-bottom: 1px solid rgba(255,215,0,0.3); }
+.admin-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
 /* Streak chama */
 /* Streak chama */
 .fire{color:#fb923c;}
@@ -574,6 +764,7 @@ body.night-mode .btn {
             <button onclick="goMyPile()" title="Minha Pilha">🚩</button>
             <button onclick="goRanking()" title="Ranking">🏆</button>
             <button onclick="goStats()" title="Stats">📊</button>
+            <button id="hud-admin-btn" onclick="goAdmin()" title="Painel Admin" style="display:none;">👑</button>
             <button onclick="logout()" title="Sair">🚪</button>
           </div>
         </div>
@@ -772,6 +963,38 @@ body.night-mode .btn {
       <button class="btn ghost" style="flex:1;" onclick="startMyPilePractice()">▶ TREINAR TODAS</button>
       <button class="btn ghost" style="flex:1;" onclick="clearMyPile()">🗑️ LIMPAR PILHA</button>
     </div>
+  </div>
+</div>
+
+<!-- SUPERADMIN — Dashboard das alunas -->
+<div id="screen-admin" class="screen">
+  <div class="container">
+    <button class="back-btn" onclick="goMap()">← voltar ao mapa</button>
+    <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:var(--amber);">
+      <div style="text-align:center;">
+        <div style="font-size:48px;margin-bottom:8px;">👑</div>
+        <div class="font-arcade" style="color:var(--amber);font-size:16px;">PAINEL DO MESTRE</div>
+        <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;">Acompanhe todas as alunas da turma</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;text-align:center;">
+        <div style="padding:12px;background:rgba(255,46,99,.1);border:1px solid var(--rose);">
+          <div style="color:rgba(255,255,255,.5);font-size:11px;">ALUNAS</div>
+          <div id="admin-total" class="font-orbit" style="font-weight:900;font-size:24px;color:var(--rose);">0</div>
+        </div>
+        <div style="padding:12px;background:rgba(255,215,0,.1);border:1px solid var(--amber);">
+          <div style="color:rgba(255,255,255,.5);font-size:11px;">XP MÉDIO</div>
+          <div id="admin-avg-xp" class="font-orbit" style="font-weight:900;font-size:24px;color:var(--amber);">0</div>
+        </div>
+        <div style="padding:12px;background:rgba(16,185,129,.1);border:1px solid var(--emerald);">
+          <div style="color:rgba(255,255,255,.5);font-size:11px;">ATIVAS HOJE</div>
+          <div id="admin-active-today" class="font-orbit" style="font-weight:900;font-size:24px;color:var(--emerald);">0</div>
+        </div>
+      </div>
+    </div>
+    <div id="admin-loading" style="text-align:center;padding:40px;color:rgba(255,255,255,.5);">
+      <div class="font-arcade" style="font-size:11px;">CARREGANDO ALUNAS...</div>
+    </div>
+    <div id="admin-list"></div>
   </div>
 </div>
 
@@ -1910,6 +2133,10 @@ const defaultProgress = () => ({
   flashcardsSeen:{}, // FEATURE 1: progresso lei seca {id: 'easy'|'medium'|'hard', lastSeen: date}
   streakFreezes:0, // FEATURE: streak freeze (1 a cada 7 dias de chama)
   freezeUsedDate:null, // último dia que usou um freeze
+  rouletteLastSpin:null, // último dia que girou a roleta (YYYY-MM-DD)
+  rouletteHistory:[], // últimos 10 prêmios
+  xpBoostUntil:null, // timestamp ms até quando o XP é 2x
+  missionsCompleted:0, // total de missões relâmpago vencidas
 });
 
 
@@ -2480,12 +2707,29 @@ const onbNext = () => {
 /* ============================================================
    MAP
 ============================================================ */
-const goMap = () => { showScreen('screen-map'); renderMap(); };
+const goMap = () => {
+  showScreen('screen-map');
+  renderMap();
+  // Verifica roleta (1x por dia)
+  setTimeout(() => {
+    if (canSpinRoulette()) {
+      showRouletteModal();
+    } else {
+      // Sem roleta? Tenta missão relâmpago
+      maybeTriggerMission();
+    }
+  }, 600);
+};
 
 const renderMap = () => {
   const info = xpInfo(progress.xp);
 
   $('hud-avatar').textContent = progress.avatar;
+  // Mostrar botão admin se for admin
+  if (isAdmin()) {
+    const ab = document.getElementById('hud-admin-btn');
+    if (ab) ab.style.display = 'inline-block';
+  }
   $('hud-avatar').style.filter = `drop-shadow(0 0 12px ${progress.avatarColor})`;
   $('hud-name').textContent = (user.name || '').toUpperCase();
   $('hud-patente').textContent = `${info.atual.icon} ${info.atual.nome}`;
@@ -2626,12 +2870,13 @@ const toggleSound = () => {
 
 const logout = () => {
   openModal({
-    title:'SAIR DA AVENTURA?',
-    msg:'Seu progresso fica salvo na nuvem. Você poderá retomar de qualquer dispositivo.',
+    title:'SAIR DA CONTA?',
+    msg:'Você será deslogada(o). Seu progresso fica salvo na nuvem — basta entrar com email/senha de novo de qualquer dispositivo pra continuar de onde parou.',
     onConfirm: async () => {
       await cloudSignOut();
       try { localStorage.removeItem(KEY_USER); localStorage.removeItem(KEY_PROG); } catch(e){}
       user = null; progress = null;
+      currentSession = null;
       showScreen('screen-splash');
     }
   });
@@ -2640,13 +2885,39 @@ const logout = () => {
 const confirmReset = () => {
   openModal({
     title:'⚠️ RECOMEÇAR DO ZERO?',
-    msg:'TODO seu progresso (XP, fases, conquistas, cartas) será APAGADO. Esta ação NÃO pode ser desfeita.',
+    msg:'TODO seu progresso (XP, fases, conquistas, cartas, streak) será APAGADO da nuvem. Sua conta continua ativa — você fica logada e refaz o onboarding. Esta ação NÃO pode ser desfeita.',
     danger:true,
-    onConfirm: () => {
-      try { localStorage.removeItem(KEY_USER); localStorage.removeItem(KEY_PROG); } catch(e){}
-      user = null;
+    onConfirm: async () => {
+      // 1) Zera localStorage
+      try { localStorage.removeItem(KEY_PROG); } catch(e){}
+
+      // 2) Zera progresso na nuvem (mas NÃO desloga)
       progress = defaultProgress();
-      showScreen('screen-splash');
+
+      // 3) Mantém só nome/email/avatar — apaga cargo/banca pra refazer onboarding
+      if (user) {
+        user = {
+          name: user.name,
+          email: user.email,
+          createdAt: user.createdAt,
+          showInRanking: false,
+        };
+        saveUser();
+      }
+
+      // 4) Sincroniza zerado com a nuvem
+      try {
+        if (sb && currentSession) {
+          await upsertProgress();
+          await upsertProfile();
+        }
+      } catch(e) { console.error('Erro ao resetar na nuvem:', e); }
+
+      // 5) Refaz o onboarding (precisa pegar cargo/banca/etc de novo)
+      onbStep = 0;
+      onbData = { avatar:'👮‍♀️', avatarColor:'#ff2e63' };
+      renderOnboarding();
+      showScreen('screen-onboarding');
     }
   });
 };
@@ -2888,6 +3159,8 @@ function answerQ(idx) {
   if (correct) snd.correct(); else snd.wrong();
   const newAnswers = [...phaseState.answers, {idx, correct, q}];
   const newScore = correct ? phaseState.score + 1 : phaseState.score;
+  // Track missão relâmpago
+  try { trackMissionProgress(q, correct); } catch(e) { console.warn(e); }
 
   if (activePhase.timed) {
     // SIM: sem feedback, avança direto
@@ -2926,6 +3199,10 @@ function finishPhase() {
     const base = ph.mode === 'finalboss' ? 800 : ph.mode === 'review' ? 350 : ph.mode === 'deepening' ? 400 : ph.type === 'boss' ? 500 : ph.type === 'ambush' ? 250 : ph.type === 'bonus' ? 150 : ph.type === 'sim' ? 400 : ph.type === 'trap' ? 200 : ph.type === 'srs' ? 50 : 100;
     xpGanho = base + (ps.score * 20);
   } else xpGanho = ps.score * 10;
+  // XP BOOST 2X (da roleta)
+  if (progress.xpBoostUntil && Date.now() < progress.xpBoostUntil) {
+    xpGanho = Math.round(xpGanho * 2);
+  }
 
   const oldPat = getPatente(progress.xp);
   progress.xp += xpGanho;
@@ -3707,6 +3984,444 @@ function downloadCertImage() {
   w.document.close();
 }
 
+
+/* ============================================================
+   ROLETA DIÁRIA — gira 1x por dia, prêmios variados
+============================================================ */
+const ROULETTE_PRIZES = [
+  { idx:0, label:'25 XP',    icon:'⚡', type:'xp',     value:25,   weight:20, color:'#ff2e63' },
+  { idx:1, label:'50 XP',    icon:'⚡', type:'xp',     value:50,   weight:18, color:'#08d9d6' },
+  { idx:2, label:'100 XP',   icon:'⚡', type:'xp',     value:100,  weight:15, color:'#ffd700' },
+  { idx:3, label:'CARTA',    icon:'🃏', type:'card',   value:1,    weight:12, color:'#a77b8e' },
+  { idx:4, label:'2X XP',    icon:'🔥', type:'boost',  value:60,   weight:12, color:'#e879f9' }, // 60 minutos
+  { idx:5, label:'❤ VIDA',   icon:'❤️', type:'life',   value:1,    weight:10, color:'#10b981' },
+  { idx:6, label:'FREEZE',   icon:'🧊', type:'freeze', value:1,    weight:8,  color:'#fb923c' },
+  { idx:7, label:'JACKPOT!', icon:'💎', type:'jackpot',value:500,  weight:5,  color:'#ffffff' },
+];
+
+function pickWeightedPrize() {
+  const total = ROULETTE_PRIZES.reduce((s,p) => s + p.weight, 0);
+  let r = Math.random() * total;
+  for (const p of ROULETTE_PRIZES) {
+    r -= p.weight;
+    if (r <= 0) return p;
+  }
+  return ROULETTE_PRIZES[0];
+}
+
+function canSpinRoulette() {
+  if (!progress) return false;
+  return progress.rouletteLastSpin !== toDateKey();
+}
+
+function showRouletteModal() {
+  if (!canSpinRoulette()) return;
+  audioInit();
+
+  let modal = document.getElementById('roulette-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'roulette-modal';
+    modal.className = 'roulette-modal';
+    document.body.appendChild(modal);
+  }
+
+  // Labels da roleta posicionadas em volta
+  const labelsHtml = ROULETTE_PRIZES.map((p, i) => {
+    const angle = (i * 45) + 22.5; // centro de cada setor
+    const rad = (angle - 90) * Math.PI / 180;
+    const x = 50 + 35 * Math.cos(rad);
+    const y = 50 + 35 * Math.sin(rad);
+    return `<div class="wheel-label" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%);">${p.icon} ${p.label}</div>`;
+  }).join('');
+
+  modal.innerHTML = `
+    <div class="roulette-box pixel-corners">
+      <div class="font-arcade" style="color:var(--amber);font-size:14px;margin-bottom:8px;">🎡 ROLETA DIÁRIA</div>
+      <div style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:12px;">Seu bônus exclusivo de hoje!</div>
+      <div class="wheel-container">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="wheel-element">${labelsHtml}</div>
+        <div class="wheel-center">🎁</div>
+      </div>
+      <div id="roulette-result" style="min-height:60px;margin-top:16px;"></div>
+      <button class="btn full" id="btn-spin" onclick="spinRoulette()">▶ GIRAR ROLETA</button>
+    </div>
+  `;
+  modal.style.display = 'flex';
+}
+
+function spinRoulette() {
+  const btn = document.getElementById('btn-spin');
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  btn.textContent = 'GIRANDO...';
+  snd.click();
+  beep(600, 0.05, 'square', 0.04);
+
+  const prize = pickWeightedPrize();
+  // Calcula ângulo: queremos parar no centro do setor (45° por setor)
+  // Setor i começa em i*45 e vai a (i+1)*45. Centro = i*45 + 22.5.
+  // Ponteiro está em cima (0deg). Queremos rotate negativo equivalente ao ângulo.
+  // Mas a roleta gira no sentido horário positivo. Pra trazer setor i pro topo, gira -22.5 -(i*45).
+  // Adiciono 6 voltas pra dramatizar (2160deg).
+  const targetAngle = 2160 + 360 - (prize.idx * 45 + 22.5);
+
+  const wheel = document.getElementById('wheel-element');
+  if (wheel) wheel.style.transform = `rotate(${targetAngle}deg)`;
+
+  // Som de roleta girando (ticks)
+  let ticks = 0;
+  const tickInterval = setInterval(() => {
+    beep(800 + ticks * 20, 0.03, 'square', 0.03);
+    ticks++;
+    if (ticks > 30) clearInterval(tickInterval);
+  }, 100);
+
+  setTimeout(() => {
+    clearInterval(tickInterval);
+    snd.bossWin();
+    applyRoulettePrize(prize);
+  }, 4200);
+}
+
+function applyRoulettePrize(prize) {
+  // Marca como girou hoje
+  progress.rouletteLastSpin = toDateKey();
+  if (!progress.rouletteHistory) progress.rouletteHistory = [];
+  progress.rouletteHistory.unshift({ date: toDateKey(), prize: prize.label });
+  progress.rouletteHistory = progress.rouletteHistory.slice(0, 10);
+
+  // Aplica
+  let msg = '';
+  if (prize.type === 'xp' || prize.type === 'jackpot') {
+    progress.xp += prize.value;
+    msg = `+${prize.value} XP!`;
+    if (prize.type === 'jackpot') {
+      // Jackpot também dá carta lendária + freeze
+      const lendarias = CARDS.filter(c => c.tier === 'gold' && !progress.collectedCards.includes(c.id));
+      if (lendarias.length > 0) {
+        const c = lendarias[Math.floor(Math.random() * lendarias.length)];
+        progress.collectedCards.push(c.id);
+        msg += ` + Carta Lendária (${c.icon} ${c.name})`;
+      }
+      progress.streakFreezes = Math.min(3, (progress.streakFreezes || 0) + 1);
+      msg += ' + 1 Freeze 🧊';
+    }
+  } else if (prize.type === 'card') {
+    const uncoll = CARDS.filter(c => !progress.collectedCards.includes(c.id));
+    if (uncoll.length > 0) {
+      const c = uncoll[Math.floor(Math.random() * uncoll.length)];
+      progress.collectedCards.push(c.id);
+      msg = `Nova carta: ${c.icon} ${c.name}!`;
+    } else {
+      progress.xp += 50;
+      msg = '+50 XP (você já tem todas as cartas!)';
+    }
+  } else if (prize.type === 'boost') {
+    progress.xpBoostUntil = Date.now() + prize.value * 60 * 1000;
+    msg = `🔥 XP DOBRADO por ${prize.value} minutos!`;
+  } else if (prize.type === 'life') {
+    progress.lives = Math.min(3, (progress.lives || 0) + 1);
+    msg = '❤️ +1 vida extra!';
+  } else if (prize.type === 'freeze') {
+    progress.streakFreezes = Math.min(3, (progress.streakFreezes || 0) + 1);
+    msg = '🧊 +1 Freeze de Streak!';
+  }
+  saveProgress();
+
+  const resultEl = document.getElementById('roulette-result');
+  if (resultEl) {
+    resultEl.innerHTML = `<div class="prize-reveal" style="background:${prize.color}25;border:2px solid ${prize.color};padding:12px;">
+      <div style="font-size:32px;margin-bottom:4px;">${prize.icon}</div>
+      <div class="font-arcade" style="font-size:11px;color:${prize.color};margin-bottom:4px;">${esc(prize.label)}</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.9);">${esc(msg)}</div>
+    </div>`;
+  }
+
+  const btn = document.getElementById('btn-spin');
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = '✓ FECHAR';
+    btn.onclick = () => closeRouletteModal();
+  }
+}
+
+function closeRouletteModal() {
+  snd.click();
+  const modal = document.getElementById('roulette-modal');
+  if (modal) modal.style.display = 'none';
+  renderMap(); // atualiza HUD com novo XP/freezes
+}
+
+/* ============================================================
+   MISSÃO RELÂMPAGO — surpresas ao abrir o mapa
+============================================================ */
+const MISSION_POOL = [
+  { id:'m-mp', desc:'Acerte 3 questões de Maria da Penha', target:3, filter: q => /maria da penha|violência doméstica/i.test(q.statement || ''), reward:80 },
+  { id:'m-drogas', desc:'Acerte 3 questões de Lei de Drogas', target:3, filter: q => /tráfico|droga|11\.343/i.test(q.statement || ''), reward:80 },
+  { id:'m-cespe', desc:'Acerte 5 questões CESPE/CEBRASPE seguidas', target:5, banca:'CESPE', seq:true, reward:100 },
+  { id:'m-fgv', desc:'Acerte 4 questões FGV', target:4, banca:'FGV', reward:80 },
+  { id:'m-streak', desc:'Acerte 5 questões seguidas (qualquer banca)', target:5, seq:true, reward:90 },
+  { id:'m-const', desc:'Acerte 3 questões de Direito Constitucional', target:3, subject:'const', reward:70 },
+  { id:'m-adm',   desc:'Acerte 3 questões de Direito Administrativo', target:3, subject:'adm', reward:70 },
+  { id:'m-perfect', desc:'Acerte 5 questões sem errar nenhuma', target:5, seq:true, reward:120 },
+];
+
+let activeMission = null;
+let missionTimerId = null;
+
+function maybeTriggerMission() {
+  // 20% de chance ao abrir o mapa, e nunca durante outra missão
+  if (activeMission) return;
+  // Só dispara se passaram >= 30 min da última missão (evita spam)
+  const lastEnd = parseInt(localStorage.getItem('jq:last_mission_end') || '0');
+  if (Date.now() - lastEnd < 30 * 60 * 1000) return;
+  if (Math.random() > 0.20) return;
+
+  const m = MISSION_POOL[Math.floor(Math.random() * MISSION_POOL.length)];
+  activeMission = {
+    ...m,
+    progress: 0,
+    expiresAt: Date.now() + 10 * 60 * 1000, // 10 minutos
+    rewardType: pickMissionReward(),
+  };
+  renderMissionBanner();
+}
+
+function pickMissionReward() {
+  // Tipos: xp, card, freeze, jackpot
+  const r = Math.random();
+  if (r < 0.60) return { type:'xp', tier:'bronze' };       // 60% bronze
+  if (r < 0.85) return { type:'card', tier:'silver' };     // 25% silver (carta)
+  if (r < 0.95) return { type:'freeze', tier:'gold' };     // 10% gold (freeze)
+  return { type:'jackpot', tier:'diamond' };               // 5% diamond
+}
+
+function renderMissionBanner() {
+  if (!activeMission) {
+    const existing = document.getElementById('mission-banner');
+    if (existing) existing.remove();
+    return;
+  }
+
+  let banner = document.getElementById('mission-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'mission-banner';
+    banner.className = 'mission-banner';
+    document.body.appendChild(banner);
+    snd.bossStart();
+  }
+
+  const remaining = Math.max(0, activeMission.expiresAt - Date.now());
+  const mins = Math.floor(remaining / 60000);
+  const secs = Math.floor((remaining % 60000) / 1000);
+  const timeStr = `${mins}:${String(secs).padStart(2,'0')}`;
+
+  banner.innerHTML = `
+    <button class="mission-close" onclick="dismissMission()">✕</button>
+    <div class="mission-title">⚡ MISSÃO RELÂMPAGO ⚡</div>
+    <div class="mission-desc">${esc(activeMission.desc)}</div>
+    <div class="mission-timer">
+      <span>📊 ${activeMission.progress}/${activeMission.target}</span>
+      <span>⏱️ ${timeStr}</span>
+    </div>
+    <div style="font-size:11px;margin-top:4px;opacity:0.9;">🎁 Recompensa: <strong>???</strong></div>
+  `;
+
+  // Timer pra atualizar a cada segundo
+  if (missionTimerId) clearInterval(missionTimerId);
+  missionTimerId = setInterval(() => {
+    if (!activeMission) {
+      clearInterval(missionTimerId);
+      return;
+    }
+    if (Date.now() >= activeMission.expiresAt) {
+      failMission();
+      return;
+    }
+    renderMissionBanner();
+  }, 1000);
+}
+
+function trackMissionProgress(question, isCorrect) {
+  if (!activeMission || Date.now() >= activeMission.expiresAt) return;
+
+  let matches = isCorrect;
+  // Filtro de banca
+  if (activeMission.banca && question.banca !== activeMission.banca) matches = false;
+  // Filtro de matéria
+  if (activeMission.subject && activePhase && activePhase.subject !== activeMission.subject) matches = false;
+  // Filtro custom (regex)
+  if (activeMission.filter && !activeMission.filter(question)) matches = false;
+
+  if (matches && isCorrect) {
+    activeMission.progress++;
+    if (activeMission.progress >= activeMission.target) {
+      completeMission();
+    } else {
+      renderMissionBanner();
+    }
+  } else if (activeMission.seq && !isCorrect) {
+    // Modo sequência: errou, reseta progresso
+    activeMission.progress = 0;
+    renderMissionBanner();
+  }
+}
+
+function completeMission() {
+  if (!activeMission) return;
+  const reward = activeMission.rewardType;
+  let msg = '';
+  if (reward.type === 'xp') {
+    progress.xp += activeMission.reward;
+    msg = `+${activeMission.reward} XP!`;
+  } else if (reward.type === 'card') {
+    const uncoll = CARDS.filter(c => !progress.collectedCards.includes(c.id));
+    if (uncoll.length > 0) {
+      const c = uncoll[Math.floor(Math.random() * uncoll.length)];
+      progress.collectedCards.push(c.id);
+      msg = `Carta nova: ${c.icon} ${c.name}!`;
+    } else {
+      progress.xp += activeMission.reward * 2;
+      msg = `+${activeMission.reward * 2} XP (cartas completas)`;
+    }
+  } else if (reward.type === 'freeze') {
+    progress.streakFreezes = Math.min(3, (progress.streakFreezes || 0) + 1);
+    progress.xp += activeMission.reward;
+    msg = `+1 Freeze 🧊 e +${activeMission.reward} XP!`;
+  } else if (reward.type === 'jackpot') {
+    progress.xp += activeMission.reward * 3;
+    progress.streakFreezes = Math.min(3, (progress.streakFreezes || 0) + 1);
+    const lendarias = CARDS.filter(c => c.tier === 'gold' && !progress.collectedCards.includes(c.id));
+    let extraCard = '';
+    if (lendarias.length > 0) {
+      const c = lendarias[Math.floor(Math.random() * lendarias.length)];
+      progress.collectedCards.push(c.id);
+      extraCard = ` + ${c.icon} ${c.name}`;
+    }
+    msg = `💎 JACKPOT! +${activeMission.reward * 3} XP + Freeze${extraCard}!`;
+  }
+  progress.missionsCompleted = (progress.missionsCompleted || 0) + 1;
+  saveProgress();
+
+  activeMission = null;
+  localStorage.setItem('jq:last_mission_end', String(Date.now()));
+  if (missionTimerId) clearInterval(missionTimerId);
+  const banner = document.getElementById('mission-banner');
+  if (banner) banner.remove();
+  snd.bossWin();
+  triggerConfetti();
+
+  setTimeout(() => openModal({
+    title:'⚡ MISSÃO CUMPRIDA!',
+    msg: msg,
+    hideCancel:true,
+    onConfirm:()=>{closeModal(); renderMap();}
+  }), 500);
+}
+
+function failMission() {
+  if (!activeMission) return;
+  activeMission = null;
+  localStorage.setItem('jq:last_mission_end', String(Date.now()));
+  if (missionTimerId) clearInterval(missionTimerId);
+  const banner = document.getElementById('mission-banner');
+  if (banner) banner.remove();
+}
+
+function dismissMission() {
+  if (!activeMission) return;
+  activeMission = null;
+  localStorage.setItem('jq:last_mission_end', String(Date.now()));
+  if (missionTimerId) clearInterval(missionTimerId);
+  const banner = document.getElementById('mission-banner');
+  if (banner) banner.remove();
+}
+
+/* ============================================================
+   SUPERADMIN — Dashboard de alunas
+============================================================ */
+const ADMIN_EMAILS = ['axethiel.190@gmail.com']; // emails com poder admin
+
+function isAdmin() {
+  return user && user.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
+}
+
+async function goAdmin() {
+  if (!isAdmin()) {
+    openModal({title:'ACESSO NEGADO', msg:'Apenas administradores podem acessar este painel.', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  snd.click();
+  showScreen('screen-admin');
+  document.getElementById('admin-loading').style.display = 'block';
+  document.getElementById('admin-list').innerHTML = '';
+
+  if (!sb) {
+    document.getElementById('admin-loading').textContent = 'Conexão indisponível.';
+    return;
+  }
+
+  try {
+    // Como admin, lemos via public_ranking (mostra os que aceitaram entrar)
+    // Pra ver TODAS, precisaria de service_role — então mostramos só quem opt-in
+    const { data, error } = await sb.from('public_ranking').select('*');
+    if (error) throw error;
+
+    document.getElementById('admin-loading').style.display = 'none';
+    const list = data || [];
+
+    // Stats
+    document.getElementById('admin-total').textContent = list.length;
+    const avgXp = list.length > 0 ? Math.round(list.reduce((s,r) => s + (r.xp||0), 0) / list.length) : 0;
+    document.getElementById('admin-avg-xp').textContent = avgXp;
+    // ativas hoje: não temos last_play_date no view, deixa 0 por enquanto
+    document.getElementById('admin-active-today').textContent = '—';
+
+    if (list.length === 0) {
+      document.getElementById('admin-list').innerHTML = `
+        <div class="card pixel-corners" style="text-align:center;padding:32px;">
+          <div style="font-size:32px;">📭</div>
+          <div style="margin-top:12px;color:rgba(255,255,255,.7);">Nenhuma aluna apareceu ainda.<br>Alunas precisam ativar "Aparecer no ranking" nas configurações para aparecerem aqui.</div>
+        </div>`;
+      return;
+    }
+
+    const html = `
+      <div class="admin-card">
+        <div class="font-arcade" style="font-size:11px;color:var(--amber);margin-bottom:12px;">📋 TODAS AS ALUNAS</div>
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th><th>Aluna</th><th>Patente</th><th>XP</th><th>Dias</th><th>Streak</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${list.map((r, i) => {
+                const pat = getPatente(r.xp || 0);
+                return `<tr>
+                  <td style="font-family:Orbitron;color:rgba(255,255,255,.5);">${i+1}</td>
+                  <td><span style="font-size:18px;filter:drop-shadow(0 0 4px ${r.avatar_color||'#ff2e63'});">${esc(r.avatar||'👮‍♀️')}</span> <strong>${esc(r.name)}</strong></td>
+                  <td style="font-size:11px;color:rgba(255,255,255,.7);">${pat.icon} ${esc(pat.nome)}</td>
+                  <td style="font-family:Orbitron;font-weight:700;color:var(--amber);">${r.xp||0}</td>
+                  <td style="color:var(--cyan);">${r.days_done||0}/30</td>
+                  <td>🔥 ${r.streak||0}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+    document.getElementById('admin-list').innerHTML = html;
+  } catch (e) {
+    console.error(e);
+    document.getElementById('admin-loading').textContent = 'Erro: ' + (e.message || e);
+  }
+}
+
 /* ============================================================
    MODAL
 ============================================================ */
@@ -3813,6 +4528,12 @@ window.showApprovalCertificate = showApprovalCertificate;
 window.closeCertificate = closeCertificate;
 window.downloadCertImage = downloadCertImage;
 window.checkNightMode = checkNightMode;
+window.spinRoulette = spinRoulette;
+window.closeRouletteModal = closeRouletteModal;
+window.showRouletteModal = showRouletteModal;
+window.dismissMission = dismissMission;
+window.goAdmin = goAdmin;
+window.isAdmin = isAdmin;
 </script>
 
 </body>
