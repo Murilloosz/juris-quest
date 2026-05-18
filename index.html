@@ -1897,7 +1897,7 @@ const submitLogin = async () => {
   try {
     if (!sb) throw new Error('Conexão indisponível. Tente recarregar a página.');
     if (isSignup) {
-      const { data: signupData } = await cloudSignUp(email, pass, name);
+      const signupData = await cloudSignUp(email, pass, name);
       currentSession = signupData.session;
       if (!currentSession) {
         // Email de confirmação necessário
@@ -1921,7 +1921,7 @@ const submitLogin = async () => {
       renderOnboarding();
       showScreen('screen-onboarding');
     } else {
-      const { data: signinData } = await cloudSignIn(email, pass);
+      const signinData = await cloudSignIn(email, pass);
       currentSession = signinData.session;
       snd.correct();
       // Puxar dados do cloud
