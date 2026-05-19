@@ -130,11 +130,51 @@ input,select{font-family:inherit;}
 .hud-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;}
 .hud-user{display:flex;align-items:center;gap:12px;}
 .hud-avatar{font-size:32px;}
-.hud-stats{display:flex;align-items:center;gap:16px;font-size:14px;}
+.hud-stats{display:flex;align-items:center;gap:16px;font-size:14px;flex-wrap:wrap;}
 .hud-stat{display:flex;align-items:center;gap:6px;}
-.hud-actions{display:flex;align-items:center;gap:4px;}
-.hud-actions button{padding:8px;}
+.hud-actions{
+  display:flex;align-items:center;gap:4px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  max-width:100%;
+}
+.hud-actions button{
+  padding:8px;
+  min-width:36px;
+  min-height:36px;
+  font-size:16px;
+  background:transparent;
+  border:1px solid transparent;
+  color:#fff;
+  cursor:pointer;
+  border-radius:4px;
+  transition:background .15s, border-color .15s;
+}
 .hud-actions button:hover{background:rgba(255,255,255,.1);}
+.hud-actions button:active{background:rgba(255,255,255,.2);}
+
+/* 📱 MOBILE: HUD em duas linhas, botões menores e quebra com wrap */
+@media (max-width: 540px) {
+  .hud { padding: 10px; }
+  .hud-row { gap: 8px; }
+  .hud-stats { gap: 10px; font-size: 12px; }
+  .hud-actions { gap: 2px; }
+  .hud-actions button {
+    padding: 6px;
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 15px;
+  }
+  .hud-avatar { font-size: 24px; }
+}
+@media (max-width: 380px) {
+  .hud-actions button {
+    padding: 4px;
+    min-width: 28px;
+    min-height: 28px;
+    font-size: 14px;
+  }
+}
 .xp-bar{height:6px;background:rgba(0,0,0,.5);overflow:hidden;margin-top:12px;}
 .xp-fill{height:100%;background:linear-gradient(to right,var(--amber),var(--rose));transition:width .3s;}
 
