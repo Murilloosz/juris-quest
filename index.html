@@ -182,6 +182,7 @@ input,select{font-family:inherit;}
 .phase.const{border-color:var(--cyan);background:linear-gradient(to bottom right,rgba(8,217,214,.15),rgba(8,217,214,.05));}
 .phase.adm{border-color:var(--amber);background:linear-gradient(to bottom right,rgba(255,215,0,.15),rgba(255,215,0,.05));}
 .phase.penal{border-color:var(--rose);background:linear-gradient(to bottom right,rgba(255,46,99,.15),rgba(255,46,99,.05));}
+.phase.info{border-color:var(--emerald);background:linear-gradient(to bottom right,rgba(16,185,129,.15),rgba(16,185,129,.05));}
 .phase.mix{border-color:var(--fuchsia);background:linear-gradient(to bottom right,rgba(232,121,249,.15),rgba(232,121,249,.05));}
 .phase.completed{border-color:var(--emerald);background:linear-gradient(to bottom right,rgba(16,185,129,.15),rgba(16,185,129,.05));}
 .phase.current{animation:pulse-neon 2s ease-in-out infinite;}
@@ -190,6 +191,7 @@ input,select{font-family:inherit;}
 .phase.const .phase-num{color:var(--cyan);}
 .phase.adm .phase-num{color:var(--amber);}
 .phase.penal .phase-num{color:var(--rose);}
+.phase.info .phase-num{color:var(--emerald);}
 .phase.mix .phase-num{color:var(--fuchsia);}
 .phase .phase-title{font-weight:600;font-size:13px;line-height:1.2;margin-top:6px;flex:1;}
 .phase .phase-status{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:11px;font-family:'Press Start 2P',monospace;}
@@ -898,6 +900,7 @@ body.night-mode .btn {
           <div class="hud-stat" id="hud-freezes-wrap" style="display:none;" title="Freezes acumulados — protegem sua chama"><span>🧊</span><span id="hud-freezes" class="font-orbit" style="color:#7dd3fc;font-weight:700;">0</span></div>
           <div class="hud-actions">
             <button onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
+            <button onclick="toggleNotifications()" title="Notificações">🔔</button>
             <button onclick="goFlashcards()" title="Lei Seca">🃏</button>
             <button onclick="goMyPile()" title="Minha Pilha">🚩</button>
             <button onclick="goDuels()" title="Duelos">⚔️</button>
@@ -1288,6 +1291,7 @@ const SUBJ = {
   const:{name:'Constitucional',icon:'⚖️',color:'#08d9d6'},
   adm:{name:'Administrativo',icon:'🏛️',color:'#ffd700'},
   penal:{name:'Penal',icon:'⚔️',color:'#ff2e63'},
+  info:{name:'Informática',icon:'💻',color:'#10b981'},
   mix:{name:'Geral',icon:'🌀',color:'#e879f9'},
 };
 
@@ -1918,6 +1922,24 @@ const QBANK = {
   {b:'AOCP',t:'multiple',s:'A medida socioeducativa de prestação de serviços à comunidade pode ter duração de até:',o:['1 mês.','6 meses.','3 meses.','9 meses.','12 meses.'],c:1,e:'Art. 117 — até 6 meses.'},
   {b:'CESPE',t:'cebraspe',s:'O abuso de autoridade pelo policial militar pode configurar violação de direitos humanos.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
+
+'info-windows-office-internet': [
+  // ============ WINDOWS ============
+  {b:'CESPE',t:'cebraspe',s:'No sistema operacional Windows 10, a tecla de atalho Windows + E abre o Explorador de Arquivos.',c:0,e:'CERTO. Win+E é o atalho padrão pra abrir o Explorador de Arquivos.'},
+  {b:'CESPE',t:'cebraspe',s:'No Windows 10, ao excluir um arquivo com SHIFT+DEL, ele é enviado para a Lixeira e pode ser recuperado posteriormente.',c:1,e:'ERRADO. SHIFT+DEL apaga PERMANENTEMENTE, sem passar pela Lixeira. DEL simples envia pra Lixeira.'},
+  {b:'FGV',t:'multiple',s:'Qual é o atalho do Windows 10 que minimiza TODAS as janelas abertas e mostra a Área de Trabalho?',o:['Win + D','Ctrl + D','Alt + Tab','Win + L','Win + R'],c:0,e:'Resposta correta: Win + D (Desktop). Win+L bloqueia a tela, Win+R abre Executar, Alt+Tab alterna janelas.'},
+  {b:'FCC',t:'multiple',s:'O Painel de Controle do Windows 10 permite ao usuário:',o:['Apenas instalar programas.','Configurar hardware, contas, rede e personalização do sistema.','Acessar somente os arquivos do usuário.','Substituir o BIOS.','Executar comandos de linha exclusivamente.'],c:1,e:'Resposta correta: Configurar hardware, contas, rede e personalização do sistema. O Painel de Controle centraliza as configurações do sistema.'},
+  // ============ WORD ============
+  {b:'VUNESP',t:'multiple',s:'No Microsoft Word 2016 em português, o atalho CTRL+B é usado para:',o:['Salvar o documento.','Aplicar negrito ao texto selecionado.','Imprimir o documento.','Buscar texto.','Fechar o documento.'],c:0,e:'Resposta correta: Salvar (B de Backup). PEGADINHA: em INGLÊS CTRL+B = Bold (negrito). No Word PT-BR o negrito é CTRL+N.'},
+  {b:'CESPE',t:'cebraspe',s:'No Microsoft Word em português, para aplicar negrito ao texto selecionado utiliza-se a combinação CTRL+N.',c:0,e:'CERTO. No Word pt-BR: CTRL+N = Negrito, CTRL+I = Itálico, CTRL+S = Sublinhado, CTRL+B = Salvar (Backup).'},
+  // ============ EXCEL ============
+  {b:'FGV',t:'multiple',s:'No Microsoft Excel, a fórmula =SOMA(A1:A5) retorna:',o:['A média entre A1 e A5.','A diferença entre A1 e A5.','A soma de todos os valores das células de A1 até A5.','Apenas o valor de A1 somado com A5.','Erro de sintaxe.'],c:2,e:'Resposta correta: A soma de todos os valores das células de A1 até A5. ":" indica INTERVALO (todas as células entre). ";" indica células SEPARADAS.'},
+  {b:'IBFC',t:'multiple',s:'No Excel em português, qual fórmula calcula a MÉDIA dos valores das células B2, B3, B4 e B5?',o:['=MEDIANA(B2:B5)','=MEDIA(B2:B5)','=MÉDIA(B2:B5)','=AVG(B2:B5)','=MED(B2:B5)'],c:2,e:'Resposta correta: =MÉDIA(B2:B5). Em Excel pt-BR a função é =MÉDIA (com acento). MEDIANA é o valor central, diferente de média aritmética.'},
+  // ============ INTERNET / SEGURANÇA ============
+  {b:'CESPE',t:'cebraspe',s:'Phishing é um tipo de fraude digital em que um atacante se passa por uma entidade confiável (banco, empresa) para enganar o usuário e obter dados sensíveis como senhas.',c:0,e:'CERTO. Phishing = "pescaria" de dados. Vem por e-mail, SMS ou redes sociais. Defesa: nunca clicar em links suspeitos e verificar o endereço do remetente.'},
+  {b:'Quadrix',t:'multiple',s:'No navegador Google Chrome, o atalho CTRL+T executa qual ação?',o:['Fecha a aba atual.','Abre uma nova aba.','Restaura a última aba fechada.','Atualiza a página.','Abre o histórico.'],c:1,e:'Resposta correta: Abre uma nova aba. CTRL+T = nova Tab. CTRL+W fecha aba. CTRL+SHIFT+T restaura última fechada. CTRL+H = histórico.'},
+],
+
 };
 
 // ============================================================
@@ -1964,6 +1986,8 @@ const TOPICS = [
     briefing:'Posse (12): 1-3 anos. Porte (14): 2-4. Restrito (16): 3-6. Tortura EQUIPARADA a hediondo. PM tem porte funcional. Regime obrigatório fechado: inconstitucional.'},
   {id:'penal-eca-dh', subject:'penal', title:'ECA e Direitos Humanos', subtitle:'Lei 8.069/90 + uso da força',
     briefing:'Criança 0-12; adolescente 12-18. Ato infracional. Medidas socioeducativas (art. 112). DH: universalidade, indivisibilidade. Uso da força: ULTIMA RATIO para arma de fogo.'},
+  {id:'info-windows-office-internet', subject:'info', title:'Informática Básica', subtitle:'Windows + Office + Internet',
+    briefing:'💻 Sistema Windows (atalhos, Explorador, Painel), Pacote Office (Word, Excel — fórmulas, atalhos), Internet (navegador, e-mail, phishing). Decoreba puro: atalhos do teclado e funções do Excel.'},
 ];
 
 // ============================================================
@@ -2003,9 +2027,7 @@ const JOURNEY = [
   {type:'topic', topicId:'penal-lei-drogas'},
   {type:'topic', topicId:'adm-atos-administrativos'},
   {type:'topic', topicId:'penal-administracao'},
-  {type:'review', subject:'mix', title:'⚡ Revisão Bloco 2', subtitle:'Adm + Penal especiais',
-    briefing:'Revisão das leis especiais e da Administração Pública: Maria da Penha, Drogas, crimes contra a Administração, atos administrativos e poderes. 30 questões mistas reforçando o que mais cai em prova.',
-    pool:['penal-maria-da-penha','penal-lei-drogas','penal-administracao','adm-atos-administrativos','adm-poderes','const-remedios-constitucionais']},
+  {type:'topic', topicId:'info-windows-office-internet'},
   {type:'topic', topicId:'const-seguranca-publica'},
   {type:'topic', topicId:'penal-armas-tortura-hediondos'},
   {type:'topic', topicId:'adm-servidores-improbidade'},
@@ -2051,7 +2073,7 @@ const PHASES = JOURNEY.map((day, idx) => {
       title: t.title,
       subtitle: t.subtitle,
       briefing: t.briefing,
-      questionCount: 30,
+      questionCount: (QBANK[day.topicId] || []).length < 30 ? (QBANK[day.topicId] || []).length : 30,
     };
   }
 
@@ -2372,7 +2394,7 @@ let timerInterval = null;
 const defaultProgress = () => ({
   xp:0, lives:3, streak:0, completedPhases:[], currentPhase:1, lastPlayDate:null,
   badges:[], questionsAnswered:0, correctAnswers:0,
-  statsBySubject:{const:{right:0,total:0},adm:{right:0,total:0},penal:{right:0,total:0},mix:{right:0,total:0}},
+  statsBySubject:{const:{right:0,total:0},adm:{right:0,total:0},penal:{right:0,total:0},info:{right:0,total:0},mix:{right:0,total:0}},
   statsByBanca:{}, // FEATURE 4: por banca
   srsQueue:[], collectedCards:[], soundOn:true, avatar:'👮‍♀️', avatarColor:'#ff2e63',
   myPile:[], // FEATURE 3: marcar pra rever
@@ -2408,6 +2430,175 @@ function checkNightMode() {
 // Checa ao carregar e a cada 5min
 setInterval(checkNightMode, 300000);
 
+
+/* ============================================================
+   🔔 NOTIFICAÇÕES PUSH — Web Notifications API
+   ============================================================ */
+const NOTIF_PREFS_KEY = 'jq:notif_prefs';
+const NOTIF_LAST_KEY = 'jq:notif_last_shown';
+
+function getNotifPrefs() {
+  try {
+    const raw = localStorage.getItem(NOTIF_PREFS_KEY);
+    return raw ? JSON.parse(raw) : { enabled: false, asked: false, streak: true, srs: true, duel: true, roulette: true };
+  } catch(e) { return { enabled: false, asked: false }; }
+}
+
+function saveNotifPrefs(prefs) {
+  try { localStorage.setItem(NOTIF_PREFS_KEY, JSON.stringify(prefs)); } catch(e){}
+}
+
+function canNotify() {
+  if (typeof Notification === 'undefined') return false;
+  return Notification.permission === 'granted';
+}
+
+async function requestNotificationPermission() {
+  if (typeof Notification === 'undefined') {
+    openModal({title:'❌ NÃO SUPORTADO', msg:'Seu navegador não suporta notificações. No iPhone, isso é uma limitação da Apple no Safari.', hideCancel:true, onConfirm:()=>closeModal()});
+    return false;
+  }
+  if (Notification.permission === 'granted') {
+    saveNotifPrefs({ ...getNotifPrefs(), enabled: true, asked: true });
+    return true;
+  }
+  if (Notification.permission === 'denied') {
+    openModal({title:'🔇 BLOQUEADO', msg:'As notificações estão bloqueadas para este site. Pra ativar, clique no cadeado na barra de endereço, vá em "Notificações" e escolha "Permitir".', hideCancel:true, onConfirm:()=>closeModal()});
+    return false;
+  }
+  try {
+    const result = await Notification.requestPermission();
+    const ok = result === 'granted';
+    saveNotifPrefs({ ...getNotifPrefs(), enabled: ok, asked: true });
+    if (ok) {
+      sendNotification('🎮 JURIS QUEST', 'Lembretes ativados! Vou te avisar sobre chama, duelos e revisões.');
+    }
+    return ok;
+  } catch(e) {
+    console.warn('Erro ao pedir permissão:', e);
+    return false;
+  }
+}
+
+function sendNotification(title, body, options={}) {
+  if (!canNotify()) return;
+  const prefs = getNotifPrefs();
+  if (!prefs.enabled) return;
+  try {
+    new Notification(title, {
+      body,
+      tag: options.tag || 'jq-default',
+      silent: false,
+      ...options,
+    });
+  } catch(e) { console.warn('Erro ao enviar notificação:', e); }
+}
+
+function checkNotificationTriggers() {
+  if (!canNotify()) return;
+  const prefs = getNotifPrefs();
+  if (!prefs.enabled || !progress || !user) return;
+
+  let lastShown = {};
+  try { lastShown = JSON.parse(localStorage.getItem(NOTIF_LAST_KEY) || '{}'); } catch(e){}
+
+  const today = toDateKey();
+  const hoursSinceLastPlay = progress.lastPlayDate
+    ? daysBetween(new Date(progress.lastPlayDate), new Date()) * 24
+    : 999;
+
+  // 🔥 STREAK PRESTES A MORRER
+  if (prefs.streak && progress.streak >= 3 && hoursSinceLastPlay >= 12 && hoursSinceLastPlay < 24) {
+    if (lastShown.streak !== today) {
+      const freezes = progress.streakFreezes || 0;
+      const aviso = freezes > 0
+        ? `Sua chama de ${progress.streak} dias quase morre! Você tem ${freezes} freeze(s) — use ou estude antes da meia-noite!`
+        : `Sua chama de ${progress.streak} dias morre em algumas horas! Resolve uma questão pra preservar!`;
+      sendNotification('🔥 CHAMA EM PERIGO!', aviso, { tag: 'streak' });
+      lastShown.streak = today;
+    }
+  }
+
+  // 🧠 SRS PENDENTE
+  if (prefs.srs && typeof getSrsDue === 'function') {
+    try {
+      const due = getSrsDue();
+      if (due.length >= 5 && lastShown.srs !== today) {
+        sendNotification('🧠 REVISÃO ESPAÇADA', `Você tem ${due.length} questões pra revisar hoje!`, { tag: 'srs' });
+        lastShown.srs = today;
+      }
+    } catch(e){}
+  }
+
+  // ⚔️ DUELO PENDENTE
+  if (prefs.duel && sb && currentSession) {
+    sb.from('duels')
+      .select('id,challenger_name,opponent_id,status,opponent_answers')
+      .eq('opponent_id', currentSession.user.id)
+      .eq('status', 'active')
+      .then(({ data }) => {
+        if (!data) return;
+        const pendentes = data.filter(d => (d.opponent_answers || []).length < 10);
+        if (pendentes.length > 0 && lastShown.duel !== today) {
+          sendNotification('⚔️ DUELO PENDENTE!', `${pendentes[0].challenger_name} te desafiou. Responde antes de expirar!`, { tag: 'duel' });
+          lastShown.duel = today;
+        }
+      }).catch(()=>{});
+  }
+
+  // 🎡 ROLETA DIÁRIA NÃO GIRADA
+  if (prefs.roulette && typeof canSpinRoulette === 'function' && canSpinRoulette()) {
+    const hour = new Date().getHours();
+    if (hour >= 12 && lastShown.roulette !== today) {
+      sendNotification('🎡 ROLETA DO DIA', 'Sua roleta diária está esperando! Pode dar até JACKPOT!', { tag: 'roulette' });
+      lastShown.roulette = today;
+    }
+  }
+
+  try { localStorage.setItem(NOTIF_LAST_KEY, JSON.stringify(lastShown)); } catch(e){}
+}
+
+setInterval(() => {
+  try { checkNotificationTriggers(); } catch(e){}
+}, 30 * 60 * 1000);
+
+function maybeAskForNotifications() {
+  const prefs = getNotifPrefs();
+  if (prefs.asked) return;
+  if (typeof Notification === 'undefined') return;
+  if (Notification.permission !== 'default') {
+    saveNotifPrefs({ ...prefs, asked: true, enabled: Notification.permission === 'granted' });
+    return;
+  }
+  setTimeout(() => {
+    openModal({
+      title: '🔔 ATIVAR LEMBRETES?',
+      msg: 'Quer receber notificações sobre:\n\n🔥 Chama prestes a morrer\n🧠 Revisões pendentes\n⚔️ Duelos recebidos\n🎡 Roleta diária\n\nVou te avisar nos momentos certos, sem encher o saco!',
+      onConfirm: async () => {
+        closeModal();
+        const ok = await requestNotificationPermission();
+        if (!ok) saveNotifPrefs({ ...getNotifPrefs(), asked: true, enabled: false });
+      },
+      onCancel: () => {
+        closeModal();
+        saveNotifPrefs({ ...getNotifPrefs(), asked: true, enabled: false });
+      }
+    });
+  }, 2500);
+}
+
+function toggleNotifications() {
+  const prefs = getNotifPrefs();
+  if (!canNotify()) { requestNotificationPermission(); return; }
+  const novo = !prefs.enabled;
+  saveNotifPrefs({ ...prefs, enabled: novo });
+  openModal({
+    title: novo ? '🔔 LEMBRETES ATIVOS' : '🔕 LEMBRETES DESATIVADOS',
+    msg: novo ? 'Vou te avisar sobre chama, duelos e revisões!' : 'Sem mais notificações. Pode reativar a qualquer momento.',
+    hideCancel: true,
+    onConfirm: () => closeModal()
+  });
+}
 
 /* ============================================================
    🔒 PROTEÇÃO DE SESSÃO — timeout por inatividade + visibility check
@@ -3112,6 +3303,13 @@ const goMap = () => {
       window.__missionAttemptedThisSession = true;
       maybeTriggerMission();
     }
+    // 🔔 PERMISSÃO DE NOTIFICAÇÕES — só pede 1x por sessão (e só se nunca perguntou antes)
+    if (!window.__notifAsked) {
+      window.__notifAsked = true;
+      try { maybeAskForNotifications(); } catch(e){}
+    }
+    // Checagem inicial de triggers ao abrir o app
+    try { checkNotificationTriggers(); } catch(e){}
   }, 600);
 };
 
@@ -5555,6 +5753,11 @@ window.showApprovalCertificate = showApprovalCertificate;
 window.closeCertificate = closeCertificate;
 window.downloadCertImage = downloadCertImage;
 window.checkNightMode = checkNightMode;
+window.toggleNotifications = toggleNotifications;
+window.requestNotificationPermission = requestNotificationPermission;
+window.maybeAskForNotifications = maybeAskForNotifications;
+window.sendNotification = sendNotification;
+window.checkNotificationTriggers = checkNotificationTriggers;
 window.goDuels = goDuels;
 window.goDuelChallenge = goDuelChallenge;
 window.switchDuelTab = switchDuelTab;
