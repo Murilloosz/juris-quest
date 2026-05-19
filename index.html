@@ -2,6 +2,16 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<!-- 🔒 SEGURANÇA: CSP impede injeção de scripts externos não autorizados -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<!-- 🔒 Impede iframe embedding (clickjacking) -->
+<meta http-equiv="X-Frame-Options" content="DENY">
+<!-- 🔒 Impede o browser de "adivinhar" tipos MIME (MIME sniffing) -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<!-- 🔒 Limita o que vai no Referer header -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- 🔒 Política de permissões: bloqueia câmera/microfone/geolocalização não pedidas -->
+<meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0410">
 <title>JURIS QUEST — A Jornada da Aprovação</title>
@@ -526,7 +536,129 @@ body.night-mode .btn {
   border-bottom: 1px solid rgba(255,215,0,0.3); }
 .admin-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
+
+
+/* ========== PVP / DUELOS ========== */
+.duel-card {
+  background: linear-gradient(135deg, rgba(255,46,99,0.08), rgba(255,215,0,0.04));
+  border: 1px solid var(--mauve);
+  padding: 14px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.duel-card.urgent { border-color: var(--rose); animation: pulse-border 2s infinite; }
+.duel-card.won { border-color: var(--emerald); background: rgba(16,185,129,0.06); }
+.duel-card.lost { border-color: var(--rose); background: rgba(255,46,99,0.06); }
+.duel-card.draw { border-color: var(--amber); background: rgba(255,215,0,0.05); }
+
+@keyframes pulse-border {
+  0%,100% { border-color: var(--rose); box-shadow: 0 0 10px rgba(255,46,99,0.3); }
+  50% { border-color: var(--amber); box-shadow: 0 0 20px rgba(255,215,0,0.5); }
+}
+
+.duel-vs {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  margin: 12px 0;
+}
+.duel-player {
+  flex: 1; text-align: center; padding: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.duel-vs-divider {
+  font-family: 'Press Start 2P', monospace; font-size: 14px;
+  color: var(--amber); padding: 0 6px;
+}
+
+.player-code-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(8,217,214,0.15);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.duel-tabs {
+  display: flex; gap: 4px; margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.duel-tab {
+  flex: 1; padding: 10px;
+  background: transparent;
+  border: none; border-bottom: 3px solid transparent;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.duel-tab.active { color: var(--rose); border-bottom-color: var(--rose); }
+.duel-tab:hover:not(.active) { color: rgba(255,255,255,0.8); }
+
+.duel-status-tag {
+  display: inline-block; padding: 2px 8px;
+  font-family: 'Press Start 2P', monospace; font-size: 8px;
+  letter-spacing: 1px;
+}
+.duel-status-tag.pending { background: rgba(255,215,0,0.15); color: var(--amber); }
+.duel-status-tag.active { background: rgba(8,217,214,0.15); color: var(--cyan); }
+.duel-status-tag.finished { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); }
+.duel-status-tag.expired { background: rgba(255,46,99,0.15); color: var(--rose); }
+
+/* ⏱️ CRONÔMETRO DO DUELO */
+.duel-timer-card {
+  background: rgba(0,0,0,0.4);
+  border: 2px solid var(--cyan);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.duel-timer-card.critical {
+  border-color: var(--rose);
+  animation: timer-shake 0.4s infinite;
+  background: rgba(255,46,99,0.08);
+}
+.duel-timer-card.timeout {
+  border-color: var(--rose);
+  background: rgba(255,46,99,0.15);
+}
+.duel-timer-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.duel-timer-secs {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--cyan);
+  text-shadow: 0 0 12px currentColor;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s;
+}
+.duel-timer-bar-wrap {
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.duel-timer-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--emerald));
+  transition: width 0.1s linear, background 0.3s;
+}
+@keyframes timer-shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+/* ============================================================ */
+
 /* Streak chama */
+
+
+
 /* Streak chama */
 
 /* ROLETA DIÁRIA */
@@ -622,7 +754,13 @@ body.night-mode .btn {
   border-bottom: 1px solid rgba(255,215,0,0.3); }
 .admin-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
+
+
+
 /* Streak chama */
+
+
+
 /* Streak chama */
 .fire{color:#fb923c;}
 </style>
@@ -762,6 +900,7 @@ body.night-mode .btn {
             <button onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
             <button onclick="goFlashcards()" title="Lei Seca">🃏</button>
             <button onclick="goMyPile()" title="Minha Pilha">🚩</button>
+            <button onclick="goDuels()" title="Duelos">⚔️</button>
             <button onclick="goRanking()" title="Ranking">🏆</button>
             <button onclick="goStats()" title="Stats">📊</button>
             <button id="hud-admin-btn" onclick="goAdmin()" title="Painel Admin" style="display:none;">👑</button>
@@ -854,6 +993,10 @@ body.night-mode .btn {
           <div id="stats-name" class="font-arcade" style="color:var(--rose);font-size:14px;">—</div>
           <div id="stats-patente" class="font-orbit" style="color:var(--amber);margin-top:4px;">—</div>
           <div id="stats-email" style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;">—</div>
+          <div id="stats-my-code" class="hidden" style="margin-top:6px;">
+            <span style="font-size:11px;color:rgba(255,255,255,.6);">ID:</span>
+            <span id="stats-player-code" class="player-code-tag" style="margin-left:4px;font-size:9px;padding:2px 8px;">M-????</span>
+          </div>
         </div>
         <button class="btn ghost" onclick="changeAvatar()" style="font-size:9px;padding:8px 12px;">TROCAR</button>
       </div>
@@ -998,6 +1141,102 @@ body.night-mode .btn {
   </div>
 </div>
 
+<!-- ⚔️ DUELOS — Lista e abas -->
+<div id="screen-duels" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="goMap()">← voltar ao mapa</button>
+    <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:var(--rose);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:48px;">⚔️</div>
+        <div>
+          <div class="font-arcade" style="color:var(--rose);font-size:14px;">DUELOS PvP</div>
+          <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:4px;">Desafie outras concurseiras em batalhas de 10 questões</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <span style="font-size:13px;color:rgba(255,255,255,.7);">Seu ID:</span>
+        <span id="my-player-code" class="player-code-tag">M-????</span>
+        <button onclick="copyMyCode()" class="btn ghost" style="margin:0;padding:6px 12px;font-size:11px;">📋 COPIAR</button>
+      </div>
+      <button onclick="goDuelChallenge()" class="btn full" style="margin-top:14px;">⚔️ DESAFIAR ALGUÉM</button>
+    </div>
+
+    <!-- Abas -->
+    <div class="duel-tabs">
+      <button class="duel-tab active" id="tab-active-btn" onclick="switchDuelTab('active')">EM ANDAMENTO</button>
+      <button class="duel-tab" id="tab-history-btn" onclick="switchDuelTab('history')">HISTÓRICO</button>
+      <button class="duel-tab" id="tab-howto-btn" onclick="switchDuelTab('howto')">COMO FUNCIONA</button>
+    </div>
+
+    <div id="duel-list-active"></div>
+    <div id="duel-list-history" class="hidden"></div>
+    <div id="duel-howto" class="hidden">
+      <div class="card pixel-corners" style="padding:20px;">
+        <div class="font-arcade" style="color:var(--amber);font-size:11px;margin-bottom:12px;">⚔️ COMO FUNCIONAM OS DUELOS</div>
+        <div style="font-size:14px;line-height:1.7;color:rgba(255,255,255,.9);">
+          <p style="margin-bottom:10px;"><strong style="color:var(--rose);">1.</strong> Você desafia outra concurseira usando o ID dela (ex: M-0042).</p>
+          <p style="margin-bottom:10px;"><strong style="color:var(--rose);">2.</strong> Ambas recebem as <strong>MESMAS 10 questões</strong> (sorteadas no momento do desafio).</p>
+          <p style="margin-bottom:10px;"><strong style="color:var(--rose);">3.</strong> Têm <strong>24 horas</strong> pra responder. Quem acertar mais ganha.</p>
+          <p style="margin-bottom:10px;"><strong style="color:var(--rose);">4.</strong> O duelo se finaliza quando as duas respondem (ou no fim das 24h).</p>
+          <p style="margin-top:14px;padding:10px;background:rgba(16,185,129,0.1);border-left:3px solid var(--emerald);">
+            🏆 <strong style="color:var(--emerald);">Vencedora:</strong> +250 XP
+          </p>
+          <p style="margin-top:8px;padding:10px;background:rgba(255,215,0,0.1);border-left:3px solid var(--amber);">
+            🤝 <strong style="color:var(--amber);">Empate:</strong> +100 XP cada
+          </p>
+          <p style="margin-top:8px;padding:10px;background:rgba(255,46,99,0.1);border-left:3px solid var(--rose);">
+            💀 <strong style="color:var(--rose);">Derrotada:</strong> sem perda de XP (você acumula o que acertar × 10)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⚔️ Desafiar — buscar oponente -->
+<div id="screen-duel-challenge" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="goDuels()">← voltar</button>
+    <div class="card glow pixel-corners" style="border-color:var(--rose);">
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:48px;">⚔️</div>
+        <div class="font-arcade" style="color:var(--rose);font-size:14px;margin-top:8px;">NOVO DESAFIO</div>
+        <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;">Digite o ID da pessoa que você quer desafiar</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--cyan);">ID DO OPONENTE</label>
+        <input type="text" id="inp-opponent-code" placeholder="M-0042" maxlength="10" style="text-transform:uppercase;letter-spacing:2px;font-family:Orbitron;font-weight:700;font-size:18px;text-align:center;" oninput="this.value=this.value.toUpperCase()">
+        <div id="err-duel" class="error-msg" style="display:none;"></div>
+      </div>
+      <div id="opponent-preview" class="hidden" style="margin-bottom:14px;padding:14px;background:rgba(8,217,214,0.08);border:1px solid var(--cyan);">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div id="prev-avatar" style="font-size:36px;"></div>
+          <div style="flex:1;">
+            <div id="prev-name" style="font-family:'Press Start 2P',monospace;font-size:11px;color:var(--cyan);">—</div>
+            <div id="prev-info" style="font-size:12px;color:rgba(255,255,255,.7);margin-top:4px;">—</div>
+          </div>
+        </div>
+      </div>
+      <button onclick="searchOpponent()" class="btn full" id="btn-search-opp">🔍 BUSCAR JOGADORA</button>
+      <button onclick="confirmChallenge()" class="btn cyan full hidden" id="btn-confirm-duel" style="margin-top:8px;">⚔️ ENVIAR DESAFIO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ⚔️ Jogar duelo (responder as 10 questões) -->
+<div id="screen-duel-play" class="screen">
+  <div class="container-narrow">
+    <div id="duel-play-content"></div>
+  </div>
+</div>
+
+<!-- ⚔️ Resultado do duelo -->
+<div id="screen-duel-result" class="screen">
+  <div class="container-narrow">
+    <div id="duel-result-content"></div>
+  </div>
+</div>
+
 <!-- Modal genérico -->
 <div id="modal" class="modal-backdrop hidden">
   <div id="modal-content" class="modal pixel-corners">
@@ -1021,6 +1260,12 @@ body.night-mode .btn {
 <div id="confetti-area" style="position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden;"></div>
 
 <script>
+
+/* 🔒 ANTI-CLICKJACKING — proteção principal via meta X-Frame-Options="DENY" no <head>.
+   Este código só tenta redirecionar como camada extra; falhas silenciosas são OK. */
+if (window.top !== window.self) {
+  try { window.top.location = window.self.location; } catch(e) { /* cross-origin: ignorar */ }
+}
 /* ============================================================
    DADOS DO JOGO
 ============================================================ */
@@ -1103,8 +1348,8 @@ const QBANK = {
   {b:'AOCP',t:'multiple',s:'Sobre o poder, todo poder emana:',o:['Do Estado.','Do governo.','Do povo, que o exerce por representantes ou diretamente.','Do Presidente.','Do Congresso.'],c:2,e:'Art. 1º, parágrafo único.'},
   {b:'AOCP',t:'multiple',s:'É princípio que rege o Brasil nas relações internacionais:',o:['Pluralismo político.','Soberania.','Cidadania.','Prevalência dos direitos humanos.','Dignidade humana.'],c:3,e:'Art. 4º, II.'},
   // Quadrix (estilo CESPE)
-  {b:'QUADRIX',t:'cebraspe',s:'Os valores sociais do trabalho e da livre iniciativa são fundamentos da República.',c:0,e:'CERTO. Art. 1º, IV.'},
-  {b:'QUADRIX',t:'cebraspe',s:'Erradicar a pobreza é princípio que rege o Brasil nas relações internacionais.',c:1,e:'ERRADO. É objetivo fundamental (art. 3º, III).'},
+  {b:'Quadrix',t:'cebraspe',s:'Os valores sociais do trabalho e da livre iniciativa são fundamentos da República.',c:0,e:'CERTO. Art. 1º, IV.'},
+  {b:'Quadrix',t:'cebraspe',s:'Erradicar a pobreza é princípio que rege o Brasil nas relações internacionais.',c:1,e:'ERRADO. É objetivo fundamental (art. 3º, III).'},
   // Extras CESPE
   {b:'CESPE',t:'cebraspe',s:'A República Federativa do Brasil tem como fundamento o repúdio ao terrorismo.',c:1,e:'ERRADO. É princípio das relações internacionais (art. 4º, VIII).'},
   {b:'CESPE',t:'cebraspe',s:'A cooperação entre os povos para o progresso da humanidade é princípio das relações internacionais.',c:0,e:'CERTO. Art. 4º, IX.'},
@@ -1121,6 +1366,7 @@ const QBANK = {
 ],
 
 'const-art5-direitos-pessoais': [
+  {b:'CESPE',t:'cebraspe',s:'O acesso à informação previsto no art. 5º, XXXIII da CF é direito de todos, ressalvadas as informações sigilosas indispensáveis à segurança da sociedade e do Estado.',c:0,e:'CERTO. Art. 5º, XXXIII da CF.'},
   {b:'CESPE',t:'cebraspe',s:'A casa é asilo inviolável, ninguém nela podendo penetrar sem consentimento, salvo flagrante delito ou desastre, ou para prestar socorro, ou, durante o dia, por determinação judicial.',c:0,e:'CERTO. Art. 5º, XI.'},
   {b:'CESPE',t:'cebraspe',s:'O policial pode entrar em residência à noite sem mandado se houver fundadas suspeitas de tráfico de drogas em andamento.',c:1,e:'ERRADO. À noite só com flagrante, desastre ou socorro (STF RE 603.616).'},
   {b:'CESPE',t:'cebraspe',s:'A entrada forçada em domicílio é constitucional quando amparada em fundadas razões, justificadas a posteriori, que indiquem flagrante delito.',c:0,e:'CERTO. STF RE 603.616 — exige justa causa.'},
@@ -1129,7 +1375,7 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'É inviolável a liberdade de consciência e de crença, mas não a de culto.',c:1,e:'ERRADO. Também a liberdade de culto (art. 5º, VI).'},
   {b:'CESPE',t:'cebraspe',s:'Ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude de decreto.',c:1,e:'ERRADO. Em virtude de LEI (art. 5º, II).'},
   {b:'CESPE',t:'cebraspe',s:'A prática do racismo é crime inafiançável e imprescritível, sujeito à pena de reclusão.',c:0,e:'CERTO. Art. 5º, XLII.'},
-  {b:'CESPE',t:'cebraspe',s:'A injúria racial, equiparada ao racismo pela Lei 14.532/23, é imprescritível.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A injúria racial, equiparada ao racismo pela Lei 14.532/23, é imprescritível.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'É inviolável o sigilo da correspondência e das comunicações telegráficas, sem qualquer exceção.',c:1,e:'ERRADO. As telefônicas podem ser interceptadas por ordem judicial (art. 5º, XII).'},
   // FGV
   {b:'FGV',t:'multiple',s:'Pode-se ingressar em domicílio sem mandado judicial:',o:['Apenas em flagrante.','Apenas durante o dia.','Em flagrante, desastre ou para prestar socorro, a qualquer hora; e por determinação judicial, durante o dia.','Em qualquer hipótese se houver suspeita.','Apenas com autorização do morador.'],c:2,e:'Art. 5º, XI.'},
@@ -1147,12 +1393,12 @@ const QBANK = {
   // AOCP
   {b:'AOCP',t:'multiple',s:'É plena a liberdade de associação para fins lícitos, sendo:',o:['Vedada a de caráter paramilitar.','Permitida qualquer associação.','Necessária autorização prévia.','Vedada qualquer associação política.','Permitida apenas associação econômica.'],c:0,e:'Art. 5º, XVII.'},
   // Quadrix
-  {b:'QUADRIX',t:'cebraspe',s:'A residência é inviolável durante a noite, salvo flagrante delito.',c:0,e:'CERTO. Art. 5º, XI.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A ordem judicial autoriza o ingresso em domicílio a qualquer hora do dia ou da noite.',c:1,e:'ERRADO. Só de DIA.'},
+  {b:'Quadrix',t:'cebraspe',s:'A residência é inviolável durante a noite, salvo flagrante delito.',c:0,e:'CERTO. Art. 5º, XI.'},
+  {b:'Quadrix',t:'cebraspe',s:'A ordem judicial autoriza o ingresso em domicílio a qualquer hora do dia ou da noite.',c:1,e:'ERRADO. Só de DIA.'},
   // Extras
   {b:'CESPE',t:'cebraspe',s:'Homens e mulheres são iguais em direitos e obrigações, nos termos da Constituição.',c:0,e:'CERTO. Art. 5º, I.'},
   {b:'CESPE',t:'cebraspe',s:'É livre o exercício de qualquer trabalho, ofício ou profissão, atendidas as qualificações profissionais que a lei estabelecer.',c:0,e:'CERTO. Art. 5º, XIII.'},
-  {b:'CESPE',t:'cebraspe',s:'A casa é asilo inviolável, podendo a autoridade policial entrar a qualquer momento durante investigação.',c:1,e:'ERRADO.'},
+  {b:'CESPE',t:'cebraspe',s:'A casa é asilo inviolável, podendo a autoridade policial entrar a qualquer momento durante investigação.',c:1,e:'ERRADO. A assertiva contraria o que prevê a norma legal/constitucional.'},
   {b:'FGV',t:'multiple',s:'O direito à propriedade na CF:',o:['É absoluto.','É garantido, mas atenderá à função social.','Pode ser eliminado por decreto.','Não admite desapropriação.','Aplica-se só a imóveis.'],c:1,e:'Art. 5º, XXII e XXIII.'},
   {b:'FGV',t:'multiple',s:'O direito ao silêncio é assegurado:',o:['Apenas a réus condenados.','Apenas a testemunhas.','Ao preso, sendo-lhe garantida assistência da família e de advogado.','Somente a estrangeiros.','Apenas em crimes hediondos.'],c:2,e:'Art. 5º, LXIII.'},
   {b:'FCC',t:'multiple',s:'É hipótese constitucional de pena de morte:',o:['Crime hediondo.','Tráfico de drogas.','Em caso de guerra declarada, nos termos da lei.','Reincidência específica.','Não há hipótese.'],c:2,e:'Art. 5º, XLVII, a.'},
@@ -1177,8 +1423,8 @@ const QBANK = {
   {b:'IBFC',t:'multiple',s:'É gratuito o exercício do direito de petição aos Poderes Públicos.',o:['Apenas para advogados.','Apenas a defesa de direitos.','A todos, em defesa de direitos ou contra ilegalidade.','Mediante taxa simbólica.'],c:2,e:'Art. 5º, XXXIV, a.'},
   {b:'IBFC',t:'multiple',s:'A ação popular visa anular ato lesivo:',o:['A interesse particular.','Ao patrimônio público ou de entidade que o Estado participe, à moralidade administrativa, ao meio ambiente e ao patrimônio histórico e cultural.','Apenas ao patrimônio histórico.','Apenas aos cofres federais.'],c:1,e:'Art. 5º, LXXIII.'},
   {b:'AOCP',t:'multiple',s:'Conceder-se-á habeas data:',o:['Para garantir liberdade de locomoção.','Para retificar dados ou conhecer informações pessoais.','Para anular ato lesivo.','Para garantir direito líquido e certo.','Para suprir omissão.'],c:1,e:'Art. 5º, LXXII.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O writ of habeas corpus é cabível para defender direito líquido e certo não amparado por outros remédios.',c:1,e:'ERRADO. HC protege liberdade de locomoção. O descrito é MS.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O mandado de injunção é cabível em razão de omissão legislativa que inviabilize direito constitucional.',c:0,e:'CERTO. Art. 5º, LXXI.'},
+  {b:'Quadrix',t:'cebraspe',s:'O writ of habeas corpus é cabível para defender direito líquido e certo não amparado por outros remédios.',c:1,e:'ERRADO. HC protege liberdade de locomoção. O descrito é MS.'},
+  {b:'Quadrix',t:'cebraspe',s:'O mandado de injunção é cabível em razão de omissão legislativa que inviabilize direito constitucional.',c:0,e:'CERTO. Art. 5º, LXXI.'},
   {b:'CESPE',t:'cebraspe',s:'O preso será informado do direito de permanecer calado.',c:0,e:'CERTO. Art. 5º, LXIII.'},
   {b:'CESPE',t:'cebraspe',s:'É assegurada ao preso a identificação dos responsáveis por sua prisão ou interrogatório.',c:0,e:'CERTO. Art. 5º, LXIV.'},
   {b:'CESPE',t:'cebraspe',s:'A prisão ilegal será imediatamente relaxada pela autoridade administrativa.',c:1,e:'ERRADO. Pela autoridade JUDICIÁRIA (art. 5º, LXV).'},
@@ -1189,7 +1435,7 @@ const QBANK = {
   {b:'AOCP',t:'multiple',s:'Sobre a Ação Popular, é correto:',o:['Pode ser proposta por estrangeiros.','O autor, salvo má-fé, é isento de custas judiciais.','Cobra-se obrigatoriamente o ônus da sucumbência do autor.','Não cabe contra ato administrativo.','Independe de prova.'],c:1,e:'Art. 5º, LXXIII, parte final.'},
   {b:'CESPE',t:'cebraspe',s:'A prisão de qualquer pessoa e o local onde se encontre serão comunicados imediatamente ao juiz competente e à família do preso ou à pessoa por ele indicada.',c:0,e:'CERTO. Art. 5º, LXII.'},
   {b:'FGV',t:'multiple',s:'A coisa julgada, segundo a CF, NÃO pode ser atingida por:',o:['Decisão judicial superveniente.','Lei nova.','Sentença rescisória.','Ato administrativo.','Súmula vinculante.'],c:1,e:'Art. 5º, XXXVI — a lei não prejudicará o direito adquirido, ato jurídico perfeito e coisa julgada.'},
-  {b:'FCC',t:'multiple',s:'O direito de propriedade na CF (art. 5º, XXII e XXIII):',o:['É absoluto.','Atenderá à função social.','Não admite desapropriação.','É exclusivo do brasileiro nato.','É vedado a estrangeiros.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'O direito de propriedade na CF (art. 5º, XXII e XXIII):',o:['É absoluto.','Atenderá à função social.','Não admite desapropriação.','É exclusivo do brasileiro nato.','É vedado a estrangeiros.'],c:1,e:'Resposta correta: Atenderá à função social..'},
 ],
 
 'const-seguranca-publica': [
@@ -1212,11 +1458,11 @@ const QBANK = {
   {b:'IBFC',t:'multiple',s:'A Polícia Federal é instituída por:',o:['Lei estadual.','Lei como órgão permanente da União, estruturada em carreira.','Decreto presidencial.','Resolução do CNJ.'],c:1,e:'Art. 144, § 1º.'},
   {b:'IBFC',t:'multiple',s:'A Polícia Penal foi incluída no art. 144 pela:',o:['EC 19/98.','EC 45/04.','EC 104/19.','EC 95/16.'],c:2,e:'EC 104/2019.'},
   {b:'AOCP',t:'multiple',s:'É órgão de segurança pública responsável pela defesa do patrimônio rodoviário federal:',o:['Polícia Civil.','Polícia Federal.','Polícia Rodoviária Federal.','Polícia Ferroviária Federal.','Polícia Penal.'],c:2,e:'Art. 144, § 2º.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A polícia ostensiva fardada e visível é função da Polícia Militar.',c:0,e:'CERTO. Art. 144, § 5º.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A polícia judiciária na esfera estadual é exercida pela Polícia Militar.',c:1,e:'ERRADO. Pela POLÍCIA CIVIL (art. 144, § 4º).'},
+  {b:'Quadrix',t:'cebraspe',s:'A polícia ostensiva fardada e visível é função da Polícia Militar.',c:0,e:'CERTO. Art. 144, § 5º.'},
+  {b:'Quadrix',t:'cebraspe',s:'A polícia judiciária na esfera estadual é exercida pela Polícia Militar.',c:1,e:'ERRADO. Pela POLÍCIA CIVIL (art. 144, § 4º).'},
   {b:'CESPE',t:'cebraspe',s:'A apuração de infrações penais militares cabe à polícia civil.',c:1,e:'ERRADO. Exceto as militares (art. 144, § 4º).'},
   {b:'CESPE',t:'cebraspe',s:'A polícia militar pode exercer polícia judiciária militar para crimes militares previstos no CPM.',c:0,e:'CERTO. Atribuição da PM/Justiça Militar.'},
-  {b:'CESPE',t:'cebraspe',s:'A Lei 13.675/2018 instituiu o Sistema Único de Segurança Pública (SUSP).',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei 13.675/2018 instituiu o Sistema Único de Segurança Pública (SUSP).',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'FGV',t:'multiple',s:'A Lei 13.675/18 criou:',o:['O SUSP — Sistema Único de Segurança Pública.','A PNSP.','A Força Nacional.','O Susp e a PNSPDS.','Apenas a Força Nacional.'],c:3,e:'A lei criou o SUSP e a Política Nacional de Segurança Pública e Defesa Social.'},
   {b:'FCC',t:'multiple',s:'Os Municípios:',o:['Não podem ter guarda municipal.','Poderão constituir guardas municipais destinadas à proteção de seus bens, serviços e instalações, conforme dispuser a lei.','Podem criar polícia civil municipal.','Podem ter PM municipal.','Não participam da segurança pública.'],c:1,e:'Art. 144, § 8º.'},
   {b:'VUNESP',t:'multiple',s:'A Polícia Federal destina-se também a:',o:['Apurar exclusivamente crimes patrimoniais.','Prevenir e reprimir o tráfico ilícito de entorpecentes, contrabando e descaminho, sem prejuízo da ação fazendária.','Patrulhamento rodoviário.','Investigar infrações políticas estaduais.','Exercer polícia ostensiva.'],c:1,e:'Art. 144, § 1º, II.'},
@@ -1233,7 +1479,7 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A Administração pode anular seus próprios atos quando eivados de vícios que os tornem ilegais, por força do princípio da autotutela.',c:0,e:'CERTO. Súmula 473 STF.'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da publicidade é absoluto e não admite qualquer exceção.',c:1,e:'ERRADO. Admite exceções (sigilo legal — art. 5º, XXXIII, art. 5º, X).'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da impessoalidade exige que a Administração atue voltada à finalidade pública, sem promover pessoalmente o agente.',c:0,e:'CERTO. Art. 37, § 1º.'},
-  {b:'CESPE',t:'cebraspe',s:'A eficiência foi introduzida expressamente no caput do art. 37 pela EC 19/1998.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A eficiência foi introduzida expressamente no caput do art. 37 pela EC 19/1998.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'A motivação é princípio expresso no caput do art. 37 da Constituição Federal.',c:1,e:'ERRADO. Não consta do LIMPE. É implícita na CF, expressa na Lei 9.784/99.'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da supremacia do interesse público é explícito na Constituição.',c:1,e:'ERRADO. É implícito.'},
   {b:'CESPE',t:'cebraspe',s:'A Administração pode revogar atos discricionários por motivo de conveniência e oportunidade, respeitados direitos adquiridos.',c:0,e:'CERTO. Súmula 473 STF.'},
@@ -1241,23 +1487,23 @@ const QBANK = {
   {b:'FGV',t:'multiple',s:'Os princípios da Administração Pública explícitos no caput do art. 37 são, na ordem:',o:['Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência.','Legalidade, Eficiência, Moralidade, Publicidade e Impessoalidade.','Moralidade, Legalidade, Impessoalidade, Eficiência e Publicidade.','Legalidade, Impessoalidade, Motivação, Publicidade e Eficiência.','Legalidade, Impessoalidade, Moralidade, Publicidade e Razoabilidade.'],c:0,e:'LIMPE.'},
   {b:'FGV',t:'multiple',s:'A autotutela permite à Administração:',o:['Apenas revogar atos.','Anular atos ilegais e revogar inconvenientes, respeitados direitos adquiridos.','Cobrar tributos.','Indeferir pedidos sem motivar.','Demitir servidores sem PAD.'],c:1,e:'Súmulas 346 e 473 STF.'},
   {b:'FCC',t:'multiple',s:'O princípio da impessoalidade possui dois sentidos:',o:['Finalidade pública e vedação à promoção pessoal.','Igualdade e moralidade.','Eficiência e celeridade.','Legalidade e publicidade.','Imparcialidade e neutralidade.'],c:0,e:'Doutrina majoritária.'},
-  {b:'FCC',t:'multiple',s:'A publicidade na Administração Pública:',o:['É absoluta.','Comporta exceções, como o sigilo previsto em lei (art. 5º, XXXIII).','Aplica-se apenas a atos normativos.','Está limitada a contratos.','Não se aplica a atos internos.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'A publicidade na Administração Pública:',o:['É absoluta.','Comporta exceções, como o sigilo previsto em lei (art. 5º, XXXIII).','Aplica-se apenas a atos normativos.','Está limitada a contratos.','Não se aplica a atos internos.'],c:1,e:'Resposta correta: Comporta exceções, como o sigilo previsto em lei (art. 5º, XXXIII)..'},
   {b:'VUNESP',t:'multiple',s:'O princípio da moralidade administrativa:',o:['É implícito.','É expresso no art. 37 da CF.','Foi suprimido pela EC 19/98.','Aplica-se apenas a contratos.','Trata de boa-fé subjetiva apenas.'],c:1,e:'LIMPE.'},
-  {b:'VUNESP',t:'multiple',s:'A eficiência administrativa:',o:['Permite descumprir a lei pela urgência do serviço.','Convive com a legalidade, sem se sobrepor.','É absoluta.','Substitui a moralidade.','Aplica-se só ao Executivo.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'O princípio segundo o qual a Administração só pode fazer o que a lei autoriza é o:',o:['Da impessoalidade.','Da legalidade administrativa estrita.','Da moralidade.','Da publicidade.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'A Súmula 473 do STF consagra o princípio da:',o:['Legalidade.','Autotutela.','Eficiência.','Moralidade.'],c:1,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'A eficiência administrativa:',o:['Permite descumprir a lei pela urgência do serviço.','Convive com a legalidade, sem se sobrepor.','É absoluta.','Substitui a moralidade.','Aplica-se só ao Executivo.'],c:1,e:'Resposta correta: Convive com a legalidade, sem se sobrepor..'},
+  {b:'IBFC',t:'multiple',s:'O princípio segundo o qual a Administração só pode fazer o que a lei autoriza é o:',o:['Da impessoalidade.','Da legalidade administrativa estrita.','Da moralidade.','Da publicidade.'],c:1,e:'Resposta correta: Da legalidade administrativa estrita..'},
+  {b:'IBFC',t:'multiple',s:'A Súmula 473 do STF consagra o princípio da:',o:['Legalidade.','Autotutela.','Eficiência.','Moralidade.'],c:1,e:'Resposta correta: Autotutela..'},
   {b:'AOCP',t:'multiple',s:'Em relação aos princípios implícitos da Administração, NÃO é considerado implícito:',o:['Supremacia do interesse público.','Autotutela.','Razoabilidade.','Legalidade.','Motivação.'],c:3,e:'Legalidade é EXPLÍCITA (LIMPE).'},
   {b:'AOCP',t:'multiple',s:'O princípio da segurança jurídica está relacionado a:',o:['Imutabilidade absoluta dos atos.','Estabilidade das situações jurídicas, com vedação à aplicação retroativa de nova interpretação.','Pena perpétua.','Suspensão de direitos.','Anulação automática.'],c:1,e:'Art. 54 Lei 9.784/99.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A motivação é princípio implícito da Administração Pública.',c:0,e:'CERTO. Embora expressa na Lei 9.784/99.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O princípio da eficiência justifica que a Administração descumpra a lei em favor do interesse público.',c:1,e:'ERRADO.'},
-  {b:'CESPE',t:'cebraspe',s:'A razoabilidade e a proporcionalidade são princípios implícitos da Administração.',c:0,e:'CERTO.'},
+  {b:'Quadrix',t:'cebraspe',s:'A motivação é princípio implícito da Administração Pública.',c:0,e:'CERTO. Embora expressa na Lei 9.784/99.'},
+  {b:'Quadrix',t:'cebraspe',s:'O princípio da eficiência justifica que a Administração descumpra a lei em favor do interesse público.',c:1,e:'ERRADO. A assertiva contraria o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'A razoabilidade e a proporcionalidade são princípios implícitos da Administração.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'Os atos administrativos gozam de presunção absoluta de legitimidade.',c:1,e:'ERRADO. Relativa.'},
-  {b:'CESPE',t:'cebraspe',s:'A finalidade pública é decorrência direta do princípio da impessoalidade.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A finalidade pública é decorrência direta do princípio da impessoalidade.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'FGV',t:'multiple',s:'Não consta como princípio expresso do art. 37, caput:',o:['Legalidade.','Eficiência.','Moralidade.','Motivação.','Publicidade.'],c:3,e:'Motivação é implícita constitucionalmente.'},
   {b:'FCC',t:'multiple',s:'A vedação ao nepotismo decorre, segundo o STF, do princípio da:',o:['Legalidade.','Impessoalidade e moralidade.','Eficiência.','Publicidade.','Continuidade.'],c:1,e:'Súmula Vinculante 13.'},
-  {b:'VUNESP',t:'multiple',s:'O ato de Administração que coloca foto do governador em obras públicas viola:',o:['Eficiência.','Impessoalidade (vedação à promoção pessoal — art. 37, § 1º).','Legalidade.','Moralidade administrativa apenas.','Continuidade.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'Sobre a eficiência, é correto afirmar:',o:['Permite afastar a moralidade.','Foi introduzida pela EC 19/98 e exige resultado, economicidade e qualidade.','É absoluta.','Aplica-se só à administração indireta.'],c:1,e:'.'},
-  {b:'AOCP',t:'multiple',s:'A boa-fé é elemento do princípio:',o:['Da eficiência.','Da moralidade administrativa.','Da impessoalidade.','Da legalidade.','Da publicidade.'],c:1,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'O ato de Administração que coloca foto do governador em obras públicas viola:',o:['Eficiência.','Impessoalidade (vedação à promoção pessoal — art. 37, § 1º).','Legalidade.','Moralidade administrativa apenas.','Continuidade.'],c:1,e:'Resposta correta: Impessoalidade (vedação à promoção pessoal — art. 37, § 1º)..'},
+  {b:'IBFC',t:'multiple',s:'Sobre a eficiência, é correto afirmar:',o:['Permite afastar a moralidade.','Foi introduzida pela EC 19/98 e exige resultado, economicidade e qualidade.','É absoluta.','Aplica-se só à administração indireta.'],c:1,e:'Resposta correta: Foi introduzida pela EC 19/98 e exige resultado, economicidade e qualidade..'},
+  {b:'AOCP',t:'multiple',s:'A boa-fé é elemento do princípio:',o:['Da eficiência.','Da moralidade administrativa.','Da impessoalidade.','Da legalidade.','Da publicidade.'],c:1,e:'Resposta correta: Da moralidade administrativa..'},
 ],
 
 'adm-poderes': [
@@ -1267,62 +1513,62 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O poder regulamentar autoriza decretos com força de lei.',c:1,e:'ERRADO. Decretos para fiel execução das leis (art. 84, IV).'},
   {b:'CESPE',t:'cebraspe',s:'A polícia administrativa atua sobre coisas, atividades e direitos; a polícia judiciária atua sobre pessoas e crimes.',c:0,e:'CERTO. Distinção doutrinária.'},
   {b:'CESPE',t:'cebraspe',s:'A autoexecutoriedade do poder de polícia permite, em todos os casos, a execução imediata sem autorização judicial.',c:1,e:'ERRADO. Depende de previsão legal ou urgência. Ex.: multa exige cobrança judicial se não paga.'},
-  {b:'CESPE',t:'cebraspe',s:'A coercibilidade do poder de polícia significa que o ato pode ser imposto ao administrado, com uso de força se necessário.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A coercibilidade do poder de polícia significa que o ato pode ser imposto ao administrado, com uso de força se necessário.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'A delegação de competência inclui o exercício de competências exclusivas do delegante.',c:1,e:'ERRADO. Art. 13 da Lei 9.784/99 — não admite delegação de exclusivas, decisão em recurso e edição de atos normativos.'},
   {b:'CESPE',t:'cebraspe',s:'O poder disciplinar pode ser exercido sobre particular que tenha vínculo jurídico especial com a Administração.',c:0,e:'CERTO. Ex.: contratado, concessionário.'},
   {b:'CESPE',t:'cebraspe',s:'O poder de polícia é exercido tanto pela polícia administrativa (atos preventivos) quanto pela polícia judiciária (apuração de crimes).',c:1,e:'ERRADO. Pol. judiciária é exercida no âmbito da persecução penal, não é poder de polícia administrativa.'},
-  {b:'FGV',t:'multiple',s:'O atributo do poder de polícia que permite à Administração executar diretamente o ato, sem ordem judicial, é:',o:['Discricionariedade.','Coercibilidade.','Autoexecutoriedade.','Imperatividade.','Tipicidade.'],c:2,e:'.'},
+  {b:'FGV',t:'multiple',s:'O atributo do poder de polícia que permite à Administração executar diretamente o ato, sem ordem judicial, é:',o:['Discricionariedade.','Coercibilidade.','Autoexecutoriedade.','Imperatividade.','Tipicidade.'],c:2,e:'Resposta correta: Autoexecutoriedade..'},
   {b:'FGV',t:'multiple',s:'O poder regulamentar permite ao chefe do Executivo:',o:['Editar decretos para fiel execução das leis.','Substituir leis.','Criar novas obrigações.','Editar leis complementares.','Vetar medidas provisórias.'],c:0,e:'Art. 84, IV.'},
-  {b:'FCC',t:'multiple',s:'A apuração imediata de irregularidade praticada por servidor é decorrência do poder:',o:['Hierárquico.','Disciplinar.','Regulamentar.','De polícia.','Discricionário.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'A apuração imediata de irregularidade praticada por servidor é decorrência do poder:',o:['Hierárquico.','Disciplinar.','Regulamentar.','De polícia.','Discricionário.'],c:1,e:'Resposta correta: Disciplinar..'},
   {b:'FCC',t:'multiple',s:'A autoexecutoriedade não está presente:',o:['Na aplicação de multa.','Na apreensão de mercadorias.','Na demolição de obra irregular.','Na interdição de estabelecimento.','Na dispersão de manifestação.'],c:0,e:'Multa requer cobrança judicial se não paga.'},
   {b:'VUNESP',t:'multiple',s:'O poder hierárquico permite, EXCETO:',o:['Ordenar.','Fiscalizar.','Delegar.','Avocar.','Anular sentença judicial.'],c:4,e:'Anular sentença é competência do Judiciário.'},
-  {b:'VUNESP',t:'multiple',s:'O fechamento administrativo de fábrica clandestina é exercício de:',o:['Poder hierárquico.','Poder disciplinar.','Poder de polícia.','Poder regulamentar.','Poder discricionário sem amparo legal.'],c:2,e:'.'},
-  {b:'IBFC',t:'multiple',s:'Discricionariedade administrativa significa:',o:['Liberdade total.','Margem de escolha conforme conveniência e oportunidade, dentro da legalidade.','Arbitrariedade.','Vinculação total.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'É vinculado o ato administrativo quando:',o:['A lei estabelece todos os elementos.','O administrador escolhe livremente.','Há discricionariedade no objeto.','Há margem no motivo.'],c:0,e:'.'},
-  {b:'AOCP',t:'multiple',s:'A interdição de uma fábrica que descumpre normas ambientais é exercício do:',o:['Poder hierárquico.','Poder disciplinar.','Poder de polícia ambiental.','Poder regulamentar.','Poder discricionário puro.'],c:2,e:'.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O poder de polícia administrativa pode ser exercido por particulares.',c:1,e:'ERRADO. Em regra, é privativo do Estado. (Cabe particulares apenas em atos materiais auxiliares — STF.)'},
-  {b:'QUADRIX',t:'cebraspe',s:'O ciclo do poder de polícia tem quatro fases: ordem, consentimento, fiscalização e sanção.',c:0,e:'CERTO. Doutrina majoritária (Diogo Figueiredo).'},
-  {b:'CESPE',t:'cebraspe',s:'Os atos de polícia administrativa podem ter natureza preventiva ou repressiva.',c:0,e:'CERTO.'},
+  {b:'VUNESP',t:'multiple',s:'O fechamento administrativo de fábrica clandestina é exercício de:',o:['Poder hierárquico.','Poder disciplinar.','Poder de polícia.','Poder regulamentar.','Poder discricionário sem amparo legal.'],c:2,e:'Resposta correta: Poder de polícia..'},
+  {b:'IBFC',t:'multiple',s:'Discricionariedade administrativa significa:',o:['Liberdade total.','Margem de escolha conforme conveniência e oportunidade, dentro da legalidade.','Arbitrariedade.','Vinculação total.'],c:1,e:'Resposta correta: Margem de escolha conforme conveniência e oportunidade, dentro da legalidade..'},
+  {b:'IBFC',t:'multiple',s:'É vinculado o ato administrativo quando:',o:['A lei estabelece todos os elementos.','O administrador escolhe livremente.','Há discricionariedade no objeto.','Há margem no motivo.'],c:0,e:'Resposta correta: A lei estabelece todos os elementos..'},
+  {b:'AOCP',t:'multiple',s:'A interdição de uma fábrica que descumpre normas ambientais é exercício do:',o:['Poder hierárquico.','Poder disciplinar.','Poder de polícia ambiental.','Poder regulamentar.','Poder discricionário puro.'],c:2,e:'Resposta correta: Poder de polícia ambiental..'},
+  {b:'Quadrix',t:'cebraspe',s:'O poder de polícia administrativa pode ser exercido por particulares.',c:1,e:'ERRADO. Em regra, é privativo do Estado. (Cabe particulares apenas em atos materiais auxiliares — STF.)'},
+  {b:'Quadrix',t:'cebraspe',s:'O ciclo do poder de polícia tem quatro fases: ordem, consentimento, fiscalização e sanção.',c:0,e:'CERTO. Doutrina majoritária (Diogo Figueiredo).'},
+  {b:'CESPE',t:'cebraspe',s:'Os atos de polícia administrativa podem ter natureza preventiva ou repressiva.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O poder de polícia somente pode ser exercido sobre particulares.',c:1,e:'ERRADO. Pode incidir sobre direitos, atividades e bens.'},
-  {b:'FGV',t:'multiple',s:'A imposição obrigatória de comportamento ao administrado pela polícia administrativa é a:',o:['Coercibilidade.','Discricionariedade.','Autoexecutoriedade.','Imperatividade do ato.','Vinculação.'],c:0,e:'.'},
+  {b:'FGV',t:'multiple',s:'A imposição obrigatória de comportamento ao administrado pela polícia administrativa é a:',o:['Coercibilidade.','Discricionariedade.','Autoexecutoriedade.','Imperatividade do ato.','Vinculação.'],c:0,e:'Resposta correta: Coercibilidade..'},
   {b:'FCC',t:'multiple',s:'O poder regulamentar é exercido por:',o:['Tribunais apenas.','Chefe do Executivo, principalmente, mediante decretos.','Câmara Municipal.','Procurador-Geral.','Tribunal de Contas.'],c:1,e:'Art. 84, IV CF.'},
   {b:'VUNESP',t:'multiple',s:'A licença é ato:',o:['Discricionário e precário.','Vinculado, permanente.','Discricionário e permanente.','Vinculado e precário.','Negocial discricionário.'],c:1,e:'A licença é VINCULADA. Autorização que é discricionária e precária.'},
   {b:'IBFC',t:'multiple',s:'Sobre delegação:',o:['Pode ocorrer entre órgãos não subordinados.','Não pode ocorrer entre órgãos subordinados.','Pode incluir decisão em recurso.','Pode incluir competência exclusiva.'],c:0,e:'Art. 12 Lei 9.784/99.'},
-  {b:'AOCP',t:'multiple',s:'A multa de trânsito é manifestação:',o:['Do poder hierárquico.','Do poder regulamentar.','Do poder de polícia.','Do poder disciplinar.','De poder vinculado puro.'],c:2,e:'.'},
+  {b:'AOCP',t:'multiple',s:'A multa de trânsito é manifestação:',o:['Do poder hierárquico.','Do poder regulamentar.','Do poder de polícia.','Do poder disciplinar.','De poder vinculado puro.'],c:2,e:'Resposta correta: Do poder de polícia..'},
   {b:'CESPE',t:'cebraspe',s:'A discricionariedade da Administração não pode ser controlada pelo Judiciário no aspecto da legalidade.',c:1,e:'ERRADO. Judiciário CONTROLA legalidade (não mérito).'},
-  {b:'CESPE',t:'cebraspe',s:'O poder hierárquico não existe entre Poderes (Legislativo, Executivo, Judiciário), mas apenas internamente em cada um.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O poder hierárquico não existe entre Poderes (Legislativo, Executivo, Judiciário), mas apenas internamente em cada um.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
 'adm-atos-administrativos': [
   {b:'CESPE',t:'cebraspe',s:'São atributos dos atos administrativos: presunção de legitimidade, imperatividade, autoexecutoriedade e tipicidade.',c:0,e:'CERTO. PATI.'},
   {b:'CESPE',t:'cebraspe',s:'A presunção de legitimidade dos atos administrativos é absoluta, não admitindo prova em contrário.',c:1,e:'ERRADO. RELATIVA (juris tantum).'},
-  {b:'CESPE',t:'cebraspe',s:'A anulação de ato administrativo decorre de vício de legalidade e produz efeitos ex tunc.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A anulação de ato administrativo decorre de vício de legalidade e produz efeitos ex tunc.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'A revogação produz efeitos ex tunc.',c:1,e:'ERRADO. EX NUNC.'},
   {b:'CESPE',t:'cebraspe',s:'Os elementos do ato administrativo são competência, finalidade, forma, motivo e objeto.',c:0,e:'CERTO. Lei 4.717/65, art. 2º.'},
-  {b:'CESPE',t:'cebraspe',s:'A teoria dos motivos determinantes vincula o ato administrativo aos motivos efetivamente expostos.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A teoria dos motivos determinantes vincula o ato administrativo aos motivos efetivamente expostos.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'A convalidação é forma de extinção do ato.',c:1,e:'ERRADO. É forma de SANEAMENTO (manutenção).'},
-  {b:'CESPE',t:'cebraspe',s:'A cassação ocorre quando o beneficiário deixa de cumprir os requisitos para a manutenção do ato.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A cassação ocorre quando o beneficiário deixa de cumprir os requisitos para a manutenção do ato.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O ato discricionário comporta análise judicial somente quanto ao mérito.',c:1,e:'ERRADO. Judiciário controla LEGALIDADE, não mérito.'},
-  {b:'CESPE',t:'cebraspe',s:'O elemento "competência" é sempre vinculado.',c:0,e:'CERTO.'},
-  {b:'FGV',t:'multiple',s:'A anulação produz efeitos:',o:['Ex nunc.','Ex tunc.','A partir da notificação.','A critério do administrador.','Apenas para atos posteriores.'],c:1,e:'.'},
-  {b:'FGV',t:'multiple',s:'A imperatividade do ato significa:',o:['Presunção de validade.','Que o ato se impõe ao administrado independentemente de sua concordância.','Que pode ser executado pela Adm.','Que é típico.','Que é discricionário.'],c:1,e:'.'},
-  {b:'FCC',t:'multiple',s:'A discricionariedade administrativa recai sobre:',o:['Competência e forma.','Motivo e objeto (mérito administrativo).','Finalidade e forma.','Todos os elementos.','Apenas a forma.'],c:1,e:'.'},
-  {b:'FCC',t:'multiple',s:'O ato administrativo praticado por agente incompetente:',o:['É inexistente.','É nulo, mas pode ser convalidado se a competência não for exclusiva.','É anulável sempre.','É inconvalidável.','Não produz efeitos.'],c:1,e:'.'},
-  {b:'VUNESP',t:'multiple',s:'Sobre as espécies de atos:',o:['Licença é ato discricionário.','Autorização é ato vinculado.','Licença é vinculada e permanente; autorização é discricionária e precária.','Permissão é ato vinculado.','Não há distinção.'],c:2,e:'.'},
-  {b:'VUNESP',t:'multiple',s:'A extinção do ato pela própria Administração por motivo de conveniência é:',o:['Anulação.','Cassação.','Revogação.','Caducidade.','Contraposição.'],c:2,e:'.'},
-  {b:'IBFC',t:'multiple',s:'O motivo do ato administrativo é:',o:['A finalidade.','A vontade.','O pressuposto de fato e de direito que justifica o ato.','O resultado.','A forma.'],c:2,e:'.'},
+  {b:'CESPE',t:'cebraspe',s:'O elemento "competência" é sempre vinculado.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'FGV',t:'multiple',s:'A anulação produz efeitos:',o:['Ex nunc.','Ex tunc.','A partir da notificação.','A critério do administrador.','Apenas para atos posteriores.'],c:1,e:'Resposta correta: Ex tunc..'},
+  {b:'FGV',t:'multiple',s:'A imperatividade do ato significa:',o:['Presunção de validade.','Que o ato se impõe ao administrado independentemente de sua concordância.','Que pode ser executado pela Adm.','Que é típico.','Que é discricionário.'],c:1,e:'Resposta correta: Que o ato se impõe ao administrado independentemente de sua concordância..'},
+  {b:'FCC',t:'multiple',s:'A discricionariedade administrativa recai sobre:',o:['Competência e forma.','Motivo e objeto (mérito administrativo).','Finalidade e forma.','Todos os elementos.','Apenas a forma.'],c:1,e:'Resposta correta: Motivo e objeto (mérito administrativo)..'},
+  {b:'FCC',t:'multiple',s:'O ato administrativo praticado por agente incompetente:',o:['É inexistente.','É nulo, mas pode ser convalidado se a competência não for exclusiva.','É anulável sempre.','É inconvalidável.','Não produz efeitos.'],c:1,e:'Resposta correta: É nulo, mas pode ser convalidado se a competência não for exclusiva..'},
+  {b:'VUNESP',t:'multiple',s:'Sobre as espécies de atos:',o:['Licença é ato discricionário.','Autorização é ato vinculado.','Licença é vinculada e permanente; autorização é discricionária e precária.','Permissão é ato vinculado.','Não há distinção.'],c:2,e:'Resposta correta: Licença é vinculada e permanente; autorização é discricionária e precária..'},
+  {b:'VUNESP',t:'multiple',s:'A extinção do ato pela própria Administração por motivo de conveniência é:',o:['Anulação.','Cassação.','Revogação.','Caducidade.','Contraposição.'],c:2,e:'Resposta correta: Revogação..'},
+  {b:'IBFC',t:'multiple',s:'O motivo do ato administrativo é:',o:['A finalidade.','A vontade.','O pressuposto de fato e de direito que justifica o ato.','O resultado.','A forma.'],c:2,e:'Resposta correta: O pressuposto de fato e de direito que justifica o ato..'},
   {b:'IBFC',t:'multiple',s:'A motivação do ato administrativo:',o:['É dispensável sempre.','É obrigatória em regra (Lei 9.784/99).','Aplica-se só a atos vinculados.','É facultativa.'],c:1,e:'Art. 50 da Lei 9.784/99.'},
   {b:'AOCP',t:'multiple',s:'O ato administrativo, quando praticado com excesso de poder, viola o elemento:',o:['Competência.','Finalidade.','Forma.','Motivo.','Objeto.'],c:0,e:'Excesso de poder = atua além de sua competência.'},
-  {b:'AOCP',t:'multiple',s:'O desvio de poder ou desvio de finalidade afeta o elemento:',o:['Competência.','Finalidade.','Forma.','Motivo.','Objeto.'],c:1,e:'.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A revogação de ato administrativo discricionário tem efeitos ex nunc.',c:0,e:'CERTO.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A anulação de ato vinculado pode ser revista pela própria administração.',c:0,e:'CERTO. Autotutela.'},
+  {b:'AOCP',t:'multiple',s:'O desvio de poder ou desvio de finalidade afeta o elemento:',o:['Competência.','Finalidade.','Forma.','Motivo.','Objeto.'],c:1,e:'Resposta correta: Finalidade..'},
+  {b:'Quadrix',t:'cebraspe',s:'A revogação de ato administrativo discricionário tem efeitos ex nunc.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'Quadrix',t:'cebraspe',s:'A anulação de ato vinculado pode ser revista pela própria administração.',c:0,e:'CERTO. Autotutela.'},
   {b:'CESPE',t:'cebraspe',s:'A administração pública, no exercício da autotutela, deve anular seus atos ilegais.',c:0,e:'CERTO. Súmula 473.'},
   {b:'CESPE',t:'cebraspe',s:'A revogação de ato administrativo pode atingir direitos adquiridos.',c:1,e:'ERRADO. Súmula 473.'},
   {b:'CESPE',t:'cebraspe',s:'A Administração tem prazo de 5 anos para anular atos administrativos de que decorram efeitos favoráveis ao destinatário de boa-fé.',c:0,e:'CERTO. Art. 54 Lei 9.784/99.'},
   {b:'FGV',t:'multiple',s:'O prazo decadencial para a Adm anular atos favoráveis a destinatário de boa-fé é:',o:['3 anos.','5 anos.','10 anos.','Imprescritível.','1 ano.'],c:1,e:'Art. 54 Lei 9.784/99.'},
   {b:'FCC',t:'multiple',s:'O ato administrativo NÃO pode ser:',o:['Vinculado.','Discricionário.','Arbitrário.','Revogável.','Anulável.'],c:2,e:'Discricionário ≠ arbitrário.'},
-  {b:'VUNESP',t:'multiple',s:'O atributo da tipicidade do ato administrativo significa:',o:['Que o ato deve ser publicado.','Que cada ato corresponde a uma figura típica prevista em lei.','Que é discricionário.','Que é coercitivo.','Que é vinculado.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'Pode ser revogado pela própria Administração:',o:['Ato ilegal apenas.','Ato vinculado apenas.','Ato discricionário, por motivo de conveniência.','Ato judicial.'],c:2,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'O atributo da tipicidade do ato administrativo significa:',o:['Que o ato deve ser publicado.','Que cada ato corresponde a uma figura típica prevista em lei.','Que é discricionário.','Que é coercitivo.','Que é vinculado.'],c:1,e:'Resposta correta: Que cada ato corresponde a uma figura típica prevista em lei..'},
+  {b:'IBFC',t:'multiple',s:'Pode ser revogado pela própria Administração:',o:['Ato ilegal apenas.','Ato vinculado apenas.','Ato discricionário, por motivo de conveniência.','Ato judicial.'],c:2,e:'Resposta correta: Ato discricionário, por motivo de conveniência..'},
   {b:'AOCP',t:'multiple',s:'A convalidação:',o:['Aplica-se a vícios de finalidade.','É possível para vícios sanáveis (competência não exclusiva e forma).','Substitui a anulação obrigatoriamente.','Sempre produz efeitos ex nunc.'],c:1,e:'Art. 55 Lei 9.784/99.'},
 ],
 
@@ -1333,27 +1579,27 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'É vedada a acumulação remunerada de cargos públicos, salvo as exceções previstas na Constituição.',c:0,e:'CERTO. Art. 37, XVI.'},
   {b:'CESPE',t:'cebraspe',s:'A acumulação de dois cargos de professor é permitida, desde que haja compatibilidade de horários.',c:0,e:'CERTO. Art. 37, XVI, "a".'},
   {b:'CESPE',t:'cebraspe',s:'A remuneração dos servidores públicos não poderá exceder o subsídio mensal dos Ministros do STF.',c:0,e:'CERTO. Art. 37, XI.'},
-  {b:'CESPE',t:'cebraspe',s:'A Lei 14.230/2021 eliminou a modalidade culposa de improbidade administrativa.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei 14.230/2021 eliminou a modalidade culposa de improbidade administrativa.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'A condenação por improbidade administrativa acarreta perda automática dos direitos políticos.',c:1,e:'ERRADO. Suspensão é UMA das sanções, dependendo do tipo.'},
   {b:'CESPE',t:'cebraspe',s:'A ação de improbidade administrativa pode ser proposta pelo Ministério Público.',c:0,e:'CERTO. Art. 17 (Lei 14.230/21).'},
   {b:'CESPE',t:'cebraspe',s:'Aos servidores públicos militares aplicam-se as normas da Lei 8.112/90.',c:1,e:'ERRADO. Regime próprio (art. 42).'},
   {b:'FGV',t:'multiple',s:'A estabilidade do servidor público é adquirida após:',o:['1 ano.','2 anos.','3 anos de efetivo exercício.','5 anos.','10 anos.'],c:2,e:'Art. 41.'},
   {b:'FGV',t:'multiple',s:'É possível acumular remuneradamente:',o:['Dois cargos em comissão.','Dois cargos de professor com compatibilidade de horários.','Dois cargos de juiz.','Dois cargos do MP.','Dois cargos no Legislativo.'],c:1,e:'Art. 37, XVI, "a".'},
   {b:'FCC',t:'multiple',s:'O servidor estável só pode perder o cargo, dentre as hipóteses:',o:['Vontade do chefe.','Sentença judicial transitada em julgado, PAD, avaliação periódica ou excesso de gastos com pessoal.','Necessidade financeira.','Sem devido processo.','Por aposentadoria compulsória apenas.'],c:1,e:'Art. 41, § 1º.'},
-  {b:'FCC',t:'multiple',s:'A Lei de Improbidade (Lei 8.429/92 com alterações da Lei 14.230/21) exige:',o:['Culpa em todos os tipos.','Dolo específico em todos os tipos.','Apenas má-fé.','Resultado lesivo concreto sempre.','Reincidência.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'A Lei de Improbidade (Lei 8.429/92 com alterações da Lei 14.230/21) exige:',o:['Culpa em todos os tipos.','Dolo específico em todos os tipos.','Apenas má-fé.','Resultado lesivo concreto sempre.','Reincidência.'],c:1,e:'Resposta correta: Dolo específico em todos os tipos..'},
   {b:'VUNESP',t:'multiple',s:'Constitui ato de improbidade que causa prejuízo ao erário:',o:['Receber dinheiro para favorecer terceiros.','Ordenar despesa não autorizada em lei.','Frustrar a licitude de concurso público.','Revelar fato sigiloso.','Negar publicidade aos atos oficiais.'],c:1,e:'Art. 10, IX.'},
   {b:'VUNESP',t:'multiple',s:'A acumulação de dois cargos de saúde com profissões regulamentadas é permitida:',o:['Em qualquer caso.','Mediante compatibilidade de horários e respeito ao teto.','Apenas para enfermeiros.','Vedada totalmente.','Só na esfera federal.'],c:1,e:'Art. 37, XVI, "c".'},
   {b:'IBFC',t:'multiple',s:'A vedação à acumulação remunerada abrange:',o:['Apenas a administração direta.','Autarquias, fundações, empresas públicas, sociedades de economia mista e suas subsidiárias.','Apenas as estatais lucrativas.','Apenas o Executivo.'],c:1,e:'Art. 37, XVII.'},
   {b:'IBFC',t:'multiple',s:'A prescrição para a propositura da ação de improbidade é de:',o:['3 anos.','5 anos.','8 anos.','10 anos.'],c:2,e:'Art. 23 (Lei 14.230/21).'},
   {b:'AOCP',t:'multiple',s:'O teto remuneratório da Administração Pública corresponde:',o:['Ao salário-mínimo.','Ao subsídio mensal dos Ministros do STF.','Ao subsídio do Presidente.','Ao salário do governador.','Ao salário do prefeito.'],c:1,e:'Art. 37, XI.'},
   {b:'AOCP',t:'multiple',s:'Constitui ato de improbidade administrativa por enriquecimento ilícito:',o:['Frustrar concurso.','Auferir vantagem patrimonial indevida em razão do exercício de cargo, emprego ou função pública.','Ordenar despesa não autorizada.','Revelar segredo profissional.','Negar publicidade.'],c:1,e:'Art. 9º.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O servidor em estágio probatório goza da garantia de estabilidade.',c:1,e:'ERRADO. Estabilidade só após 3 anos.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O cargo em comissão destina-se exclusivamente a funções de direção, chefia e assessoramento.',c:0,e:'CERTO. Art. 37, V.'},
+  {b:'Quadrix',t:'cebraspe',s:'O servidor em estágio probatório goza da garantia de estabilidade.',c:1,e:'ERRADO. Estabilidade só após 3 anos.'},
+  {b:'Quadrix',t:'cebraspe',s:'O cargo em comissão destina-se exclusivamente a funções de direção, chefia e assessoramento.',c:0,e:'CERTO. Art. 37, V.'},
   {b:'CESPE',t:'cebraspe',s:'A vedação à acumulação remunerada não se aplica a empregos públicos.',c:1,e:'ERRADO. Aplica-se a cargos, empregos e funções (art. 37, XVI).'},
-  {b:'CESPE',t:'cebraspe',s:'Os direitos individuais inerentes à pessoa do servidor são irrenunciáveis e indisponíveis.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'Os direitos individuais inerentes à pessoa do servidor são irrenunciáveis e indisponíveis.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'É vedada a vinculação ou equiparação de quaisquer espécies remuneratórias para o efeito de remuneração de pessoal do serviço público.',c:0,e:'CERTO. Art. 37, XIII.'},
   {b:'FGV',t:'multiple',s:'O acesso aos cargos públicos é assegurado:',o:['Apenas aos brasileiros natos.','Aos brasileiros e aos estrangeiros, na forma da lei.','Apenas aos eleitores.','Apenas aos servidores efetivos.','A todos os maiores de 18.'],c:1,e:'Art. 37, I.'},
-  {b:'FCC',t:'multiple',s:'O servidor público em estágio probatório:',o:['Não pode ser exonerado.','Pode ser exonerado por insuficiência de desempenho com devido processo legal.','Tem estabilidade.','Não está submetido à avaliação.','É demitido sem processo.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'O servidor público em estágio probatório:',o:['Não pode ser exonerado.','Pode ser exonerado por insuficiência de desempenho com devido processo legal.','Tem estabilidade.','Não está submetido à avaliação.','É demitido sem processo.'],c:1,e:'Resposta correta: Pode ser exonerado por insuficiência de desempenho com devido processo legal..'},
   {b:'VUNESP',t:'multiple',s:'A Lei 14.230/2021, em relação à improbidade administrativa, NÃO trouxe:',o:['Exigência de dolo específico.','Prescrição de 8 anos.','Eliminação da culpa.','Limitação do MP à ação.','Manutenção da modalidade culposa para o art. 10.'],c:4,e:'A 14.230/21 eliminou a modalidade culposa.'},
   {b:'IBFC',t:'multiple',s:'Sobre a Lei 8.112/90:',o:['Aplica-se aos militares.','Aplica-se aos servidores civis da União, autarquias e fundações públicas federais.','Aplica-se aos servidores estaduais.','Aplica-se a empregados públicos.'],c:1,e:'Art. 1º.'},
   {b:'AOCP',t:'multiple',s:'A acumulação de cargo de professor com outro técnico ou científico é:',o:['Permitida com compatibilidade de horários e respeito ao teto.','Vedada.','Permitida sem qualquer ressalva.','Permitida apenas no setor privado.','Restrita ao ensino superior.'],c:0,e:'Art. 37, XVI, "b".'},
@@ -1366,32 +1612,32 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A lei penal mais benéfica retroage para alcançar fatos anteriores à sua vigência.',c:0,e:'CERTO. Art. 5º, XL CF + art. 2º, p.ú. CP.'},
   {b:'CESPE',t:'cebraspe',s:'A lei penal mais gravosa pode retroagir para alcançar fatos pretéritos.',c:1,e:'ERRADO. A mais gravosa não retroage.'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da insignificância, segundo o STF, exige a presença de quatro vetores cumulativos: mínima ofensividade, ausência de periculosidade social, reduzida reprovabilidade e inexpressividade da lesão jurídica.',c:0,e:'CERTO. HC 84.412/SP (MOPRRI).'},
-  {b:'CESPE',t:'cebraspe',s:'O princípio da intervenção mínima impõe que o Direito Penal seja a ultima ratio.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O princípio da intervenção mínima impõe que o Direito Penal seja a ultima ratio.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'No Direito Penal não há responsabilidade objetiva, exigindo-se dolo ou culpa para a configuração do crime.',c:0,e:'CERTO. Art. 18 CP.'},
   {b:'CESPE',t:'cebraspe',s:'A interpretação analógica é vedada no Direito Penal.',c:1,e:'ERRADO. Vedada é a ANALOGIA in malam partem. Interpretação analógica é permitida.'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da humanidade veda penas cruéis, perpétuas, banimento e trabalhos forçados.',c:0,e:'CERTO. Art. 5º, XLVII CF.'},
-  {b:'CESPE',t:'cebraspe',s:'O princípio da lesividade impede a punição de condutas que não lesem bem jurídico alheio.',c:0,e:'CERTO.'},
-  {b:'CESPE',t:'cebraspe',s:'O princípio da culpabilidade veda a responsabilidade penal objetiva.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O princípio da lesividade impede a punição de condutas que não lesem bem jurídico alheio.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'O princípio da culpabilidade veda a responsabilidade penal objetiva.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'FGV',t:'multiple',s:'O princípio da insignificância exige (STF):',o:['Apenas valor irrisório.','Mínima ofensividade, ausência de periculosidade, reduzida reprovabilidade e inexpressividade da lesão.','Boa-fé do agente.','Primariedade apenas.','Confissão.'],c:1,e:'MOPRRI — HC 84.412.'},
-  {b:'FGV',t:'multiple',s:'A retroatividade da lei penal benéfica está prevista:',o:['Em lei ordinária apenas.','No CP, mas não na CF.','No art. 5º, XL da CF e art. 2º, p.ú. CP.','Na Lei dos Crimes Hediondos.','No CPP.'],c:2,e:'.'},
-  {b:'FCC',t:'multiple',s:'O princípio que veda a responsabilidade penal sem dolo ou culpa é o da:',o:['Legalidade.','Insignificância.','Culpabilidade.','Lesividade.','Adequação social.'],c:2,e:'.'},
-  {b:'FCC',t:'multiple',s:'A intervenção mínima decorre do princípio da:',o:['Subsidiariedade e fragmentariedade do Direito Penal.','Legalidade.','Insignificância.','Personalidade da pena.','Culpabilidade.'],c:0,e:'.'},
+  {b:'FGV',t:'multiple',s:'A retroatividade da lei penal benéfica está prevista:',o:['Em lei ordinária apenas.','No CP, mas não na CF.','No art. 5º, XL da CF e art. 2º, p.ú. CP.','Na Lei dos Crimes Hediondos.','No CPP.'],c:2,e:'Resposta correta: No art. 5º, XL da CF e art. 2º, p.ú. CP..'},
+  {b:'FCC',t:'multiple',s:'O princípio que veda a responsabilidade penal sem dolo ou culpa é o da:',o:['Legalidade.','Insignificância.','Culpabilidade.','Lesividade.','Adequação social.'],c:2,e:'Resposta correta: Culpabilidade..'},
+  {b:'FCC',t:'multiple',s:'A intervenção mínima decorre do princípio da:',o:['Subsidiariedade e fragmentariedade do Direito Penal.','Legalidade.','Insignificância.','Personalidade da pena.','Culpabilidade.'],c:0,e:'Resposta correta: Subsidiariedade e fragmentariedade do Direito Penal..'},
   {b:'VUNESP',t:'multiple',s:'Não constitui princípio do Direito Penal:',o:['Legalidade.','Insignificância.','Intervenção mínima.','Atipicidade material.','Auto-execução obrigatória.'],c:4,e:'Inventado.'},
-  {b:'VUNESP',t:'multiple',s:'O princípio da legalidade no Direito Penal:',o:['É absoluto.','Comporta diversas exceções.','Engloba os subprincípios da lex praevia, scripta, stricta e certa.','Aplica-se apenas a tipos abertos.','Não se aplica a normas penais em branco.'],c:2,e:'.'},
-  {b:'IBFC',t:'multiple',s:'Princípio da ofensividade ou lesividade significa:',o:['Necessidade de lesão a bem jurídico para haver crime.','Pena proporcional ao dano.','Vedação à analogia.','Pena pessoal.'],c:0,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'O princípio da legalidade no Direito Penal:',o:['É absoluto.','Comporta diversas exceções.','Engloba os subprincípios da lex praevia, scripta, stricta e certa.','Aplica-se apenas a tipos abertos.','Não se aplica a normas penais em branco.'],c:2,e:'Resposta correta: Engloba os subprincípios da lex praevia, scripta, stricta e certa..'},
+  {b:'IBFC',t:'multiple',s:'Princípio da ofensividade ou lesividade significa:',o:['Necessidade de lesão a bem jurídico para haver crime.','Pena proporcional ao dano.','Vedação à analogia.','Pena pessoal.'],c:0,e:'Resposta correta: Necessidade de lesão a bem jurídico para haver crime..'},
   {b:'IBFC',t:'multiple',s:'O princípio da personalidade da pena impede que:',o:['A pena seja transmitida a terceiros (ela é intransferível).','A pena seja aplicada com individualização.','Haja perdão judicial.','Haja sursis.'],c:0,e:'Art. 5º, XLV CF.'},
-  {b:'AOCP',t:'multiple',s:'A taxatividade no Direito Penal exige:',o:['Tipos abertos.','Tipos certos e precisos, sem ambiguidades.','Aplicação analógica.','Tipos genéricos.','Pena abstrata indefinida.'],c:1,e:'.'},
-  {b:'QUADRIX',t:'cebraspe',s:'Vige no Direito Penal o princípio in dubio pro reo.',c:0,e:'CERTO.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O princípio da bagatela é sinônimo de princípio da insignificância.',c:0,e:'CERTO.'},
+  {b:'AOCP',t:'multiple',s:'A taxatividade no Direito Penal exige:',o:['Tipos abertos.','Tipos certos e precisos, sem ambiguidades.','Aplicação analógica.','Tipos genéricos.','Pena abstrata indefinida.'],c:1,e:'Resposta correta: Tipos certos e precisos, sem ambiguidades..'},
+  {b:'Quadrix',t:'cebraspe',s:'Vige no Direito Penal o princípio in dubio pro reo.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'Quadrix',t:'cebraspe',s:'O princípio da bagatela é sinônimo de princípio da insignificância.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da adequação social torna atípicas condutas socialmente aceitas.',c:0,e:'CERTO. Doutrina.'},
   {b:'CESPE',t:'cebraspe',s:'A novatio legis incriminadora retroage para fatos anteriores.',c:1,e:'ERRADO. Lei nova que cria crime NÃO retroage.'},
   {b:'CESPE',t:'cebraspe',s:'A abolitio criminis extingue a punibilidade.',c:0,e:'CERTO. Art. 107, III CP.'},
-  {b:'FGV',t:'multiple',s:'A abolitio criminis decorre do princípio da:',o:['Insignificância.','Retroatividade da lei mais benéfica.','Continuidade normativo-típica.','Adequação social.','Subsidiariedade.'],c:1,e:'.'},
+  {b:'FGV',t:'multiple',s:'A abolitio criminis decorre do princípio da:',o:['Insignificância.','Retroatividade da lei mais benéfica.','Continuidade normativo-típica.','Adequação social.','Subsidiariedade.'],c:1,e:'Resposta correta: Retroatividade da lei mais benéfica..'},
   {b:'FCC',t:'multiple',s:'A novatio legis in mellius:',o:['Não retroage.','Retroage, inclusive após o trânsito em julgado.','Aplica-se apenas a fatos pendentes.','Não atinge sentença executada.','Depende de provocação do MP.'],c:1,e:'Art. 2º, p.ú. CP.'},
-  {b:'VUNESP',t:'multiple',s:'Em caso de sucessão de leis penais no tempo, aplica-se:',o:['Sempre a lei do tempo da sentença.','A lei mais benéfica.','A lei do tempo do fato sem exceções.','A lei mais gravosa.','A lei vigente na execução.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'A continuidade normativo-típica ocorre quando:',o:['A lei revoga e cria crime novo diferente.','A lei revoga formalmente um tipo, mas o conteúdo é mantido em outro tipo penal.','A lei nova é mais gravosa.','Há abolitio criminis.'],c:1,e:'.'},
-  {b:'AOCP',t:'multiple',s:'A lei penal em branco é aquela:',o:['Que não tem preceito.','Cujo preceito é incompleto, dependendo de complemento por outra norma.','Cujo conteúdo é proibido pela CF.','Que se aplica apenas a estrangeiros.','Sempre inconstitucional.'],c:1,e:'.'},
-  {b:'CESPE',t:'cebraspe',s:'O princípio da proibição da analogia in malam partem decorre da legalidade.',c:0,e:'CERTO.'},
+  {b:'VUNESP',t:'multiple',s:'Em caso de sucessão de leis penais no tempo, aplica-se:',o:['Sempre a lei do tempo da sentença.','A lei mais benéfica.','A lei do tempo do fato sem exceções.','A lei mais gravosa.','A lei vigente na execução.'],c:1,e:'Resposta correta: A lei mais benéfica..'},
+  {b:'IBFC',t:'multiple',s:'A continuidade normativo-típica ocorre quando:',o:['A lei revoga e cria crime novo diferente.','A lei revoga formalmente um tipo, mas o conteúdo é mantido em outro tipo penal.','A lei nova é mais gravosa.','Há abolitio criminis.'],c:1,e:'Resposta correta: A lei revoga formalmente um tipo, mas o conteúdo é mantido em outro tipo penal..'},
+  {b:'AOCP',t:'multiple',s:'A lei penal em branco é aquela:',o:['Que não tem preceito.','Cujo preceito é incompleto, dependendo de complemento por outra norma.','Cujo conteúdo é proibido pela CF.','Que se aplica apenas a estrangeiros.','Sempre inconstitucional.'],c:1,e:'Resposta correta: Cujo preceito é incompleto, dependendo de complemento por outra norma..'},
+  {b:'CESPE',t:'cebraspe',s:'O princípio da proibição da analogia in malam partem decorre da legalidade.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
 'penal-aplicacao-tempo-lugar': [
@@ -1405,17 +1651,17 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A lei penal brasileira aplica-se a crime cometido por estrangeiro contra brasileiro fora do Brasil incondicionalmente.',c:1,e:'ERRADO. É condicionada (art. 7º, § 3º).'},
   {b:'CESPE',t:'cebraspe',s:'O genocídio cometido por brasileiro fora do Brasil sujeita-se à lei brasileira, sem qualquer condição.',c:0,e:'CERTO. Art. 7º, I, "d" — incondicionada.'},
   {b:'CESPE',t:'cebraspe',s:'A pena cumprida no estrangeiro atenua a pena imposta no Brasil pelo mesmo crime, quando diversas, ou nela é computada se idênticas.',c:0,e:'CERTO. Art. 8º CP.'},
-  {b:'FGV',t:'multiple',s:'A teoria adotada pelo CP para o tempo do crime é:',o:['Resultado.','Atividade.','Ubiquidade.','Mista.','Intenção.'],c:1,e:'.'},
-  {b:'FGV',t:'multiple',s:'A teoria adotada pelo CP para o lugar do crime é:',o:['Atividade.','Resultado.','Ubiquidade (mista).','Intenção.','Pavilhão.'],c:2,e:'.'},
+  {b:'FGV',t:'multiple',s:'A teoria adotada pelo CP para o tempo do crime é:',o:['Resultado.','Atividade.','Ubiquidade.','Mista.','Intenção.'],c:1,e:'Resposta correta: Atividade..'},
+  {b:'FGV',t:'multiple',s:'A teoria adotada pelo CP para o lugar do crime é:',o:['Atividade.','Resultado.','Ubiquidade (mista).','Intenção.','Pavilhão.'],c:2,e:'Resposta correta: Ubiquidade (mista)..'},
   {b:'FCC',t:'multiple',s:'Crime cometido em embarcação mercante brasileira em alto-mar:',o:['Sujeita-se à lei do porto.','Sujeita-se à lei brasileira (princípio do pavilhão).','Não sujeita à lei brasileira.','Aplica-se a lei do ofendido.','Depende de tratado.'],c:1,e:'Art. 5º, § 1º.'},
-  {b:'FCC',t:'multiple',s:'O período compreendido entre o início da execução e a consumação determina:',o:['O lugar do crime.','O tempo do crime (atividade).','O momento da consumação.','O lugar do resultado.','A jurisdição.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'O período compreendido entre o início da execução e a consumação determina:',o:['O lugar do crime.','O tempo do crime (atividade).','O momento da consumação.','O lugar do resultado.','A jurisdição.'],c:1,e:'Resposta correta: O tempo do crime (atividade)..'},
   {b:'VUNESP',t:'multiple',s:'A extraterritorialidade incondicionada aplica-se nos casos de crime:',o:['Contra a vida do PR, patrimônio da União, administração pública por brasileiro e genocídio.','Cometido por estrangeiro em qualquer lugar.','Praticado em aeronave estrangeira.','Cometido no mar territorial.','Apenas no exterior por brasileiro.'],c:0,e:'Art. 7º, I.'},
   {b:'VUNESP',t:'multiple',s:'A pena cumprida no estrangeiro:',o:['Não tem efeito.','Atenua a pena ou é nela computada.','Substitui a pena brasileira.','Anula a pena.','Aplica-se ao reincidente.'],c:1,e:'Art. 8º CP.'},
   {b:'IBFC',t:'multiple',s:'Considera-se lugar do crime aquele em que:',o:['Ocorreu a ação.','Ocorreu o resultado.','Ocorreu a ação ou o resultado, no todo ou em parte (ubiquidade).','O agente reside.'],c:2,e:'Art. 6º.'},
   {b:'IBFC',t:'multiple',s:'O crime de tortura praticado fora do Brasil contra brasileiro:',o:['Sujeita-se à lei brasileira incondicionalmente.','Sujeita-se à extraterritorialidade hipercondicionada.','Não se aplica a lei BR.','Aplica-se a Lei 9.455 sempre.'],c:1,e:'Lei 9.455/97, art. 2º.'},
-  {b:'AOCP',t:'multiple',s:'A teoria do tempo do crime no CP:',o:['Adota a atividade, vale o momento da ação ou omissão, ainda que outro seja o do resultado.','Adota a teoria do resultado.','Adota a teoria mista.','Não há teoria expressa.','Adota a teoria da intenção.'],c:0,e:'.'},
-  {b:'QUADRIX',t:'cebraspe',s:'Crime cometido por brasileiro no exterior pode ser processado no Brasil mesmo sem dupla incriminação.',c:1,e:'ERRADO. Exige dupla incriminação (art. 7º, § 2º).'},
-  {b:'QUADRIX',t:'cebraspe',s:'No crime tentado adota-se a teoria da atividade para fins de tempo do crime.',c:0,e:'CERTO.'},
+  {b:'AOCP',t:'multiple',s:'A teoria do tempo do crime no CP:',o:['Adota a atividade, vale o momento da ação ou omissão, ainda que outro seja o do resultado.','Adota a teoria do resultado.','Adota a teoria mista.','Não há teoria expressa.','Adota a teoria da intenção.'],c:0,e:'Resposta correta: Adota a atividade, vale o momento da ação ou omissão, ainda que outro seja o do resultado..'},
+  {b:'Quadrix',t:'cebraspe',s:'Crime cometido por brasileiro no exterior pode ser processado no Brasil mesmo sem dupla incriminação.',c:1,e:'ERRADO. Exige dupla incriminação (art. 7º, § 2º).'},
+  {b:'Quadrix',t:'cebraspe',s:'No crime tentado adota-se a teoria da atividade para fins de tempo do crime.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'Aplica-se a lei brasileira ao crime cometido em aeronave estrangeira privada em sobrevoo do território brasileiro.',c:0,e:'CERTO. Art. 5º, § 2º.'},
   {b:'CESPE',t:'cebraspe',s:'A lei penal brasileira aplica-se às embarcações brasileiras públicas em qualquer lugar.',c:0,e:'CERTO. Princípio do pavilhão absoluto.'},
   {b:'FGV',t:'multiple',s:'O princípio da territorialidade no Brasil é:',o:['Absoluto.','Relativo, temperado por tratados, convenções e regras de Direito Internacional.','Inexistente.','Aplicável apenas a brasileiros.','Restrito a aeronaves.'],c:1,e:'Art. 5º CP.'},
@@ -1436,7 +1682,7 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O perdão judicial é aplicável ao homicídio culposo quando as consequências atingem o próprio agente de forma grave.',c:0,e:'CERTO. Art. 121, § 5º.'},
   {b:'CESPE',t:'cebraspe',s:'A ameaça consiste em ameaçar alguém por palavra, escrito ou gesto, ou qualquer outro meio simbólico, de causar-lhe mal injusto e grave.',c:0,e:'CERTO. Art. 147.'},
   {b:'CESPE',t:'cebraspe',s:'O crime de constrangimento ilegal exige o emprego de violência ou grave ameaça.',c:0,e:'CERTO. Art. 146.'},
-  {b:'CESPE',t:'cebraspe',s:'A injúria preconceituosa praticada contra a vítima em razão de sua raça é equiparada ao racismo desde a Lei 14.532/2023.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A injúria preconceituosa praticada contra a vítima em razão de sua raça é equiparada ao racismo desde a Lei 14.532/2023.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O sequestro relâmpago é hipótese de extorsão qualificada pela restrição da liberdade da vítima.',c:0,e:'CERTO. Art. 158, § 3º.'},
   {b:'FGV',t:'multiple',s:'O homicídio é qualificado, segundo o CP, quando praticado:',o:['Por motivo de relevante valor moral.','Por motivo fútil ou torpe.','Sob violenta emoção logo após injusta provocação.','Em legítima defesa.','Em estrito cumprimento do dever legal.'],c:1,e:'Art. 121, § 2º.'},
   {b:'FGV',t:'multiple',s:'A lesão corporal grave é assim caracterizada quando resulta em:',o:['Incapacidade para ocupações habituais por mais de 30 dias.','Perigo de vida apenas.','Apenas dor sem repercussão.','Tratamento ambulatorial.','Apenas marcas superficiais.'],c:0,e:'Art. 129, § 1º.'},
@@ -1445,20 +1691,20 @@ const QBANK = {
   {b:'VUNESP',t:'multiple',s:'A figura do homicídio privilegiado se caracteriza por:',o:['Motivo torpe.','Relevante valor social ou moral, ou domínio de violenta emoção logo em seguida a injusta provocação da vítima.','Emboscada.','Recurso que dificulte a defesa.','Meio cruel.'],c:1,e:'Art. 121, § 1º.'},
   {b:'VUNESP',t:'multiple',s:'A perseguição (stalking), do art. 147-A CP, foi introduzida pela:',o:['Lei 13.104/15.','Lei 13.642/18.','Lei 14.132/21.','Lei 14.344/22.','Lei 12.737/12.'],c:2,e:'Lei 14.132/2021.'},
   {b:'IBFC',t:'multiple',s:'A violência psicológica contra a mulher, tipificada como crime autônomo, foi instituída pela:',o:['Lei 11.340/06.','Lei 13.104/15.','Lei 14.188/21.','Lei 14.344/22.'],c:2,e:'Lei 14.188/2021 — art. 147-B CP.'},
-  {b:'IBFC',t:'multiple',s:'A omissão de socorro (art. 135 CP) exige:',o:['Risco para o omitente.','Que o socorro pudesse ser prestado sem risco pessoal.','Pedido prévio.','Lesão corporal grave.'],c:1,e:'.'},
+  {b:'IBFC',t:'multiple',s:'A omissão de socorro (art. 135 CP) exige:',o:['Risco para o omitente.','Que o socorro pudesse ser prestado sem risco pessoal.','Pedido prévio.','Lesão corporal grave.'],c:1,e:'Resposta correta: Que o socorro pudesse ser prestado sem risco pessoal..'},
   {b:'AOCP',t:'multiple',s:'O homicídio simples consumado tem pena de:',o:['1 a 3 anos.','6 a 20 anos de reclusão.','12 a 30 anos de reclusão.','3 a 6 anos.','Detenção de 1 ano.'],c:1,e:'Art. 121, caput.'},
-  {b:'QUADRIX',t:'cebraspe',s:'No homicídio qualificado, a pena é de reclusão de 12 a 30 anos.',c:0,e:'CERTO. Art. 121, § 2º.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A lesão corporal de natureza gravíssima resulta, entre outras hipóteses, em deformidade permanente.',c:0,e:'CERTO. Art. 129, § 2º, IV.'},
+  {b:'Quadrix',t:'cebraspe',s:'No homicídio qualificado, a pena é de reclusão de 12 a 30 anos.',c:0,e:'CERTO. Art. 121, § 2º.'},
+  {b:'Quadrix',t:'cebraspe',s:'A lesão corporal de natureza gravíssima resulta, entre outras hipóteses, em deformidade permanente.',c:0,e:'CERTO. Art. 129, § 2º, IV.'},
   {b:'CESPE',t:'cebraspe',s:'O aborto é crime contra a vida, tipificado no Código Penal.',c:0,e:'CERTO. Arts. 124-127.'},
   {b:'CESPE',t:'cebraspe',s:'A eutanásia é tratada pelo CP brasileiro como hipótese expressa de homicídio privilegiado.',c:1,e:'ERRADO. Não há previsão expressa; a doutrina enquadra como homicídio privilegiado (relevante valor moral).'},
   {b:'CESPE',t:'cebraspe',s:'A morte do ofendido é circunstância qualificadora do crime de tortura.',c:0,e:'CERTO. Art. 1º, § 3º, Lei 9.455/97.'},
   {b:'FGV',t:'multiple',s:'No homicídio qualificado por feminicídio, a pena prevista, considerando-se também a qualificadora, varia de:',o:['6 a 20 anos.','12 a 30 anos.','15 a 30 anos.','20 a 40 anos.','Pena de prisão perpétua.'],c:1,e:'Art. 121, § 2º.'},
-  {b:'FCC',t:'multiple',s:'A perseguição (stalking) prevista no art. 147-A pune o agente que:',o:['Ameaça.','Persegue alguém, reiteradamente e por qualquer meio, ameaçando-lhe integridade, liberdade ou perturbando esfera de privacidade.','Constrange.','Pratica violência doméstica.','Mata alguém.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'A perseguição (stalking) prevista no art. 147-A pune o agente que:',o:['Ameaça.','Persegue alguém, reiteradamente e por qualquer meio, ameaçando-lhe integridade, liberdade ou perturbando esfera de privacidade.','Constrange.','Pratica violência doméstica.','Mata alguém.'],c:1,e:'Resposta correta: Persegue alguém, reiteradamente e por qualquer meio, ameaçando-lhe integridade, liberdade ou perturbando esfera de pr....'},
   {b:'VUNESP',t:'multiple',s:'O homicídio qualificado pelo emprego de fogo, explosivo ou outro meio insidioso é:',o:['Privilegiado.','Qualificado por meio cruel ou insidioso.','Simples.','Culposo.','Privilegiado-qualificado.'],c:1,e:'Art. 121, § 2º, III.'},
-  {b:'IBFC',t:'multiple',s:'O crime de lesão corporal levíssima:',o:['Não existe legalmente, é classificação doutrinária.','É hediondo.','Tem pena mínima de 4 anos.','É crime militar exclusivo.'],c:0,e:'.'},
-  {b:'AOCP',t:'multiple',s:'A violência doméstica como qualificadora da lesão corporal está prevista no:',o:['§ 9º do art. 129 CP.','§ 1º do art. 121.','§ 3º do art. 158.','Lei Maria da Penha apenas.','Não há previsão.'],c:0,e:'.'},
-  {b:'CESPE',t:'cebraspe',s:'A coação no curso do processo é crime contra a Administração da Justiça, com previsão no art. 344 CP.',c:0,e:'CERTO.'},
-  {b:'CESPE',t:'cebraspe',s:'O crime de injúria racial, após a Lei 14.532/2023, passou a ser equiparado ao racismo, sendo imprescritível.',c:0,e:'CERTO.'},
+  {b:'IBFC',t:'multiple',s:'O crime de lesão corporal levíssima:',o:['Não existe legalmente, é classificação doutrinária.','É hediondo.','Tem pena mínima de 4 anos.','É crime militar exclusivo.'],c:0,e:'Resposta correta: Não existe legalmente, é classificação doutrinária..'},
+  {b:'AOCP',t:'multiple',s:'A violência doméstica como qualificadora da lesão corporal está prevista no:',o:['§ 9º do art. 129 CP.','§ 1º do art. 121.','§ 3º do art. 158.','Lei Maria da Penha apenas.','Não há previsão.'],c:0,e:'Resposta correta: § 9º do art. 129 CP..'},
+  {b:'CESPE',t:'cebraspe',s:'A coação no curso do processo é crime contra a Administração da Justiça, com previsão no art. 344 CP.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'O crime de injúria racial, após a Lei 14.532/2023, passou a ser equiparado ao racismo, sendo imprescritível.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
 'penal-patrimonio': [
@@ -1466,31 +1712,31 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O latrocínio é classificado como crime contra a vida e, por isso, é da competência do Tribunal do Júri.',c:1,e:'ERRADO. Súmula 603 STF — crime contra patrimônio, juiz singular.'},
   {b:'CESPE',t:'cebraspe',s:'A receptação culposa ocorre quando o agente deveria presumir a origem criminosa da coisa.',c:0,e:'CERTO. Art. 180, § 3º.'},
   {b:'CESPE',t:'cebraspe',s:'O furto qualificado pelo rompimento de obstáculo exige perícia para sua caracterização.',c:0,e:'CERTO. STJ.'},
-  {b:'CESPE',t:'cebraspe',s:'A extorsão se diferencia do roubo porque, na extorsão, há cooperação ativa da vítima sob ameaça para a obtenção da vantagem indevida.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A extorsão se diferencia do roubo porque, na extorsão, há cooperação ativa da vítima sob ameaça para a obtenção da vantagem indevida.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O furto simples tem pena de reclusão de 1 a 4 anos.',c:0,e:'CERTO. Art. 155.'},
   {b:'CESPE',t:'cebraspe',s:'A pena do roubo é aumentada quando praticado com emprego de arma de fogo.',c:0,e:'CERTO. Art. 157, § 2º-A.'},
   {b:'CESPE',t:'cebraspe',s:'A extorsão mediante sequestro é crime hediondo.',c:0,e:'CERTO. Lei 8.072/90, art. 1º, III.'},
   {b:'CESPE',t:'cebraspe',s:'A estelionato é crime contra o patrimônio.',c:0,e:'CERTO. Art. 171.'},
   {b:'CESPE',t:'cebraspe',s:'O furto qualificado pelo uso de explosivo tem pena maior que o latrocínio.',c:1,e:'ERRADO. Latrocínio: 20-30 anos. Furto qualificado: 4-10 ou 4-15 anos.'},
-  {b:'FGV',t:'multiple',s:'A diferença essencial entre roubo e extorsão é que:',o:['Roubo é com violência e extorsão sem.','No roubo o agente subtrai; na extorsão a vítima coopera sob ameaça entregando a coisa ou fazendo, tolerando ou omitindo algo.','Não há diferença.','A extorsão é culposa.','O roubo é hediondo.'],c:1,e:'.'},
+  {b:'FGV',t:'multiple',s:'A diferença essencial entre roubo e extorsão é que:',o:['Roubo é com violência e extorsão sem.','No roubo o agente subtrai; na extorsão a vítima coopera sob ameaça entregando a coisa ou fazendo, tolerando ou omitindo algo.','Não há diferença.','A extorsão é culposa.','O roubo é hediondo.'],c:1,e:'Resposta correta: No roubo o agente subtrai; na extorsão a vítima coopera sob ameaça entregando a coisa ou fazendo, tolerando ou omitin....'},
   {b:'FGV',t:'multiple',s:'O furto qualificado por concurso de duas ou mais pessoas tem pena de:',o:['Reclusão de 1 a 4 anos.','Reclusão de 2 a 8 anos.','Reclusão de 3 a 10 anos.','Detenção de 6 meses a 2 anos.','Reclusão de 4 a 10 anos.'],c:1,e:'Art. 155, § 4º — pena dobra (2 a 8 anos).'},
   {b:'FCC',t:'multiple',s:'A apropriação indébita configura-se quando o agente:',o:['Subtrai coisa móvel.','Apropria-se de coisa alheia móvel de que tem posse ou detenção.','Engana a vítima.','Recebe coisa de origem criminosa.','Constrange a vítima.'],c:1,e:'Art. 168.'},
   {b:'FCC',t:'multiple',s:'A receptação dolosa simples tem pena de:',o:['Detenção de 6 meses a 1 ano.','Reclusão de 1 a 4 anos + multa.','Reclusão de 4 a 8 anos.','Detenção de 1 a 3 anos.','Reclusão de 2 a 8 anos.'],c:1,e:'Art. 180, caput.'},
   {b:'VUNESP',t:'multiple',s:'No estelionato, o meio executório é:',o:['Violência ou grave ameaça.','Artifício, ardil ou qualquer outro meio fraudulento.','Subtração direta.','Apropriação.','Indução à doação.'],c:1,e:'Art. 171.'},
   {b:'VUNESP',t:'multiple',s:'A causa de aumento de roubo prevista no § 2º-A do art. 157 inclui:',o:['Concurso de duas pessoas.','Emprego de arma de fogo.','Transporte de valores.','Mantém a vítima em seu poder.','Apenas violência.'],c:1,e:'Lei 13.654/18.'},
-  {b:'IBFC',t:'multiple',s:'O latrocínio consumado:',o:['Sempre vai ao júri.','É competência do juiz singular (Súm. 603 STF).','É contravenção.','Não tem pena privativa.'],c:1,e:'.'},
+  {b:'IBFC',t:'multiple',s:'O latrocínio consumado:',o:['Sempre vai ao júri.','É competência do juiz singular (Súm. 603 STF).','É contravenção.','Não tem pena privativa.'],c:1,e:'Resposta correta: É competência do juiz singular (Súm. 603 STF)..'},
   {b:'IBFC',t:'multiple',s:'O dano qualificado pode ocorrer:',o:['Apenas com violência.','Quando cometido contra patrimônio público, com substância inflamável, ou com violência/grave ameaça, ou por motivo egoístico.','Apenas com prejuízo grande.','Apenas em flagrante.'],c:1,e:'Art. 163, p.ú.'},
-  {b:'AOCP',t:'multiple',s:'No furto privilegiado (art. 155, § 2º):',o:['O juiz pode substituir a pena de reclusão por detenção, diminuir de 1/3 a 2/3 ou aplicar só multa, se o réu é primário e a coisa de pequeno valor.','Reduz pena à metade.','Aplica-se só a furtos noturnos.','Aplica-se a reincidentes.','Aplica-se ao roubo também.'],c:0,e:'.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O roubo seguido de morte (latrocínio) tem pena de reclusão de 20 a 30 anos.',c:0,e:'CERTO. Art. 157, § 3º, II.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A receptação culposa exige a comprovação de que o agente sabia da origem criminosa.',c:1,e:'ERRADO. Na receptação CULPOSA o agente deveria presumir, não exige saber.'},
+  {b:'AOCP',t:'multiple',s:'No furto privilegiado (art. 155, § 2º):',o:['O juiz pode substituir a pena de reclusão por detenção, diminuir de 1/3 a 2/3 ou aplicar só multa, se o réu é primário e a coisa de pequeno valor.','Reduz pena à metade.','Aplica-se só a furtos noturnos.','Aplica-se a reincidentes.','Aplica-se ao roubo também.'],c:0,e:'Resposta correta: O juiz pode substituir a pena de reclusão por detenção, diminuir de 1/3 a 2/3 ou aplicar só multa, se o réu é primári....'},
+  {b:'Quadrix',t:'cebraspe',s:'O roubo seguido de morte (latrocínio) tem pena de reclusão de 20 a 30 anos.',c:0,e:'CERTO. Art. 157, § 3º, II.'},
+  {b:'Quadrix',t:'cebraspe',s:'A receptação culposa exige a comprovação de que o agente sabia da origem criminosa.',c:1,e:'ERRADO. Na receptação CULPOSA o agente deveria presumir, não exige saber.'},
   {b:'CESPE',t:'cebraspe',s:'O estelionato, em regra, é crime de ação penal pública condicionada à representação do ofendido (após Lei 13.964/19).',c:0,e:'CERTO. Art. 171, § 5º.'},
   {b:'CESPE',t:'cebraspe',s:'O roubo majorado pelo emprego de arma branca constitui causa de aumento de 1/3 a 2/3.',c:0,e:'CERTO. Art. 157, § 2º, VII (Lei 13.654/2018 reinserido).'},
   {b:'CESPE',t:'cebraspe',s:'O furto cometido durante o repouso noturno tem pena aumentada.',c:0,e:'CERTO. Art. 155, § 1º.'},
   {b:'FGV',t:'multiple',s:'A extorsão mediante sequestro (art. 159) com resultado morte tem pena:',o:['De 8 a 15 anos.','De 12 a 30 anos.','De 24 a 30 anos.','De 30 a 40 anos.','Reclusão perpétua.'],c:2,e:'Art. 159, § 3º.'},
   {b:'FCC',t:'multiple',s:'O usurpador de água tratada de concessionária:',o:['Pratica crime do art. 155-A.','Pratica furto qualificado.','Comete contravenção.','Não pratica crime.','Pratica estelionato.'],c:0,e:'Art. 155-A (Lei 14.155/21).'},
   {b:'VUNESP',t:'multiple',s:'A subtração de coisa alheia móvel mediante destreza configura:',o:['Roubo.','Furto qualificado.','Estelionato.','Apropriação.','Receptação.'],c:1,e:'Art. 155, § 4º, II.'},
-  {b:'IBFC',t:'multiple',s:'O crime de dano (art. 163 CP) consiste em:',o:['Apropriar-se de coisa alheia.','Destruir, inutilizar ou deteriorar coisa alheia.','Subtrair coisa móvel.','Furtar com violência.'],c:1,e:'.'},
-  {b:'AOCP',t:'multiple',s:'A diferença entre furto e roubo está:',o:['No objeto material.','No meio executório (roubo: violência/grave ameaça; furto: sem).','Na pena apenas.','No sujeito ativo.','Na competência.'],c:1,e:'.'},
+  {b:'IBFC',t:'multiple',s:'O crime de dano (art. 163 CP) consiste em:',o:['Apropriar-se de coisa alheia.','Destruir, inutilizar ou deteriorar coisa alheia.','Subtrair coisa móvel.','Furtar com violência.'],c:1,e:'Resposta correta: Destruir, inutilizar ou deteriorar coisa alheia..'},
+  {b:'AOCP',t:'multiple',s:'A diferença entre furto e roubo está:',o:['No objeto material.','No meio executório (roubo: violência/grave ameaça; furto: sem).','Na pena apenas.','No sujeito ativo.','Na competência.'],c:1,e:'Resposta correta: No meio executório (roubo: violência/grave ameaça; furto: sem)..'},
   {b:'CESPE',t:'cebraspe',s:'A invasão de dispositivo informático é crime do art. 154-A CP.',c:0,e:'CERTO. Lei 12.737/12 e atualizações.'},
 ],
 
@@ -1499,69 +1745,69 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A concussão consiste em exigir, para si ou para outrem, vantagem indevida, em razão da função pública.',c:0,e:'CERTO. Art. 316.'},
   {b:'CESPE',t:'cebraspe',s:'Na corrupção passiva, o funcionário público solicita, recebe ou aceita promessa de vantagem indevida.',c:0,e:'CERTO. Art. 317.'},
   {b:'CESPE',t:'cebraspe',s:'A prevaricação consiste em retardar ou deixar de praticar ato de ofício, ou praticá-lo contra disposição legal, para satisfazer interesse ou sentimento pessoal.',c:0,e:'CERTO. Art. 319.'},
-  {b:'CESPE',t:'cebraspe',s:'O policial militar que, por amizade pessoal, deixa de prender o autor de flagrante delito pratica prevaricação.',c:0,e:'CERTO.'},
-  {b:'CESPE',t:'cebraspe',s:'A corrupção ativa (art. 333) é crime praticado por particular contra a Administração Pública.',c:0,e:'CERTO.'},
-  {b:'CESPE',t:'cebraspe',s:'O conceito de funcionário público para fins penais (art. 327 CP) abrange aqueles que exercem cargo, emprego ou função pública, ainda que transitoriamente ou sem remuneração.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O policial militar que, por amizade pessoal, deixa de prender o autor de flagrante delito pratica prevaricação.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'A corrupção ativa (art. 333) é crime praticado por particular contra a Administração Pública.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'O conceito de funcionário público para fins penais (art. 327 CP) abrange aqueles que exercem cargo, emprego ou função pública, ainda que transitoriamente ou sem remuneração.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O abuso de autoridade tem por sujeito ativo qualquer pessoa.',c:1,e:'ERRADO. Lei 13.869/19 — agente público (próprio).'},
   {b:'CESPE',t:'cebraspe',s:'O crime de abuso de autoridade da Lei 13.869/2019 exige dolo específico para sua configuração.',c:0,e:'CERTO. Finalidade específica.'},
   {b:'CESPE',t:'cebraspe',s:'A condução coercitiva manifestamente descabida sem prévia intimação ao comparecimento ao juízo configura abuso de autoridade.',c:0,e:'CERTO. Lei 13.869/19, art. 10.'},
   {b:'FGV',t:'multiple',s:'A diferença essencial entre concussão e corrupção passiva é:',o:['Não há diferença.','Concussão: o funcionário EXIGE. Corrupção passiva: SOLICITA, RECEBE ou ACEITA promessa.','A pena.','O sujeito ativo.','A consumação.'],c:1,e:'Arts. 316 e 317.'},
-  {b:'FGV',t:'multiple',s:'O peculato culposo:',o:['Não existe.','É previsto no art. 312, § 2º (concorrência culposa para crime de outrem).','Tem pena maior que o peculato doloso.','É contravenção.','É inafiançável.'],c:1,e:'.'},
+  {b:'FGV',t:'multiple',s:'O peculato culposo:',o:['Não existe.','É previsto no art. 312, § 2º (concorrência culposa para crime de outrem).','Tem pena maior que o peculato doloso.','É contravenção.','É inafiançável.'],c:1,e:'Resposta correta: É previsto no art. 312, § 2º (concorrência culposa para crime de outrem)..'},
   {b:'FCC',t:'multiple',s:'O crime de prevaricação caracteriza-se:',o:['Pelo recebimento de vantagem indevida.','Pela exigência de vantagem.','Por omitir, retardar ou praticar contra a lei ato de ofício por interesse ou sentimento pessoal.','Pela violação de sigilo.','Pelo abuso de autoridade.'],c:2,e:'Art. 319.'},
   {b:'FCC',t:'multiple',s:'A corrupção passiva consuma-se com:',o:['A entrega da vantagem.','O recebimento da vantagem indevida.','O simples solicitar, receber ou aceitar promessa.','A condenação do corruptor.','A confissão.'],c:2,e:'Art. 317 — crime formal.'},
   {b:'VUNESP',t:'multiple',s:'O delito de advocacia administrativa:',o:['É crime do art. 321 CP, em que o funcionário patrocina interesse particular perante a Administração de que faz parte.','É privativo de advogados.','Não existe.','É contravenção.','É hediondo.'],c:0,e:'Art. 321.'},
-  {b:'VUNESP',t:'multiple',s:'A facilitação de contrabando ou descaminho (art. 318):',o:['Pratica-se por particular.','Pratica-se por funcionário público no exercício da função.','Não é crime.','É contravenção.','É equiparado ao tráfico.'],c:1,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'A facilitação de contrabando ou descaminho (art. 318):',o:['Pratica-se por particular.','Pratica-se por funcionário público no exercício da função.','Não é crime.','É contravenção.','É equiparado ao tráfico.'],c:1,e:'Resposta correta: Pratica-se por funcionário público no exercício da função..'},
   {b:'IBFC',t:'multiple',s:'Funcionário público para fins do CP é:',o:['Apenas estatutário.','Aquele que exerce cargo, emprego ou função pública, ainda que transitoriamente ou sem remuneração.','Apenas efetivo.','Apenas federal.'],c:1,e:'Art. 327.'},
   {b:'IBFC',t:'multiple',s:'O peculato-furto ocorre quando:',o:['O funcionário se apropria de bem na sua posse.','O funcionário público se vale da facilidade do cargo para subtrair bem alheio.','Há culpa.','Não há peculato-furto.'],c:1,e:'Art. 312, § 1º.'},
   {b:'AOCP',t:'multiple',s:'A Lei 13.869/19 (Abuso de Autoridade) exige:',o:['Apenas culpa.','Dolo específico de prejudicar outrem, beneficiar a si ou a terceiro, ou por mero capricho.','Dolo eventual.','Boa-fé do agente.','Apenas resultado lesivo.'],c:1,e:'Art. 1º, § 1º.'},
   {b:'AOCP',t:'multiple',s:'No crime de exercício arbitrário ou abuso de poder (art. 350 CP — revogado parcialmente):',o:['Foi totalmente revogado pela Lei 13.869/19.','Coexiste integralmente.','Foi substituído em parte pelos tipos da Lei 13.869/19.','É contravenção.','É hediondo.'],c:2,e:'A Lei 13.869/19 absorveu condutas anteriormente do art. 350.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A corrupção ativa consuma-se com a entrega efetiva da vantagem.',c:1,e:'ERRADO. Consuma-se com a OFERTA ou PROMESSA.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A condescendência criminosa consiste em deixar o funcionário de responsabilizar subordinado por infração no exercício do cargo.',c:0,e:'CERTO. Art. 320.'},
+  {b:'Quadrix',t:'cebraspe',s:'A corrupção ativa consuma-se com a entrega efetiva da vantagem.',c:1,e:'ERRADO. Consuma-se com a OFERTA ou PROMESSA.'},
+  {b:'Quadrix',t:'cebraspe',s:'A condescendência criminosa consiste em deixar o funcionário de responsabilizar subordinado por infração no exercício do cargo.',c:0,e:'CERTO. Art. 320.'},
   {b:'CESPE',t:'cebraspe',s:'A excursão por motivos religiosos do PM no horário de serviço, com viatura, configura, em tese, peculato de uso.',c:0,e:'CERTO. Peculato de uso é controverso, mas é a discussão dominante.'},
-  {b:'CESPE',t:'cebraspe',s:'A violência arbitrária por agente público no exercício da função configura abuso de autoridade, podendo concorrer com outros crimes.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A violência arbitrária por agente público no exercício da função configura abuso de autoridade, podendo concorrer com outros crimes.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O policial militar é considerado funcionário público para fins penais.',c:0,e:'CERTO. Art. 327.'},
   {b:'FGV',t:'multiple',s:'O policial que cobra propina para liberar veículo apreendido pratica:',o:['Peculato.','Concussão.','Corrupção passiva (recebe vantagem indevida).','Prevaricação.','Advocacia administrativa.'],c:2,e:'Art. 317.'},
-  {b:'FCC',t:'multiple',s:'O crime de denunciação caluniosa (art. 339) consiste em:',o:['Imputar falsamente crime a outrem provocando investigação ou processo.','Faltar à verdade em juízo.','Negar provimento ao recurso.','Praticar falso testemunho.','Praticar coação.'],c:0,e:'.'},
-  {b:'VUNESP',t:'multiple',s:'A resistência (art. 329 CP) consiste em:',o:['Não obedecer a ordem.','Opor-se à execução de ato legal mediante violência ou ameaça a funcionário competente.','Permanecer em silêncio.','Recusar-se a depor.','Não pagar tributo.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'A desobediência (art. 330 CP):',o:['Exige violência.','Consiste em desobedecer a ordem legal de funcionário público.','Aplica-se somente a militares.','Não existe mais.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'O crime de denunciação caluniosa (art. 339) consiste em:',o:['Imputar falsamente crime a outrem provocando investigação ou processo.','Faltar à verdade em juízo.','Negar provimento ao recurso.','Praticar falso testemunho.','Praticar coação.'],c:0,e:'Resposta correta: Imputar falsamente crime a outrem provocando investigação ou processo..'},
+  {b:'VUNESP',t:'multiple',s:'A resistência (art. 329 CP) consiste em:',o:['Não obedecer a ordem.','Opor-se à execução de ato legal mediante violência ou ameaça a funcionário competente.','Permanecer em silêncio.','Recusar-se a depor.','Não pagar tributo.'],c:1,e:'Resposta correta: Opor-se à execução de ato legal mediante violência ou ameaça a funcionário competente..'},
+  {b:'IBFC',t:'multiple',s:'A desobediência (art. 330 CP):',o:['Exige violência.','Consiste em desobedecer a ordem legal de funcionário público.','Aplica-se somente a militares.','Não existe mais.'],c:1,e:'Resposta correta: Consiste em desobedecer a ordem legal de funcionário público..'},
   {b:'AOCP',t:'multiple',s:'O desacato (art. 331 CP) ainda é considerado crime no Brasil.',o:['Não, foi descriminalizado.','Sim, sua constitucionalidade foi reafirmada pelo STF.','Apenas se houver violência.','Apenas em fala pública.','Apenas se houver dano material.'],c:1,e:'STF, ADC 22.'},
 ],
 
 'penal-lei-drogas': [
-  {b:'CESPE',t:'cebraspe',s:'O porte de droga para consumo próprio (art. 28 da Lei 11.343/06) não tem pena privativa de liberdade.',c:0,e:'CERTO.'},
-  {b:'CESPE',t:'cebraspe',s:'O tráfico de drogas (art. 33 caput) é crime equiparado a hediondo.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O porte de droga para consumo próprio (art. 28 da Lei 11.343/06) não tem pena privativa de liberdade.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'O tráfico de drogas (art. 33 caput) é crime equiparado a hediondo.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O tráfico privilegiado (art. 33, § 4º) é considerado crime hediondo.',c:1,e:'ERRADO. STF, HC 118.533 — NÃO é hediondo.'},
   {b:'CESPE',t:'cebraspe',s:'O tráfico privilegiado exige que o agente seja primário, com bons antecedentes, não se dedique a atividades criminosas nem integre organização criminosa.',c:0,e:'CERTO. Art. 33, § 4º.'},
   {b:'CESPE',t:'cebraspe',s:'O financiamento do tráfico é crime equiparado a hediondo.',c:0,e:'CERTO. Art. 36 + Lei 8.072/90.'},
   {b:'CESPE',t:'cebraspe',s:'O induzimento ao uso de drogas (art. 33, § 2º) tem pena igual ao tráfico.',c:1,e:'ERRADO. Pena menor (1-3 anos + multa).'},
-  {b:'CESPE',t:'cebraspe',s:'A associação para o tráfico (art. 35) exige no mínimo duas pessoas.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A associação para o tráfico (art. 35) exige no mínimo duas pessoas.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O usuário de drogas pode ser submetido a tratamento contra sua vontade.',c:1,e:'ERRADO. Lei 11.343 prevê advertência, prestação de serviço e medida educativa (art. 28).'},
   {b:'CESPE',t:'cebraspe',s:'A causa de diminuição do tráfico privilegiado é de 1/6 a 2/3.',c:0,e:'CERTO. Art. 33, § 4º.'},
   {b:'CESPE',t:'cebraspe',s:'A redução de pena no tráfico privilegiado é aplicável ainda que a quantidade de droga seja expressiva.',c:1,e:'ERRADO. STJ — depende da análise da gravidade.'},
-  {b:'FGV',t:'multiple',s:'A pena prevista para o tráfico de drogas (art. 33 caput) é de:',o:['1 a 4 anos.','3 a 10 anos.','5 a 15 anos + multa.','8 a 20 anos.','12 a 30 anos.'],c:2,e:'.'},
-  {b:'FGV',t:'multiple',s:'O porte para uso pessoal (art. 28) é punido com:',o:['Reclusão.','Detenção.','Advertência, prestação de serviço comunitário e medida educativa.','Multa apenas.','Prisão simples.'],c:2,e:'.'},
+  {b:'FGV',t:'multiple',s:'A pena prevista para o tráfico de drogas (art. 33 caput) é de:',o:['1 a 4 anos.','3 a 10 anos.','5 a 15 anos + multa.','8 a 20 anos.','12 a 30 anos.'],c:2,e:'Resposta correta: 5 a 15 anos + multa..'},
+  {b:'FGV',t:'multiple',s:'O porte para uso pessoal (art. 28) é punido com:',o:['Reclusão.','Detenção.','Advertência, prestação de serviço comunitário e medida educativa.','Multa apenas.','Prisão simples.'],c:2,e:'Resposta correta: Advertência, prestação de serviço comunitário e medida educativa..'},
   {b:'FCC',t:'multiple',s:'Entre as causas de aumento do tráfico (art. 40) está:',o:['Prática em transporte público.','Prática nas dependências ou imediações de escolas.','Crime cometido em domingo.','Crime cometido com 1 grama.','Prática em zona rural.'],c:1,e:'Art. 40, III.'},
   {b:'FCC',t:'multiple',s:'O tráfico privilegiado:',o:['Não é considerado hediondo segundo o STF.','É hediondo.','Não admite redução de pena.','Exige confissão.','Aplica-se a reincidentes.'],c:0,e:'HC 118.533.'},
-  {b:'VUNESP',t:'multiple',s:'O induzimento ao uso de droga (art. 33, § 2º) tem pena de:',o:['Reclusão de 5 a 15 anos.','Detenção de 1 a 3 anos + multa.','Reclusão de 8 a 20 anos.','Detenção de 6 meses a 2 anos.','Multa apenas.'],c:1,e:'.'},
-  {b:'VUNESP',t:'multiple',s:'A associação para o tráfico (art. 35) tem pena de:',o:['1 a 3 anos.','3 a 10 anos + multa.','5 a 15 anos.','8 a 20 anos.','Detenção de 6 meses a 2 anos.'],c:1,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'O induzimento ao uso de droga (art. 33, § 2º) tem pena de:',o:['Reclusão de 5 a 15 anos.','Detenção de 1 a 3 anos + multa.','Reclusão de 8 a 20 anos.','Detenção de 6 meses a 2 anos.','Multa apenas.'],c:1,e:'Resposta correta: Detenção de 1 a 3 anos + multa..'},
+  {b:'VUNESP',t:'multiple',s:'A associação para o tráfico (art. 35) tem pena de:',o:['1 a 3 anos.','3 a 10 anos + multa.','5 a 15 anos.','8 a 20 anos.','Detenção de 6 meses a 2 anos.'],c:1,e:'Resposta correta: 3 a 10 anos + multa..'},
   {b:'IBFC',t:'multiple',s:'O agente que cultiva plantas para fabricação de droga para consumo pessoal:',o:['Pratica tráfico.','Pratica conduta do art. 28 (uso).','Não pratica crime.','Pratica receptação.'],c:1,e:'Art. 28, § 1º.'},
   {b:'IBFC',t:'multiple',s:'A natureza do crime do art. 28 (porte para uso) foi declarada pelo STF:',o:['Hedionda.','Despenalizada/de menor potencial ofensivo (sem prisão).','Equiparada a tráfico.','Atípica.'],c:1,e:'STF, RE 430.105.'},
   {b:'AOCP',t:'multiple',s:'No tráfico de drogas, é causa de aumento prevista no art. 40:',o:['A boa-fé do agente.','A primariedade.','O envolvimento de criança ou adolescente, ou pessoa com diminuída capacidade.','A confissão.','O pequeno valor.'],c:2,e:'Art. 40, VI.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A apreensão de droga em quantidade compatível com uso pessoal afasta automaticamente a tipificação como tráfico.',c:1,e:'ERRADO. Depende da análise concreta (quantidade, local, antecedentes, etc.).'},
-  {b:'QUADRIX',t:'cebraspe',s:'A Lei 11.343/06 prevê multa para o usuário (art. 28).',c:1,e:'ERRADO. Não há multa. Penalidades: advertência, prestação de serviço, medida educativa.'},
+  {b:'Quadrix',t:'cebraspe',s:'A apreensão de droga em quantidade compatível com uso pessoal afasta automaticamente a tipificação como tráfico.',c:1,e:'ERRADO. Depende da análise concreta (quantidade, local, antecedentes, etc.).'},
+  {b:'Quadrix',t:'cebraspe',s:'A Lei 11.343/06 prevê multa para o usuário (art. 28).',c:1,e:'ERRADO. Não há multa. Penalidades: advertência, prestação de serviço, medida educativa.'},
   {b:'CESPE',t:'cebraspe',s:'O semeio, cultivo ou colheita de plantas para extração de drogas para uso pessoal é punido nos termos do art. 28.',c:0,e:'CERTO. § 1º do art. 28.'},
   {b:'CESPE',t:'cebraspe',s:'A entrega vigiada e a infiltração de agentes são técnicas previstas na Lei 11.343/06.',c:0,e:'CERTO. Arts. 53.'},
   {b:'CESPE',t:'cebraspe',s:'O tráfico transnacional de drogas é causa de aumento de pena.',c:0,e:'CERTO. Art. 40, I.'},
   {b:'FGV',t:'multiple',s:'Quem oferece droga, eventualmente e sem objetivo de lucro, a pessoa do seu relacionamento, para juntos consumirem:',o:['Pratica tráfico.','Pratica conduta do art. 33, § 3º (com pena menor).','Não pratica crime.','Pratica indução.','Pratica associação.'],c:1,e:'Art. 33, § 3º.'},
-  {b:'FCC',t:'multiple',s:'A natureza jurídica da Lei 11.343/06 quanto ao art. 28:',o:['Crime apenado com reclusão.','Crime apenado com detenção.','Despenalizado, com aplicação de medidas alternativas.','Contravenção.','Crime militar.'],c:2,e:'.'},
+  {b:'FCC',t:'multiple',s:'A natureza jurídica da Lei 11.343/06 quanto ao art. 28:',o:['Crime apenado com reclusão.','Crime apenado com detenção.','Despenalizado, com aplicação de medidas alternativas.','Contravenção.','Crime militar.'],c:2,e:'Resposta correta: Despenalizado, com aplicação de medidas alternativas..'},
   {b:'VUNESP',t:'multiple',s:'É vedada a concessão de liberdade provisória, segundo a Lei 11.343/06 original, em caso de tráfico. O STF:',o:['Manteve a vedação.','Declarou inconstitucional a vedação abstrata.','Declarou aplicável apenas a hediondos.','Manteve a vedação para tráfico privilegiado.','Aboliu a vedação só para usuários.'],c:1,e:'STF, HC 104.339.'},
-  {b:'IBFC',t:'multiple',s:'A Lei 11.343/06 é classificada como:',o:['Lei meramente penal.','Lei meramente administrativa.','Lei híbrida (penal e administrativa).','Decreto regulamentar.'],c:2,e:'.'},
+  {b:'IBFC',t:'multiple',s:'A Lei 11.343/06 é classificada como:',o:['Lei meramente penal.','Lei meramente administrativa.','Lei híbrida (penal e administrativa).','Decreto regulamentar.'],c:2,e:'Resposta correta: Lei híbrida (penal e administrativa)..'},
   {b:'AOCP',t:'multiple',s:'O tráfico privilegiado pode ser convertido em pena restritiva de direitos.',o:['Sempre.','Nunca.','Sim, conforme decisão do STF que afastou a vedação.','Apenas para reincidentes.','Apenas para primários do art. 28.'],c:2,e:'STF, HC 97.256.'},
-  {b:'CESPE',t:'cebraspe',s:'É hediondo o crime de tráfico de drogas (caput do art. 33) e o financiamento ao tráfico.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'É hediondo o crime de tráfico de drogas (caput do art. 33) e o financiamento ao tráfico.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
 'penal-maria-da-penha': [
-  {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha (11.340/06) cria mecanismos para coibir a violência doméstica e familiar contra a mulher.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha (11.340/06) cria mecanismos para coibir a violência doméstica e familiar contra a mulher.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'Não se aplica o princípio da insignificância aos crimes da Lei Maria da Penha.',c:0,e:'CERTO. Súmula 589 STJ.'},
   {b:'CESPE',t:'cebraspe',s:'Não cabe suspensão condicional do processo nos crimes praticados no âmbito da Lei Maria da Penha.',c:0,e:'CERTO. Súmula 536 STJ.'},
   {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha prevê 5 formas de violência: física, psicológica, sexual, patrimonial e moral.',c:0,e:'CERTO. Art. 7º.'},
@@ -1575,30 +1821,30 @@ const QBANK = {
   {b:'FGV',t:'multiple',s:'A violência patrimonial inclui:',o:['Apenas furto.','Reter, subtrair, destruir bens, valores ou recursos econômicos da mulher.','Apenas dano.','Apenas estelionato.','Apenas furto qualificado.'],c:1,e:'Art. 7º, IV.'},
   {b:'FCC',t:'multiple',s:'As medidas protetivas de urgência podem ser concedidas:',o:['Apenas após instrução completa.','De imediato, independente de audiência do agressor, pelo juiz a pedido do MP, da ofendida ou de ofício.','Apenas pelo MP.','Apenas em sentença.','Apenas pelo delegado.'],c:1,e:'Art. 19.'},
   {b:'FCC',t:'multiple',s:'Sobre as Súmulas do STJ aplicáveis à Lei Maria da Penha, é INCORRETO:',o:['Súm. 542: a ação por lesão leve na Maria da Penha é pública incondicionada.','Súm. 588: não é possível substituir pena por restritiva de direitos.','Súm. 589: não cabe insignificância.','Súm. 536: cabe suspensão condicional do processo.','Súm. 600: para configurar VD não é necessário coabitação.'],c:3,e:'Súm. 536 STJ: NÃO cabe.'},
-  {b:'VUNESP',t:'multiple',s:'A violência psicológica contra a mulher foi tipificada como crime autônomo:',o:['Pela Lei 11.340/06.','Pela Lei 14.188/2021 (art. 147-B CP).','Pela Lei 13.104/15.','Pela Lei 14.344/22.','Pela Lei 12.737/12.'],c:1,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'A violência psicológica contra a mulher foi tipificada como crime autônomo:',o:['Pela Lei 11.340/06.','Pela Lei 14.188/2021 (art. 147-B CP).','Pela Lei 13.104/15.','Pela Lei 14.344/22.','Pela Lei 12.737/12.'],c:1,e:'Resposta correta: Pela Lei 14.188/2021 (art. 147-B CP)..'},
   {b:'VUNESP',t:'multiple',s:'A Lei Maria da Penha aplica-se à mulher transexual:',o:['Não.','Sim, conforme entendimento do STJ.','Apenas após cirurgia.','Apenas com retificação registral.','Apenas a mulheres cisgênero.'],c:1,e:'STJ, REsp 1.977.124.'},
-  {b:'IBFC',t:'multiple',s:'A Lei 11.340/06 prevê:',o:['Apenas medidas penais.','Medidas integradas de prevenção, assistência e punição, com medidas protetivas de urgência.','Apenas multas.','Apenas suspensão condicional.','Apenas regime aberto.'],c:1,e:'.'},
+  {b:'IBFC',t:'multiple',s:'A Lei 11.340/06 prevê:',o:['Apenas medidas penais.','Medidas integradas de prevenção, assistência e punição, com medidas protetivas de urgência.','Apenas multas.','Apenas suspensão condicional.','Apenas regime aberto.'],c:1,e:'Resposta correta: Medidas integradas de prevenção, assistência e punição, com medidas protetivas de urgência..'},
   {b:'IBFC',t:'multiple',s:'O descumprimento de medida protetiva (art. 24-A da Lei 11.340/06) é:',o:['Contravenção.','Crime com detenção de 3 meses a 2 anos.','Atípico.','Crime hediondo.'],c:1,e:'Art. 24-A (Lei 13.641/2018).'},
   {b:'AOCP',t:'multiple',s:'A representação da ofendida nos crimes da Lei Maria da Penha:',o:['Pode ser retratada a qualquer tempo, fora de audiência.','Só pode ser retratada perante o juiz em audiência designada, antes do recebimento da denúncia.','Não pode ser retratada.','Pode ser retratada por advogado.','Não exige representação.'],c:1,e:'Art. 16.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A Lei 11.340/06 exige laudo pericial em todos os crimes de violência doméstica.',c:1,e:'ERRADO.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A lesão corporal leve no âmbito da Lei Maria da Penha é de ação penal pública incondicionada.',c:0,e:'CERTO. STF, ADI 4424.'},
+  {b:'Quadrix',t:'cebraspe',s:'A Lei 11.340/06 exige laudo pericial em todos os crimes de violência doméstica.',c:1,e:'ERRADO. A assertiva contraria o que prevê a norma legal/constitucional.'},
+  {b:'Quadrix',t:'cebraspe',s:'A lesão corporal leve no âmbito da Lei Maria da Penha é de ação penal pública incondicionada.',c:0,e:'CERTO. STF, ADI 4424.'},
   {b:'CESPE',t:'cebraspe',s:'A vítima da Lei Maria da Penha pode renunciar à representação após o recebimento da denúncia.',c:1,e:'ERRADO. Só antes do recebimento, em audiência (art. 16).'},
   {b:'CESPE',t:'cebraspe',s:'O juiz pode decretar a prisão preventiva do agressor para garantir a execução de medidas protetivas de urgência.',c:0,e:'CERTO. Art. 20.'},
   {b:'CESPE',t:'cebraspe',s:'Os Juizados de Violência Doméstica e Familiar contra a Mulher têm competência cível e criminal.',c:0,e:'CERTO. Art. 14.'},
   {b:'FGV',t:'multiple',s:'O homicídio praticado contra mulher por razões da condição de sexo feminino:',o:['É homicídio simples.','É homicídio qualificado (feminicídio), aplicando-se a Maria da Penha.','É contravenção.','É lesão corporal grave.','Não é qualificado.'],c:1,e:'Art. 121, § 2º, VI CP + Lei 13.104/15.'},
   {b:'FCC',t:'multiple',s:'A medida protetiva de proibição de aproximação:',o:['Estabelece distância mínima determinada pelo juiz.','Tem prazo de 24 horas.','Não pode ser concedida.','Aplica-se só após sentença.','É obrigatoriamente eletrônica.'],c:0,e:'Art. 22, III, a.'},
-  {b:'VUNESP',t:'multiple',s:'A Lei 14.344/22 (Lei Henry Borel) trata:',o:['Apenas de violência doméstica contra a mulher.','De medidas protetivas para crianças e adolescentes vítimas de violência doméstica.','Da Lei Maria da Penha apenas.','Da pensão alimentícia.','Da adoção.'],c:1,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'A Lei 14.344/22 (Lei Henry Borel) trata:',o:['Apenas de violência doméstica contra a mulher.','De medidas protetivas para crianças e adolescentes vítimas de violência doméstica.','Da Lei Maria da Penha apenas.','Da pensão alimentícia.','Da adoção.'],c:1,e:'Resposta correta: De medidas protetivas para crianças e adolescentes vítimas de violência doméstica..'},
   {b:'IBFC',t:'multiple',s:'A violência moral inclui:',o:['Lesão corporal.','Calúnia, difamação ou injúria.','Furto.','Estelionato.'],c:1,e:'Art. 7º, V.'},
   {b:'AOCP',t:'multiple',s:'O policial militar atendendo ocorrência de violência doméstica deve:',o:['Aguardar autorização judicial.','Adotar medidas previstas no art. 11 da Lei (proteção da vítima, encaminhamento, condução do agressor à delegacia).','Não intervir.','Apenas registrar o boletim.','Aguardar a vítima procurar ajuda sozinha.'],c:1,e:'Art. 11.'},
-  {b:'CESPE',t:'cebraspe',s:'O agressor da Lei Maria da Penha responde também por crimes do CP em concurso quando praticados no contexto.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O agressor da Lei Maria da Penha responde também por crimes do CP em concurso quando praticados no contexto.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
 'penal-armas-tortura-hediondos': [
   // Estatuto do Desarmamento
-  {b:'CESPE',t:'cebraspe',s:'A posse irregular de arma de fogo de uso permitido (art. 12 Lei 10.826/03) tem pena de detenção de 1 a 3 anos.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A posse irregular de arma de fogo de uso permitido (art. 12 Lei 10.826/03) tem pena de detenção de 1 a 3 anos.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O porte de arma de fogo de uso permitido tem pena de reclusão de 2 a 4 anos.',c:0,e:'CERTO. Art. 14.'},
   {b:'CESPE',t:'cebraspe',s:'O porte ilegal de arma de uso restrito tem pena de reclusão de 3 a 6 anos.',c:0,e:'CERTO. Art. 16.'},
-  {b:'CESPE',t:'cebraspe',s:'O porte de munição, isoladamente, configura crime autônomo segundo o STJ.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O porte de munição, isoladamente, configura crime autônomo segundo o STJ.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'Os policiais militares têm porte funcional de arma de fogo, mesmo fora de serviço.',c:0,e:'CERTO. Art. 6º.'},
   {b:'CESPE',t:'cebraspe',s:'O disparo de arma de fogo em via pública (art. 15) é contravenção penal.',c:1,e:'ERRADO. É crime — reclusão 2-4 anos + multa.'},
   // Tortura
@@ -1607,34 +1853,34 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A Lei 9.455/97 prevê a tortura como crime próprio, exigindo autoridade pública como autor.',c:1,e:'ERRADO. Tortura no Brasil é crime COMUM (qualquer pessoa pode ser autor), salvo a modalidade do art. 1º, § 2º.'},
   {b:'CESPE',t:'cebraspe',s:'Constranger alguém com emprego de violência ou grave ameaça, causando-lhe sofrimento físico ou mental, para obter confissão, configura tortura.',c:0,e:'CERTO. Art. 1º, I, a.'},
   // Hediondos
-  {b:'CESPE',t:'cebraspe',s:'A Lei 8.072/90 considera hediondos, entre outros, o homicídio qualificado, o latrocínio, a extorsão qualificada pela morte, a extorsão mediante sequestro, o estupro e o estupro de vulnerável.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei 8.072/90 considera hediondos, entre outros, o homicídio qualificado, o latrocínio, a extorsão qualificada pela morte, a extorsão mediante sequestro, o estupro e o estupro de vulnerável.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O regime inicial obrigatoriamente fechado para crimes hediondos é constitucional.',c:1,e:'ERRADO. STF, HC 111.840 — inconstitucional.'},
-  {b:'CESPE',t:'cebraspe',s:'A Lei 13.964/2019 (Pacote Anticrime) alterou os requisitos para a progressão de regime nos crimes hediondos.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei 13.964/2019 (Pacote Anticrime) alterou os requisitos para a progressão de regime nos crimes hediondos.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O crime de tortura admite a prática culposa.',c:1,e:'ERRADO. Apenas dolosa.'},
   // FGV
   {b:'FGV',t:'multiple',s:'O porte de arma de uso restrito tem pena de:',o:['Detenção de 1 a 3 anos.','Reclusão de 2 a 4 anos.','Reclusão de 3 a 6 anos + multa.','Reclusão de 6 a 12 anos.','Detenção de 6 meses a 2 anos.'],c:2,e:'Art. 16.'},
-  {b:'FGV',t:'multiple',s:'O disparo de arma de fogo em local habitado ou via pública:',o:['Não é crime.','É contravenção.','É crime — art. 15 da Lei 10.826/03, com reclusão de 2 a 4 anos + multa.','É crime hediondo.','É crime militar.'],c:2,e:'.'},
+  {b:'FGV',t:'multiple',s:'O disparo de arma de fogo em local habitado ou via pública:',o:['Não é crime.','É contravenção.','É crime — art. 15 da Lei 10.826/03, com reclusão de 2 a 4 anos + multa.','É crime hediondo.','É crime militar.'],c:2,e:'Resposta correta: É crime — art. 15 da Lei 10.826/03, com reclusão de 2 a 4 anos + multa..'},
   // FCC
-  {b:'FCC',t:'multiple',s:'O crime de tortura, conforme a Lei 9.455/97, é classificado como:',o:['Hediondo em sentido estrito.','Equiparado a hediondo.','Comum.','De menor potencial ofensivo.','Contravenção.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'O crime de tortura, conforme a Lei 9.455/97, é classificado como:',o:['Hediondo em sentido estrito.','Equiparado a hediondo.','Comum.','De menor potencial ofensivo.','Contravenção.'],c:1,e:'Resposta correta: Equiparado a hediondo..'},
   {b:'FCC',t:'multiple',s:'A pena de tortura aumenta nos casos de:',o:['Crime cometido por agente público.','Crime contra criança ou idoso, gestante ou portador de deficiência.','Crime cometido por militar.','Apenas se houver morte.','Apenas se houver fogo.'],c:1,e:'Art. 1º, § 4º.'},
   // VUNESP
-  {b:'VUNESP',t:'multiple',s:'O comércio ilegal de arma de fogo:',o:['Não é crime.','É crime do art. 17 da Lei 10.826/03, com reclusão de 4 a 8 anos.','É crime hediondo apenas se uso restrito.','É contravenção.','É equiparado a tráfico de drogas.'],c:1,e:'.'},
+  {b:'VUNESP',t:'multiple',s:'O comércio ilegal de arma de fogo:',o:['Não é crime.','É crime do art. 17 da Lei 10.826/03, com reclusão de 4 a 8 anos.','É crime hediondo apenas se uso restrito.','É contravenção.','É equiparado a tráfico de drogas.'],c:1,e:'Resposta correta: É crime do art. 17 da Lei 10.826/03, com reclusão de 4 a 8 anos..'},
   {b:'VUNESP',t:'multiple',s:'A Lei 8.072/90 considera hediondos os seguintes crimes, EXCETO:',o:['Homicídio qualificado.','Latrocínio.','Estupro.','Roubo simples.','Estupro de vulnerável.'],c:3,e:'Roubo simples não é hediondo.'},
   // IBFC
-  {b:'IBFC',t:'multiple',s:'A 3ª Lei — Tortura, Tráfico, Terrorismo, conforme a CF (art. 5º, XLIII):',o:['São crimes hediondos.','São crimes equiparados a hediondos, inafiançáveis, insuscetíveis de graça e anistia.','São crimes militares.','São contravenções.'],c:1,e:'.'},
+  {b:'IBFC',t:'multiple',s:'A 3ª Lei — Tortura, Tráfico, Terrorismo, conforme a CF (art. 5º, XLIII):',o:['São crimes hediondos.','São crimes equiparados a hediondos, inafiançáveis, insuscetíveis de graça e anistia.','São crimes militares.','São contravenções.'],c:1,e:'Resposta correta: São crimes equiparados a hediondos, inafiançáveis, insuscetíveis de graça e anistia..'},
   {b:'IBFC',t:'multiple',s:'O Estatuto do Desarmamento exige laudo pericial de eficiência da arma para configurar crime.',o:['Sim, sempre.','Não, segundo o STJ a arma desmuniciada também configura.','Apenas para uso restrito.','Apenas se a arma for nova.'],c:1,e:'STJ.'},
   // AOCP
-  {b:'AOCP',t:'multiple',s:'O crime de tortura praticado por agente público:',o:['Tem pena diminuída.','Tem causa de aumento (art. 1º, § 4º, I).','É contravenção.','Não tem causa de aumento.','Aplica-se só a militares.'],c:1,e:'.'},
-  {b:'AOCP',t:'multiple',s:'A omissão de garante perante tortura (art. 1º, § 2º Lei 9.455/97) configura:',o:['Crime de tortura na mesma pena.','Crime omissivo próprio, com pena reduzida de 1 a 4 anos.','Atipicidade.','Concurso material.','Coautoria.'],c:1,e:'.'},
+  {b:'AOCP',t:'multiple',s:'O crime de tortura praticado por agente público:',o:['Tem pena diminuída.','Tem causa de aumento (art. 1º, § 4º, I).','É contravenção.','Não tem causa de aumento.','Aplica-se só a militares.'],c:1,e:'Resposta correta: Tem causa de aumento (art. 1º, § 4º, I)..'},
+  {b:'AOCP',t:'multiple',s:'A omissão de garante perante tortura (art. 1º, § 2º Lei 9.455/97) configura:',o:['Crime de tortura na mesma pena.','Crime omissivo próprio, com pena reduzida de 1 a 4 anos.','Atipicidade.','Concurso material.','Coautoria.'],c:1,e:'Resposta correta: Crime omissivo próprio, com pena reduzida de 1 a 4 anos..'},
   // Quadrix
-  {b:'QUADRIX',t:'cebraspe',s:'O agente que tortura preso sob sua guarda comete tortura agravada.',c:0,e:'CERTO. Art. 1º, § 4º, II Lei 9.455/97.'},
-  {b:'QUADRIX',t:'cebraspe',s:'A Lei 10.826/03 distingue posse e porte de arma de fogo.',c:0,e:'CERTO. Arts. 12 e 14.'},
+  {b:'Quadrix',t:'cebraspe',s:'O agente que tortura preso sob sua guarda comete tortura agravada.',c:0,e:'CERTO. Art. 1º, § 4º, II Lei 9.455/97.'},
+  {b:'Quadrix',t:'cebraspe',s:'A Lei 10.826/03 distingue posse e porte de arma de fogo.',c:0,e:'CERTO. Arts. 12 e 14.'},
   // extras
   {b:'CESPE',t:'cebraspe',s:'A reincidência específica em crime hediondo veda a progressão de regime.',c:1,e:'ERRADO. Lei 13.964/19 exige percentual maior, mas não veda.'},
   {b:'CESPE',t:'cebraspe',s:'O latrocínio é crime hediondo.',c:0,e:'CERTO. Lei 8.072/90.'},
   {b:'CESPE',t:'cebraspe',s:'A graça e o indulto podem ser concedidos aos crimes hediondos.',c:1,e:'ERRADO. Vedados.'},
-  {b:'FGV',t:'multiple',s:'A tortura para discriminação racial ou religiosa configura:',o:['Tipo próprio do art. 1º, I, c, da Lei 9.455/97.','Não é crime.','Lesão corporal.','Constrangimento ilegal.','Maus tratos.'],c:0,e:'.'},
-  {b:'FCC',t:'multiple',s:'O Sistema Nacional de Armas (SINARM) foi instituído pela:',o:['Lei 9.437/97 — revogada.','Lei 10.826/03 — Estatuto do Desarmamento.','Lei 11.340/06.','Lei 13.260/16.','Lei 13.869/19.'],c:1,e:'.'},
+  {b:'FGV',t:'multiple',s:'A tortura para discriminação racial ou religiosa configura:',o:['Tipo próprio do art. 1º, I, c, da Lei 9.455/97.','Não é crime.','Lesão corporal.','Constrangimento ilegal.','Maus tratos.'],c:0,e:'Resposta correta: Tipo próprio do art. 1º, I, c, da Lei 9.455/97..'},
+  {b:'FCC',t:'multiple',s:'O Sistema Nacional de Armas (SINARM) foi instituído pela:',o:['Lei 9.437/97 — revogada.','Lei 10.826/03 — Estatuto do Desarmamento.','Lei 11.340/06.','Lei 13.260/16.','Lei 13.869/19.'],c:1,e:'Resposta correta: Lei 10.826/03 — Estatuto do Desarmamento..'},
 ],
 
 // ============== ECA e DIREITOS HUMANOS ==============
@@ -1649,28 +1895,28 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'Os direitos humanos são caracterizados pela universalidade, indivisibilidade e interdependência.',c:0,e:'CERTO. Doutrina + Declaração de Viena 1993.'},
   {b:'CESPE',t:'cebraspe',s:'O uso da força pela polícia deve obedecer aos princípios da legalidade, necessidade e proporcionalidade.',c:0,e:'CERTO. Princípios ONU.'},
   {b:'CESPE',t:'cebraspe',s:'O policial deve, em regra, recorrer ao uso de arma de fogo como primeiro recurso.',c:1,e:'ERRADO. ULTIMA RATIO.'},
-  {b:'CESPE',t:'cebraspe',s:'O Pacto de San José da Costa Rica tem, no Brasil, status supralegal segundo o STF.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O Pacto de San José da Costa Rica tem, no Brasil, status supralegal segundo o STF.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'FGV',t:'multiple',s:'Considera-se adolescente:',o:['Pessoa entre 14 e 18 anos.','Pessoa entre 12 e 18 anos de idade.','Pessoa entre 10 e 18 anos.','Pessoa entre 16 e 21 anos.','Pessoa até 18 anos.'],c:1,e:'Art. 2º ECA.'},
   {b:'FGV',t:'multiple',s:'O adolescente é:',o:['Imputável aos 16 anos.','Inimputável até os 18 anos completos, respondendo por ato infracional.','Imputável aos 12 anos.','Penalmente responsável.','Inimputável até os 21 anos.'],c:1,e:'Art. 27 CP + art. 228 CF.'},
   {b:'FCC',t:'multiple',s:'A medida socioeducativa mais grave é:',o:['Advertência.','Reparação do dano.','Prestação de serviços à comunidade.','Liberdade assistida.','Internação em estabelecimento educacional.'],c:4,e:'Art. 112.'},
   {b:'FCC',t:'multiple',s:'As características dos direitos humanos NÃO incluem:',o:['Universalidade.','Indivisibilidade.','Interdependência.','Vedação ao retrocesso.','Comerciabilidade.'],c:4,e:'DH são INALIENÁVEIS e indisponíveis.'},
   {b:'VUNESP',t:'multiple',s:'A medida socioeducativa de internação:',o:['É a mais branda.','Não pode exceder 3 anos e deve ser reavaliada no máximo a cada 6 meses.','Tem prazo definido em sentença.','Aplica-se a crianças e adolescentes.','Pode ser cumprida com adultos.'],c:1,e:'Art. 121.'},
   {b:'VUNESP',t:'multiple',s:'O uso da força pela polícia segue os princípios:',o:['Apenas legalidade.','Apenas necessidade.','Legalidade, necessidade, proporcionalidade e conveniência.','Apenas obediência.','Apenas tradição.'],c:2,e:'ONU.'},
-  {b:'IBFC',t:'multiple',s:'O ECA estabelece como medidas de proteção (art. 101), aplicáveis a crianças e adolescentes em situação de risco:',o:['Apenas internação.','Conjunto de medidas como encaminhamento aos pais, requisição de tratamento, abrigo, etc.','Apenas advertência.','Trabalho compulsório.','Pena privativa de liberdade.'],c:1,e:'.'},
-  {b:'IBFC',t:'multiple',s:'A Declaração Universal dos Direitos Humanos foi proclamada em:',o:['1945 pela ONU.','1948 pela Assembleia Geral da ONU.','1969 pelo Pacto San José.','1988 pela CF.'],c:1,e:'.'},
+  {b:'IBFC',t:'multiple',s:'O ECA estabelece como medidas de proteção (art. 101), aplicáveis a crianças e adolescentes em situação de risco:',o:['Apenas internação.','Conjunto de medidas como encaminhamento aos pais, requisição de tratamento, abrigo, etc.','Apenas advertência.','Trabalho compulsório.','Pena privativa de liberdade.'],c:1,e:'Resposta correta: Conjunto de medidas como encaminhamento aos pais, requisição de tratamento, abrigo, etc..'},
+  {b:'IBFC',t:'multiple',s:'A Declaração Universal dos Direitos Humanos foi proclamada em:',o:['1945 pela ONU.','1948 pela Assembleia Geral da ONU.','1969 pelo Pacto San José.','1988 pela CF.'],c:1,e:'Resposta correta: 1948 pela Assembleia Geral da ONU..'},
   {b:'AOCP',t:'multiple',s:'Os direitos humanos, segundo a teoria das gerações:',o:['Tem apenas 2 gerações.','Tem 3 gerações: liberdade, igualdade e fraternidade.','Tem 5 gerações classificadas pelo STF.','Não tem gerações.','São sinônimos de direitos fundamentais.'],c:1,e:'Karel Vasak.'},
-  {b:'AOCP',t:'multiple',s:'A vedação à tortura é norma:',o:['De ius cogens, inderrogável no DI.','Que admite exceções em guerra.','Apenas constitucional.','Apenas legal.','Apenas regulamentar.'],c:0,e:'.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O adolescente em conflito com a lei tem direito à assistência jurídica gratuita.',c:0,e:'CERTO. Art. 207 ECA.'},
-  {b:'QUADRIX',t:'cebraspe',s:'O uso de algemas pelo policial é livre e não exige justificativa.',c:1,e:'ERRADO. STF, Súm. Vinc. 11 — exige justificativa por escrito.'},
+  {b:'AOCP',t:'multiple',s:'A vedação à tortura é norma:',o:['De ius cogens, inderrogável no DI.','Que admite exceções em guerra.','Apenas constitucional.','Apenas legal.','Apenas regulamentar.'],c:0,e:'Resposta correta: De ius cogens, inderrogável no DI..'},
+  {b:'Quadrix',t:'cebraspe',s:'O adolescente em conflito com a lei tem direito à assistência jurídica gratuita.',c:0,e:'CERTO. Art. 207 ECA.'},
+  {b:'Quadrix',t:'cebraspe',s:'O uso de algemas pelo policial é livre e não exige justificativa.',c:1,e:'ERRADO. STF, Súm. Vinc. 11 — exige justificativa por escrito.'},
   {b:'CESPE',t:'cebraspe',s:'A imputabilidade penal inicia-se aos 18 anos completos.',c:0,e:'CERTO. Art. 27 CP.'},
   {b:'CESPE',t:'cebraspe',s:'O Estatuto do Idoso considera idoso a pessoa com idade igual ou superior a 60 anos.',c:0,e:'CERTO. Art. 1º.'},
   {b:'CESPE',t:'cebraspe',s:'O Código de Conduta para Encarregados da Aplicação da Lei (ONU 1979) prevê que a força só pode ser usada quando estritamente necessária e na medida exigida.',c:0,e:'CERTO. Art. 3º.'},
   {b:'FGV',t:'multiple',s:'Sobre o uso progressivo da força, são níveis:',o:['Apenas presença e força física.','Presença, verbalização, controle de contato, técnicas defensivas não letais, força letal.','Sempre arma de fogo.','Apenas armas letais.','Não há níveis.'],c:1,e:'Modelo escalonado de uso da força.'},
-  {b:'FCC',t:'multiple',s:'Sobre o ECA, a unidade de internação:',o:['Deve ser mista (homens, mulheres, adolescentes e adultos).','Deve separar adolescentes e adultos, e considerar gravidade do ato infracional, idade, complementação física.','Pode misturar com presídio comum.','Não exige separação.','Deve ser administrada por entidade privada.'],c:1,e:'.'},
+  {b:'FCC',t:'multiple',s:'Sobre o ECA, a unidade de internação:',o:['Deve ser mista (homens, mulheres, adolescentes e adultos).','Deve separar adolescentes e adultos, e considerar gravidade do ato infracional, idade, complementação física.','Pode misturar com presídio comum.','Não exige separação.','Deve ser administrada por entidade privada.'],c:1,e:'Resposta correta: Deve separar adolescentes e adultos, e considerar gravidade do ato infracional, idade, complementação física..'},
   {b:'VUNESP',t:'multiple',s:'O ECA estabelece como princípio:',o:['A doutrina da situação irregular.','A doutrina da proteção integral.','A doutrina do menorismo.','O sistema acusatório-misto.','A imputabilidade aos 16 anos.'],c:1,e:'Art. 1º.'},
   {b:'IBFC',t:'multiple',s:'A Convenção sobre os Direitos da Criança da ONU (1989) foi internalizada no Brasil por:',o:['Lei ordinária comum.','Decreto Presidencial 99.710/90, com status equivalente a emenda à CF (aprovação pelo procedimento do § 3º art. 5º).','Decreto-lei.','Resolução do STF.'],c:1,e:'Status equivalente.'},
   {b:'AOCP',t:'multiple',s:'A medida socioeducativa de prestação de serviços à comunidade pode ter duração de até:',o:['1 mês.','6 meses.','3 meses.','9 meses.','12 meses.'],c:1,e:'Art. 117 — até 6 meses.'},
-  {b:'CESPE',t:'cebraspe',s:'O abuso de autoridade pelo policial militar pode configurar violação de direitos humanos.',c:0,e:'CERTO.'},
+  {b:'CESPE',t:'cebraspe',s:'O abuso de autoridade pelo policial militar pode configurar violação de direitos humanos.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 };
 
@@ -2162,6 +2408,71 @@ function checkNightMode() {
 // Checa ao carregar e a cada 5min
 setInterval(checkNightMode, 300000);
 
+
+/* ============================================================
+   🔒 PROTEÇÃO DE SESSÃO — timeout por inatividade + visibility check
+   ============================================================ */
+const SESSION_INACTIVITY_LIMIT = 4 * 60 * 60 * 1000; // 4 horas
+let lastActivityTs = Date.now();
+
+function recordActivity() { lastActivityTs = Date.now(); }
+['mousedown','keydown','touchstart','scroll'].forEach(ev =>
+  document.addEventListener(ev, recordActivity, { passive: true })
+);
+
+setInterval(() => {
+  if (!currentSession) return;
+  if (Date.now() - lastActivityTs > SESSION_INACTIVITY_LIMIT) {
+    console.warn('🔒 Sessão expirada por inatividade. Deslogando.');
+    cloudSignOut().catch(()=>{});
+    user = null; progress = null; currentSession = null;
+    showScreen('screen-splash');
+    setTimeout(() => alert('Sua sessão expirou por inatividade (4h). Faça login novamente para continuar.'), 300);
+  }
+}, 60 * 1000);
+
+let hiddenSince = null;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    hiddenSince = Date.now();
+  } else if (hiddenSince && Date.now() - hiddenSince > 30 * 60 * 1000) {
+    hiddenSince = null;
+    if (sb && currentSession) {
+      sb.auth.getSession().then(({data})=>{
+        if (!data.session) {
+          console.warn('🔒 Sessão Supabase expirou em background.');
+          user = null; progress = null; currentSession = null;
+          showScreen('screen-splash');
+        }
+      }).catch(()=>{});
+    }
+  }
+});
+
+/* ============================================================
+   🔒 DEVICE FINGERPRINT (audit local)
+   ============================================================ */
+function checkDeviceFingerprint() {
+  if (!user) return;
+  try {
+    const fp = {
+      ua: navigator.userAgent.slice(0, 100),
+      lang: navigator.language,
+      screen: screen.width + 'x' + screen.height,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+    const fpKey = 'jq:device_fp:' + user.email;
+    const saved = localStorage.getItem(fpKey);
+    const current = JSON.stringify(fp);
+    if (!saved) {
+      localStorage.setItem(fpKey, current);
+    } else if (saved !== current) {
+      console.info('🔒 Novo dispositivo detectado.');
+      localStorage.setItem(fpKey, current);
+    }
+  } catch(e){}
+}
+
 /* ============================================================
    SUPABASE — sincronização na nuvem (login real)
 ============================================================ */
@@ -2335,24 +2646,24 @@ function toggleLoginMode() {
 async function goRanking() {
   snd.click();
   showScreen('screen-ranking');
-  document.getElementById('ranking-loading').classList.remove('hidden');
-  document.getElementById('ranking-empty').classList.add('hidden');
+  $('ranking-loading').classList.remove('hidden');
+  $('ranking-empty').classList.add('hidden');
   document.getElementById('ranking-list').innerHTML = '';
   document.getElementById('ranking-self-status').textContent = '';
 
   if (!sb) {
-    document.getElementById('ranking-loading').classList.add('hidden');
-    document.getElementById('ranking-empty').classList.remove('hidden');
+    $('ranking-loading').classList.add('hidden');
+    $('ranking-empty').classList.remove('hidden');
     document.getElementById('ranking-empty').querySelector('div:last-child').textContent = 'Ranking indisponível offline. Verifique sua conexão.';
     return;
   }
 
   try {
     const { data, error } = await sb.from('public_ranking').select('*');
-    document.getElementById('ranking-loading').classList.add('hidden');
+    $('ranking-loading').classList.add('hidden');
     if (error) throw error;
     if (!data || data.length === 0) {
-      document.getElementById('ranking-empty').classList.remove('hidden');
+      $('ranking-empty').classList.remove('hidden');
       return;
     }
     let myPos = data.findIndex(r => r.id === currentSession?.user?.id);
@@ -2382,8 +2693,8 @@ async function goRanking() {
     }
   } catch (e) {
     console.error(e);
-    document.getElementById('ranking-loading').classList.add('hidden');
-    document.getElementById('ranking-empty').classList.remove('hidden');
+    $('ranking-loading').classList.add('hidden');
+    $('ranking-empty').classList.remove('hidden');
     document.getElementById('ranking-empty').querySelector('div:last-child').textContent = 'Erro ao carregar ranking. Tente novamente.';
   }
 }
@@ -2400,10 +2711,33 @@ async function toggleRanking() {
 /* ============================================================
    HELPERS
 ============================================================ */
-const $ = (id) => document.getElementById(id);
+// 🔒 Helper $: retorna elemento OU stub seguro (evita "Cannot read properties of null")
+// O stub silencia ações em elementos inexistentes em vez de quebrar tudo.
+const NULL_ELEMENT_STUB = (() => {
+  const stub = {
+    classList: { add(){}, remove(){}, toggle(){}, contains(){return false;} },
+    style: new Proxy({}, { set(){return true;}, get(){return '';} }),
+    addEventListener(){}, removeEventListener(){},
+    appendChild(){}, removeChild(){}, remove(){},
+    querySelector(){return null;}, querySelectorAll(){return [];},
+    setAttribute(){}, removeAttribute(){}, getAttribute(){return null;},
+    focus(){}, blur(){}, click(){},
+    innerHTML: '', textContent: '', value: '', disabled: false,
+    __isNullStub: true,
+  };
+  return stub;
+})();
+const $ = (id) => {
+  const el = document.getElementById(id);
+  if (el) return el;
+  // Stub silencioso — não polui o console em produção
+  return NULL_ELEMENT_STUB;
+};
 const showScreen = (id) => {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  $(id).classList.add('active');
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('active');
   window.scrollTo(0, 0);
 };
 const getPatente = (xp) => { for (let i = PATENTES.length - 1; i >= 0; i--) if (xp >= PATENTES[i].xpMin) return PATENTES[i]; return PATENTES[0]; };
@@ -2523,10 +2857,31 @@ const goLoginForm = () => { snd.click(); $('login-choose').classList.add('hidden
 const loginBack = () => { snd.click(); $('login-choose').classList.remove('hidden'); $('login-form').classList.add('hidden'); };
 
 const submitLogin = async () => {
+  // 🔒 RATE LIMIT CLIENT-SIDE: bloqueia após 5 tentativas em 5 min
+  try {
+    const attemptsKey = 'jq:auth_attempts';
+    const data = JSON.parse(localStorage.getItem(attemptsKey) || '{"count":0,"resetAt":0}');
+    const now = Date.now();
+    if (now < data.resetAt && data.count >= 5) {
+      const wait = Math.ceil((data.resetAt - now) / 1000);
+      if ($('err-auth')) { $('err-auth').textContent = `⏳ Muitas tentativas. Aguarde ${wait}s.`; $('err-auth').style.display = 'block'; }
+      return;
+    }
+    if (now > data.resetAt) { data.count = 0; data.resetAt = now + 5*60*1000; }
+    data.count++;
+    localStorage.setItem(attemptsKey, JSON.stringify(data));
+  } catch(e) {}
+
   const email = $('inp-email').value.trim().toLowerCase();
   const pass = $('inp-pass').value;
   const isSignup = loginMode === 'signup';
   const name = isSignup ? $('inp-name').value.trim() : '';
+
+  // 🔒 VALIDAÇÃO DE TAMANHO E CARACTERES
+  if (email.length > 254) { if($('err-email')){$('err-email').textContent='⚠️ Email muito longo';$('err-email').style.display='block';} return; }
+  if (pass.length > 200) { if($('err-pass')){$('err-pass').textContent='⚠️ Senha muito longa';$('err-pass').style.display='block';} return; }
+  if (name && name.length > 80) { if($('err-name')){$('err-name').textContent='⚠️ Nome muito longo (max 80)';$('err-name').style.display='block';} return; }
+  if (name && /[<>"'`\x00-\x1f]/.test(name)) { if($('err-name')){$('err-name').textContent='⚠️ Nome contém caracteres inválidos';$('err-name').style.display='block';} return; }
 
   // Validação
   let ok = true;
@@ -2570,16 +2925,33 @@ const submitLogin = async () => {
       const signinData = await cloudSignIn(email, pass);
       currentSession = signinData.session;
       snd.correct();
+      // 🔒 Reset rate limit em sucesso
+      try { localStorage.removeItem('jq:auth_attempts'); } catch(e){}
       // Puxar dados do cloud
       const { profile, prog } = await pullFromCloud(currentSession.user.id);
       if (profile) {
         hydrateFromCloud(profile, prog);
-        // Se já tem perfil completo (passou pelo onboarding), vai pro mapa
-        if (user.cargo) {
+        // Recupera campos faltantes do localStorage se necessário
+        try {
+          const localU = JSON.parse(localStorage.getItem(KEY_USER) || 'null');
+          if (localU && localU.email === user.email) {
+            if (!user.cargo && localU.cargo) user.cargo = localU.cargo;
+            if (!user.banca && localU.banca) user.banca = localU.banca;
+            if (!user.nivel && localU.nivel) user.nivel = localU.nivel;
+            if (!user.horasDia && localU.horasDia) user.horasDia = localU.horasDia;
+            if (!user.dataProva && localU.dataProva) user.dataProva = localU.dataProva;
+            saveUser();
+            setTimeout(() => upsertProfile().catch(()=>{}), 1500);
+          }
+        } catch(e){}
+        // Considera completo se tem qualquer campo de perfil
+        const temPerfil = user.cargo || user.banca || user.nivel;
+        if (temPerfil) {
+          checkDeviceFingerprint();
           goMap();
         } else {
           onbStep = 0;
-          onbData = { avatar: progress.avatar, avatarColor: progress.avatarColor };
+          onbData = { avatar: progress.avatar || '👮‍♀️', avatarColor: progress.avatarColor || '#ff2e63' };
           renderOnboarding();
           showScreen('screen-onboarding');
         }
@@ -2692,12 +3064,34 @@ const onbNext = () => {
   snd.click();
   if (onbStep === ONB_STEPS.length - 1) {
     Object.assign(user, onbData);
-    progress.avatar = onbData.avatarColor ? onbData.avatar : progress.avatar;
+    progress.avatar = onbData.avatar || progress.avatar;
     progress.avatarColor = onbData.avatarColor || progress.avatarColor;
     saveUser(); saveProgress();
-    // Sincronizar perfil completo com nuvem
-    (async () => { try { await upsertProfile(); await upsertProgress(); } catch(e){} })();
-    goMap();
+
+    // CRÍTICO: garantir que o perfil seja salvo na nuvem ANTES de seguir.
+    // Se falhar, mostra erro e deixa tentar de novo — não perde o onboarding.
+    const btn = $('btn-onb-next');
+    if (btn) { btn.disabled = true; btn.textContent = 'SALVANDO...'; }
+    (async () => {
+      let savedOk = false;
+      for (let tentativa = 0; tentativa < 3 && !savedOk; tentativa++) {
+        try {
+          await upsertProfile();
+          await upsertProgress();
+          savedOk = true;
+        } catch(e) {
+          console.error('Tentativa', tentativa+1, 'falhou:', e);
+          if (tentativa < 2) await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+      if (btn) { btn.disabled = false; btn.textContent = 'COMEÇAR ▶'; }
+      if (!savedOk) {
+        // Não conseguiu salvar — avisa mas deixa entrar mesmo assim
+        // (o save em background vai continuar tentando via scheduleCloudSync)
+        console.warn('⚠️ Perfil não foi salvo na nuvem. Vai entrar mesmo assim e tentar de novo em background.');
+      }
+      goMap();
+    })();
   } else {
     onbStep++;
     renderOnboarding();
@@ -2710,18 +3104,13 @@ const onbNext = () => {
 const goMap = () => {
   showScreen('screen-map');
   renderMap();
-  // Verifica roleta — só mostra automaticamente UMA VEZ por sessão de login
-  // (Se quiser girar de novo, vai ter o botão visível no painel HOJE.)
+  // ROLETA: NÃO abre mais automaticamente. Fica disponível no painel HOJE
+  // como botão clicável quando ainda não foi girada hoje.
+  // MISSÃO RELÂMPAGO: tenta uma vez por sessão (não a cada renderMap).
   setTimeout(() => {
-    if (canSpinRoulette() && !window.__rouletteShownThisSession) {
-      window.__rouletteShownThisSession = true;
-      showRouletteModal();
-    } else {
-      // Sem roleta? Tenta missão relâmpago (só 1x por sessão também)
-      if (!window.__missionAttemptedThisSession) {
-        window.__missionAttemptedThisSession = true;
-        maybeTriggerMission();
-      }
+    if (!window.__missionAttemptedThisSession) {
+      window.__missionAttemptedThisSession = true;
+      maybeTriggerMission();
     }
   }, 600);
 };
@@ -2878,8 +3267,14 @@ const logout = () => {
     title:'SAIR DA CONTA?',
     msg:'Você será deslogada(o). Seu progresso fica salvo na nuvem — basta entrar com email/senha de novo de qualquer dispositivo pra continuar de onde parou.',
     onConfirm: async () => {
+      // Antes de deslogar: garante que tudo está salvo na nuvem
+      try {
+        await upsertProfile();
+        await upsertProgress();
+      } catch(e) { console.warn('Falha ao sincronizar antes do logout:', e); }
       await cloudSignOut();
-      try { localStorage.removeItem(KEY_USER); localStorage.removeItem(KEY_PROG); } catch(e){}
+      // NÃO apaga KEY_USER/KEY_PROG do localStorage — assim se o usuário voltar
+      // e fizer login com o mesmo email, recupera info local se a nuvem falhar
       user = null; progress = null;
       currentSession = null;
       showScreen('screen-splash');
@@ -3414,6 +3809,23 @@ function goStats() {
 }
 
 function renderStats() {
+  // Mostrar player code se disponível
+  if (user && user.playerCode) {
+    const codeEl = document.getElementById('stats-player-code');
+    const wrap = document.getElementById('stats-my-code');
+    if (codeEl) codeEl.textContent = user.playerCode;
+    if (wrap) wrap.classList.remove('hidden');
+  } else if (sb && currentSession) {
+    loadMyPlayerCode().then(code => {
+      if (code) {
+        const codeEl = document.getElementById('stats-player-code');
+        const wrap = document.getElementById('stats-my-code');
+        if (codeEl) codeEl.textContent = code;
+        if (wrap) wrap.classList.remove('hidden');
+      }
+    }).catch(()=>{});
+  }
+  
   const info = xpInfo(progress.xp);
   $('stats-avatar').textContent = progress.avatar;
   $('stats-avatar').style.filter = `drop-shadow(0 0 16px ${progress.avatarColor})`;
@@ -3995,7 +4407,18 @@ function downloadCertImage() {
           <strong>No PC:</strong> aperte Ctrl+P → escolha "Salvar como PDF"<br>
           ou use a Ferramenta de Captura do Windows (Win+Shift+S).</p>
         </div>
-      </body>
+      
+<!-- 🔒 LGPD: Aviso de tratamento de dados -->
+<div id="lgpd-banner" style="position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);border-top:2px solid var(--cyan);padding:14px;z-index:200;font-family:'Rajdhani',sans-serif;display:none;">
+  <div style="max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;">
+    <div style="flex:1;min-width:240px;font-size:13px;color:rgba(255,255,255,0.9);">
+      🍪 <strong style="color:var(--cyan);">Privacidade:</strong> Coletamos apenas dados necessários ao seu progresso (email, nome, estatísticas). Nunca compartilhamos. Apague tudo a qualquer momento em "Recomeçar do Zero".
+    </div>
+    <button onclick="acceptLgpd()" class="btn cyan" style="margin:0;padding:8px 20px;font-size:12px;">ENTENDI ✓</button>
+  </div>
+</div>
+
+</body>
     </html>
   `);
   w.document.close();
@@ -4439,6 +4862,576 @@ async function goAdmin() {
   }
 }
 
+
+/* ============================================================
+   ⚔️ PVP / DUELOS — sistema completo
+============================================================ */
+let activeDuel = null;       // duelo sendo jogado no momento
+let opponentFound = null;    // jogadora encontrada na busca
+
+async function loadMyPlayerCode() {
+  if (!sb || !currentSession) return null;
+  if (user && user.playerCode) return user.playerCode;
+  try {
+    const { data, error } = await sb.from('profiles').select('player_code').eq('id', currentSession.user.id).maybeSingle();
+    if (data && data.player_code) {
+      user.playerCode = data.player_code;
+      saveUser();
+      return data.player_code;
+    }
+  } catch(e) { console.error('loadMyPlayerCode:', e); }
+  return null;
+}
+
+async function goDuels() {
+  snd.click();
+  if (!sb || !currentSession) {
+    openModal({title:'OFFLINE', msg:'Você precisa estar conectada à internet para usar duelos.', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  showScreen('screen-duels');
+
+  // Carrega meu código
+  const code = await loadMyPlayerCode();
+  $('my-player-code').textContent = code || 'M-????';
+
+  // Carrega lista de duelos
+  await loadDuelsList();
+  switchDuelTab('active');
+}
+
+function switchDuelTab(tab) {
+  snd.click();
+  ['active','history','howto'].forEach(t => {
+    const btn = document.getElementById('tab-' + t + '-btn');
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  $('duel-list-active').classList.toggle('hidden', tab !== 'active');
+  $('duel-list-history').classList.toggle('hidden', tab !== 'history');
+  $('duel-howto').classList.toggle('hidden', tab !== 'howto');
+}
+
+async function loadDuelsList() {
+  if (!sb || !currentSession) return;
+  try {
+    const { data, error } = await sb.from('duels')
+      .select('*')
+      .or(`challenger_id.eq.${currentSession.user.id},opponent_id.eq.${currentSession.user.id}`)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    const duels = data || [];
+
+    const active = duels.filter(d => d.status === 'pending' || d.status === 'active');
+    const history = duels.filter(d => d.status === 'finished' || d.status === 'expired');
+
+    renderDuelList('duel-list-active', active, true);
+    renderDuelList('duel-list-history', history, false);
+  } catch(e) {
+    console.error('loadDuelsList:', e);
+    $('duel-list-active').innerHTML = `<div class="card pixel-corners" style="text-align:center;padding:20px;color:var(--rose);">Erro ao carregar duelos: ${esc(e.message||e)}</div>`;
+  }
+}
+
+function renderDuelList(targetId, duels, isActive) {
+  const target = $(targetId);
+  if (!target) return;
+
+  if (!duels || duels.length === 0) {
+    target.innerHTML = `<div class="card pixel-corners" style="text-align:center;padding:32px;">
+      <div style="font-size:32px;">${isActive ? '🤺' : '📜'}</div>
+      <div style="margin-top:12px;color:rgba(255,255,255,.7);">${isActive ? 'Nenhum duelo em andamento.<br>Que tal desafiar alguém? 😏' : 'Nenhum duelo finalizado ainda.'}</div>
+    </div>`;
+    return;
+  }
+
+  const myId = currentSession.user.id;
+  target.innerHTML = duels.map(d => {
+    const eu = d.challenger_id === myId ? 'challenger' : 'opponent';
+    const oponente = eu === 'challenger' ? 'opponent' : 'challenger';
+    const meuNome = d[eu + '_name'];
+    const meuCode = d[eu + '_code'];
+    const opNome = d[oponente + '_name'];
+    const opCode = d[oponente + '_code'];
+    const meuScore = d[eu + '_score'];
+    const opScore = d[oponente + '_score'];
+    const minhasAnswers = (d[eu + '_answers'] || []);
+    const opAnswers = (d[oponente + '_answers'] || []);
+    const jaRespondi = minhasAnswers.length >= 10;
+    const opRespondeu = opAnswers.length >= 10;
+
+    // Tempo restante
+    const expiresAt = new Date(d.expires_at).getTime();
+    const remaining = Math.max(0, expiresAt - Date.now());
+    const horas = Math.floor(remaining / (60*60*1000));
+    const mins = Math.floor((remaining % (60*60*1000)) / (60*1000));
+    const urgente = remaining > 0 && remaining < 3*60*60*1000; // < 3h
+
+    let resultClass = '';
+    let resultLabel = '';
+    if (d.status === 'finished') {
+      if (d.winner_id === myId) { resultClass = 'won'; resultLabel = '🏆 VITÓRIA'; }
+      else if (d.winner_id && d.winner_id !== myId) { resultClass = 'lost'; resultLabel = '💀 DERROTA'; }
+      else { resultClass = 'draw'; resultLabel = '🤝 EMPATE'; }
+    } else if (d.status === 'expired') {
+      resultClass = 'lost'; resultLabel = '⏱️ EXPIROU';
+    }
+
+    let actionBtn = '';
+    if (d.status === 'pending' || d.status === 'active') {
+      if (!jaRespondi) {
+        actionBtn = `<button class="btn full" onclick="playDuel('${d.id}')" style="margin-top:8px;">⚔️ JOGAR AGORA (${horas}h ${mins}m)</button>`;
+      } else if (!opRespondeu) {
+        actionBtn = `<div style="margin-top:8px;padding:10px;background:rgba(255,215,0,0.1);border-left:3px solid var(--amber);font-size:13px;text-align:center;color:var(--amber);">⏳ Aguardando ${esc(opNome)} responder (${horas}h ${mins}m restantes)</div>`;
+      } else {
+        actionBtn = `<div style="margin-top:8px;padding:10px;background:rgba(8,217,214,0.1);border-left:3px solid var(--cyan);font-size:13px;text-align:center;color:var(--cyan);">⏱️ Finalizando duelo...</div>`;
+      }
+    } else {
+      actionBtn = `<button class="btn ghost full" onclick="viewDuelResult('${d.id}')" style="margin-top:8px;">👀 VER DETALHES</button>`;
+    }
+
+    return `<div class="duel-card pixel-corners ${resultClass} ${urgente && !jaRespondi ? 'urgent' : ''}">
+      ${resultLabel ? `<div style="text-align:center;margin-bottom:8px;"><span class="font-arcade" style="font-size:12px;color:${d.winner_id === myId ? 'var(--emerald)' : d.winner_id ? 'var(--rose)' : 'var(--amber)'};">${resultLabel}</span></div>` : `<div style="text-align:center;margin-bottom:8px;"><span class="duel-status-tag ${d.status}">${d.status === 'pending' ? 'AGUARDANDO' : 'EM ANDAMENTO'}</span></div>`}
+      <div class="duel-vs">
+        <div class="duel-player">
+          <div style="font-size:13px;color:rgba(255,255,255,.6);">${esc(meuCode)}</div>
+          <div style="font-weight:700;color:var(--cyan);">${esc(meuNome)}</div>
+          ${d.status === 'finished' || d.status === 'expired' ? `<div class="font-orbit" style="font-size:24px;font-weight:900;color:var(--amber);">${meuScore}</div>` : (jaRespondi ? '<div style="font-size:11px;color:var(--emerald);">✓ Respondeu</div>' : '<div style="font-size:11px;color:var(--rose);">Pendente</div>')}
+        </div>
+        <div class="duel-vs-divider">VS</div>
+        <div class="duel-player">
+          <div style="font-size:13px;color:rgba(255,255,255,.6);">${esc(opCode)}</div>
+          <div style="font-weight:700;">${esc(opNome)}</div>
+          ${d.status === 'finished' || d.status === 'expired' ? `<div class="font-orbit" style="font-size:24px;font-weight:900;color:var(--amber);">${opScore}</div>` : (opRespondeu ? '<div style="font-size:11px;color:var(--emerald);">✓ Respondeu</div>' : '<div style="font-size:11px;color:rgba(255,255,255,.5);">Pendente</div>')}
+        </div>
+      </div>
+      ${actionBtn}
+    </div>`;
+  }).join('');
+}
+
+function copyMyCode() {
+  const code = $('my-player-code').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(() => {
+      snd.correct();
+      const orig = $('my-player-code').textContent;
+      $('my-player-code').textContent = '✓ COPIADO!';
+      setTimeout(() => { $('my-player-code').textContent = orig; }, 1500);
+    });
+  }
+}
+
+function goDuelChallenge() {
+  snd.click();
+  opponentFound = null;
+  $('inp-opponent-code').value = '';
+  $('opponent-preview').classList.add('hidden');
+  $('btn-confirm-duel').classList.add('hidden');
+  $('btn-search-opp').classList.remove('hidden');
+  $('err-duel').style.display = 'none';
+  showScreen('screen-duel-challenge');
+}
+
+async function searchOpponent() {
+  const code = $('inp-opponent-code').value.trim().toUpperCase();
+  if (!/^M-\d{4}$/.test(code)) {
+    $('err-duel').textContent = '⚠️ ID inválido. Formato esperado: M-0042';
+    $('err-duel').style.display = 'block';
+    snd.wrong();
+    return;
+  }
+  if (user && user.playerCode === code) {
+    $('err-duel').textContent = '⚠️ Você não pode se desafiar.';
+    $('err-duel').style.display = 'block';
+    snd.wrong();
+    return;
+  }
+  $('err-duel').style.display = 'none';
+  $('btn-search-opp').disabled = true;
+  $('btn-search-opp').textContent = '🔍 BUSCANDO...';
+
+  try {
+    const { data, error } = await sb.from('player_lookup').select('*').eq('player_code', code).maybeSingle();
+    if (error) throw error;
+    if (!data) {
+      $('err-duel').textContent = '❌ Nenhuma jogadora encontrada com esse ID.';
+      $('err-duel').style.display = 'block';
+      snd.wrong();
+      $('btn-search-opp').disabled = false;
+      $('btn-search-opp').textContent = '🔍 BUSCAR JOGADORA';
+      return;
+    }
+    opponentFound = data;
+    $('prev-avatar').textContent = data.avatar || '👮‍♀️';
+    $('prev-avatar').style.filter = 'drop-shadow(0 0 12px ' + (data.avatar_color || '#08d9d6') + ')';
+    $('prev-name').textContent = esc(data.name) + ' • ' + esc(data.player_code);
+    const pat = getPatente(data.xp || 0);
+    $('prev-info').textContent = `${pat.icon} ${pat.nome} • ${data.xp || 0} XP`;
+    $('opponent-preview').classList.remove('hidden');
+    $('btn-confirm-duel').classList.remove('hidden');
+    $('btn-search-opp').classList.add('hidden');
+    snd.correct();
+  } catch(e) {
+    console.error(e);
+    $('err-duel').textContent = '❌ Erro ao buscar: ' + (e.message || e);
+    $('err-duel').style.display = 'block';
+    snd.wrong();
+    $('btn-search-opp').disabled = false;
+    $('btn-search-opp').textContent = '🔍 BUSCAR JOGADORA';
+  }
+}
+
+async function confirmChallenge() {
+  if (!opponentFound) return;
+  snd.click();
+  $('btn-confirm-duel').disabled = true;
+  $('btn-confirm-duel').textContent = 'CRIANDO DUELO...';
+
+  // Sorteia 10 questões aleatórias do banco inteiro
+  const allQs = Object.values(QBANK).flat();
+  const shuffled = [...allQs].sort(() => Math.random() - 0.5);
+  const duelQuestions = shuffled.slice(0, 10).map(formatBankQuestion);
+
+  try {
+    const myCode = await loadMyPlayerCode();
+    const { data, error } = await sb.from('duels').insert({
+      challenger_id: currentSession.user.id,
+      challenger_code: myCode,
+      challenger_name: user.name,
+      opponent_id: opponentFound.id,
+      opponent_code: opponentFound.player_code,
+      opponent_name: opponentFound.name,
+      questions: duelQuestions,
+      status: 'active',
+    }).select().single();
+
+    if (error) throw error;
+    snd.bossWin();
+    openModal({
+      title:'⚔️ DESAFIO ENVIADO!',
+      msg: `Você desafiou ${esc(opponentFound.name)} (${esc(opponentFound.player_code)})! Ambas têm 24h para responder as mesmas 10 questões. Quem acertar mais ganha 250 XP! 🏆`,
+      hideCancel:true,
+      onConfirm:()=>{closeModal(); playDuel(data.id);}
+    });
+  } catch(e) {
+    console.error(e);
+    openModal({title:'ERRO', msg:'Não foi possível criar o duelo: ' + (e.message||e), hideCancel:true, onConfirm:()=>closeModal()});
+    $('btn-confirm-duel').disabled = false;
+    $('btn-confirm-duel').textContent = '⚔️ ENVIAR DESAFIO';
+  }
+}
+
+async function playDuel(duelId) {
+  snd.click();
+  try {
+    const { data, error } = await sb.from('duels').select('*').eq('id', duelId).maybeSingle();
+    if (error) throw error;
+    if (!data) {
+      openModal({title:'ERRO', msg:'Duelo não encontrado.', hideCancel:true, onConfirm:()=>closeModal()});
+      return;
+    }
+
+    const eu = data.challenger_id === currentSession.user.id ? 'challenger' : 'opponent';
+    const minhasAnswers = data[eu + '_answers'] || [];
+    if (minhasAnswers.length >= 10) {
+      openModal({title:'JÁ RESPONDEU', msg:'Você já respondeu este duelo. Aguarde a outra jogadora.', hideCancel:true, onConfirm:()=>closeModal()});
+      return;
+    }
+
+    activeDuel = { ...data, eu, qIdx: minhasAnswers.length, myAnswers: [...minhasAnswers] };
+    renderDuelPlay();
+    showScreen('screen-duel-play');
+  } catch(e) {
+    console.error(e);
+    openModal({title:'ERRO', msg:'Erro ao carregar duelo.', hideCancel:true, onConfirm:()=>closeModal()});
+  }
+}
+
+// Timer global do duelo (limpa entre questões)
+let duelTimerId = null;
+
+function clearDuelTimer() {
+  if (duelTimerId) { clearInterval(duelTimerId); duelTimerId = null; }
+}
+
+function renderDuelPlay() {
+  clearDuelTimer();
+  if (!activeDuel) return;
+  const q = activeDuel.questions[activeDuel.qIdx];
+  if (!q) { finishDuelAnswers(); return; }
+
+  const total = activeDuel.questions.length;
+  const progress = activeDuel.qIdx;
+  const op = activeDuel.eu === 'challenger' ? 'opponent' : 'challenger';
+
+  const optsHtml = q.type === 'cebraspe'
+    ? `<button class="ans-btn" onclick="answerDuelQ(0)">CERTO</button><button class="ans-btn" onclick="answerDuelQ(1)">ERRADO</button>`
+    : q.options.map((o, i) => `<button class="ans-btn" onclick="answerDuelQ(${i})"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
+
+  $('duel-play-content').innerHTML = `
+    <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:var(--rose);">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="font-size:24px;">⚔️</div>
+          <div>
+            <div class="font-arcade" style="font-size:10px;color:var(--rose);">DUELO PVP</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.7);">vs ${esc(activeDuel[op + '_name'])} (${esc(activeDuel[op + '_code'])})</div>
+          </div>
+        </div>
+        <div class="font-arcade" style="font-size:11px;color:var(--amber);">${progress + 1}/${total}</div>
+      </div>
+      <div class="xp-bar"><div class="xp-fill" style="width:${(progress/total)*100}%;"></div></div>
+    </div>
+
+    <!-- ⏱️ CRONÔMETRO DA QUESTÃO -->
+    <div class="duel-timer-card pixel-corners" id="duel-timer-card">
+      <div class="duel-timer-row">
+        <span class="font-arcade" style="font-size:10px;color:rgba(255,255,255,.6);">⏱️ TEMPO RESTANTE</span>
+        <span id="duel-timer-secs" class="font-orbit duel-timer-secs">30</span>
+      </div>
+      <div class="duel-timer-bar-wrap">
+        <div id="duel-timer-bar" class="duel-timer-bar"></div>
+      </div>
+    </div>
+
+    <div class="card pixel-corners" style="padding:20px;">
+      <div style="margin-bottom:12px;">
+        <span class="tag" style="border-color:${BANCAS[q.banca] ? BANCAS[q.banca].color : '#94a3b8'};color:${BANCAS[q.banca] ? BANCAS[q.banca].color : '#94a3b8'};background:${BANCAS[q.banca] ? BANCAS[q.banca].color : '#94a3b8'}15;">🏆 ${esc(q.banca || '—')}</span>
+      </div>
+      <div style="font-size:15px;line-height:1.6;margin-bottom:20px;">${esc(q.statement)}</div>
+      <div class="ans-grid">${optsHtml}</div>
+    </div>
+  `;
+
+  // Iniciar timer de 30s
+  startQuestionTimer();
+}
+
+function startQuestionTimer() {
+  const totalMs = 30 * 1000;
+  const startedAt = Date.now();
+  let lastSec = 30;
+
+  const update = () => {
+    const elapsed = Date.now() - startedAt;
+    const remainingMs = Math.max(0, totalMs - elapsed);
+    const remainingSec = Math.ceil(remainingMs / 1000);
+    const pct = (remainingMs / totalMs) * 100;
+
+    const secsEl = document.getElementById('duel-timer-secs');
+    const barEl = document.getElementById('duel-timer-bar');
+    const cardEl = document.getElementById('duel-timer-card');
+    if (!secsEl || !barEl) { clearDuelTimer(); return; } // tela mudou
+
+    secsEl.textContent = remainingSec;
+    barEl.style.width = pct + '%';
+
+    // Cores adaptativas + som de tick nos últimos 5s
+    if (remainingSec <= 5) {
+      cardEl.classList.add('critical');
+      secsEl.style.color = 'var(--rose)';
+      barEl.style.background = 'linear-gradient(90deg, var(--rose), #ff6b9d)';
+      if (remainingSec < lastSec && remainingSec > 0) {
+        try { beep(880, 0.06, 'square', 0.05); } catch(e){}
+      }
+    } else if (remainingSec <= 10) {
+      cardEl.classList.remove('critical');
+      secsEl.style.color = 'var(--amber)';
+      barEl.style.background = 'linear-gradient(90deg, var(--amber), #ff8c42)';
+    } else {
+      cardEl.classList.remove('critical');
+      secsEl.style.color = 'var(--cyan)';
+      barEl.style.background = 'linear-gradient(90deg, var(--cyan), var(--emerald))';
+    }
+    lastSec = remainingSec;
+
+    if (remainingMs <= 0) {
+      clearDuelTimer();
+      handleDuelTimeout();
+    }
+  };
+
+  update(); // primeira pintura imediata
+  duelTimerId = setInterval(update, 100); // 10fps pra barra fluida
+}
+
+function handleDuelTimeout() {
+  if (!activeDuel) return;
+  try { snd.wrong(); } catch(e){}
+  // Marca como NÃO respondida (idx: null, correct: false) — não conta pra acerto nem pra erro
+  activeDuel.myAnswers.push({ idx: null, correct: false, timeout: true });
+  activeDuel.qIdx++;
+
+  // Mostra feedback rápido
+  const card = document.getElementById('duel-timer-card');
+  if (card) {
+    card.classList.add('timeout');
+    const secsEl = document.getElementById('duel-timer-secs');
+    if (secsEl) secsEl.textContent = '⏱️';
+  }
+
+  if (activeDuel.qIdx < activeDuel.questions.length) {
+    setTimeout(() => renderDuelPlay(), 900);
+  } else {
+    setTimeout(() => finishDuelAnswers(), 900);
+  }
+}
+
+async function answerDuelQ(idx) {
+  if (!activeDuel) return;
+  clearDuelTimer(); // ⏱️ para o cronômetro
+  const q = activeDuel.questions[activeDuel.qIdx];
+  const correct = q.correct === idx;
+  if (correct) snd.correct(); else snd.wrong();
+
+  activeDuel.myAnswers.push({ idx, correct });
+  activeDuel.qIdx++;
+
+  if (activeDuel.qIdx < activeDuel.questions.length) {
+    setTimeout(() => renderDuelPlay(), 400);
+  } else {
+    setTimeout(() => finishDuelAnswers(), 600);
+  }
+}
+
+async function finishDuelAnswers() {
+  if (!activeDuel) return;
+
+  const score = activeDuel.myAnswers.filter(a => a.correct).length;
+  const updateField = activeDuel.eu + '_answers';
+  const scoreField = activeDuel.eu + '_score';
+
+  try {
+    // Buscar estado atual pra verificar se o oponente terminou
+    const { data: current, error: e1 } = await sb.from('duels').select('*').eq('id', activeDuel.id).maybeSingle();
+    if (e1) throw e1;
+    if (!current) throw new Error('Duelo desapareceu');
+
+    const op = activeDuel.eu === 'challenger' ? 'opponent' : 'challenger';
+    const opAnswers = current[op + '_answers'] || [];
+    const opTerminou = opAnswers.length >= 10;
+    const opScore = current[op + '_score'];
+
+    const update = {
+      [updateField]: activeDuel.myAnswers,
+      [scoreField]: score,
+    };
+
+    let winnerId = null;
+    let finalStatus = 'active';
+    if (opTerminou) {
+      // Os dois terminaram — finaliza!
+      finalStatus = 'finished';
+      if (score > opScore) winnerId = currentSession.user.id;
+      else if (score < opScore) winnerId = current[op + '_id'];
+      // empate = winnerId fica null
+      update.status = 'finished';
+      update.winner_id = winnerId;
+      update.finished_at = new Date().toISOString();
+    }
+
+    const { error: e2 } = await sb.from('duels').update(update).eq('id', activeDuel.id);
+    if (e2) throw e2;
+
+    // Recompensa em XP local
+    let xpGanho = score * 10; // base
+    let resultLabel = '';
+    let resultColor = '';
+    if (finalStatus === 'finished') {
+      if (winnerId === currentSession.user.id) {
+        xpGanho += 250; resultLabel = '🏆 VITÓRIA!'; resultColor = 'var(--emerald)';
+      } else if (winnerId && winnerId !== currentSession.user.id) {
+        resultLabel = '💀 DERROTA'; resultColor = 'var(--rose)';
+      } else {
+        xpGanho += 100; resultLabel = '🤝 EMPATE'; resultColor = 'var(--amber)';
+      }
+    } else {
+      resultLabel = '⏳ AGUARDANDO OPONENTE';
+      resultColor = 'var(--cyan)';
+    }
+
+    progress.xp += xpGanho;
+    saveProgress();
+    if (sb && currentSession) upsertProgress().catch(()=>{});
+
+    // Tela de resultado
+    $('duel-result-content').innerHTML = `
+      <div class="card glow pixel-corners" style="text-align:center;padding:32px;border-color:${resultColor};">
+        <div style="font-size:64px;margin-bottom:12px;">${finalStatus === 'finished' ? (winnerId === currentSession.user.id ? '🏆' : (winnerId ? '💀' : '🤝')) : '⏳'}</div>
+        <div class="font-arcade" style="font-size:16px;color:${resultColor};margin-bottom:16px;">${resultLabel}</div>
+        <div style="display:flex;justify-content:center;gap:24px;margin:20px 0;">
+          <div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);">VOCÊ</div>
+            <div class="font-orbit" style="font-size:36px;font-weight:900;color:var(--cyan);">${score}</div>
+          </div>
+          <div style="font-family:'Press Start 2P',monospace;font-size:14px;align-self:center;color:var(--amber);">VS</div>
+          <div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);">${esc(activeDuel[op + '_name'])}</div>
+            <div class="font-orbit" style="font-size:36px;font-weight:900;color:${opTerminou ? 'var(--rose)' : 'rgba(255,255,255,.3)'};">${opTerminou ? opScore : '—'}</div>
+          </div>
+        </div>
+        <div style="padding:14px;background:rgba(255,215,0,0.1);border-left:3px solid var(--amber);font-size:14px;margin:14px 0;">
+          ⚡ <strong style="color:var(--amber);">+${xpGanho} XP</strong> ganhos neste duelo!
+        </div>
+        ${finalStatus !== 'finished' ? `<div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:12px;">Quando ${esc(activeDuel[op + '_name'])} responder, o resultado final aparece em "Histórico".</div>` : ''}
+        <button class="btn full" style="margin-top:20px;" onclick="goDuels()">▶ VOLTAR AOS DUELOS</button>
+      </div>
+    `;
+    showScreen('screen-duel-result');
+    activeDuel = null;
+
+  } catch(e) {
+    console.error('finishDuelAnswers:', e);
+    openModal({title:'ERRO', msg:'Não foi possível salvar suas respostas: ' + (e.message||e), hideCancel:true, onConfirm:()=>{closeModal(); goDuels();}});
+  }
+}
+
+async function viewDuelResult(duelId) {
+  snd.click();
+  try {
+    const { data, error } = await sb.from('duels').select('*').eq('id', duelId).maybeSingle();
+    if (error) throw error;
+    if (!data) return;
+
+    const myId = currentSession.user.id;
+    const eu = data.challenger_id === myId ? 'challenger' : 'opponent';
+    const op = eu === 'challenger' ? 'opponent' : 'challenger';
+    const meuScore = data[eu + '_score'];
+    const opScore = data[op + '_score'];
+
+    let resultLabel = '', resultColor = '';
+    if (data.winner_id === myId) { resultLabel = '🏆 VITÓRIA!'; resultColor = 'var(--emerald)'; }
+    else if (data.winner_id) { resultLabel = '💀 DERROTA'; resultColor = 'var(--rose)'; }
+    else if (data.status === 'expired') { resultLabel = '⏱️ DUELO EXPIRADO'; resultColor = 'var(--mauve)'; }
+    else { resultLabel = '🤝 EMPATE'; resultColor = 'var(--amber)'; }
+
+    $('duel-result-content').innerHTML = `
+      <button class="back-btn" onclick="goDuels()">← voltar</button>
+      <div class="card glow pixel-corners" style="text-align:center;padding:28px;border-color:${resultColor};">
+        <div style="font-size:56px;margin-bottom:8px;">${data.winner_id === myId ? '🏆' : data.winner_id ? '💀' : data.status === 'expired' ? '⏱️' : '🤝'}</div>
+        <div class="font-arcade" style="font-size:14px;color:${resultColor};margin-bottom:12px;">${resultLabel}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:16px;">Finalizado em ${new Date(data.finished_at || data.expires_at).toLocaleString('pt-BR')}</div>
+        <div style="display:flex;justify-content:space-around;gap:20px;margin:20px 0;">
+          <div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);">${esc(data[eu + '_code'])}</div>
+            <div style="font-size:13px;color:var(--cyan);">${esc(data[eu + '_name'])}</div>
+            <div class="font-orbit" style="font-size:42px;font-weight:900;color:var(--cyan);">${meuScore}</div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);">${esc(data[op + '_code'])}</div>
+            <div style="font-size:13px;">${esc(data[op + '_name'])}</div>
+            <div class="font-orbit" style="font-size:42px;font-weight:900;color:var(--rose);">${opScore}</div>
+          </div>
+        </div>
+        <button class="btn ghost full" style="margin-top:16px;" onclick="goDuels()">▶ VOLTAR</button>
+      </div>
+    `;
+    showScreen('screen-duel-result');
+  } catch(e) {
+    console.error(e);
+  }
+}
+
 /* ============================================================
    MODAL
 ============================================================ */
@@ -4476,8 +5469,25 @@ window.addEventListener('load', async () => {
         const { profile, prog } = await pullFromCloud(session.user.id);
         if (profile) {
           hydrateFromCloud(profile, prog);
+          // Tenta também recuperar do localStorage (caso a nuvem esteja incompleta)
+          try {
+            const localU = JSON.parse(localStorage.getItem(KEY_USER) || 'null');
+            if (localU && localU.email === user.email) {
+              // Preenche campos faltantes do cloud com o local
+              if (!user.cargo && localU.cargo) user.cargo = localU.cargo;
+              if (!user.banca && localU.banca) user.banca = localU.banca;
+              if (!user.nivel && localU.nivel) user.nivel = localU.nivel;
+              if (!user.horasDia && localU.horasDia) user.horasDia = localU.horasDia;
+              if (!user.dataProva && localU.dataProva) user.dataProva = localU.dataProva;
+              saveUser();
+              // Re-sincroniza com a nuvem (background)
+              setTimeout(() => upsertProfile().catch(()=>{}), 1500);
+            }
+          } catch(e){}
           setTimeout(() => {
-            if (user.cargo) goMap();
+            // Considera perfil "completo" se tem cargo OU banca OU nivel definidos
+            const temPerfil = user.cargo || user.banca || user.nivel;
+            if (temPerfil) goMap();
             else {
               onbStep = 0;
               onbData = { avatar: progress.avatar || '👮‍♀️', avatarColor: progress.avatarColor || '#ff2e63' };
@@ -4545,6 +5555,34 @@ window.showApprovalCertificate = showApprovalCertificate;
 window.closeCertificate = closeCertificate;
 window.downloadCertImage = downloadCertImage;
 window.checkNightMode = checkNightMode;
+window.goDuels = goDuels;
+window.goDuelChallenge = goDuelChallenge;
+window.switchDuelTab = switchDuelTab;
+window.copyMyCode = copyMyCode;
+window.searchOpponent = searchOpponent;
+window.confirmChallenge = confirmChallenge;
+window.playDuel = playDuel;
+window.answerDuelQ = answerDuelQ;
+window.viewDuelResult = viewDuelResult;
+window.loadMyPlayerCode = loadMyPlayerCode;
+
+/* 🔒 LGPD banner */
+function checkLgpdBanner() {
+  try {
+    if (!localStorage.getItem('jq:lgpd_accepted')) {
+      const banner = document.getElementById('lgpd-banner');
+      if (banner) banner.style.display = 'block';
+    }
+  } catch(e){}
+}
+function acceptLgpd() {
+  try { localStorage.setItem('jq:lgpd_accepted', '1'); } catch(e){}
+  const banner = document.getElementById('lgpd-banner');
+  if (banner) banner.style.display = 'none';
+}
+window.acceptLgpd = acceptLgpd;
+window.addEventListener('load', () => setTimeout(checkLgpdBanner, 1500));
+
 window.spinRoulette = spinRoulette;
 window.closeRouletteModal = closeRouletteModal;
 window.showRouletteModal = showRouletteModal;
