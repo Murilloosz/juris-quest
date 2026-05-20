@@ -12,7 +12,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- 🔒 Política de permissões: bloqueia câmera/microfone/geolocalização não pedidas -->
 <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
 <meta name="theme-color" content="#0a0410">
 <title>JURIS QUEST — A Jornada da Aprovação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -719,12 +719,6 @@ body.night-mode .btn {
 
 /* ============================================================ */
 
-/* Streak chama */
-
-
-
-/* Streak chama */
-
 /* ROLETA DIÁRIA */
 .roulette-modal {
   position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 300;
@@ -822,10 +816,6 @@ body.night-mode .btn {
 
 
 /* Streak chama */
-
-
-
-/* Streak chama */
 .fire{color:#fb923c;}
 </style>
 </head>
@@ -857,7 +847,7 @@ body.night-mode .btn {
       <div class="font-arcade" style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:16px;">« PRESS START »</div>
       <button class="btn" onclick="goLogin()">▶ INICIAR MISSÃO</button>
     </div>
-    <div style="margin-top:48px;font-size:12px;color:rgba(255,255,255,.4);">v3.0 • feito com 💜 para Murillo Souza & a próxima geração</div>
+    <div style="margin-top:48px;font-size:12px;color:rgba(255,255,255,.4);">v3.1 • feito com 💜 para Murillo Souza & a próxima geração</div>
   </div>
 </div>
 
@@ -961,15 +951,15 @@ body.night-mode .btn {
           <div class="hud-stat" title="Streak diário"><span class="fire">🔥</span><span id="hud-streak" class="font-orbit fire" style="font-weight:700;">0</span><span style="color:rgba(255,255,255,.4);font-size:11px;">DIAS</span></div>
           <div class="hud-stat" id="hud-freezes-wrap" style="display:none;" title="Freezes acumulados — protegem sua chama"><span>🧊</span><span id="hud-freezes" class="font-orbit" style="color:#7dd3fc;font-weight:700;">0</span></div>
           <div class="hud-actions">
-            <button onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
-            <button onclick="toggleNotifications()" title="Notificações">🔔</button>
-            <button onclick="goFlashcards()" title="Lei Seca">🃏</button>
-            <button onclick="goMyPile()" title="Minha Pilha">🚩</button>
-            <button onclick="goDuels()" title="Duelos">⚔️</button>
-            <button onclick="goRanking()" title="Ranking">🏆</button>
-            <button onclick="goStats()" title="Stats">📊</button>
-            <button id="hud-admin-btn" onclick="goAdmin()" title="Painel Admin" style="display:none;">👑</button>
-            <button onclick="logout()" title="Sair">🚪</button>
+            <button aria-label="Ativar ou desativar som" onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
+            <button aria-label="Ativar ou desativar notificações" onclick="toggleNotifications()" title="Notificações">🔔</button>
+            <button aria-label="Lei Seca — Flashcards" onclick="goFlashcards()" title="Lei Seca">🃏</button>
+            <button aria-label="Minha pilha de questões marcadas" onclick="goMyPile()" title="Minha Pilha">🚩</button>
+            <button aria-label="Duelos PvP entre jogadoras" onclick="goDuels()" title="Duelos">⚔️</button>
+            <button aria-label="Ranking público de jogadoras" onclick="goRanking()" title="Ranking">🏆</button>
+            <button aria-label="Suas estatísticas" onclick="goStats()" title="Stats">📊</button>
+            <button id="hud-admin-btn" aria-label="Painel do mestre" onclick="goAdmin()" title="Painel Admin" style="display:none;">👑</button>
+            <button aria-label="Sair da conta" onclick="logout()" title="Sair">🚪</button>
           </div>
         </div>
       </div>
