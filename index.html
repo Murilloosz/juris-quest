@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- 🔒 SEGURANÇA: CSP impede injeção de scripts externos não autorizados -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
-<!-- 🔒 Impede iframe embedding (clickjacking) -->
-<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self';">
 <!-- 🔒 Impede o browser de "adivinhar" tipos MIME (MIME sniffing) -->
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <!-- 🔒 Limita o que vai no Referer header -->
@@ -1316,8 +1314,9 @@ body.night-mode .btn {
 
 <script>
 
-/* 🔒 ANTI-CLICKJACKING — proteção principal via meta X-Frame-Options="DENY" no <head>.
-   Este código só tenta redirecionar como camada extra; falhas silenciosas são OK. */
+/* 🔒 ANTI-CLICKJACKING — proteção via JavaScript redirecionando se estiver em iframe.
+   Notas: X-Frame-Options só funciona como HTTP header (não como meta tag) — então
+   confiamos no redirect JS abaixo + CSP do GitHub Pages/Netlify que já protege. */
 if (window.top !== window.self) {
   try { window.top.location = window.self.location; } catch(e) { /* cross-origin: ignorar */ }
 }
