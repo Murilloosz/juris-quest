@@ -1040,6 +1040,107 @@ body.night-mode .btn {
 
 /* ============================================ */
 
+
+/* ==================== ABAS DE MATÉRIAS ==================== */
+.subject-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  background: rgba(0,0,0,0.5);
+  padding: 6px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.subject-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 6px;
+  background: transparent;
+  border: 2px solid transparent;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 76px;
+}
+.subject-tab .tab-icon { font-size: 22px; }
+.subject-tab .tab-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.subject-tab .tab-progress {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+}
+.subject-tab:hover { color: rgba(255,255,255,0.9); }
+.subject-tab.active {
+  background: rgba(255,255,255,0.05);
+}
+.subject-tab.active[data-subject="const"] {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 12px rgba(8,217,214,0.3);
+}
+.subject-tab.active[data-subject="const"] .tab-progress { color: var(--cyan); }
+.subject-tab.active[data-subject="adm"] {
+  border-color: var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 12px rgba(255,215,0,0.3);
+}
+.subject-tab.active[data-subject="adm"] .tab-progress { color: var(--amber); }
+.subject-tab.active[data-subject="penal"] {
+  border-color: var(--rose);
+  color: var(--rose);
+  box-shadow: 0 0 12px rgba(255,46,99,0.3);
+}
+.subject-tab.active[data-subject="penal"] .tab-progress { color: var(--rose); }
+.subject-tab.active[data-subject="info"] {
+  border-color: var(--emerald);
+  color: var(--emerald);
+  box-shadow: 0 0 12px rgba(16,185,129,0.3);
+}
+.subject-tab.active[data-subject="info"] .tab-progress { color: var(--emerald); }
+
+/* Mobile: tabs maiores e mais espaçadas */
+@media (max-width: 480px) {
+  .subject-tab { padding: 10px 4px; min-height: 70px; }
+  .subject-tab .tab-icon { font-size: 18px; }
+  .subject-tab .tab-label { font-size: 8px; }
+  .subject-tab .tab-progress { font-size: 10px; }
+}
+
+/* Barra de progresso da matéria */
+.subject-progress {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.subject-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+}
+.subject-progress-header > span:first-child { color: rgba(255,255,255,0.9); }
+.subject-progress-header > span:last-child {
+  color: var(--amber);
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 900;
+}
+.subject-progress-detail {
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+}
+
 /* Streak chama */
 .fire{color:#fb923c;}
 </style>
@@ -1250,8 +1351,42 @@ body.night-mode .btn {
       </button>
     </div>
 
+    <!-- 🎯 ABAS DE MATÉRIAS — 4 jornadas independentes -->
+    <div class="subject-tabs pixel-corners" id="subject-tabs">
+      <button class="subject-tab" data-subject="const" onclick="switchSubject('const')">
+        <span class="tab-icon">⚖️</span>
+        <span class="tab-label">CONST</span>
+        <span class="tab-progress" id="tab-prog-const">0/9</span>
+      </button>
+      <button class="subject-tab" data-subject="adm" onclick="switchSubject('adm')">
+        <span class="tab-icon">🏛️</span>
+        <span class="tab-label">ADM</span>
+        <span class="tab-progress" id="tab-prog-adm">0/9</span>
+      </button>
+      <button class="subject-tab" data-subject="penal" onclick="switchSubject('penal')">
+        <span class="tab-icon">⚔️</span>
+        <span class="tab-label">PENAL</span>
+        <span class="tab-progress" id="tab-prog-penal">0/19</span>
+      </button>
+      <button class="subject-tab" data-subject="info" onclick="switchSubject('info')">
+        <span class="tab-icon">💻</span>
+        <span class="tab-label">INFO</span>
+        <span class="tab-progress" id="tab-prog-info">0/3</span>
+      </button>
+    </div>
+
+    <!-- Barra de progresso da matéria selecionada -->
+    <div class="subject-progress pixel-corners" id="subject-progress-bar">
+      <div class="subject-progress-header">
+        <span id="subject-progress-title">⚖️ CONSTITUCIONAL</span>
+        <span id="subject-progress-pct">0%</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill" id="subject-progress-fill" style="width:0%;"></div></div>
+      <div class="subject-progress-detail" id="subject-progress-detail">0 de 9 dias concluídos</div>
+    </div>
+
     <!-- Mapa de fases -->
-    <div id="map-phases"></div>
+    <div id="map-phases" class="phases-grid"></div>
 
     <!-- Footer -->
     <div class="app-footer">
@@ -2276,137 +2411,136 @@ const QBANK = {
 };
 
 // ============================================================
-// MAPA DE DIAS (intercalados) — agora cada dia é um BOSS
+// TOPICS — metadados de cada tópico (título, briefing, matéria)
 // ============================================================
-// Ordem intercalada: Const → Adm → Penal → Const → Adm → Penal...
-// 10 tópicos por matéria × 3 = 30 dias (mas como temos menos tópicos, repetimos com ordem)
-// Estrutura: { day, topicId, subject, title, subtitle, briefing }
 const TOPICS = [
   // Constitucional
   {id:'const-principios', subject:'const', title:'Princípios Fundamentais', subtitle:'Art. 1º ao 4º — A base de tudo',
     briefing:'FUNDAMENTOS (art. 1º — SO-CI-DI-VA-PLU). OBJETIVOS (art. 3º). RELAÇÕES INTERNACIONAIS (art. 4º). 💡 Pegadinha clássica: trocar fundamento por objetivo.'},
   {id:'const-art5-direitos-pessoais', subject:'const', title:'Art. 5º — Direitos Pessoais', subtitle:'Vida, liberdade, igualdade, segurança e propriedade',
-    briefing:'Direitos individuais (caput + incisos). INVIOLABILIDADE DO DOMICÍLIO (XI): 4 hipóteses — flagrante, desastre, socorro (qualquer hora); ordem judicial (só de DIA). Legalidade (II): particular pode tudo que a lei não proíbe.'},
-  {id:'const-remedios-constitucionais', subject:'const', title:'Remédios Constitucionais', subtitle:'HC, MS, HD, MI, Ação Popular',
-    briefing:'HC: liberdade de locomoção. MS: direito líquido/certo não amparado por HC/HD. HD: informações pessoais em registros públicos. MI: omissão regulamentadora. Ação Popular: cidadão contra ato lesivo.'},
-  {id:'const-seguranca-publica', subject:'const', title:'Segurança Pública — Art. 144', subtitle:'O coração da prova de PM',
-    briefing:'🚨 ARTIGO MAIS IMPORTANTE. "Dever do Estado, direito de TODOS". 6 órgãos: PF, PRF, PFF, P. Civis, PM/CBM, P. Penais. PM (§5º): ostensiva + preservação. Reserva do Exército (§6º).'},
+    briefing:'Os direitos mais íntimos. Inviolabilidade do domicílio (art. 5º, XI). Tortura jamais. Pegadinha: "salvo decisão judicial" virar "salvo flagrante". Hora certa importa.'},
+  {id:'const-remedios-constitucionais', subject:'const', title:'Remédios Constitucionais', subtitle:'Habeas Corpus, MS, MI, Habeas Data',
+    briefing:'HC: liberdade de locomoção. MS: direito líquido e certo. MI: norma faltando. Habeas Data: dados pessoais. Ação Popular: cidadão.'},
+  {id:'const-seguranca-publica', subject:'const', title:'Segurança Pública (art. 144)', subtitle:'PM, PC, PF, PRF, Bombeiros',
+    briefing:'Art. 144 — base constitucional da SP. Decora os 5 órgãos e suas atribuições. PM faz preventivo, PC faz repressivo, PF combate transnacional.'},
   // Administrativo
-  {id:'adm-principios-limpe', subject:'adm', title:'Princípios — LIMPE', subtitle:'Art. 37, caput',
-    briefing:'LIMPE: Legalidade (lei AUTORIZA), Impessoalidade, Moralidade, Publicidade, Eficiência. Implícitos: supremacia, autotutela (Súm. 473), motivação, razoabilidade.'},
-  {id:'adm-poderes', subject:'adm', title:'Poderes Administrativos', subtitle:'Hierárquico, Disciplinar, Regulamentar, Polícia',
-    briefing:'4 poderes. Atributos da polícia: D (discricionariedade) + A (autoexecutoriedade) + C (coercibilidade). Decreto regulamentar = fiel execução das leis (art. 84, IV CF).'},
-  {id:'adm-atos-administrativos', subject:'adm', title:'Atos Administrativos', subtitle:'Atributos, elementos, extinção',
-    briefing:'PATI: Presunção, Autoexecutoriedade, Tipicidade, Imperatividade. Elementos: Competência, Finalidade, Forma, Motivo, Objeto. Anulação (ilegal — ex tunc) x Revogação (mérito — ex nunc).'},
-  {id:'adm-servidores-improbidade', subject:'adm', title:'Servidores e Improbidade', subtitle:'Art. 37-41 CF + Lei 8.429/92',
-    briefing:'Concurso, acumulação (vedada com exceções do XVI), estabilidade (3 anos). Teto: subsídio Min STF. Improbidade após Lei 14.230/21: exige DOLO; prescrição de 8 anos.'},
+  {id:'adm-principios-limpe', subject:'adm', title:'Princípios LIMPE', subtitle:'Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência',
+    briefing:'LIMPE no art. 37. Razoabilidade e proporcionalidade vêm de doutrina. Pegadinha: princípios constitucionais x infraconstitucionais.'},
+  {id:'adm-poderes', subject:'adm', title:'Poderes Administrativos', subtitle:'Vinculado, discricionário, hierárquico, disciplinar, polícia',
+    briefing:'Poder de polícia: limita direitos individuais em favor do interesse coletivo. Atributos: discricionariedade, autoexecutoriedade, coercibilidade.'},
+  {id:'adm-atos-administrativos', subject:'adm', title:'Atos Administrativos', subtitle:'Elementos, atributos, espécies',
+    briefing:'Elementos: COMP-FORM-FIN-MOT-OBJ. Atributos: presunção, imperatividade, autoexecutoriedade. Revogação x anulação.'},
+  {id:'adm-servidores-improbidade', subject:'adm', title:'Servidores e Improbidade', subtitle:'Lei 8.112/90 + Lei 8.429/92',
+    briefing:'Servidor público: estatutário. Improbidade: enriquecimento ilícito, prejuízo ao erário, princípios. Sanções não-penais (Lei 14.230/21 mudou tudo).'},
   // Penal
-  {id:'penal-principios', subject:'penal', title:'Princípios do Direito Penal', subtitle:'Legalidade, retroatividade, insignificância',
-    briefing:'Legalidade (1º CP + 5º, XXXIX CF). Retroatividade da benéfica. Insignificância (HC 84.412/SP — MOPRRI). Intervenção mínima.'},
-  {id:'penal-aplicacao-tempo-lugar', subject:'penal', title:'Aplicação da Lei Penal', subtitle:'Tempo, lugar, extraterritorialidade',
-    briefing:'TEMPO (art. 4º): ATIVIDADE. LUGAR (art. 6º): UBIQUIDADE. Extraterritorialidade incondicionada (Presidente, União, genocídio) e condicionada.'},
-  {id:'penal-crimes-pessoa', subject:'penal', title:'Crimes contra a Pessoa', subtitle:'Homicídio, lesão, ameaça',
-    briefing:'Homicídio (121): simples, privilegiado, qualificado (feminicídio!), culposo. Lesão (129): simples, grave, gravíssima, seguida de morte. Ameaça (147): mal injusto e grave.'},
-  {id:'penal-patrimonio', subject:'penal', title:'Crimes contra o Patrimônio', subtitle:'Furto, roubo, extorsão',
-    briefing:'Furto (155): SEM violência. Roubo (157): COM violência/ameaça. Extorsão (158): vítima entrega sob ameaça. Latrocínio (157, § 3º, II) — Súm. 603 STF: juiz singular.'},
-  {id:'penal-administracao', subject:'penal', title:'Crimes contra a Administração', subtitle:'Peculato, corrupção, prevaricação, abuso',
-    briefing:'Peculato (312), Concussão (316 — EXIGE), Corrupção passiva (317 — SOLICITA), Prevaricação (319). Abuso de autoridade (Lei 13.869/19): dolo específico.'},
-  {id:'penal-lei-drogas', subject:'penal', title:'Lei de Drogas (11.343/06)', subtitle:'Uso, tráfico, tráfico privilegiado',
-    briefing:'Uso (28): SEM pena privativa. Tráfico (33): 5-15 anos, equiparado a hediondo. Privilegiado (§4º): primário + bons antecedentes + não dedicado + não orgcrim — STF: NÃO é hediondo.'},
-  {id:'penal-maria-da-penha', subject:'penal', title:'Lei Maria da Penha', subtitle:'Lei 11.340/06',
-    briefing:'5 formas: FÍSICA, PSICOLÓGICA, SEXUAL, PATRIMONIAL, MORAL. STJ: NÃO insignificância (Súm. 589), NÃO susp. condicional (Súm. 536), NÃO restritiva (Súm. 588).'},
-  {id:'penal-armas-tortura-hediondos', subject:'penal', title:'Armas, Tortura e Hediondos', subtitle:'Leis 10.826/03, 9.455/97, 8.072/90',
-    briefing:'Posse (12): 1-3 anos. Porte (14): 2-4. Restrito (16): 3-6. Tortura EQUIPARADA a hediondo. PM tem porte funcional. Regime obrigatório fechado: inconstitucional.'},
+  {id:'penal-principios', subject:'penal', title:'Princípios do Direito Penal', subtitle:'Legalidade, intervenção mínima, lesividade',
+    briefing:'Princípios: legalidade (art. 5º, XXXIX), intervenção mínima, lesividade, culpabilidade, insignificância, individualização da pena. Base de tudo.'},
+  {id:'penal-aplicacao-tempo-lugar', subject:'penal', title:'Aplicação da Lei Penal', subtitle:'Tempo, lugar, espaço, pessoa',
+    briefing:'Tempo: lei mais benéfica retroage. Lugar: ubiquidade (Brasil aplica se ação OU resultado aqui). Inimputáveis: <18 anos, doentes mentais.'},
+  {id:'penal-crimes-pessoa', subject:'penal', title:'Crimes contra a Pessoa', subtitle:'Homicídio, lesão, sequestro',
+    briefing:'Homicídio (art. 121): simples, qualificado, privilegiado. Lesão corporal: leve, grave, gravíssima. Sequestro x extorsão mediante.'},
+  {id:'penal-patrimonio', subject:'penal', title:'Crimes contra o Patrimônio', subtitle:'Furto, roubo, latrocínio, estelionato',
+    briefing:'Furto x roubo: roubo tem violência/grave ameaça. Latrocínio: roubo seguido de morte (hediondo). Estelionato: artifício/ardil.'},
+  {id:'penal-administracao', subject:'penal', title:'Crimes contra a Administração', subtitle:'Peculato, corrupção, prevaricação',
+    briefing:'Peculato: apropriação por servidor. Corrupção passiva x ativa. Prevaricação: deixar de praticar ato por interesse pessoal. Concussão x corrupção.'},
+  {id:'penal-lei-drogas', subject:'penal', title:'Lei de Drogas (11.343/06)', subtitle:'Uso, tráfico, equiparado a hediondo',
+    briefing:'Art. 28 (uso) x art. 33 (tráfico). Tráfico é equiparado a hediondo. Penas, redutor para traficante eventual (§4º), associação para o tráfico.'},
+  {id:'penal-maria-da-penha', subject:'penal', title:'Maria da Penha (11.340/06)', subtitle:'Violência doméstica contra mulher',
+    briefing:'Sujeito passivo: mulher. Tipos de violência: física, psicológica, sexual, patrimonial, moral. Medidas protetivas. Súmula 542 STJ.'},
+  {id:'penal-armas-tortura-hediondos', subject:'penal', title:'Estatuto + Tortura + Hediondos', subtitle:'Leis 10.826/03, 9.455/97, 8.072/90',
+    briefing:'Estatuto do Desarmamento: porte x posse. Tortura (Lei 9.455): qualquer pessoa, equiparado a hediondo. Hediondos: rol taxativo, regime mais grave.'},
   {id:'penal-eca-dh', subject:'penal', title:'ECA e Direitos Humanos', subtitle:'Lei 8.069/90 + uso da força',
     briefing:'Criança 0-12; adolescente 12-18. Ato infracional. Medidas socioeducativas (art. 112). DH: universalidade, indivisibilidade. Uso da força: ULTIMA RATIO para arma de fogo.'},
+  // Informática
   {id:'info-windows-office-internet', subject:'info', title:'Informática Básica', subtitle:'Windows + Office + Internet',
     briefing:'💻 Sistema Windows (atalhos, Explorador, Painel), Pacote Office (Word, Excel — fórmulas, atalhos), Internet (navegador, e-mail, phishing). Decoreba puro: atalhos do teclado e funções do Excel.'},
 ];
 
 // ============================================================
-// MONTAGEM DOS 30 DIAS INTERCALADOS
+// MAPA DE DIAS — 4 JORNADAS INDEPENDENTES POR MATÉRIA
 // ============================================================
-// Padrão: Const → Adm → Penal → Const → Adm → Penal → ...
-// Como temos 4 tópicos Const, 4 Adm, 9 Penal, distribuímos
-// ============================================================
-// JORNADA DE 30 DIAS — Distribuição:
-//   • 16 dias Penal (9 originais + 5 aprofundamento + 2 revisão exclusiva)
-//   • 5 dias Const (4 originais + 1 revisão exclusiva)
-//   • 5 dias Adm   (4 originais + 1 revisão exclusiva)
-//   • 4 dias Mistos (revisões combinadas + simulação + boss final)
-// Estrutura: cada item descreve um dia. Tipos:
-//   'topic'      → 30 questões do banco do tópico (boss normal)
-//   'deepening'  → 30 questões re-sorteadas do mesmo tópico (selo APROFUNDAMENTO)
-//   'review'     → 30 questões misturando vários tópicos relacionados
-//   'finalboss'  → 30 questões aleatórias do banco inteiro, peso maior em Penal
-// ============================================================
-const JOURNEY = [
-  // BLOCO 1 — Fundamentos (Dias 1-9)
-  {type:'topic', topicId:'penal-principios'},
-  {type:'topic', topicId:'const-principios'},
-  {type:'topic', topicId:'penal-aplicacao-tempo-lugar'},
-  {type:'topic', topicId:'adm-principios-limpe'},
-  {type:'topic', topicId:'penal-crimes-pessoa'},
-  {type:'topic', topicId:'const-art5-direitos-pessoais'},
-  {type:'topic', topicId:'penal-patrimonio'},
-  {type:'review', subject:'mix', title:'⚡ Revisão Bloco 1', subtitle:'Tudo dos dias 1 a 7',
-    briefing:'Revisão integrada das matérias estudadas até aqui — princípios penais, aplicação da lei, crimes contra pessoa e patrimônio, fundamentos constitucionais, art. 5º e LIMPE. 30 questões misturadas das 7 matérias. Ideal para fixar o que você aprendeu.',
-    pool:['penal-principios','const-principios','penal-aplicacao-tempo-lugar','adm-principios-limpe','penal-crimes-pessoa','const-art5-direitos-pessoais','penal-patrimonio']},
-  {type:'topic', topicId:'adm-poderes'},
+const JOURNEYS = {
+  const: [
+    {type:'topic', topicId:'const-principios'},
+    {type:'deepening', topicId:'const-principios'},
+    {type:'topic', topicId:'const-art5-direitos-pessoais'},
+    {type:'deepening', topicId:'const-art5-direitos-pessoais'},
+    {type:'topic', topicId:'const-remedios-constitucionais'},
+    {type:'deepening', topicId:'const-remedios-constitucionais'},
+    {type:'topic', topicId:'const-seguranca-publica'},
+    {type:'deepening', topicId:'const-seguranca-publica'},
+    {type:'finalboss', subject:'const', title:'👑 BOSS FINAL — CONSTITUCIONAL',
+      subtitle:'Você dominou a base. Hora do veredito!',
+      briefing:'Boss final da matéria Constitucional. 20 questões aleatórias de TODOS os tópicos: princípios, art. 5º, remédios e segurança pública. Mesma carga de peso que a prova real da PMPE. Acerte 80%+ pra ganhar a CARTA DE APROVAÇÃO em Const.',
+      pool:['const-principios','const-art5-direitos-pessoais','const-remedios-constitucionais','const-seguranca-publica']},
+  ],
+  adm: [
+    {type:'topic', topicId:'adm-principios-limpe'},
+    {type:'deepening', topicId:'adm-principios-limpe'},
+    {type:'topic', topicId:'adm-poderes'},
+    {type:'deepening', topicId:'adm-poderes'},
+    {type:'topic', topicId:'adm-atos-administrativos'},
+    {type:'deepening', topicId:'adm-atos-administrativos'},
+    {type:'topic', topicId:'adm-servidores-improbidade'},
+    {type:'deepening', topicId:'adm-servidores-improbidade'},
+    {type:'finalboss', subject:'adm', title:'👑 BOSS FINAL — ADMINISTRATIVO',
+      subtitle:'LIMPE, poderes, atos, servidores — tudo de uma vez!',
+      briefing:'Boss final de Direito Administrativo. 20 questões dos 4 tópicos: LIMPE, poderes administrativos, atos administrativos e servidores/improbidade. Acerte 80%+ pra ganhar a CARTA DE APROVAÇÃO em Adm.',
+      pool:['adm-principios-limpe','adm-poderes','adm-atos-administrativos','adm-servidores-improbidade']},
+  ],
+  penal: [
+    {type:'topic', topicId:'penal-principios'},
+    {type:'deepening', topicId:'penal-principios'},
+    {type:'topic', topicId:'penal-aplicacao-tempo-lugar'},
+    {type:'deepening', topicId:'penal-aplicacao-tempo-lugar'},
+    {type:'topic', topicId:'penal-crimes-pessoa'},
+    {type:'deepening', topicId:'penal-crimes-pessoa'},
+    {type:'topic', topicId:'penal-patrimonio'},
+    {type:'deepening', topicId:'penal-patrimonio'},
+    {type:'topic', topicId:'penal-administracao'},
+    {type:'deepening', topicId:'penal-administracao'},
+    {type:'topic', topicId:'penal-lei-drogas'},
+    {type:'deepening', topicId:'penal-lei-drogas'},
+    {type:'topic', topicId:'penal-maria-da-penha'},
+    {type:'deepening', topicId:'penal-maria-da-penha'},
+    {type:'topic', topicId:'penal-armas-tortura-hediondos'},
+    {type:'deepening', topicId:'penal-armas-tortura-hediondos'},
+    {type:'topic', topicId:'penal-eca-dh'},
+    {type:'deepening', topicId:'penal-eca-dh'},
+    {type:'finalboss', subject:'penal', title:'👑 BOSS FINAL — PENAL',
+      subtitle:'A matéria mais pesada. Hora do confronto.',
+      briefing:'Boss final de Direito Penal — a matéria mais cobrada na PMPE. 20 questões cobrindo os 9 tópicos: princípios, aplicação da lei, crimes contra pessoa/patrimônio/administração, leis especiais (drogas, Maria da Penha, armas, tortura, hediondos, ECA, DH). Acerte 80%+ pra ganhar a CARTA DE APROVAÇÃO em Penal.',
+      pool:['penal-principios','penal-aplicacao-tempo-lugar','penal-crimes-pessoa','penal-patrimonio','penal-administracao','penal-lei-drogas','penal-maria-da-penha','penal-armas-tortura-hediondos','penal-eca-dh']},
+  ],
+  info: [
+    {type:'topic', topicId:'info-windows-office-internet'},
+    {type:'deepening', topicId:'info-windows-office-internet'},
+    {type:'finalboss', subject:'info', title:'👑 BOSS FINAL — INFORMÁTICA',
+      subtitle:'Windows, Office, Internet — domínio total!',
+      briefing:'Boss final de Informática. Questões cobrindo Windows (atalhos, Explorador, Painel), Office (Word, Excel — fórmulas e atalhos) e Internet (navegador, e-mail, segurança). Acerte 80%+ pra ganhar a CARTA DE APROVAÇÃO em Informática.',
+      pool:['info-windows-office-internet']},
+  ],
+};
 
-  // BLOCO 2 — Aprofundamento (Dias 10-18)
-  {type:'topic', topicId:'penal-maria-da-penha'},
-  {type:'topic', topicId:'const-remedios-constitucionais'},
-  {type:'topic', topicId:'penal-lei-drogas'},
-  {type:'topic', topicId:'adm-atos-administrativos'},
-  {type:'topic', topicId:'penal-administracao'},
-  {type:'topic', topicId:'info-windows-office-internet'},
-  {type:'topic', topicId:'const-seguranca-publica'},
-  {type:'topic', topicId:'penal-armas-tortura-hediondos'},
-  {type:'topic', topicId:'adm-servidores-improbidade'},
-
-  // BLOCO 3 — Especializações (Dias 19-25)
-  {type:'topic', topicId:'penal-eca-dh'},
-  {type:'deepening', topicId:'penal-crimes-pessoa'},
-  {type:'review', subject:'const', title:'🛡️ Revisão Constitucional', subtitle:'Os 4 grandes blocos da CF',
-    briefing:'Revisão de TODO o conteúdo constitucional — princípios fundamentais, art. 5º (direitos pessoais), remédios constitucionais e segurança pública (art. 144). 30 questões para você dominar a parte da Constituição.',
-    pool:['const-principios','const-art5-direitos-pessoais','const-remedios-constitucionais','const-seguranca-publica']},
-  {type:'deepening', topicId:'penal-lei-drogas'},
-  {type:'review', subject:'adm', title:'🏛️ Revisão Administrativo', subtitle:'Todo o LIMPE em ação',
-    briefing:'Revisão completa de Direito Administrativo: princípios LIMPE, poderes administrativos, atos administrativos, servidores públicos e improbidade. 30 questões para garantir a parte de Adm.',
-    pool:['adm-principios-limpe','adm-poderes','adm-atos-administrativos','adm-servidores-improbidade']},
-  {type:'deepening', topicId:'penal-patrimonio'},
-  {type:'deepening', topicId:'penal-principios'},
-
-  // BLOCO 4 — Preparação Final (Dias 26-30)
-  {type:'review', subject:'penal', title:'⚔️ Revisão Penal — Parte Geral', subtitle:'Princípios + Aplicação + Crimes do CP',
-    briefing:'Revisão da Parte Geral do Direito Penal: princípios, aplicação da lei no tempo e no espaço, crimes contra a pessoa, patrimônio e Administração. 30 questões para fixar o CP.',
-    pool:['penal-principios','penal-aplicacao-tempo-lugar','penal-crimes-pessoa','penal-patrimonio','penal-administracao']},
-  {type:'review', subject:'penal', title:'📚 Revisão Legislação Penal Especial', subtitle:'Drogas + MP + Armas + ECA',
-    briefing:'Revisão das leis penais especiais cobradas em prova de PM: Lei de Drogas (11.343/06), Lei Maria da Penha (11.340/06), Estatuto do Desarmamento (10.826/03), Tortura (9.455/97), Hediondos (8.072/90) e ECA. 30 questões reforçando as armadilhas.',
-    pool:['penal-lei-drogas','penal-maria-da-penha','penal-armas-tortura-hediondos','penal-eca-dh']},
-  {type:'deepening', topicId:'penal-maria-da-penha'},
-  {type:'review', subject:'mix', title:'🎯 SIMULÃO PMPE', subtitle:'30 questões mistas — ensaio geral',
-    briefing:'SIMULAÇÃO FINAL antes do boss. 30 questões aleatórias misturando TODAS as matérias e bancas. Use como termômetro do seu preparo. Foco extra em Penal, que tem maior peso na prova de PM.',
-    pool:'ALL_WEIGHTED'},
-  {type:'finalboss'},
-];
+// JOURNEY linear deprecado — mantido como aglomerado pra compatibilidade
+const JOURNEY = [...JOURNEYS.const, ...JOURNEYS.adm, ...JOURNEYS.penal, ...JOURNEYS.info];
 
 // Conversão: JOURNEY → PHASES com toda a metadata necessária
-const PHASES = JOURNEY.map((day, idx) => {
-  const dayId = idx + 1;
+// Gerar PHASES separadas por matéria — agora com 20 questões
+function buildPhase(day, idx, subject) {
+  const dayId = subject + '-d' + (idx + 1);
+  const dayNum = idx + 1;
 
   if (day.type === 'topic') {
     const t = TOPICS.find(x => x.id === day.topicId);
     return {
       id: dayId, type: 'boss', mode: 'topic',
-      subject: t.subject,
-      ato: t.subject === 'const' ? 1 : t.subject === 'adm' ? 2 : 3,
+      subject: subject, dayNum,
       topicId: day.topicId,
       title: t.title,
       subtitle: t.subtitle,
       briefing: t.briefing,
-      questionCount: (QBANK[day.topicId] || []).length < 30 ? (QBANK[day.topicId] || []).length : 30,
+      questionCount: Math.min(20, (QBANK[day.topicId] || []).length),
     };
   }
 
@@ -2414,42 +2548,44 @@ const PHASES = JOURNEY.map((day, idx) => {
     const t = TOPICS.find(x => x.id === day.topicId);
     return {
       id: dayId, type: 'boss', mode: 'deepening',
-      subject: t.subject,
-      ato: t.subject === 'const' ? 1 : t.subject === 'adm' ? 2 : 3,
+      subject: subject, dayNum,
       topicId: day.topicId,
-      title: '🔥 Aprofundamento: ' + t.title,
-      subtitle: 'Rodada 2 — questões diferentes do mesmo tema',
-      briefing: '🔥 APROFUNDAMENTO. Você já estudou este tema antes. Agora vão aparecer 30 questões NOVAS (do mesmo banco), com foco nas pegadinhas e detalhes que mais derrubam concurseiras. Mostre que dominou! ' + t.briefing,
-      questionCount: 30,
-    };
-  }
-
-  if (day.type === 'review') {
-    return {
-      id: dayId, type: 'boss', mode: 'review',
-      subject: day.subject,
-      ato: day.subject === 'const' ? 1 : day.subject === 'adm' ? 2 : 3,
-      reviewPool: day.pool,
-      title: day.title,
-      subtitle: day.subtitle,
-      briefing: day.briefing,
-      questionCount: 30,
+      title: '🔁 ' + t.title,
+      subtitle: 'Aprofundamento • ' + t.subtitle,
+      briefing: '🔁 APROFUNDAMENTO: questões mais difíceis e raras do mesmo tópico. Pega o que ficou solto. ' + t.briefing,
+      questionCount: Math.min(20, (QBANK[day.topicId] || []).length),
     };
   }
 
   if (day.type === 'finalboss') {
     return {
       id: dayId, type: 'boss', mode: 'finalboss',
-      subject: 'mix',
-      ato: 3,
-      title: '☠️ BOSS FINAL — A PROVA',
-      subtitle: 'Tudo que você aprendeu, em 30 questões',
-      briefing: '☠️ BOSS FINAL DA JORNADA. 30 questões aleatórias misturando TODAS as 17 matérias e as 7 bancas. Peso maior em Penal (proporção real da prova de PM). Sua recompensa: 800 XP + carta lendária garantida + medalha "Soldado da Constituição". Vai, recruta!',
-      questionCount: 30,
-      reviewPool: 'ALL_WEIGHTED',
+      subject: subject, dayNum,
+      title: day.title,
+      subtitle: day.subtitle,
+      briefing: day.briefing,
+      pool: day.pool,
+      questionCount: 20,
     };
   }
+
+  return null;
+}
+
+// PHASES_BY_SUBJECT: { const: [...], adm: [...], penal: [...], info: [...] }
+const PHASES_BY_SUBJECT = {};
+Object.keys(JOURNEYS).forEach(subj => {
+  PHASES_BY_SUBJECT[subj] = JOURNEYS[subj].map((day, idx) => buildPhase(day, idx, subj)).filter(Boolean);
 });
+
+// PHASES linear (concat de tudo) — pra compatibilidade
+const PHASES = [
+  ...PHASES_BY_SUBJECT.const,
+  ...PHASES_BY_SUBJECT.adm,
+  ...PHASES_BY_SUBJECT.penal,
+  ...PHASES_BY_SUBJECT.info,
+];
+
 
 // ============================================================
 // EMBOSCADAS — boss surpresa de 10 questões aleatórias
@@ -2511,6 +2647,13 @@ function buildDayQuestions(phase) {
   if (phase.mode === 'topic' || phase.mode === 'deepening' || phase.topicId) {
     pool = [...(QBANK[phase.topicId] || [])];
   }
+  // Modo finalboss: usa o pool específico definido no JOURNEYS (lista de topicIds)
+  else if (phase.mode === 'finalboss' && Array.isArray(phase.pool)) {
+    phase.pool.forEach(tid => {
+      const bank = QBANK[tid] || [];
+      pool = pool.concat(bank);
+    });
+  }
   // Modo review: junta questões de vários tópicos do pool
   else if (phase.mode === 'review' && Array.isArray(phase.reviewPool)) {
     phase.reviewPool.forEach(tid => {
@@ -2518,10 +2661,9 @@ function buildDayQuestions(phase) {
       pool = pool.concat(bank);
     });
   }
-  // Modo finalboss ou review com pool 'ALL_WEIGHTED': mistura tudo com peso maior em Penal
-  else if (phase.reviewPool === 'ALL_WEIGHTED' || phase.mode === 'finalboss') {
+  // Modo review com pool 'ALL_WEIGHTED': mistura tudo com peso maior em Penal
+  else if (phase.reviewPool === 'ALL_WEIGHTED') {
     Object.entries(QBANK).forEach(([tid, qs]) => {
-      // Peso: Penal entra 2x; Const e Adm entram 1x
       const weight = tid.startsWith('penal-') ? 2 : 1;
       for (let w = 0; w < weight; w++) pool = pool.concat(qs);
     });
@@ -2532,9 +2674,9 @@ function buildDayQuestions(phase) {
     pool = Object.values(QBANK).flat();
   }
 
-  // Embaralhar e pegar N
+  // Embaralhar e pegar N — agora padrão é 20 (era 30)
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  const picked = shuffled.slice(0, Math.min(phase.questionCount || 30, shuffled.length));
+  const picked = shuffled.slice(0, Math.min(phase.questionCount || 20, shuffled.length));
   return picked.map(formatBankQuestion);
 }
 
@@ -2894,6 +3036,70 @@ function checkNotificationTriggers() {
 setInterval(() => {
   try { checkNotificationTriggers(); } catch(e){}
 }, 30 * 60 * 1000);
+
+
+/* ============================================================
+   🎯 ABAS DE MATÉRIAS — switch + renderização do mapa
+   ============================================================ */
+let currentSubject = 'const'; // matéria ativa no mapa
+
+function switchSubject(subj) {
+  if (!PHASES_BY_SUBJECT[subj]) return;
+  snd.click();
+  currentSubject = subj;
+  try { localStorage.setItem('jq:last_subject', subj); } catch(e){}
+  renderMap();
+}
+
+function getSubjectProgress(subj) {
+  const phases = PHASES_BY_SUBJECT[subj] || [];
+  const done = phases.filter(p => (progress.completedPhases || []).includes(p.id)).length;
+  return { done, total: phases.length, pct: phases.length ? Math.round((done / phases.length) * 100) : 0 };
+}
+
+function renderSubjectTabs() {
+  ['const','adm','penal','info'].forEach(subj => {
+    const tab = document.querySelector('.subject-tab[data-subject="' + subj + '"]');
+    if (tab) tab.classList.toggle('active', subj === currentSubject);
+    const p = getSubjectProgress(subj);
+    const prog = document.getElementById('tab-prog-' + subj);
+    if (prog) prog.textContent = p.done + '/' + p.total;
+  });
+
+  // Atualizar barra de progresso da matéria ativa
+  const p = getSubjectProgress(currentSubject);
+  const titleEl = document.getElementById('subject-progress-title');
+  const pctEl = document.getElementById('subject-progress-pct');
+  const fillEl = document.getElementById('subject-progress-fill');
+  const detailEl = document.getElementById('subject-progress-detail');
+  const barWrap = document.getElementById('subject-progress-bar');
+
+  if (titleEl && SUBJ[currentSubject]) {
+    titleEl.textContent = SUBJ[currentSubject].icon + ' ' + SUBJ[currentSubject].name.toUpperCase();
+  }
+  if (pctEl) pctEl.textContent = p.pct + '%';
+  if (fillEl) {
+    fillEl.style.width = p.pct + '%';
+    fillEl.style.background = (SUBJ[currentSubject] && SUBJ[currentSubject].color) || 'var(--rose)';
+    fillEl.style.boxShadow = '0 0 12px ' + ((SUBJ[currentSubject] && SUBJ[currentSubject].color) || 'var(--rose)');
+  }
+  if (detailEl) detailEl.textContent = `${p.done} de ${p.total} dias concluídos`;
+
+  // Borda do card de progresso na cor da matéria
+  if (barWrap) {
+    barWrap.style.borderColor = (SUBJ[currentSubject] && SUBJ[currentSubject].color) || 'rgba(255,255,255,0.1)';
+  }
+}
+
+// Recuperar matéria salva da sessão anterior
+try {
+  const saved = localStorage.getItem('jq:last_subject');
+  if (saved && PHASES_BY_SUBJECT[saved]) currentSubject = saved;
+} catch(e){}
+
+window.switchSubject = switchSubject;
+window.renderSubjectTabs = renderSubjectTabs;
+
 
 function maybeAskForNotifications() {
   const prefs = getNotifPrefs();
@@ -3669,6 +3875,7 @@ const goMap = () => {
 };
 
 const renderMap = () => {
+  renderSubjectTabs();
   const info = xpInfo(progress.xp);
 
   $('hud-avatar').textContent = progress.avatar;
@@ -3741,37 +3948,41 @@ const renderMap = () => {
     $('mode-srs-text').textContent = 'Sem revisões pendentes 👌';
   }
 
-  // Fases — agora intercaladas (sem agrupar por ato)
-  const isCompleted = (ph) => progress.completedPhases.includes(ph.id);
-  const isUnlocked = (ph) => ph.id === 1 || progress.completedPhases.includes(ph.id - 1) || progress.completedPhases.includes(ph.id);
+  // Fases — agora separadas por matéria!
+  const phasesAtuais = PHASES_BY_SUBJECT[currentSubject] || [];
+  const isCompleted = (ph) => (progress.completedPhases || []).includes(ph.id);
+  const isUnlocked = (ph, idx) => {
+    if (idx === 0) return true; // 1ª fase da matéria sempre liberada
+    const prev = phasesAtuais[idx - 1];
+    return prev && (progress.completedPhases || []).includes(prev.id);
+  };
+
+  const subjInfo = SUBJ[currentSubject];
+  const subjColor = (subjInfo && subjInfo.color) || 'var(--rose)';
 
   let html = `
     <div class="ato-header">
-      <div class="ato-badge" style="border-color:var(--rose);color:var(--rose);background:rgba(255,46,99,.15);">JORNADA</div>
-      <div class="ato-title" style="color:var(--rose);">30 DIAS DE BATALHA</div>
+      <div class="ato-badge" style="border-color:${subjColor};color:${subjColor};background:${subjColor}22;">JORNADA</div>
+      <div class="ato-title" style="color:${subjColor};">${(subjInfo && subjInfo.icon) || '⚔️'} ${(subjInfo && subjInfo.name) || ''} — ${phasesAtuais.length} DIAS</div>
     </div>
     <div style="margin-bottom:12px;font-size:13px;color:rgba(255,255,255,.6);">
-      <span style="color:var(--cyan);">⚖️ Const</span> →
-      <span style="color:var(--amber);">🏛️ Adm</span> →
-      <span style="color:var(--rose);">⚔️ Penal</span> &nbsp;•&nbsp;
-      cada dia é um <strong style="color:var(--rose);">BOSS de 30 questões</strong> 💀 &nbsp;•&nbsp;
-      cuidado com <strong style="color:var(--rose);">⚠️ emboscadas</strong> entre dias!
+      cada dia é um <strong style="color:${subjColor};">BOSS de 20 questões</strong> 💀 &nbsp;•&nbsp;
+      complete tudo pra ganhar a <strong style="color:var(--amber);">CARTA DE APROVAÇÃO</strong> em ${(subjInfo && subjInfo.name) || ''}!
     </div>
     <div class="phases-grid">
-      ${PHASES.map(ph => {
+      ${phasesAtuais.map((ph, idx) => {
         const completed = isCompleted(ph);
-        const unlocked = isUnlocked(ph);
-        const current = ph.id === progress.currentPhase && !completed;
+        const unlocked = isUnlocked(ph, idx);
+        // "Atual" = primeira não-completa da matéria
+        const current = !completed && unlocked && !phasesAtuais.slice(0, idx).some(p => !isCompleted(p));
 
-        // Ícone do tipo no canto + texto de status
-        let topIcon = '💀'; // padrão boss normal
+        // Ícone do tipo
+        let topIcon = '💀';
         if (ph.mode === 'deepening') topIcon = '🔥';
-        else if (ph.mode === 'review') topIcon = '⚡';
         else if (ph.mode === 'finalboss') topIcon = '☠️';
 
         let modeBadge = '';
         if (ph.mode === 'deepening') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:#fb923c;">APROF.</div>`;
-        else if (ph.mode === 'review') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--emerald);">REVISÃO</div>`;
         else if (ph.mode === 'finalboss') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--amber);">FINAL ★</div>`;
 
         let statusHtml;
@@ -3779,15 +3990,13 @@ const renderMap = () => {
         else if (!unlocked) statusHtml = `<span style="color:rgba(255,255,255,.3);">🔒</span>`;
         else if (current) statusHtml = `<span style="color:var(--rose);font-size:9px;animation:pulse-neon 2s infinite;">★ HOJE</span>`;
         else if (ph.mode === 'finalboss') statusHtml = `<span style="color:var(--amber);font-size:9px;">★ FINAL</span>`;
-        else if (ph.mode === 'review') statusHtml = `<span style="color:var(--emerald);font-size:10px;">▸ REV</span>`;
         else if (ph.mode === 'deepening') statusHtml = `<span style="color:#fb923c;font-size:10px;">▸ 2X</span>`;
         else statusHtml = `<span style="color:rgba(255,255,255,.4);font-size:10px;">▸ BOSS</span>`;
 
-        // Pra revisões/finalboss, força a cor pela "subject" do dia
-        return `<button class="phase ${ph.subject} ${completed?'completed':''} ${current?'current':''} pixel-corners" ${!unlocked?'disabled':''} onclick="startPhase(${ph.id})" style="position:relative;">
+        return `<button class="phase ${ph.subject} ${completed?'completed':''} ${current?'current':''} pixel-corners" ${!unlocked?'disabled':''} onclick="startPhaseById('${ph.id}')" style="position:relative;">
           <div class="phase-type-icon">${topIcon}</div>
           <div class="phase-icon">${SUBJ[ph.subject].icon}</div>
-          <div class="phase-num">DIA ${ph.id}</div>
+          <div class="phase-num">DIA ${ph.dayNum}</div>
           <div class="phase-title">${esc(ph.title)}</div>
           <div class="phase-status">${statusHtml}</div>
           ${modeBadge}
@@ -3898,10 +4107,18 @@ function startPhase(phaseId) {
     });
     return;
   }
-  const phase = PHASES.find(p => p.id === phaseId);
-  if (!phase) return;
+  // ID pode ser string ('const-d1') ou número (compat antiga). Comparar com flexibilidade
+  const phase = PHASES.find(p => p.id === phaseId || String(p.id) === String(phaseId));
+  if (!phase) {
+    console.warn('startPhase: fase não encontrada:', phaseId);
+    return;
+  }
   // Monta questões do banco de tópico se ainda não vieram
   if (!phase.questions && phase.topicId) {
+    phase.questions = buildDayQuestions(phase);
+  }
+  // Pra finalboss, monta as questões aleatórias do pool
+  if (!phase.questions && phase.pool) {
     phase.questions = buildDayQuestions(phase);
   }
   if (phase.type === 'boss') snd.bossStart();
@@ -6487,6 +6704,7 @@ window.onbNext = onbNext;
 window.onbPick = onbPick;
 window.onbData = onbData;
 window.startPhase = startPhase;
+window.startPhaseById = startPhase;
 window.startSrsReview = startSrsReview;
 window.startTrapHunt = startTrapHunt;
 window.startSimulado = startSimulado;
