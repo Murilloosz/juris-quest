@@ -10,7 +10,14 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- 🔒 Política de permissões: bloqueia câmera/microfone/geolocalização não pedidas -->
 <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes, maximum-scale=5.0">
+<!-- 📱 iPhone/Android: comportar como app instalado quando salvo na tela inicial -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Juris Quest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="HandheldFriendly" content="true">
 <meta name="theme-color" content="#0a0410">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚔️%3C/text%3E%3C/svg%3E">
 <title>JURIS QUEST — A Jornada da Aprovação</title>
@@ -1141,6 +1148,180 @@ body.night-mode .btn {
   color: rgba(255,255,255,0.5);
 }
 
+
+/* ==================== 📱 MOBILE OTIMIZAÇÕES ==================== */
+
+/* iOS: respeitar notch e barra inferior */
+body {
+  padding-top: env(safe-area-inset-top, 0);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-left: env(safe-area-inset-left, 0);
+  padding-right: env(safe-area-inset-right, 0);
+  /* iOS: impede zoom em duplo toque mas mantém pinch zoom */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Bloqueia o "bounce" do scroll no iOS */
+  overscroll-behavior: contain;
+  /* Inertia smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Toque sem flash azul padrão do navegador — usa cor da marca */
+* {
+  -webkit-tap-highlight-color: rgba(255,46,99,0.25);
+  -webkit-touch-callout: none;
+}
+
+/* Inputs no iOS: impedir auto-zoom quando focar (acontece se font < 16px) */
+input, select, textarea {
+  font-size: 16px !important;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}
+
+/* Botões touch-friendly: mínimo 44x44px (regra Apple) */
+button, .btn, .ans-btn, .phase, .subject-tab, .duel-tab,
+.hud-actions button, [onclick] {
+  touch-action: manipulation;
+  min-height: 44px;
+}
+
+/* Telas pequenas (≤480px): iPhone SE, iPhone 8, Android compactos */
+@media (max-width: 480px) {
+  body { font-size: 14px; }
+  .container, .container-narrow, .container-form {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .card {
+    padding: 14px !important;
+    margin-bottom: 12px;
+  }
+  .hud {
+    padding: 8px !important;
+    margin-bottom: 10px !important;
+  }
+  .hud-row { gap: 6px !important; }
+  .hud-stats { gap: 8px !important; font-size: 11px !important; }
+  .hud-user { gap: 8px !important; }
+  .hud-avatar { font-size: 22px !important; }
+  /* HUD: nome e patente com ellipsis */
+  #hud-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px !important; }
+  #hud-patente { font-size: 10px !important; }
+  /* Headers menores */
+  .font-arcade { font-size: 11px !important; letter-spacing: 1px !important; }
+  h1, h2 { font-size: 18px !important; line-height: 1.2; }
+  /* Grids 2 colunas */
+  .phases-grid { gap: 8px !important; }
+  .phase { padding: 10px 6px !important; min-height: 100px; }
+  .phase-title { font-size: 11px !important; line-height: 1.3; }
+  .phase-num { font-size: 8px !important; }
+  /* Stats grid 2x2 em vez de 4 colunas */
+  .stat-box-redux .stat-value { font-size: 18px !important; }
+  .stat-box-redux .stat-name { font-size: 7px !important; }
+  /* Avatar frame menor */
+  .avatar-frame { width: 76px; height: 76px; font-size: 42px; }
+  .avatar-frame .edit-badge { width: 28px; height: 28px; font-size: 12px; }
+  /* Botões cheios */
+  .btn { padding: 12px 14px !important; font-size: 13px !important; }
+  .btn-google { padding: 12px 14px; font-size: 13px; }
+  /* Modal full-width */
+  .modal-content {
+    width: 92% !important;
+    max-width: 92% !important;
+    padding: 18px !important;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .modal-title { font-size: 13px !important; }
+  /* Painel HOJE compacto */
+  .today-task {
+    padding: 10px !important;
+    font-size: 12px !important;
+  }
+  /* Mode buttons (Caçada/Simulado/SRS) — 1 coluna em mobile */
+  .mode-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .mode-title { font-size: 11px !important; }
+  .mode-sub { font-size: 11px !important; }
+  /* Subject tabs */
+  .subject-tabs { padding: 4px !important; gap: 2px !important; }
+  .subject-tab { padding: 8px 2px !important; min-height: 64px; }
+  .subject-tab .tab-icon { font-size: 16px !important; }
+  .subject-tab .tab-label { font-size: 7px !important; }
+  .subject-tab .tab-progress { font-size: 10px !important; }
+  /* Inputs com mais respiro */
+  .input {
+    padding: 14px 12px !important;
+  }
+  /* PvP cards compactos */
+  .duel-card { padding: 10px !important; }
+  .duel-vs { gap: 4px !important; }
+  .duel-player { padding: 6px 4px !important; }
+  /* Wounds */
+  .stat-box-redux { padding: 10px 6px !important; }
+  /* Painel "HOJE VOCÊ PRECISA" */
+  .hoje-panel { padding: 12px !important; }
+  /* Ranking */
+  .rank-row { padding: 10px !important; font-size: 12px !important; }
+}
+
+/* iPhone SE / Android minúsculos (≤380px) */
+@media (max-width: 380px) {
+  .hud-actions button { min-width: 30px !important; padding: 4px !important; font-size: 13px !important; }
+  .hud-stats { font-size: 10px !important; }
+  .phases-grid { grid-template-columns: 1fr !important; }
+  .phase { min-height: 80px; padding: 8px !important; }
+  .subject-tab { min-height: 56px !important; padding: 6px 2px !important; }
+  .subject-tab .tab-label { font-size: 6px !important; }
+  .stat-box-redux .stat-value { font-size: 16px !important; }
+}
+
+/* Smartphone landscape — geralmente quer mais densidade */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hud { padding: 6px !important; margin-bottom: 6px !important; }
+  .card { padding: 10px !important; }
+  .avatar-frame { width: 56px; height: 56px; font-size: 32px; }
+  .phases-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+
+/* iOS Safari: corrigir altura do viewport (100vh inclui address bar) */
+.screen.active {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh; /* dynamic viewport height — funciona em browsers novos */
+}
+
+/* Sticky position no iOS Safari */
+.duel-timer-card {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+/* Inputs com ícone X embutido (close) no iOS — remover */
+input[type="search"]::-webkit-search-cancel-button { display: none; }
+input::-webkit-contacts-auto-fill-button { display: none !important; }
+input::-webkit-credentials-auto-fill-button { display: none !important; }
+
+/* Modal backdrop não rola junto */
+.modal-backdrop {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Listas grandes têm scroll suave */
+.phases-grid, #duel-list-active, #duel-list-history {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Texto em botões não pode quebrar */
+button { word-break: keep-all; }
+
+/* ==================== fim mobile ==================== */
+
 /* Streak chama */
 .fire{color:#fb923c;}
 </style>
@@ -1217,17 +1398,17 @@ body.night-mode .btn {
 
         <div id="signup-name-wrap" style="margin-bottom:14px;display:none;">
           <label style="display:block;font-family:'Press Start 2P',monospace;font-size:10px;color:#fda4af;margin-bottom:8px;">⚔️ NOME DE GUERRA</label>
-          <input id="inp-name" class="input" placeholder="Ex.: Murillo Souza" maxlength="40">
+          <input id="inp-name" class="input" placeholder="Ex.: Murillo Souza" maxlength="40" autocomplete="name" autocapitalize="words" spellcheck="false">
           <div id="err-name" style="color:var(--rose);font-size:12px;margin-top:4px;display:none;"></div>
         </div>
         <div style="margin-bottom:14px;">
           <label style="display:block;font-family:'Press Start 2P',monospace;font-size:10px;color:#fda4af;margin-bottom:8px;">📧 EMAIL</label>
-          <input id="inp-email" class="input" placeholder="seu@email.com" type="email" maxlength="80" autofocus>
+          <input id="inp-email" class="input" placeholder="seu@email.com" type="email" maxlength="80" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus>
           <div id="err-email" style="color:var(--rose);font-size:12px;margin-top:4px;display:none;"></div>
         </div>
         <div style="margin-bottom:14px;">
           <label style="display:block;font-family:'Press Start 2P',monospace;font-size:10px;color:#fda4af;margin-bottom:8px;">🔒 SENHA <span style="font-size:9px;color:rgba(255,255,255,.4);">(mín. 6)</span></label>
-          <input id="inp-pass" class="input" placeholder="••••••" type="password" maxlength="60">
+          <input id="inp-pass" class="input" placeholder="••••••" type="password" maxlength="60" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false">
           <div id="err-pass" style="color:var(--rose);font-size:12px;margin-top:4px;display:none;"></div>
         </div>
         <div id="err-auth" style="color:var(--rose);font-size:12px;margin-bottom:12px;display:none;padding:10px;background:rgba(255,46,99,.1);border-left:3px solid var(--rose);"></div>
