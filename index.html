@@ -1408,13 +1408,27 @@ button { word-break: keep-all; }
         </div>
         <div style="margin-bottom:14px;">
           <label style="display:block;font-family:'Press Start 2P',monospace;font-size:10px;color:#fda4af;margin-bottom:8px;">🔒 SENHA <span style="font-size:9px;color:rgba(255,255,255,.4);">(mín. 6)</span></label>
-          <input id="inp-pass" class="input" placeholder="••••••" type="password" maxlength="60" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <div style="position:relative;">
+            <input id="inp-pass" class="input" placeholder="••••••" type="password" maxlength="60" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" style="padding-right:48px;">
+            <button type="button" onclick="togglePasswordVisibility('inp-pass', this)" aria-label="Mostrar/ocultar senha" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:18px;padding:6px;">👁️</button>
+          </div>
           <div id="err-pass" style="color:var(--rose);font-size:12px;margin-top:4px;display:none;"></div>
+        </div>
+        <div id="signup-pass2-wrap" style="margin-bottom:14px;display:none;">
+          <label style="display:block;font-family:'Press Start 2P',monospace;font-size:10px;color:#fda4af;margin-bottom:8px;">🔒 CONFIRMAR SENHA</label>
+          <div style="position:relative;">
+            <input id="inp-pass2" class="input" placeholder="Digite a senha de novo" type="password" maxlength="60" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" style="padding-right:48px;">
+            <button type="button" onclick="togglePasswordVisibility('inp-pass2', this)" aria-label="Mostrar/ocultar senha" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:18px;padding:6px;">👁️</button>
+          </div>
+          <div id="err-pass2" style="color:var(--rose);font-size:12px;margin-top:4px;display:none;"></div>
         </div>
         <div id="err-auth" style="color:var(--rose);font-size:12px;margin-bottom:12px;display:none;padding:10px;background:rgba(255,46,99,.1);border-left:3px solid var(--rose);"></div>
         <div style="display:flex;gap:8px;margin-bottom:12px;">
           <button class="btn ghost" style="flex:1;" onclick="loginBack()">← VOLTAR</button>
           <button id="btn-submit-login" class="btn cyan" style="flex:1;" onclick="submitLogin()">ENTRAR ▶</button>
+        </div>
+        <div style="text-align:center;margin-top:8px;">
+          <button onclick="forgotPassword()" style="background:none;border:none;color:var(--cyan);font-size:13px;cursor:pointer;text-decoration:underline;padding:8px;font-family:inherit;">🔑 Esqueci a senha</button>
         </div>
       </div>
     </div>
@@ -3409,6 +3423,100 @@ function initSupabase() {
   }
 }
 
+
+
+
+function togglePasswordVisibility(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    if (btn) btn.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    if (btn) btn.textContent = '👁️';
+  }
+}
+window.togglePasswordVisibility = togglePasswordVisibility;
+
+
+async function forgotPassword() {
+  snd.click();
+  const email = $('inp-email') && $('inp-email').value.trim().toLowerCase();
+  if (!email) {
+    openModal({
+      title: '📧 ESQUECEU A SENHA?',
+      msg: 'Para recuperar sua senha:\n\n1. Digite seu EMAIL no campo acima\n2. Clique em "Esqueci a senha" novamente\n\nUm link de recuperação será enviado para seu email.',
+      hideCancel: true,
+      onConfirm: () => { closeModal(); $('inp-email').focus(); }
+    });
+    return;
+  }
+  if (!validateEmail(email)) {
+    openModal({title:'⚠️ EMAIL INVÁLIDO', msg:'Digite um email válido no campo acima primeiro.', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  if (!sb) {
+    openModal({title:'❌ OFFLINE', msg:'Sem conexão com servidor. Tente novamente em instantes.', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+
+  try {
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname,
+    });
+    if (error) throw error;
+    openModal({
+      title: '✉️ EMAIL ENVIADO!',
+      msg: `Um link de recuperação de senha foi enviado para:\n\n${email}\n\n📥 Verifique sua caixa de entrada (e a pasta de SPAM!). Clique no link e crie uma nova senha.`,
+      hideCancel: true,
+      onConfirm: () => closeModal()
+    });
+  } catch(err) {
+    console.error('forgotPassword:', err);
+    openModal({
+      title: '❌ ERRO',
+      msg: friendlyAuthError(err, false),
+      hideCancel: true,
+      onConfirm: () => closeModal()
+    });
+  }
+}
+window.forgotPassword = forgotPassword;
+
+
+function friendlyAuthError(err, isSignup) {
+  const msg = String(err && err.message || err || '').toLowerCase();
+  if (msg.includes('invalid login credentials') || msg.includes('invalid credentials')) {
+    return '❌ Email ou senha incorretos. Verifique se o CAPS LOCK não está ativado.';
+  }
+  if (msg.includes('user already registered') || msg.includes('already registered') || msg.includes('email_exists')) {
+    return '⚠️ Este email já está cadastrado. Tente fazer login (clique em "ENTRAR") ou clique em "Esqueci a senha".';
+  }
+  if (msg.includes('email not confirmed') || msg.includes('email_not_confirmed')) {
+    return '✉️ Você precisa confirmar seu email antes de entrar. Verifique sua caixa de entrada (e o spam!).';
+  }
+  if (msg.includes('weak password') || msg.includes('weak_password')) {
+    return '🔒 Senha muito fraca. Use no mínimo 6 caracteres com letras e números.';
+  }
+  if (msg.includes('rate limit') || msg.includes('too many')) {
+    return '⏳ Muitas tentativas. Aguarde 1 minuto e tente novamente.';
+  }
+  if (msg.includes('user not found')) {
+    return '❌ Este email não está cadastrado. Clique em "CRIAR CONTA" para se cadastrar.';
+  }
+  if (msg.includes('network') || msg.includes('failed to fetch')) {
+    return '📶 Sem conexão. Verifique sua internet e tente novamente.';
+  }
+  if (msg.includes('password should be at least')) {
+    return '🔒 A senha deve ter no mínimo 6 caracteres.';
+  }
+  // Genérico
+  return (isSignup ? '❌ Erro ao criar conta: ' : '❌ Erro ao entrar: ') + (err && err.message || 'tente novamente');
+}
+window.friendlyAuthError = friendlyAuthError;
+
+
 async function cloudSignUp(email, password, name) {
   const { data, error } = await sb.auth.signUp({
     email, password,
@@ -3549,13 +3657,18 @@ function setLoginMode(mode) {
   const tabSi = document.getElementById('tab-signin');
   const tabSu = document.getElementById('tab-signup');
   const nameWrap = document.getElementById('signup-name-wrap');
+  const pass2Wrap = document.getElementById('signup-pass2-wrap');
   const btnSubmit = document.getElementById('btn-submit-login');
   if (tabSi) tabSi.classList.toggle('active', mode === 'signin');
   if (tabSu) tabSu.classList.toggle('active', mode === 'signup');
   if (nameWrap) nameWrap.style.display = mode === 'signup' ? 'block' : 'none';
+  if (pass2Wrap) pass2Wrap.style.display = mode === 'signup' ? 'block' : 'none';
   if (btnSubmit) btnSubmit.textContent = mode === 'signup' ? 'CRIAR CONTA ▶' : 'ENTRAR ▶';
+  // Ajustar autocomplete da senha
+  const inpPass = document.getElementById('inp-pass');
+  if (inpPass) inpPass.setAttribute('autocomplete', mode === 'signup' ? 'new-password' : 'current-password');
   // Limpa erros
-  ['err-name','err-email','err-pass','err-auth'].forEach(id => {
+  ['err-name','err-email','err-pass','err-pass2','err-auth'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -3821,6 +3934,18 @@ const submitLogin = async () => {
   if (isSignup && (!name || name.length < 2)) { $('err-name').textContent='⚠️ Mín. 2 letras'; $('err-name').style.display='block'; ok=false; }
   if (!email || !validateEmail(email)) { $('err-email').textContent='⚠️ Email inválido'; $('err-email').style.display='block'; ok=false; }
   if (!pass || pass.length < 6) { $('err-pass').textContent='⚠️ Senha precisa ter no mínimo 6 caracteres'; $('err-pass').style.display='block'; ok=false; }
+  // 🔒 Confirmação de senha em cadastro
+  if (isSignup) {
+    const pass2El = $('inp-pass2');
+    const pass2 = pass2El && pass2El.value;
+    if (!pass2) {
+      if ($('err-pass2')) { $('err-pass2').textContent = '⚠️ Confirme a senha'; $('err-pass2').style.display = 'block'; }
+      ok = false;
+    } else if (pass !== pass2) {
+      if ($('err-pass2')) { $('err-pass2').textContent = '⚠️ As senhas não coincidem'; $('err-pass2').style.display = 'block'; }
+      ok = false;
+    }
+  }
   if (!ok) { snd.wrong(); return; }
 
   const btn = $('btn-submit-login');
@@ -3901,16 +4026,16 @@ const submitLogin = async () => {
   } catch (e) {
     snd.wrong();
     console.error('Auth error:', e);
-    let msg = e.message || 'Erro ao autenticar';
-    if (msg.includes('Invalid login')) msg = '❌ Email ou senha incorretos';
-    else if (msg.includes('already registered') || msg.includes('User already')) msg = '⚠️ Esse email já está cadastrado. Faça login.';
-    else if (msg.includes('rate limit')) msg = '⏳ Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo, ou use outro email.';
-    else if (msg.includes('Password')) msg = '⚠️ ' + msg;
-    else if (msg.includes('weak')) msg = '⚠️ Senha muito fraca. Use pelo menos 6 caracteres.';
-    $('err-auth').textContent = msg;
-    $('err-auth').style.display = 'block';
+    const $errEl = $('err-auth');
+    if ($errEl) {
+      $errEl.textContent = friendlyAuthError(e, isSignup);
+      $errEl.style.display = 'block';
+      $errEl.style.background = 'rgba(255,46,99,.1)';
+      $errEl.style.borderLeftColor = 'var(--rose)';
+      $errEl.style.color = '#fff';
+    }
     btn.disabled = false;
-    btn.textContent = isSignup ? 'CADASTRAR ▶' : 'ENTRAR ▶';
+    btn.textContent = isSignup ? 'CRIAR CONTA ▶' : 'ENTRAR ▶';
   }
 };
 
