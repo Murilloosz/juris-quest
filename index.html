@@ -1322,6 +1322,101 @@ button { word-break: keep-all; }
 
 /* ==================== fim mobile ==================== */
 
+
+/* ==================== MELHORIAS VISUAIS SEMANAIS ==================== */
+
+/* Card HOJE com glow sutil pulsante */
+.hoje-panel {
+  position: relative;
+  overflow: hidden;
+}
+.hoje-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(255,46,99,0.06), transparent, transparent);
+  animation: rotate-glow 8s linear infinite;
+  pointer-events: none;
+}
+@keyframes rotate-glow {
+  to { transform: rotate(360deg); }
+}
+
+/* Botões "ENTRAR" / "CRIAR CONTA" com micro-bounce ao hover */
+.btn.cyan {
+  position: relative;
+  transition: transform 0.12s ease-out, box-shadow 0.15s ease-out;
+}
+.btn.cyan:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(8,217,214,0.4);
+}
+.btn.cyan:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+/* Phases — animação de "completed" mais bonita */
+.phase.completed {
+  position: relative;
+}
+.phase.completed::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(16,185,129,0.1), transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  animation: completed-shine 2s ease-out;
+}
+@keyframes completed-shine {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+/* Inputs com foco neon */
+.input:focus {
+  outline: none;
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 0 2px rgba(8,217,214,0.2), 0 0 16px rgba(8,217,214,0.15) !important;
+}
+
+/* Modal entry animation suave */
+.modal-content {
+  animation: modal-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Stats numbers contam ao aparecer (transition) */
+.stat-box-redux .stat-value {
+  transition: color 0.3s, transform 0.2s;
+}
+
+/* Toast / feedback inline melhor */
+.error-msg, [id^="err-"] {
+  border-radius: 0;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+}
+
+/* Streak fire mais brilhante quando alto */
+.fire {
+  display: inline-block;
+  transition: filter 0.3s;
+}
+[data-streak-high] .fire {
+  filter: drop-shadow(0 0 8px #fb923c);
+  animation: fire-pulse 1.5s ease-in-out infinite;
+}
+@keyframes fire-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
 /* Streak chama */
 .fire{color:#fb923c;}
 </style>
@@ -1566,7 +1661,7 @@ button { word-break: keep-all; }
       <button class="subject-tab" data-subject="info" onclick="switchSubject('info')">
         <span class="tab-icon">💻</span>
         <span class="tab-label">INFO</span>
-        <span class="tab-progress" id="tab-prog-info">0/3</span>
+        <span class="tab-progress" id="tab-prog-info">0/11</span>
       </button>
     </div>
 
@@ -2032,7 +2127,8 @@ const QBANK = {
   {b:'AOCP',t:'multiple',s:'Sobre os fundamentos da República é CORRETO:',o:['São 4 fundamentos.','São 5 fundamentos: SOCIDIVAPLU.','São objetivos disfarçados.','Repetem-se nos arts. 1º e 3º.','Não há fundamentos explícitos.'],c:1,e:'Art. 1º, I a V.'},
 ],
 
-'const-art5-direitos-pessoais': [
+'const-art5-direitos-pessoais': [  {b:'CESPE',t:'cebraspe',s:'O sigilo das comunicações telefônicas é absoluto, não podendo ser violado em nenhuma hipótese.',c:1,e:'ERRADO. O sigilo PODE ser quebrado por ordem judicial, para fins de investigação criminal ou instrução processual penal (art. 5º, XII).'},
+  {b:'VUNESP',t:'multiple',s:'Segundo a CF/88, a casa é asilo inviolável do indivíduo, NINGUÉM nela podendo penetrar SEM consentimento do morador. Exceção válida:',o:['Apenas com mandado a qualquer hora.','Em caso de flagrante delito, desastre, ou para prestar socorro, ou, durante o dia, por determinação judicial.','Sempre, se a polícia tiver suspeita.','Nunca, em hipótese alguma.','Apenas se houver consentimento do vizinho.'],c:1,e:'Resposta correta: Art. 5º, XI. Flagrante/desastre/socorro = qualquer hora. Mandado judicial = SÓ durante o dia.'},
   {b:'CESPE',t:'cebraspe',s:'O acesso à informação previsto no art. 5º, XXXIII da CF é direito de todos, ressalvadas as informações sigilosas indispensáveis à segurança da sociedade e do Estado.',c:0,e:'CERTO. Art. 5º, XXXIII da CF.'},
   {b:'CESPE',t:'cebraspe',s:'A casa é asilo inviolável, ninguém nela podendo penetrar sem consentimento, salvo flagrante delito ou desastre, ou para prestar socorro, ou, durante o dia, por determinação judicial.',c:0,e:'CERTO. Art. 5º, XI.'},
   {b:'CESPE',t:'cebraspe',s:'O policial pode entrar em residência à noite sem mandado se houver fundadas suspeitas de tráfico de drogas em andamento.',c:1,e:'ERRADO. À noite só com flagrante, desastre ou socorro (STF RE 603.616).'},
@@ -2072,7 +2168,8 @@ const QBANK = {
   {b:'VUNESP',t:'multiple',s:'A pena de banimento na CF é:',o:['Permitida em casos graves.','Permitida para crimes hediondos.','Vedada.','Vedada apenas para natos.','Vedada para reincidentes.'],c:2,e:'Art. 5º, XLVII, d.'},
 ],
 
-'const-remedios-constitucionais': [
+'const-remedios-constitucionais': [  {b:'CESPE',t:'cebraspe',s:'O habeas corpus pode ser impetrado por qualquer pessoa, inclusive analfabeta, em favor de si mesma ou de outrem, sem necessidade de advogado.',c:0,e:'CERTO. HC é o remédio constitucional MAIS DEMOCRÁTICO: gratuito, sem advogado, em favor próprio ou de terceiro. Pode ser feito até a lápis.'},
+  {b:'AOCP',t:'multiple',s:'O mandado de segurança individual exige como requisito:',o:['Apenas direito difuso.','Apenas direitos coletivos de partido político.','Direito líquido e certo, não amparado por HC ou HD.','Pagamento de custas mesmo aos pobres.','Apenas ato de particular.'],c:2,e:'Resposta correta: MS protege DIREITO LÍQUIDO E CERTO contra ato ilegal/abuso de poder de autoridade. Subsidiário ao HC (liberdade) e HD (dados pessoais).'},
   {b:'CESPE',t:'cebraspe',s:'Conceder-se-á habeas corpus sempre que alguém sofrer ou se achar ameaçado de sofrer violência ou coação em sua liberdade de locomoção, por ilegalidade ou abuso de poder.',c:0,e:'CERTO. Art. 5º, LXVIII.'},
   {b:'CESPE',t:'cebraspe',s:'O habeas corpus pode ser impetrado contra ato de particular.',c:1,e:'ERRADO. Em regra, contra autoridade pública. (Há divergência doutrinária, mas posição clássica.)'},
   {b:'CESPE',t:'cebraspe',s:'O mandado de segurança é cabível para proteger direito líquido e certo não amparado por habeas corpus ou habeas data.',c:0,e:'CERTO. Art. 5º, LXIX.'},
@@ -2140,7 +2237,8 @@ const QBANK = {
 
 // ============== ADMINISTRATIVO ==============
 
-'adm-principios-limpe': [
+'adm-principios-limpe': [  {b:'CESPE',t:'cebraspe',s:'Pelo princípio da publicidade, todos os atos da Administração devem ser obrigatoriamente publicados em diário oficial, sem exceção.',c:1,e:'ERRADO. A publicidade comporta exceções: segurança da sociedade/Estado, intimidade dos servidores (art. 5º, XXXIII, LX da CF).'},
+  {b:'FGV',t:'multiple',s:'Sobre o princípio da eficiência (introduzido pela EC 19/98 no art. 37):',o:['É anterior aos demais e tem prioridade.','Significa atingir resultados com o menor custo possível, otimizando recursos.','Justifica ilegalidade desde que produza bons resultados.','Aplica-se apenas a empresas privadas.','Substitui o princípio da legalidade.'],c:1,e:'Resposta correta: Otimizar recursos. Eficiência NÃO autoriza burla à legalidade — atua junto com os outros princípios.'},
   {b:'CESPE',t:'cebraspe',s:'A administração pública direta e indireta de qualquer dos Poderes obedecerá aos princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência.',c:0,e:'CERTO. Art. 37, caput — LIMPE.'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da legalidade administrativa autoriza o administrador a fazer tudo o que a lei não proíba.',c:1,e:'ERRADO. Adm só faz o que a lei AUTORIZA.'},
   {b:'CESPE',t:'cebraspe',s:'A Administração pode anular seus próprios atos quando eivados de vícios que os tornem ilegais, por força do princípio da autotutela.',c:0,e:'CERTO. Súmula 473 STF.'},
@@ -2274,7 +2372,8 @@ const QBANK = {
 
 // ============== PENAL ==============
 
-'penal-principios': [
+'penal-principios': [  {b:'CESPE',t:'cebraspe',s:'O princípio da insignificância é causa supralegal de exclusão da tipicidade material, podendo ser aplicado mesmo em crimes de tráfico de drogas quando a quantidade for ínfima.',c:1,e:'ERRADO. STF/STJ NÃO aplicam insignificância em tráfico de drogas (crime de perigo abstrato e equiparado a hediondo). Mesmo pequena quantidade configura crime.'},
+  {b:'FGV',t:'multiple',s:'Sobre o princípio da legalidade (art. 5º, XXXIX, CF), é CORRETO afirmar:',o:['Admite analogia in malam partem para tipificar condutas.','Não há crime sem lei anterior que o defina, nem pena sem prévia cominação legal.','Permite a criação de tipos penais por decreto.','Aceita o uso de costumes para criar crimes.','Tolera tipos penais retroativos quando prejudiciais ao réu.'],c:1,e:'Resposta correta: Não há crime sem lei anterior. Princípio da legalidade EXIGE LEI (não decreto), anterior (não retroativa), em sentido estrito.'},
   {b:'CESPE',t:'cebraspe',s:'Não há crime sem lei anterior que o defina, nem pena sem prévia cominação legal.',c:0,e:'CERTO. Art. 5º, XXXIX CF + art. 1º CP.'},
   {b:'CESPE',t:'cebraspe',s:'A lei penal mais benéfica retroage para alcançar fatos anteriores à sua vigência.',c:0,e:'CERTO. Art. 5º, XL CF + art. 2º, p.ú. CP.'},
   {b:'CESPE',t:'cebraspe',s:'A lei penal mais gravosa pode retroagir para alcançar fatos pretéritos.',c:1,e:'ERRADO. A mais gravosa não retroage.'},
@@ -2340,7 +2439,8 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A contagem de prazos no CP exclui o dia do começo e inclui o dia do final.',c:1,e:'ERRADO. Inclui o dia do começo (art. 10 CP).'},
 ],
 
-'penal-crimes-pessoa': [
+'penal-crimes-pessoa': [  {b:'FGV',t:'multiple',s:'No homicídio QUALIFICADO PELA MOTIVAÇÃO (art. 121, §2º):',o:['A pena é a mesma do homicídio simples.','As qualificadoras subjetivas (motivo torpe, fútil, feminicídio) impedem o privilégio do §1º.','Sempre cabe perdão judicial.','Não pode ser hediondo.','É culposo.'],c:1,e:'Resposta correta: Qualificadoras SUBJETIVAS (motivo torpe/fútil) são incompatíveis com privilégio (§1º). Já as OBJETIVAS (meio cruel, traição) podem coexistir.'},
+  {b:'CESPE',t:'cebraspe',s:'O feminicídio, qualificadora do homicídio, configura-se quando o crime é praticado contra mulher por razões de sexo feminino, sendo crime hediondo.',c:0,e:'CERTO. Lei 13.104/15 inseriu feminicídio como qualificadora (art. 121, §2º, VI). É HEDIONDO (Lei 8.072/90).'},
   {b:'CESPE',t:'cebraspe',s:'O feminicídio é qualificadora do homicídio quando praticado contra mulher por razões da condição de sexo feminino.',c:0,e:'CERTO. Art. 121, § 2º, VI (Lei 13.104/15).'},
   {b:'CESPE',t:'cebraspe',s:'A lesão corporal seguida de morte é crime preterdoloso.',c:0,e:'CERTO. Art. 129, § 3º — dolo na lesão, culpa na morte.'},
   {b:'CESPE',t:'cebraspe',s:'O homicídio praticado contra agente das forças de segurança em razão da função é qualificado.',c:0,e:'CERTO. Art. 121, § 2º, VII (Lei 13.142/15).'},
@@ -2374,7 +2474,8 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O crime de injúria racial, após a Lei 14.532/2023, passou a ser equiparado ao racismo, sendo imprescritível.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
-'penal-patrimonio': [
+'penal-patrimonio': [  {b:'CESPE',t:'cebraspe',s:'O roubo seguido de lesão corporal grave (latrocínio impróprio) é crime hediondo, mesmo que a vítima não venha a falecer.',c:1,e:'ERRADO. Latrocínio é roubo com RESULTADO MORTE (art. 157, §3º, II). Sem morte não é latrocínio nem hediondo. Será roubo qualificado por lesão grave.'},
+  {b:'IBFC',t:'multiple',s:'Diferença entre furto e roubo:',o:['Furto exige violência; roubo não.','Roubo exige violência ou grave ameaça à pessoa; furto não.','Furto é apenas contra patrimônio público.','Roubo só ocorre em via pública.','Não há diferença prática.'],c:1,e:'Resposta correta: Roubo = violência/grave ameaça à pessoa (art. 157). Furto = subtração sem violência (art. 155). Furto qualificado ≠ roubo.'},
   {b:'CESPE',t:'cebraspe',s:'O roubo é a subtração de coisa alheia móvel mediante grave ameaça, violência ou meio que reduza a vítima à impossibilidade de resistência.',c:0,e:'CERTO. Art. 157.'},
   {b:'CESPE',t:'cebraspe',s:'O latrocínio é classificado como crime contra a vida e, por isso, é da competência do Tribunal do Júri.',c:1,e:'ERRADO. Súmula 603 STF — crime contra patrimônio, juiz singular.'},
   {b:'CESPE',t:'cebraspe',s:'A receptação culposa ocorre quando o agente deveria presumir a origem criminosa da coisa.',c:0,e:'CERTO. Art. 180, § 3º.'},
@@ -2440,7 +2541,8 @@ const QBANK = {
   {b:'AOCP',t:'multiple',s:'O desacato (art. 331 CP) ainda é considerado crime no Brasil.',o:['Não, foi descriminalizado.','Sim, sua constitucionalidade foi reafirmada pelo STF.','Apenas se houver violência.','Apenas em fala pública.','Apenas se houver dano material.'],c:1,e:'STF, ADC 22.'},
 ],
 
-'penal-lei-drogas': [
+'penal-lei-drogas': [  {b:'CESPE',t:'cebraspe',s:'O tráfico de drogas, embora equiparado a crime hediondo, admite anistia, graça e indulto.',c:1,e:'ERRADO. Crimes hediondos e equiparados (tráfico, tortura, terrorismo) são INSUSCETÍVEIS de anistia, graça e indulto (art. 5º, XLIII, CF + Lei 8.072/90).'},
+  {b:'FGV',t:'multiple',s:'O traficante eventual (Lei 11.343/06, art. 33, §4º) faz jus à redução de pena de 1/6 a 2/3 se preencher TODOS os requisitos:',o:['Apenas ser réu primário.','Ser primário, de bons antecedentes, não se dedicar a atividades criminosas nem integrar organização criminosa.','Apenas não integrar facção criminosa.','Apenas reabilitar-se em programa de drogas.','Não precisa de requisitos cumulativos.'],c:1,e:'Resposta correta: Todos os 4 requisitos são CUMULATIVOS — basta faltar um para perder o redutor. Decoreba clássica de prova.'},
   {b:'CESPE',t:'cebraspe',s:'O porte de droga para consumo próprio (art. 28 da Lei 11.343/06) não tem pena privativa de liberdade.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O tráfico de drogas (art. 33 caput) é crime equiparado a hediondo.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O tráfico privilegiado (art. 33, § 4º) é considerado crime hediondo.',c:1,e:'ERRADO. STF, HC 118.533 — NÃO é hediondo.'},
@@ -2473,7 +2575,8 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'É hediondo o crime de tráfico de drogas (caput do art. 33) e o financiamento ao tráfico.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
-'penal-maria-da-penha': [
+'penal-maria-da-penha': [  {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha aplica-se exclusivamente a relações conjugais heterossexuais entre marido e mulher.',c:1,e:'ERRADO. A Lei se aplica a TODA relação doméstica/familiar/afetiva onde a vítima é MULHER, incluindo relações homoafetivas femininas, irmãs, mãe/filha, etc.'},
+  {b:'FCC',t:'multiple',s:'As medidas protetivas de urgência da Lei Maria da Penha (Lei 11.340/06):',o:['Só podem ser solicitadas pelo Ministério Público.','Podem ser concedidas pelo juiz em até 48 horas, inclusive sem audiência da parte contrária.','Exigem prova cabal antes de serem deferidas.','Não podem afastar o agressor do lar.','Aplicam-se só após condenação transitada em julgado.'],c:1,e:'Resposta correta: Concessão em até 48h, sem necessidade de oitiva prévia do agressor (princípio da urgência protetiva). Podem afastar o agressor do lar.'},
   {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha (11.340/06) cria mecanismos para coibir a violência doméstica e familiar contra a mulher.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'Não se aplica o princípio da insignificância aos crimes da Lei Maria da Penha.',c:0,e:'CERTO. Súmula 589 STJ.'},
   {b:'CESPE',t:'cebraspe',s:'Não cabe suspensão condicional do processo nos crimes praticados no âmbito da Lei Maria da Penha.',c:0,e:'CERTO. Súmula 536 STJ.'},
@@ -2506,7 +2609,8 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O agressor da Lei Maria da Penha responde também por crimes do CP em concurso quando praticados no contexto.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
-'penal-armas-tortura-hediondos': [
+'penal-armas-tortura-hediondos': [  {b:'CESPE',t:'cebraspe',s:'O porte ilegal de arma de fogo de uso permitido (Lei 10.826/03) admite fiança.',c:0,e:'CERTO. Porte de uso PERMITIDO admite fiança. Já o porte de uso RESTRITO (art. 16) é INAFIANÇÁVEL.'},
+  {b:'VUNESP',t:'multiple',s:'A diferença entre POSSE (art. 12) e PORTE (art. 14) de arma de fogo:',o:['Não há diferença prática.','Posse é dentro de casa/local de trabalho do proprietário; porte é fora desses locais.','Posse exige autorização; porte não.','Porte é exclusivo das forças armadas.','Posse só vale para arma branca.'],c:1,e:'Resposta correta: POSSE = dentro de casa/trabalho (art. 12). PORTE = transporte fora desses locais (art. 14). Pena do porte é maior.'},
   // Estatuto do Desarmamento
   {b:'CESPE',t:'cebraspe',s:'A posse irregular de arma de fogo de uso permitido (art. 12 Lei 10.826/03) tem pena de detenção de 1 a 3 anos.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O porte de arma de fogo de uso permitido tem pena de reclusão de 2 a 4 anos.',c:0,e:'CERTO. Art. 14.'},
@@ -2535,7 +2639,7 @@ const QBANK = {
   {b:'VUNESP',t:'multiple',s:'A Lei 8.072/90 considera hediondos os seguintes crimes, EXCETO:',o:['Homicídio qualificado.','Latrocínio.','Estupro.','Roubo simples.','Estupro de vulnerável.'],c:3,e:'Roubo simples não é hediondo.'},
   // IBFC
   {b:'IBFC',t:'multiple',s:'A 3ª Lei — Tortura, Tráfico, Terrorismo, conforme a CF (art. 5º, XLIII):',o:['São crimes hediondos.','São crimes equiparados a hediondos, inafiançáveis, insuscetíveis de graça e anistia.','São crimes militares.','São contravenções.'],c:1,e:'Resposta correta: São crimes equiparados a hediondos, inafiançáveis, insuscetíveis de graça e anistia..'},
-  {b:'IBFC',t:'multiple',s:'O Estatuto do Desarmamento exige laudo pericial de eficiência da arma para configurar crime.',o:['Sim, sempre.','Não, segundo o STJ a arma desmuniciada também configura.','Apenas para uso restrito.','Apenas se a arma for nova.'],c:1,e:'STJ.'},
+  {b:'IBFC',t:'multiple',s:'O Estatuto do Desarmamento exige laudo pericial de eficiência da arma para configurar crime.',o:['Sim, sempre.','Não, segundo o STJ a arma desmuniciada também configura.','Apenas para uso restrito.','Apenas se a arma for nova.'],c:1,e:"CERTO. Conforme jurisprudência do STJ (Superior Tribunal de Justiça)."},
   // AOCP
   {b:'AOCP',t:'multiple',s:'O crime de tortura praticado por agente público:',o:['Tem pena diminuída.','Tem causa de aumento (art. 1º, § 4º, I).','É contravenção.','Não tem causa de aumento.','Aplica-se só a militares.'],c:1,e:'Resposta correta: Tem causa de aumento (art. 1º, § 4º, I)..'},
   {b:'AOCP',t:'multiple',s:'A omissão de garante perante tortura (art. 1º, § 2º Lei 9.455/97) configura:',o:['Crime de tortura na mesma pena.','Crime omissivo próprio, com pena reduzida de 1 a 4 anos.','Atipicidade.','Concurso material.','Coautoria.'],c:1,e:'Resposta correta: Crime omissivo próprio, com pena reduzida de 1 a 4 anos..'},
@@ -2552,7 +2656,8 @@ const QBANK = {
 
 // ============== ECA e DIREITOS HUMANOS ==============
 
-'penal-eca-dh': [
+'penal-eca-dh': [  {b:'CESPE',t:'cebraspe',s:'O adolescente que comete ato infracional análogo a crime hediondo cumpre medida socioeducativa pelo prazo máximo de 6 anos.',c:1,e:'ERRADO. O prazo MÁXIMO de internação é de 3 ANOS (art. 121, §3º, ECA). Após, vai pra liberação ou semiliberdade. NÃO é 6 anos.'},
+  {b:'Quadrix',t:'multiple',s:'A inimputabilidade penal por menoridade ocorre:',o:['Aos 18 anos completos no dia do fato.','Para menores de 18 anos no momento do ato.','Aos 16 anos com permissão.','Aos 21 anos.','Aos 14 anos sempre.'],c:1,e:'Resposta correta: Art. 27, CP + art. 228, CF. MENOR DE 18 ANOS é INIMPUTÁVEL — sujeito ao ECA (medida socioeducativa), não ao CP.'},
   {b:'CESPE',t:'cebraspe',s:'Considera-se criança, para os efeitos do ECA, a pessoa até 12 anos de idade incompletos, e adolescente aquela entre 12 e 18 anos de idade.',c:0,e:'CERTO. Art. 2º.'},
   {b:'CESPE',t:'cebraspe',s:'Ato infracional é a conduta descrita como crime ou contravenção penal praticada por adolescente.',c:0,e:'CERTO. Art. 103.'},
   {b:'CESPE',t:'cebraspe',s:'O adolescente apreendido em flagrante deve ser apresentado imediatamente ao Ministério Público.',c:0,e:'CERTO. Art. 175.'},
@@ -2568,7 +2673,7 @@ const QBANK = {
   {b:'FCC',t:'multiple',s:'A medida socioeducativa mais grave é:',o:['Advertência.','Reparação do dano.','Prestação de serviços à comunidade.','Liberdade assistida.','Internação em estabelecimento educacional.'],c:4,e:'Art. 112.'},
   {b:'FCC',t:'multiple',s:'As características dos direitos humanos NÃO incluem:',o:['Universalidade.','Indivisibilidade.','Interdependência.','Vedação ao retrocesso.','Comerciabilidade.'],c:4,e:'DH são INALIENÁVEIS e indisponíveis.'},
   {b:'VUNESP',t:'multiple',s:'A medida socioeducativa de internação:',o:['É a mais branda.','Não pode exceder 3 anos e deve ser reavaliada no máximo a cada 6 meses.','Tem prazo definido em sentença.','Aplica-se a crianças e adolescentes.','Pode ser cumprida com adultos.'],c:1,e:'Art. 121.'},
-  {b:'VUNESP',t:'multiple',s:'O uso da força pela polícia segue os princípios:',o:['Apenas legalidade.','Apenas necessidade.','Legalidade, necessidade, proporcionalidade e conveniência.','Apenas obediência.','Apenas tradição.'],c:2,e:'ONU.'},
+  {b:'VUNESP',t:'multiple',s:'O uso da força pela polícia segue os princípios:',o:['Apenas legalidade.','Apenas necessidade.','Legalidade, necessidade, proporcionalidade e conveniência.','Apenas obediência.','Apenas tradição.'],c:2,e:"CERTO. Conforme tratados de Direitos Humanos da ONU (Organização das Nações Unidas)."},
   {b:'IBFC',t:'multiple',s:'O ECA estabelece como medidas de proteção (art. 101), aplicáveis a crianças e adolescentes em situação de risco:',o:['Apenas internação.','Conjunto de medidas como encaminhamento aos pais, requisição de tratamento, abrigo, etc.','Apenas advertência.','Trabalho compulsório.','Pena privativa de liberdade.'],c:1,e:'Resposta correta: Conjunto de medidas como encaminhamento aos pais, requisição de tratamento, abrigo, etc..'},
   {b:'IBFC',t:'multiple',s:'A Declaração Universal dos Direitos Humanos foi proclamada em:',o:['1945 pela ONU.','1948 pela Assembleia Geral da ONU.','1969 pelo Pacto San José.','1988 pela CF.'],c:1,e:'Resposta correta: 1948 pela Assembleia Geral da ONU..'},
   {b:'AOCP',t:'multiple',s:'Os direitos humanos, segundo a teoria das gerações:',o:['Tem apenas 2 gerações.','Tem 3 gerações: liberdade, igualdade e fraternidade.','Tem 5 gerações classificadas pelo STF.','Não tem gerações.','São sinônimos de direitos fundamentais.'],c:1,e:'Karel Vasak.'},
@@ -2586,23 +2691,136 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O abuso de autoridade pelo policial militar pode configurar violação de direitos humanos.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
-'info-windows-office-internet': [
-  // ============ WINDOWS ============
-  {b:'CESPE',t:'cebraspe',s:'No sistema operacional Windows 10, a tecla de atalho Windows + E abre o Explorador de Arquivos.',c:0,e:'CERTO. Win+E é o atalho padrão pra abrir o Explorador de Arquivos.'},
-  {b:'CESPE',t:'cebraspe',s:'No Windows 10, ao excluir um arquivo com SHIFT+DEL, ele é enviado para a Lixeira e pode ser recuperado posteriormente.',c:1,e:'ERRADO. SHIFT+DEL apaga PERMANENTEMENTE, sem passar pela Lixeira. DEL simples envia pra Lixeira.'},
-  {b:'FGV',t:'multiple',s:'Qual é o atalho do Windows 10 que minimiza TODAS as janelas abertas e mostra a Área de Trabalho?',o:['Win + D','Ctrl + D','Alt + Tab','Win + L','Win + R'],c:0,e:'Resposta correta: Win + D (Desktop). Win+L bloqueia a tela, Win+R abre Executar, Alt+Tab alterna janelas.'},
-  {b:'FCC',t:'multiple',s:'O Painel de Controle do Windows 10 permite ao usuário:',o:['Apenas instalar programas.','Configurar hardware, contas, rede e personalização do sistema.','Acessar somente os arquivos do usuário.','Substituir o BIOS.','Executar comandos de linha exclusivamente.'],c:1,e:'Resposta correta: Configurar hardware, contas, rede e personalização do sistema. O Painel de Controle centraliza as configurações do sistema.'},
-  // ============ WORD ============
-  {b:'VUNESP',t:'multiple',s:'No Microsoft Word 2016 em português, o atalho CTRL+B é usado para:',o:['Salvar o documento.','Aplicar negrito ao texto selecionado.','Imprimir o documento.','Buscar texto.','Fechar o documento.'],c:0,e:'Resposta correta: Salvar (B de Backup). PEGADINHA: em INGLÊS CTRL+B = Bold (negrito). No Word PT-BR o negrito é CTRL+N.'},
-  {b:'CESPE',t:'cebraspe',s:'No Microsoft Word em português, para aplicar negrito ao texto selecionado utiliza-se a combinação CTRL+N.',c:0,e:'CERTO. No Word pt-BR: CTRL+N = Negrito, CTRL+I = Itálico, CTRL+S = Sublinhado, CTRL+B = Salvar (Backup).'},
-  // ============ EXCEL ============
-  {b:'FGV',t:'multiple',s:'No Microsoft Excel, a fórmula =SOMA(A1:A5) retorna:',o:['A média entre A1 e A5.','A diferença entre A1 e A5.','A soma de todos os valores das células de A1 até A5.','Apenas o valor de A1 somado com A5.','Erro de sintaxe.'],c:2,e:'Resposta correta: A soma de todos os valores das células de A1 até A5. ":" indica INTERVALO (todas as células entre). ";" indica células SEPARADAS.'},
-  {b:'IBFC',t:'multiple',s:'No Excel em português, qual fórmula calcula a MÉDIA dos valores das células B2, B3, B4 e B5?',o:['=MEDIANA(B2:B5)','=MEDIA(B2:B5)','=MÉDIA(B2:B5)','=AVG(B2:B5)','=MED(B2:B5)'],c:2,e:'Resposta correta: =MÉDIA(B2:B5). Em Excel pt-BR a função é =MÉDIA (com acento). MEDIANA é o valor central, diferente de média aritmética.'},
-  // ============ INTERNET / SEGURANÇA ============
-  {b:'CESPE',t:'cebraspe',s:'Phishing é um tipo de fraude digital em que um atacante se passa por uma entidade confiável (banco, empresa) para enganar o usuário e obter dados sensíveis como senhas.',c:0,e:'CERTO. Phishing = "pescaria" de dados. Vem por e-mail, SMS ou redes sociais. Defesa: nunca clicar em links suspeitos e verificar o endereço do remetente.'},
-  {b:'Quadrix',t:'multiple',s:'No navegador Google Chrome, o atalho CTRL+T executa qual ação?',o:['Fecha a aba atual.','Abre uma nova aba.','Restaura a última aba fechada.','Atualiza a página.','Abre o histórico.'],c:1,e:'Resposta correta: Abre uma nova aba. CTRL+T = nova Tab. CTRL+W fecha aba. CTRL+SHIFT+T restaura última fechada. CTRL+H = histórico.'},
+'info-windows': [
+  {b:'CESPE',t:'cebraspe',s:'No Windows 10, a tecla de atalho Win + E abre o Explorador de Arquivos.',c:0,e:'CERTO. Win+E é o atalho padrão para abrir o Explorador de Arquivos.'},
+  {b:'CESPE',t:'cebraspe',s:'No Windows 10, ao excluir um arquivo com SHIFT+DEL, ele é enviado para a Lixeira e pode ser recuperado posteriormente.',c:1,e:'ERRADO. SHIFT+DEL apaga PERMANENTEMENTE, sem passar pela Lixeira. DEL simples envia para a Lixeira.'},
+  {b:'FGV',t:'multiple',s:'Qual atalho do Windows 10 minimiza TODAS as janelas e mostra a Área de Trabalho?',o:['Win + D','Ctrl + D','Alt + Tab','Win + L','Win + R'],c:0,e:'Resposta: Win + D (Desktop). Win+L bloqueia tela, Win+R abre Executar, Alt+Tab alterna janelas.'},
+  {b:'FCC',t:'multiple',s:'O Painel de Controle do Windows 10 permite ao usuário:',o:['Apenas instalar programas.','Configurar hardware, contas, rede e personalização do sistema.','Acessar somente arquivos do usuário.','Substituir o BIOS.','Executar comandos de linha exclusivamente.'],c:1,e:'Resposta: Configurar hardware, contas, rede e personalização. O Painel centraliza configurações do sistema.'},
+  {b:'CESPE',t:'cebraspe',s:'No Windows 10, a combinação de teclas Win + L bloqueia o computador, exigindo senha do usuário para retomar.',c:0,e:'CERTO. Win+L = Lock. Bloqueia tela imediatamente. Útil ao sair do PC um momento.'},
+  {b:'VUNESP',t:'multiple',s:'Para alternar entre as janelas abertas no Windows 10:',o:['Ctrl + Tab','Alt + Tab','Win + Tab (apenas)','Ctrl + Alt','Shift + Tab'],c:1,e:'Resposta: Alt + Tab. Win + Tab também funciona (Task View). Ctrl + Tab alterna abas dentro de programas.'},
+  {b:'CESPE',t:'cebraspe',s:'A função Win+I abre as Configurações do Windows 10, substituindo em parte o antigo Painel de Controle.',c:0,e:'CERTO. Win+I (de Settings) abre o app moderno de Configurações.'},
+  {b:'IBFC',t:'multiple',s:'Qual a EXTENSÃO padrão de arquivos executáveis no Windows?',o:['.txt','.doc','.exe','.html','.pdf'],c:2,e:'Resposta: .exe (executable). É o formato que roda programas. Cuidado: arquivos .exe de fontes desconhecidas podem conter vírus.'},
+  {b:'CESPE',t:'cebraspe',s:'No Windows, a lixeira armazena permanentemente todos os arquivos excluídos, sem limite de tamanho ou tempo.',c:1,e:'ERRADO. A Lixeira tem TAMANHO LIMITADO (configurável). Quando enche, arquivos mais antigos são removidos automaticamente.'},
+  {b:'FCC',t:'multiple',s:'O atalho CTRL + SHIFT + ESC no Windows abre:',o:['O Painel de Controle','O Gerenciador de Tarefas','O Explorador de Arquivos','As Configurações','O Bloco de Notas'],c:1,e:'Resposta: Gerenciador de Tarefas. Mostra processos em execução, uso de CPU/memória e permite encerrar programas travados.'},
+  {b:'FGV',t:'multiple',s:'O que faz a tecla F2 no Explorador de Arquivos do Windows?',o:['Apaga o arquivo selecionado','Renomeia o arquivo selecionado','Abre o arquivo','Copia o arquivo','Cria nova pasta'],c:1,e:'Resposta: Renomeia. F2 é o atalho universal para renomear arquivos/pastas selecionados.'},
+  {b:'AOCP',t:'multiple',s:'Qual atalho captura a tela INTEIRA e salva automaticamente em Imagens/Capturas de Tela?',o:['Print Screen apenas','Win + Print Screen','Alt + Print Screen','Ctrl + Print Screen','Shift + Print Screen'],c:1,e:'Resposta: Win + Print Screen. Salva PNG automaticamente em "Capturas de Tela". Print Screen sozinho copia para área de transferência.'},
+  {b:'CESPE',t:'cebraspe',s:'O Windows Defender é o antivírus nativo do Windows 10 e Windows 11, instalado por padrão.',c:0,e:'CERTO. Windows Defender (agora "Microsoft Defender") protege contra vírus/malware sem custo, já incluído no SO.'},
+  {b:'VUNESP',t:'multiple',s:'Para criar uma NOVA PASTA no Windows 10, pode-se usar o atalho:',o:['Ctrl + N','Ctrl + Shift + N','Alt + N','Win + N','Shift + N'],c:1,e:'Resposta: Ctrl + Shift + N. Cria nova pasta no local atual do Explorador de Arquivos.'},
+  {b:'Quadrix',t:'multiple',s:'No Windows 10, o que significa o sufixo ".tmp" em um arquivo?',o:['Arquivo de texto','Arquivo temporário, criado por programas','Arquivo do sistema','Arquivo executável','Backup automático'],c:1,e:'Resposta: Arquivo Temporário (TeMPorário). Programas criam para uso transitório. Geralmente podem ser deletados.'},
+  {b:'CESPE',t:'cebraspe',s:'O sistema de arquivos NTFS oferece mais recursos de segurança que o FAT32, incluindo permissões por usuário e criptografia.',c:0,e:'CERTO. NTFS = New Technology File System. Padrão do Windows moderno. Suporta arquivos >4GB, permissões e criptografia (EFS).'},
+  {b:'FCC',t:'multiple',s:'O que faz Win + Print Screen no Windows 10?',o:['Apenas copia para área de transferência','Salva captura em arquivo PNG automaticamente','Imprime a tela','Abre paint','Não faz nada'],c:1,e:'Resposta: Salva PNG automaticamente em Imagens > Capturas de Tela.'},
+  {b:'FGV',t:'multiple',s:'O Prompt de Comando (CMD) no Windows é acessível por:',o:['Win + R, digitando "cmd"','Apenas Painel de Controle','Apenas pelo Office','Apenas no modo administrador','Não existe mais no Windows 10'],c:0,e:'Resposta: Win + R abre Executar; digitando "cmd" abre o Prompt. Também: pesquisar "cmd" no menu Iniciar.'},
+  {b:'IBFC',t:'multiple',s:'Para fazer ZOOM IN em uma janela ativa no Windows:',o:['Ctrl + +','Win + Z','Alt + +','Shift + +','F11'],c:0,e:'Resposta: Ctrl + + (mais) faz zoom. Ctrl + - faz zoom out. Ctrl + 0 reseta. Vale em navegadores, Office, etc.'},
+  {b:'AOCP',t:'multiple',s:'A tecla F5 no Windows e navegadores tem qual função?',o:['Fechar janela','Atualizar/Recarregar','Salvar','Abrir Ajuda','Pesquisar'],c:1,e:'Resposta: Atualizar (Refresh). No Explorador atualiza a pasta; em navegadores recarrega a página.'},
+  {b:'CESPE',t:'cebraspe',s:'No Windows 10, a Cortana é uma assistente virtual baseada em inteligência artificial integrada ao sistema.',c:0,e:'CERTO. Cortana é assistente da Microsoft, similar a Siri/Alexa. Responde por voz e pode automatizar tarefas.'},
+  {b:'VUNESP',t:'multiple',s:'O atalho Win + . (ponto) no Windows 10 abre:',o:['O navegador','O painel de emojis e GIFs','O calendário','As configurações','O menu Iniciar'],c:1,e:'Resposta: Painel de Emojis. Win+. ou Win+; abre seletor de emojis no Windows 10/11.'},
+  {b:'Quadrix',t:'multiple',s:'Qual a função do BitLocker no Windows?',o:['Antivírus','Criptografar discos rígidos inteiros','Limpar arquivos temporários','Compactar arquivos','Sincronizar com nuvem'],c:1,e:'Resposta: Criptografa o disco completo. Protege dados em caso de roubo. Disponível em Windows Pro/Enterprise.'},
+  {b:'FGV',t:'multiple',s:'No Windows, a área de transferência (clipboard):',o:['Permanece após desligar o PC','É temporária e perdida ao desligar/reiniciar','Salva em disco automaticamente','Só funciona no Office','Faz backup na nuvem sempre'],c:1,e:'Resposta: É temporária (RAM). Perde ao desligar. Windows 10+ tem histórico (Win+V) se ativado nas configurações.'},
 ],
-
+'info-office': [
+  {b:'VUNESP',t:'multiple',s:'No Microsoft Word 2016 em português, o atalho CTRL+B é usado para:',o:['Salvar o documento.','Aplicar negrito.','Imprimir.','Buscar texto.','Fechar documento.'],c:0,e:'Resposta: Salvar (B de Backup). PEGADINHA: em INGLÊS CTRL+B = Bold (negrito). No Word PT-BR negrito é CTRL+N.'},
+  {b:'CESPE',t:'cebraspe',s:'No Microsoft Word em português, para aplicar NEGRITO ao texto selecionado utiliza-se a combinação CTRL+N.',c:0,e:'CERTO. PT-BR: CTRL+N = Negrito, CTRL+I = Itálico, CTRL+S = Sublinhado, CTRL+B = Salvar (Backup).'},
+  {b:'FGV',t:'multiple',s:'No Microsoft Excel, a fórmula =SOMA(A1:A5) retorna:',o:['A média entre A1 e A5.','A diferença entre A1 e A5.','A soma de todos os valores de A1 até A5.','Apenas A1 somado a A5.','Erro de sintaxe.'],c:2,e:'Resposta: Soma TODOS valores no intervalo. ":" indica INTERVALO. ";" indica células separadas: =SOMA(A1;A5) soma apenas A1+A5.'},
+  {b:'IBFC',t:'multiple',s:'No Excel em pt-BR, qual fórmula calcula a MÉDIA dos valores das células B2 a B5?',o:['=MEDIANA(B2:B5)','=MEDIA(B2:B5)','=MÉDIA(B2:B5)','=AVG(B2:B5)','=MED(B2:B5)'],c:2,e:'Resposta: =MÉDIA(B2:B5). Em pt-BR usa acento. MEDIANA é o valor central, diferente de média aritmética.'},
+  {b:'CESPE',t:'cebraspe',s:'No Excel, a função SE() permite executar um teste lógico, retornando um valor se o teste for verdadeiro e outro se for falso.',c:0,e:'CERTO. Sintaxe: =SE(teste; valor_se_verdadeiro; valor_se_falso). Ex: =SE(A1>10;"Aprovado";"Reprovado").'},
+  {b:'FCC',t:'multiple',s:'No Excel, qual o resultado de =MAIOR({10;20;30;40;50};2)?',o:['10','20','30','40','50'],c:3,e:'Resposta: 40. MAIOR retorna o k-ésimo MAIOR valor. K=2 = segundo maior = 40. Já MENOR funciona inverso.'},
+  {b:'VUNESP',t:'multiple',s:'O atalho do Excel para inserir a DATA ATUAL na célula:',o:['Ctrl + ; (ponto e vírgula)','Ctrl + D','=HOJE()','Ambos A e C são corretos','Ctrl + T'],c:3,e:'Resposta: Ambos (Ctrl + ; insere data fixa; =HOJE() é dinâmica e atualiza). =AGORA() retorna data+hora.'},
+  {b:'CESPE',t:'cebraspe',s:'No Microsoft Word, é possível inserir índice (sumário) automático baseado em estilos de Título aplicados ao documento.',c:0,e:'CERTO. Aba Referências > Sumário. Requer aplicar estilos Título 1, Título 2, etc. nas seções.'},
+  {b:'FGV',t:'multiple',s:'No Microsoft Word, o atalho CTRL + Z executa:',o:['Salvar','Fechar','Desfazer última ação','Refazer','Recortar'],c:2,e:'Resposta: Desfazer (Undo). CTRL+Y refaz. CTRL+S salvar (em inglês; pt-BR é CTRL+B). CTRL+X recortar.'},
+  {b:'IBFC',t:'multiple',s:'O Microsoft Excel utiliza qual SÍMBOLO para iniciar uma fórmula?',o:['# (hashtag)','= (igual)','@ (arroba)','$ (cifrão)','? (interrogação)'],c:1,e:'Resposta: =. Toda fórmula começa com =. Ex: =A1+B1, =SOMA(...), =SE(...).'},
+  {b:'AOCP',t:'multiple',s:'No Excel, ao copiar a fórmula =A1+B1 de C1 para C2, ela se transforma em:',o:['=A1+B1 (não muda)','=A2+B2','=A0+B0','=C1+D1','Erro'],c:1,e:'Resposta: =A2+B2. Referências RELATIVAS se ajustam ao copiar. Para fixar, use $ (absoluta): =$A$1+$B$1.'},
+  {b:'CESPE',t:'cebraspe',s:'No Excel, o cifrão ($) em uma fórmula bloqueia a referência da célula (referência absoluta).',c:0,e:'CERTO. $A$1 = trava linha e coluna. A$1 = trava só linha. $A1 = trava só coluna. F4 alterna entre as 4 opções.'},
+  {b:'VUNESP',t:'multiple',s:'O PowerPoint é utilizado para:',o:['Editar planilhas','Criar apresentações com slides','Receber e-mails','Editar fotos','Compactar arquivos'],c:1,e:'Resposta: Criar apresentações (slides). Word = textos, Excel = planilhas, PowerPoint = slides, Outlook = e-mail.'},
+  {b:'FCC',t:'multiple',s:'Para iniciar uma apresentação do PowerPoint a partir do PRIMEIRO SLIDE, usa-se:',o:['F5','Shift + F5','F8','Ctrl + F5','Esc'],c:0,e:'Resposta: F5 começa do primeiro slide. Shift+F5 começa do slide atual.'},
+  {b:'FGV',t:'multiple',s:'No Outlook, a função "Encaminhar" (Forward):',o:['Envia uma cópia para outra pessoa, mantendo o conteúdo original e podendo adicionar comentários.','Apaga a mensagem','Marca como spam','Cria uma nova conta','Compacta a mensagem'],c:0,e:'Resposta: Envia cópia mantendo conteúdo original. Diferente de "Responder" (Reply), que volta para o remetente.'},
+  {b:'CESPE',t:'cebraspe',s:'O OneDrive é o serviço de armazenamento em nuvem da Microsoft, integrado ao Office 365 e ao Windows.',c:0,e:'CERTO. OneDrive sincroniza arquivos entre dispositivos. Concorrentes: Google Drive, Dropbox, iCloud.'},
+  {b:'IBFC',t:'multiple',s:'No Word, o atalho CTRL + END leva o cursor para:',o:['Início do documento','Final do documento','Próxima página','Última palavra da linha','Não faz nada'],c:1,e:'Resposta: Final do documento. CTRL+HOME vai pro início. HOME/END vai pro início/fim da linha.'},
+  {b:'AOCP',t:'multiple',s:'Qual recurso do Excel permite criar gráficos dinâmicos que resumem grandes quantidades de dados?',o:['Tabela','Tabela Dinâmica (PivotTable)','Filtro','Macro','Fórmula'],c:1,e:'Resposta: Tabela Dinâmica (PivotTable). Resume e analisa dados sem fórmulas. Aba Inserir > Tabela Dinâmica.'},
+  {b:'CESPE',t:'cebraspe',s:'O Microsoft Teams é uma plataforma de comunicação corporativa que integra chat, videochamadas, compartilhamento de arquivos e colaboração em documentos do Office 365.',c:0,e:'CERTO. Teams substituiu o Skype for Business. Permite reuniões, chat por equipe, arquivos compartilhados.'},
+  {b:'VUNESP',t:'multiple',s:'No Word, qual atalho INSERE uma quebra de página manual?',o:['Enter (sem mais)','Ctrl + Enter','Shift + Enter','Alt + Enter','Tab'],c:1,e:'Resposta: Ctrl + Enter. Força quebra de página. Shift + Enter = quebra de linha (sem novo parágrafo).'},
+  {b:'Quadrix',t:'multiple',s:'No Excel, a função =CONT.SE(A1:A10;">5") retorna:',o:['Soma dos valores maiores que 5','Contagem das células com valores maiores que 5','Média dos valores maiores que 5','Erro','Primeiro valor maior que 5'],c:1,e:'Resposta: Conta quantas células do intervalo atendem ao critério. Útil para estatísticas condicionais.'},
+  {b:'FGV',t:'multiple',s:'O atalho CTRL + P em qualquer aplicativo Office serve para:',o:['Imprimir','Pesquisar','Recortar','Aplicar negrito','Fechar'],c:0,e:'Resposta: Imprimir (Print). Funciona em Word, Excel, PowerPoint, navegadores, PDFs, etc.'},
+  {b:'CESPE',t:'cebraspe',s:'O Excel suporta a colaboração simultânea em uma planilha quando armazenada no OneDrive ou SharePoint, permitindo que múltiplos usuários editem ao mesmo tempo.',c:0,e:'CERTO. Office 365 permite co-autoria em tempo real, similar ao Google Docs. Disponível em Word, Excel e PowerPoint.'},
+  {b:'IBFC',t:'multiple',s:'No PowerPoint, qual é o nome do modelo padrão que serve de base visual para uma apresentação?',o:['Tema','Slide Mestre (Slide Master)','Layout','Animação','Transição'],c:1,e:'Resposta: Slide Mestre. Controla fontes, cores e elementos que aparecem em todos os slides. Editar uma vez = aplica em todos.'},
+],
+'info-internet': [
+  {b:'Quadrix',t:'multiple',s:'No navegador Google Chrome, o atalho CTRL+T executa qual ação?',o:['Fecha a aba atual.','Abre uma nova aba.','Restaura a última aba fechada.','Atualiza a página.','Abre o histórico.'],c:1,e:'Resposta: Abre nova aba. CTRL+T = Tab nova. CTRL+W fecha. CTRL+SHIFT+T restaura última fechada. CTRL+H = histórico.'},
+  {b:'CESPE',t:'cebraspe',s:'A INTRANET é uma rede privada que usa as mesmas tecnologias da Internet, mas seu acesso é restrito a um grupo específico, geralmente dentro de uma organização.',c:0,e:'CERTO. Intranet = "internet privada da empresa". Mesma tecnologia, acesso restrito. Extranet permite parceiros externos limitadamente.'},
+  {b:'FGV',t:'multiple',s:'Qual protocolo é usado para acesso SEGURO a sites na internet?',o:['HTTP','HTTPS','FTP','SMTP','POP3'],c:1,e:'Resposta: HTTPS. O "S" = Secure (TLS/SSL). Criptografa dados entre navegador e servidor. Sempre prefira HTTPS em sites com login/pagamento.'},
+  {b:'IBFC',t:'multiple',s:'O que é um "cookie" no contexto de navegação na internet?',o:['Um vírus','Pequeno arquivo armazenado pelo navegador para guardar informações da sessão','Uma página web','Um programa antivírus','Um servidor'],c:1,e:'Resposta: Arquivo pequeno do navegador. Guarda preferências, login, carrinho de compras. Pode ser bloqueado nas configurações.'},
+  {b:'CESPE',t:'cebraspe',s:'O HTTP é um protocolo seguro que criptografa as informações trocadas entre cliente e servidor.',c:1,e:'ERRADO. HTTP é SEM criptografia (inseguro). HTTPS é o seguro. Site só com HTTP = não use para senhas/dados sensíveis.'},
+  {b:'VUNESP',t:'multiple',s:'No navegador, a aba ANÔNIMA (modo privado) significa:',o:['Acesso totalmente anônimo na internet','Não salva histórico, cookies e cache no dispositivo, mas o site/ISP ainda enxerga você','100% privacidade contra hackers','Navegação mais rápida','Bloqueia todos os anúncios'],c:1,e:'Resposta: Não salva localmente. Mas seu provedor, empresa e o site ACESSADO ainda veem sua atividade. Não é VPN.'},
+  {b:'AOCP',t:'multiple',s:'O que é o "DNS" na internet?',o:['Dispositivo de Navegação Segura','Sistema que traduz nomes de domínio (google.com) em endereços IP','Antivírus','Protocolo de e-mail','Tipo de cabo de rede'],c:1,e:'Resposta: Domain Name System. Traduz "google.com" → 142.250.x.x (IP). Sem DNS, internet seria só números.'},
+  {b:'CESPE',t:'cebraspe',s:'O endereço IP é um identificador único atribuído a cada dispositivo conectado à rede.',c:0,e:'CERTO. IPv4 (192.168.0.1) ou IPv6 (mais novo). Pode ser fixo ou dinâmico (DHCP atribui).'},
+  {b:'FCC',t:'multiple',s:'O termo URL refere-se a:',o:['Universal Reading Language','Uniform Resource Locator — endereço de um recurso na web','Unified Real Location','User Required Link','Universal Resource Library'],c:1,e:'Resposta: Uniform Resource Locator. É o endereço completo de uma página: protocolo://domínio/caminho. Ex: https://www.google.com/maps'},
+  {b:'FGV',t:'multiple',s:'Qual protocolo é usado para ENVIAR e-mails?',o:['POP3','IMAP','SMTP','HTTP','FTP'],c:2,e:'Resposta: SMTP (Simple Mail Transfer Protocol). POP3 e IMAP são para RECEBER. POP3 baixa; IMAP sincroniza.'},
+  {b:'IBFC',t:'multiple',s:'O serviço WEBMAIL permite:',o:['Receber e-mails apenas em programas instalados','Acessar e-mails diretamente pelo navegador, sem programa específico','Apenas enviar e-mails','Substituir o navegador','Compactar e-mails'],c:1,e:'Resposta: Acessar pelo navegador (Gmail, Outlook.com, Yahoo!). Não precisa instalar Outlook ou Thunderbird.'},
+  {b:'CESPE',t:'cebraspe',s:'A computação em nuvem permite acesso a serviços de TI (armazenamento, processamento, software) pela internet, sob demanda.',c:0,e:'CERTO. Cloud Computing. Exemplos: Google Drive, Dropbox, AWS, Azure. Paga só pelo que usa.'},
+  {b:'VUNESP',t:'multiple',s:'O Google Drive, OneDrive e Dropbox são exemplos de:',o:['Antivírus','Armazenamento em nuvem','Navegadores','Sistemas operacionais','Editores de texto'],c:1,e:'Resposta: Armazenamento em nuvem. Sincronizam arquivos entre dispositivos via internet.'},
+  {b:'Quadrix',t:'multiple',s:'O protocolo FTP é utilizado para:',o:['Enviar e-mail','Transferir arquivos entre computadores','Navegar em sites','Imprimir documentos','Bloquear vírus'],c:1,e:'Resposta: File Transfer Protocol. Usado para upload/download de arquivos. SFTP é a versão segura.'},
+  {b:'CESPE',t:'cebraspe',s:'Uma VPN (Rede Privada Virtual) cria uma conexão criptografada entre o dispositivo do usuário e um servidor, mascarando o IP de origem.',c:0,e:'CERTO. VPN = Virtual Private Network. Útil para privacidade, segurança em redes públicas, acesso a conteúdo geo-restrito.'},
+  {b:'AOCP',t:'multiple',s:'No navegador, o cadeado verde/preto na barra de endereço indica:',o:['Site bloqueado','Site usa HTTPS (conexão criptografada)','Vírus detectado','Bloqueador de anúncios ativo','Senha salva'],c:1,e:'Resposta: HTTPS ativo. Indica conexão segura. Sites sem cadeado podem expor seus dados (especialmente em redes Wi-Fi públicas).'},
+  {b:'FGV',t:'multiple',s:'Wi-Fi é uma tecnologia de:',o:['Conexão de rede sem fio (wireless)','Cabo de rede','Sistema operacional','Protocolo de e-mail','Antivírus'],c:0,e:'Resposta: Conexão wireless. Baseada em padrões IEEE 802.11. Mais lento que cabo, mais conveniente.'},
+  {b:'CESPE',t:'cebraspe',s:'Um cliente de e-mail (como Outlook ou Thunderbird) precisa estar SEMPRE online para que mensagens sejam armazenadas localmente.',c:1,e:'ERRADO. Cliente baixa mensagens (POP3) ou sincroniza (IMAP). Após baixar, pode ler OFFLINE. Só precisa conexão para enviar/receber.'},
+  {b:'IBFC',t:'multiple',s:'O que é um navegador web (web browser)?',o:['Servidor de e-mail','Programa para acessar páginas da internet (Chrome, Firefox, Edge)','Antivírus','Sistema operacional','Tipo de hardware'],c:1,e:'Resposta: Programa para navegar na web. Principais: Chrome, Firefox, Edge, Safari, Opera, Brave.'},
+  {b:'VUNESP',t:'multiple',s:'A diferença entre INTERNET e WEB:',o:['São a mesma coisa.','Internet é a rede física global; Web (WWW) é o serviço de páginas hipertexto sobre a internet.','Web é mais antiga que internet.','Internet é só para vídeos.','Web só funciona em celular.'],c:1,e:'Resposta: Internet é a infraestrutura (cabos, satélites, IPs). Web (WWW) é UM dos serviços dela (sites). E-mail também usa internet, mas não é "web".'},
+  {b:'FCC',t:'multiple',s:'Para abrir uma janela do navegador em modo ANÔNIMO no Chrome, usa-se:',o:['Ctrl + N','Ctrl + Shift + N','Ctrl + Alt + N','F12','Ctrl + Tab'],c:1,e:'Resposta: Ctrl + Shift + N (Chrome). No Firefox/Edge: Ctrl + Shift + P. Modo privado/anônimo.'},
+  {b:'CESPE',t:'cebraspe',s:'O 5G é a quinta geração de redes móveis, oferecendo velocidades muito maiores e menor latência que o 4G.',c:0,e:'CERTO. 5G permite até 10x mais velocidade que 4G, latência baixíssima (importante para IoT, carros autônomos, jogos online).'},
+  {b:'AOCP',t:'multiple',s:'O conceito de IoT (Internet das Coisas) refere-se a:',o:['Internet apenas em celulares','Conexão de objetos do dia a dia (geladeiras, lâmpadas, carros) à internet','Internet sem fio','Sistema operacional','Tipo de antivírus'],c:1,e:'Resposta: Internet of Things. Geladeira inteligente, lâmpada Wi-Fi, smartwatch, câmera de segurança, etc. todos conectados.'},
+  {b:'FGV',t:'multiple',s:'O que é "streaming" na internet?',o:['Download completo do arquivo antes de assistir.','Transmissão contínua de áudio/vídeo, reproduzindo enquanto baixa.','Upload de fotos.','Tipo de e-mail.','Antivírus em tempo real.'],c:1,e:'Resposta: Reprodução em tempo real enquanto baixa. Netflix, Spotify, YouTube são streaming. Não fica arquivo no PC.'},
+],
+'info-seguranca': [
+  {b:'CESPE',t:'cebraspe',s:'Phishing é um tipo de fraude digital em que um atacante se passa por uma entidade confiável (banco, empresa) para enganar o usuário e obter dados sensíveis como senhas.',c:0,e:'CERTO. Phishing = "pescaria" de dados. Vem por e-mail, SMS, redes sociais. Defesa: verificar remetente e nunca clicar em links suspeitos.'},
+  {b:'CESPE',t:'cebraspe',s:'Um vírus de computador é um malware que se replica automaticamente, infectando arquivos e podendo causar danos ao sistema.',c:0,e:'CERTO. Vírus precisa de hospedeiro (arquivo) e ação do usuário (executar). Worm se propaga sozinho. Ambos são malware.'},
+  {b:'FGV',t:'multiple',s:'O termo MALWARE significa:',o:['Software malicioso (vírus, worms, trojans, ransomware, spyware, etc.)','Software gratuito','Sistema operacional','Programa de e-mail','Tipo de hardware'],c:0,e:'Resposta: MALicious softWARE. Termo genérico para todo software malicioso, incluindo vírus, worms, trojans, ransomware, spyware, etc.'},
+  {b:'IBFC',t:'multiple',s:'Um RANSOMWARE é um tipo de malware que:',o:['Limpa o computador automaticamente.','Sequestra (criptografa) arquivos e exige pagamento (resgate) para liberá-los.','Acelera o PC.','Faz backup gratuito.','Atualiza programas.'],c:1,e:'Resposta: Sequestra arquivos. Ex: WannaCry. Defesa: backup periódico e não pagar resgate (não há garantia).'},
+  {b:'CESPE',t:'cebraspe',s:'O FIREWALL é um dispositivo (ou software) que monitora e controla o tráfego de rede, permitindo ou bloqueando comunicações conforme regras de segurança.',c:0,e:'CERTO. Firewall = "parede de fogo". Filtra pacotes de entrada/saída. Pode ser hardware (roteador) ou software (Windows Defender Firewall).'},
+  {b:'VUNESP',t:'multiple',s:'O que é um CAVALO DE TROIA (Trojan) na informática?',o:['Vírus que destrói hardware.','Programa malicioso disfarçado de software legítimo, que abre brechas no sistema.','Programa antivírus avançado.','Tipo de firewall.','Backup automático.'],c:1,e:'Resposta: Programa disfarçado. Parece útil/inocente, mas instala backdoor, rouba dados, espia. Diferente de vírus: não se replica.'},
+  {b:'CESPE',t:'cebraspe',s:'A autenticação em DOIS FATORES (2FA ou MFA) adiciona uma camada extra de segurança ao login, exigindo algo além da senha (código SMS, app, biometria).',c:0,e:'CERTO. MFA = Multi-Factor Authentication. Algo que VOCÊ SABE (senha) + algo que VOCÊ TEM (celular/token) + algo que VOCÊ É (biometria).'},
+  {b:'FGV',t:'multiple',s:'O que é "engenharia social" em segurança da informação?',o:['Construção de softwares.','Manipulação psicológica para enganar pessoas e obter informações sensíveis.','Tipo de antivírus.','Curso técnico.','Política de senhas.'],c:1,e:'Resposta: Manipulação psicológica. Atacante explora confiança, urgência ou medo. Ex: ligar fingindo ser do "TI" pedindo senha.'},
+  {b:'FCC',t:'multiple',s:'O que é um SPYWARE?',o:['Software gratuito.','Programa que ESPIONA o usuário, coletando dados sem consentimento.','Antivírus.','Sistema operacional.','Compactador.'],c:1,e:'Resposta: Programa espião. Coleta dados (senhas, sites visitados, cliques) e envia para terceiros sem consentimento.'},
+  {b:'CESPE',t:'cebraspe',s:'O BACKUP regular dos dados é uma medida fundamental para prevenir perdas em caso de ataques de ransomware, falhas de hardware ou erros humanos.',c:0,e:'CERTO. Regra 3-2-1: 3 cópias, em 2 mídias diferentes, 1 fora do local. Backup é a melhor defesa contra ransomware.'},
+  {b:'IBFC',t:'multiple',s:'Um BACKDOOR (porta dos fundos) em um sistema é:',o:['Atalho do teclado.','Brecha intencional ou maliciosa que permite acesso não autorizado.','Configuração padrão.','Antivírus.','Versão antiga.'],c:1,e:'Resposta: Brecha de acesso secreta. Pode ser deixada por atacantes (após invasão) ou desenvolvedores (intencional, problemático).'},
+  {b:'AOCP',t:'multiple',s:'Uma boa SENHA SEGURA deve:',o:['Ser curta e fácil de lembrar (ex: 12345).','Ter ao menos 8 caracteres, misturar letras maiúsculas, minúsculas, números e símbolos.','Ser igual em todos os sites.','Conter seu nome.','Conter sua data de nascimento.'],c:1,e:'Resposta: Mín 8 chars, mistura. Não reutilizar entre sites. Considere usar gerenciador de senhas (Bitwarden, 1Password, KeePass).'},
+  {b:'FGV',t:'multiple',s:'O CERTIFICADO DIGITAL serve para:',o:['Acelerar internet.','Comprovar autenticidade e identidade no ambiente digital (assinatura, e-CPF, e-CNPJ).','Bloquear vírus.','Compactar arquivos.','Atualizar Windows.'],c:1,e:'Resposta: Comprova identidade digitalmente. e-CPF e e-CNPJ são exemplos. Permite assinar documentos com valor jurídico.'},
+  {b:'CESPE',t:'cebraspe',s:'Senhas devem ser compartilhadas com colegas próximos para facilitar o trabalho em equipe.',c:1,e:'ERRADO. Senhas NUNCA devem ser compartilhadas. Cada pessoa deve ter sua própria credencial. Compartilhar viola princípios de segurança.'},
+  {b:'VUNESP',t:'multiple',s:'O ataque DDoS (Distributed Denial of Service) consiste em:',o:['Roubar senhas.','Sobrecarregar um servidor com tráfego excessivo, derrubando o serviço.','Criar e-mails falsos.','Instalar antivírus.','Compactar arquivos.'],c:1,e:'Resposta: Sobrecarrega servidor. Atacante usa botnet (computadores infectados) para gerar tráfego massivo e derrubar o site/serviço.'},
+  {b:'Quadrix',t:'multiple',s:'Um WORM se diferencia de um VÍRUS porque:',o:['Worm é menor.','Worm se PROPAGA SOZINHO pela rede, sem precisar de arquivo hospedeiro.','Worm é benigno.','Não há diferença.','Worm só infecta Linux.'],c:1,e:'Resposta: Worm replica sozinho via rede. Vírus precisa de hospedeiro (arquivo) e ação do usuário (executar).'},
+  {b:'CESPE',t:'cebraspe',s:'Um KEYLOGGER é um software que registra as teclas pressionadas pelo usuário, capturando senhas e informações digitadas.',c:0,e:'CERTO. Keylogger = registrador de teclado. Pode ser malware (espião) ou ferramenta legítima (monitoramento parental autorizado).'},
+  {b:'FCC',t:'multiple',s:'O LGPD (Lei Geral de Proteção de Dados) brasileira refere-se a:',o:['Lei de combate ao spam.','Lei sobre proteção de dados pessoais e privacidade.','Lei de Direitos Autorais.','Lei de Trânsito.','Lei do Consumidor.'],c:1,e:'Resposta: Lei 13.709/18 (LGPD). Regula tratamento de dados pessoais. Inspirada no GDPR europeu. Multa pode chegar a 2% do faturamento.'},
+  {b:'FGV',t:'multiple',s:'A CRIPTOGRAFIA serve para:',o:['Apagar dados.','Codificar informações de forma que só quem tem a chave consegue ler.','Acelerar o PC.','Compactar arquivos.','Imprimir documentos.'],c:1,e:'Resposta: Codifica para sigilo. Simétrica (mesma chave) ou assimétrica (chave pública+privada). Base de HTTPS, certificados, blockchain.'},
+  {b:'IBFC',t:'multiple',s:'O que faz um ANTIVÍRUS?',o:['Apenas remove vírus já instalados.','Monitora, detecta e remove malwares (vírus, worms, trojans, etc.).','Cria vírus para testes.','Aumenta velocidade da internet.','Substitui o sistema operacional.'],c:1,e:'Resposta: Monitora e remove malware. Bons exemplos: Windows Defender (nativo, gratuito), Kaspersky, Bitdefender, ESET.'},
+  {b:'AOCP',t:'multiple',s:'Sobre a SENHA do Wi-Fi público (cafés, aeroportos):',o:['É seguro fazer transações bancárias.','Deve ser evitada para acesso a dados sensíveis; ideal usar VPN.','Tem segurança de banco.','Bloqueia qualquer ataque.','É melhor que sua rede de casa.'],c:1,e:'Resposta: EVITAR dados sensíveis. Atacantes podem interceptar tráfego (man-in-the-middle). Use VPN ou rede 4G/5G.'},
+  {b:'CESPE',t:'cebraspe',s:'A assinatura digital é equivalente à assinatura manuscrita para fins legais, conforme a MP 2.200-2/2001.',c:0,e:'CERTO. Documentos assinados digitalmente com certificado ICP-Brasil têm validade jurídica. Não confundir com assinatura eletrônica (mais ampla, menos formal).'},
+  {b:'VUNESP',t:'multiple',s:'O conceito de PRINCÍPIO DO MENOR PRIVILÉGIO em segurança da informação significa:',o:['Pagar menos.','Cada usuário/processo deve ter apenas os privilégios MÍNIMOS necessários para sua função.','Usar pouca memória.','Bloquear todos os usuários.','Apenas administradores.'],c:1,e:'Resposta: Princípio do least privilege. Reduz superfície de ataque. Se invadido, atacante terá acesso limitado.'},
+  {b:'FGV',t:'multiple',s:'O recurso DEEPFAKE é:',o:['Tipo de antivírus.','Uso de IA para criar vídeos/áudios falsos altamente realistas.','Configuração de Wi-Fi.','Senha forte.','Backup em nuvem.'],c:1,e:'Resposta: Vídeos/áudios falsos gerados por IA. Riscos: desinformação, fraudes, golpes. Sempre desconfie de áudios "inesperados" pedindo dinheiro.'},
+],
+'info-hardware': [
+  {b:'CESPE',t:'cebraspe',s:'A CPU (Unidade Central de Processamento) é considerada o "cérebro" do computador, responsável por executar instruções e processar dados.',c:0,e:'CERTO. CPU executa todas as operações. Compostos: ULA (Unidade Lógica e Aritmética) + UC (Unidade de Controle) + registradores.'},
+  {b:'FGV',t:'multiple',s:'A memória RAM:',o:['Armazena dados permanentemente.','É VOLÁTIL: armazena dados temporariamente enquanto o PC está ligado.','Substitui o HD.','Tem capacidade ilimitada.','Só funciona em laptops.'],c:1,e:'Resposta: VOLÁTIL. Perde tudo ao desligar. Mais rápida que HD/SSD. Quanto mais RAM, mais programas rodando simultaneamente.'},
+  {b:'CESPE',t:'cebraspe',s:'O HD (Hard Disk) e o SSD (Solid State Drive) são dispositivos de armazenamento permanente, mantendo dados mesmo com o computador desligado.',c:0,e:'CERTO. Armazenamento permanente (não-volátil). HD usa discos magnéticos; SSD usa memória flash (mais rápido, mais caro).'},
+  {b:'VUNESP',t:'multiple',s:'Qual a função do SISTEMA OPERACIONAL?',o:['Gerar gráficos.','Gerenciar hardware e software, fornecendo interface entre usuário e máquina.','Substituir o navegador.','Criar planilhas.','Apenas exibir o relógio.'],c:1,e:'Resposta: Gerencia hardware/software. Ex: Windows, macOS, Linux, Android, iOS. Sem SO, não conseguimos usar o computador.'},
+  {b:'IBFC',t:'multiple',s:'A diferença básica entre HARDWARE e SOFTWARE é:',o:['Não há diferença.','Hardware = parte física (CPU, RAM, HD); Software = programas (Windows, Word, Chrome).','Software é mais caro.','Hardware só serve para games.','Software é apenas o sistema operacional.'],c:1,e:'Resposta: Hardware = físico (toca). Software = lógico (não toca). Ex: a tela é HW; o navegador é SW.'},
+  {b:'CESPE',t:'cebraspe',s:'O BIOS (Basic Input/Output System) é o firmware que inicializa o hardware do computador antes do sistema operacional carregar.',c:0,e:'CERTO. BIOS faz o "boot" do PC. UEFI é a versão moderna do BIOS, mais segura e rápida.'},
+  {b:'FGV',t:'multiple',s:'A placa-mãe (motherboard) tem qual função?',o:['Armazenar dados.','Conectar e interligar todos os componentes do computador (CPU, RAM, etc.).','Substituir o monitor.','Gerar internet.','Função estética apenas.'],c:1,e:'Resposta: Conecta tudo. Placa-mãe = "esqueleto" do PC. CPU, RAM, slots PCI/M.2, portas USB, tudo se conecta nela.'},
+  {b:'AOCP',t:'multiple',s:'O DRIVER é:',o:['Tipo de vírus.','Software que permite o sistema operacional se comunicar com um hardware específico.','Impressora.','Sistema operacional.','Antivírus.'],c:1,e:'Resposta: Driver é "tradutor" entre SO e hardware. Ex: driver da impressora, da placa de vídeo. Sem ele, hardware não funciona.'},
+  {b:'CESPE',t:'cebraspe',s:'Um pendrive (memória USB) é um dispositivo de armazenamento removível baseado em memória flash.',c:0,e:'CERTO. Memória flash não-volátil, portátil. Cuidado: pendrives podem trazer vírus (autorun) ou ter dados expostos se perdidos.'},
+  {b:'VUNESP',t:'multiple',s:'O que é PERIFÉRICO?',o:['Componente interno do PC.','Dispositivo externo conectado ao computador (mouse, teclado, monitor, impressora).','Tipo de software.','Sistema operacional.','Memória RAM.'],c:1,e:'Resposta: Dispositivos externos. ENTRADA: mouse, teclado, scanner. SAÍDA: monitor, impressora. ENTRADA/SAÍDA: pendrive, monitor touch.'},
+  {b:'FCC',t:'multiple',s:'A unidade de medida de capacidade de armazenamento mais comum atualmente é:',o:['Bit','Byte','Gigabyte (GB) e Terabyte (TB)','Megahertz','Watts'],c:2,e:'Resposta: GB e TB. 1 TB = 1.024 GB = 1.048.576 MB. 1 Byte = 8 bits. Mega → Giga → Tera → Peta → Exa.'},
+  {b:'IBFC',t:'multiple',s:'O que é um SOFTWARE LIVRE (open source)?',o:['Software pirata.','Software com código-fonte aberto, podendo ser modificado e redistribuído (ex: Linux, LibreOffice).','Software pago.','Software só para empresas.','Vírus.'],c:1,e:'Resposta: Código aberto. Liberdades: usar, estudar, modificar, distribuir. Ex: Linux, Firefox, LibreOffice, VLC.'},
+  {b:'FGV',t:'multiple',s:'Exemplos de SISTEMAS OPERACIONAIS:',o:['Word, Excel, PowerPoint','Windows, macOS, Linux, Android, iOS','Chrome, Firefox, Edge','Photoshop, Illustrator','Norton, Avast'],c:1,e:'Resposta: SOs. Word/Excel = aplicativos. Chrome = navegador. Photoshop = editor. Norton = antivírus.'},
+  {b:'CESPE',t:'cebraspe',s:'A memória CACHE é mais rápida que a memória RAM, sendo usada pela CPU para acessar dados frequentemente utilizados.',c:0,e:'CERTO. Cache (L1, L2, L3) é embutida no processador. Hierarquia: Cache > RAM > SSD > HD (do mais rápido ao mais lento).'},
+  {b:'VUNESP',t:'multiple',s:'O termo "boot" do computador refere-se a:',o:['Desligar.','Processo de inicialização do sistema operacional ao ligar.','Travar.','Limpar dados.','Atualizar.'],c:1,e:'Resposta: Inicialização. POST → BIOS/UEFI → carrega bootloader → SO carrega. Reboot = reiniciar.'},
+  {b:'Quadrix',t:'multiple',s:'Qual a função da PLACA DE VÍDEO (GPU)?',o:['Armazenar arquivos.','Processar imagens e vídeos, gerando saída para o monitor.','Tocar áudio.','Conectar à internet.','Imprimir documentos.'],c:1,e:'Resposta: Processa gráficos. GPU = Graphics Processing Unit. Importante para jogos, edição de vídeo, IA. Pode ser integrada ou dedicada.'},
+  {b:'CESPE',t:'cebraspe',s:'Um software FREEWARE é gratuito para uso, enquanto SHAREWARE permite uso por período limitado (trial) antes de exigir pagamento.',c:0,e:'CERTO. Freeware = grátis sempre. Shareware = trial (testa antes de comprar). Software pago = comercial. Open source = código aberto (geralmente grátis).'},
+  {b:'IBFC',t:'multiple',s:'A unidade básica de dados na computação é o:',o:['Megabyte','Bit (0 ou 1)','Caractere','Pixel','Hertz'],c:1,e:'Resposta: Bit (binary digit). 0 ou 1. 8 bits = 1 byte. Toda informação digital é representada em bits.'},
+  {b:'AOCP',t:'multiple',s:'O componente que CONVERTE energia da tomada (AC) em corrente DC para o computador é:',o:['CPU','Fonte de alimentação (PSU - Power Supply Unit)','Placa-mãe','HD','RAM'],c:1,e:'Resposta: Fonte (PSU). Converte 110V/220V em 12V/5V/3.3V. PSU ruim = PC instável ou queimado.'},
+  {b:'FGV',t:'multiple',s:'O que é um KERNEL no sistema operacional?',o:['Aplicativo de e-mail.','Núcleo do SO, responsável por gerenciar processos, memória e hardware.','Tipo de vírus.','Senha do BIOS.','Interface gráfica.'],c:1,e:'Resposta: Núcleo do SO. Gerencia recursos, é a parte mais baixa do SO. Linux kernel = núcleo do Linux.'},
+  {b:'CESPE',t:'cebraspe',s:'Um SISTEMA OPERACIONAL pode ser multitarefa, executando múltiplos programas simultaneamente.',c:0,e:'CERTO. Multitarefa. O SO compartilha CPU entre processos. Multiusuário = vários usuários ao mesmo tempo (mais comum em servidores).'},
+  {b:'VUNESP',t:'multiple',s:'O Linux é um sistema operacional:',o:['Pago da Apple.','Open source baseado em Unix.','Da Microsoft.','Antigo, fora de uso.','Apenas para celulares.'],c:1,e:'Resposta: Open source, baseado em Unix. Criado por Linus Torvalds em 1991. Várias distros: Ubuntu, Fedora, Debian, Arch.'},
+  {b:'FCC',t:'multiple',s:'O Android e o iOS são exemplos de:',o:['Sistemas operacionais para celulares e tablets.','Antivírus.','Navegadores.','Editores de texto.','Tipos de bateria.'],c:0,e:'Resposta: SOs móveis. Android (Google, baseado em Linux, open source). iOS (Apple, fechado, exclusivo iPhone/iPad).'},
+  {b:'CESPE',t:'cebraspe',s:'Inteligência Artificial generativa (como ChatGPT) pode criar textos, imagens e código a partir de prompts, mas pode também produzir conteúdo incorreto (alucinações).',c:0,e:'CERTO. IA generativa (GPT, Claude, Gemini) gera conteúdo. Pode "alucinar" (inventar fatos). Sempre verificar informações críticas.'},
+],
 };
 
 // ============================================================
@@ -2647,8 +2865,16 @@ const TOPICS = [
   {id:'penal-eca-dh', subject:'penal', title:'ECA e Direitos Humanos', subtitle:'Lei 8.069/90 + uso da força',
     briefing:'Criança 0-12; adolescente 12-18. Ato infracional. Medidas socioeducativas (art. 112). DH: universalidade, indivisibilidade. Uso da força: ULTIMA RATIO para arma de fogo.'},
   // Informática
-  {id:'info-windows-office-internet', subject:'info', title:'Informática Básica', subtitle:'Windows + Office + Internet',
-    briefing:'💻 Sistema Windows (atalhos, Explorador, Painel), Pacote Office (Word, Excel — fórmulas, atalhos), Internet (navegador, e-mail, phishing). Decoreba puro: atalhos do teclado e funções do Excel.'},
+  {id:'info-windows', subject:'info', title:'Sistema Windows', subtitle:'Atalhos, Explorador, Painel, Lixeira',
+    briefing:'💻 Atalhos (Win+E, Win+D, Win+L, Ctrl+Shift+N, F2, Print Screen). Explorador, Painel de Controle, BitLocker, Windows Defender. Cai MUITO em prova.'},
+  {id:'info-office', subject:'info', title:'Microsoft Office 365', subtitle:'Word, Excel, PowerPoint, Outlook',
+    briefing:'📝 Word (CTRL+B salvar PT-BR, CTRL+N negrito, CTRL+Z desfazer). Excel (=SOMA, =MÉDIA, =SE, $absoluta, Tabela Dinâmica). PowerPoint, OneDrive, Teams.'},
+  {id:'info-internet', subject:'info', title:'Internet e Redes',subtitle:'Navegadores, e-mail, nuvem, IP',
+    briefing:'🌐 HTTP/HTTPS, DNS, IP, URL. Navegadores (Ctrl+T, Shift+T, modo anônimo). E-mail (SMTP envia, POP3/IMAP recebem). Nuvem (OneDrive, Drive). 5G, IoT, VPN.'},
+  {id:'info-seguranca', subject:'info', title:'Segurança da Informação', subtitle:'Malware, phishing, antivírus, MFA, LGPD',
+    briefing:'🛡️ Vírus, worm (replica sozinho), trojan, ransomware (sequestra), spyware, keylogger, backdoor. Phishing, engenharia social. Firewall, antivírus, VPN, MFA, criptografia, certificado digital, LGPD.'},
+  {id:'info-hardware', subject:'info', title:'Hardware e Software', subtitle:'CPU, RAM, HD/SSD, BIOS, SO',
+    briefing:'💾 CPU (cérebro), RAM (volátil), HD/SSD (permanente), BIOS/UEFI, placa-mãe, GPU, fonte. Software: SO (Windows, Linux, macOS, Android, iOS), aplicativos, freeware/shareware/open source.'},
 ];
 
 // ============================================================
@@ -2708,12 +2934,20 @@ const JOURNEYS = {
       pool:['penal-principios','penal-aplicacao-tempo-lugar','penal-crimes-pessoa','penal-patrimonio','penal-administracao','penal-lei-drogas','penal-maria-da-penha','penal-armas-tortura-hediondos','penal-eca-dh']},
   ],
   info: [
-    {type:'topic', topicId:'info-windows-office-internet'},
-    {type:'deepening', topicId:'info-windows-office-internet'},
+    {type:'topic', topicId:'info-windows'},
+    {type:'deepening', topicId:'info-windows'},
+    {type:'topic', topicId:'info-office'},
+    {type:'deepening', topicId:'info-office'},
+    {type:'topic', topicId:'info-internet'},
+    {type:'deepening', topicId:'info-internet'},
+    {type:'topic', topicId:'info-seguranca'},
+    {type:'deepening', topicId:'info-seguranca'},
+    {type:'topic', topicId:'info-hardware'},
+    {type:'deepening', topicId:'info-hardware'},
     {type:'finalboss', subject:'info', title:'👑 BOSS FINAL — INFORMÁTICA',
-      subtitle:'Windows, Office, Internet — domínio total!',
-      briefing:'Boss final de Informática. Questões cobrindo Windows (atalhos, Explorador, Painel), Office (Word, Excel — fórmulas e atalhos) e Internet (navegador, e-mail, segurança). Acerte 80%+ pra ganhar a CARTA DE APROVAÇÃO em Informática.',
-      pool:['info-windows-office-internet']},
+      subtitle:'Windows, Office, Internet, Segurança, Hardware!',
+      briefing:'Boss final de Informática. 20 questões aleatórias dos 5 tópicos: Windows, Office, Internet, Segurança e Hardware. Acerte 80%+ pra ganhar a CARTA DE APROVAÇÃO em Informática.',
+      pool:['info-windows','info-office','info-internet','info-seguranca','info-hardware']},
   ],
 };
 
@@ -3613,6 +3847,7 @@ function hydrateFromCloud(cloudProfile, cloudProg) {
       horasDia: cloudProfile.horas_dia,
       nivel: cloudProfile.nivel,
       showInRanking: cloudProfile.show_in_ranking,
+      lastLoginAt: new Date().toISOString(),
       createdAt: cloudProfile.created_at,
     };
   }
@@ -4194,6 +4429,9 @@ const renderMap = () => {
   $('hud-patente').textContent = `${info.atual.icon} ${info.atual.nome}`;
   $('hud-xp').textContent = progress.xp;
   $('hud-streak').textContent = progress.streak;
+  // Streak alto: ativa animação de fire
+  if (progress.streak >= 7) document.body.setAttribute('data-streak-high', 'true');
+  else document.body.removeAttribute('data-streak-high');
   // Exibir freezes (se houver)
   const fz = progress.streakFreezes || 0;
   if (fz > 0) {
