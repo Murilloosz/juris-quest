@@ -208,25 +208,37 @@ input,select{font-family:inherit;}
 
 /* === Journey header NOVO (substitui o ato-header bagunçado) === */
 .journey-header {
-  margin: 8px 0 20px;
+  margin: 4px 0 14px;
   display: block;
   width: 100%;
 }
 .journey-header-top {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
 }
 .journey-header-desc {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.4;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
+  opacity: 0.85;
 }
 .journey-header-desc strong { font-weight: 700; }
+
+/* Ato badge/title compactos */
+.ato-badge {
+  padding: 4px 10px !important;
+  font-size: 9px !important;
+  letter-spacing: 1px !important;
+}
+.ato-title {
+  font-size: 12px !important;
+  letter-spacing: 0.5px !important;
+}
 
 /* === Phase card LIMPO (sem fonte arcade vertical) === */
 .phase {
@@ -2496,6 +2508,283 @@ body[data-theme="light"] #hud-patente {
 
 /* Streak chama */
 .fire{color:#fb923c;}
+
+/* ============================================================
+   🔥 FORCE FIX — QUADRADOS LADO A LADO (override absoluto)
+   Solução definitiva pra layout das fases.
+   Usa seletores específicos pra vencer qualquer CSS anterior.
+   ============================================================ */
+
+#map-phases .phases-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+@media (min-width: 640px) {
+  #map-phases .phases-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  #map-phases .phases-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* CARD QUADRADO - vertical com texto centralizado, sem quebra letra-por-letra */
+#map-phases .phases-grid > button.phase,
+#map-phases .phases-grid > .phase {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 6px !important;
+  padding: 16px 12px !important;
+  min-height: 190px !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 14px !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s !important;
+  box-shadow: var(--elev-1) !important;
+  /* IMPEDE QUEBRA LETRA-POR-LETRA */
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  word-break: keep-all !important;
+  white-space: normal !important;
+}
+
+#map-phases .phase:not(:disabled):hover {
+  transform: translateY(-3px) !important;
+  box-shadow: var(--elev-3) !important;
+}
+
+#map-phases .phase:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(0.3) !important;
+}
+
+/* NUM (DIA X) - badge pequena no topo */
+#map-phases .phase .phase-num {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  opacity: 0.75 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  padding: 4px 10px !important;
+  background: rgba(255,255,255,0.06) !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+  display: inline-block !important;
+  width: auto !important;
+}
+
+/* ÍCONE GRANDE NO MEIO */
+#map-phases .phase .phase-icon {
+  font-size: 64px !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  margin: 8px 0 6px 0 !important;
+  background: transparent !important;
+  border: none !important;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.45)) !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  writing-mode: horizontal-tb !important;
+  padding: 0 !important;
+}
+
+/* TÍTULO COMPLETO, ATÉ 3 LINHAS */
+#map-phases .phase .phase-title {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  margin: 0 !important;
+  padding: 0 4px !important;
+  text-align: center !important;
+  color: var(--text-primary) !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+  writing-mode: horizontal-tb !important;
+  white-space: normal !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  flex: initial !important;
+  width: 100% !important;
+}
+
+/* STATUS BADGE EMBAIXO */
+#map-phases .phase .phase-status {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  padding: 5px 10px !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,0.06) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  border: 1px solid var(--glass-border) !important;
+  margin: 4px 0 0 0 !important;
+  writing-mode: horizontal-tb !important;
+  text-align: center !important;
+}
+
+/* TIPO ICON (skull/fire) - canto superior direito */
+#map-phases .phase .phase-type-icon {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  font-size: 14px !important;
+  opacity: 0.5 !important;
+  pointer-events: none !important;
+  writing-mode: horizontal-tb !important;
+}
+
+/* MODE BADGE - canto superior esquerdo (APROF/FINAL) */
+#map-phases .phase .phase-mode-badge,
+#map-phases .phase-mode-badge {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(0,0,0,0.4) !important;
+  writing-mode: horizontal-tb !important;
+  bottom: auto !important;
+  right: auto !important;
+}
+
+/* Esconder o phase-top que não usamos */
+#map-phases .phase .phase-top,
+#map-phases .phase .phase-bottom,
+#map-phases .phase .phase-text-wrap {
+  display: contents !important;
+}
+
+/* STATUS POR TIPO */
+#map-phases .phase .phase-status[data-status="boss"] {
+  color: var(--text-secondary) !important;
+}
+#map-phases .phase .phase-status[data-status="deepening"] {
+  color: #fb923c !important;
+  background: rgba(251,146,60,0.18) !important;
+  border-color: rgba(251,146,60,0.35) !important;
+}
+#map-phases .phase .phase-status[data-status="final"] {
+  color: var(--amber) !important;
+  background: rgba(255,215,0,0.18) !important;
+  border-color: rgba(255,215,0,0.35) !important;
+}
+#map-phases .phase .phase-status[data-status="locked"] {
+  opacity: 0.5 !important;
+}
+#map-phases .phase .phase-status[data-status="current"] {
+  color: #fff !important;
+  background: var(--rose) !important;
+  border-color: var(--rose) !important;
+  box-shadow: 0 2px 8px rgba(255,46,99,0.5) !important;
+}
+
+/* CORES POR MATÉRIA - borda lateral */
+#map-phases .phase.const {
+  border-top: 3px solid var(--cyan) !important;
+}
+#map-phases .phase.adm {
+  border-top: 3px solid var(--amber) !important;
+}
+#map-phases .phase.penal {
+  border-top: 3px solid var(--rose) !important;
+}
+#map-phases .phase.info {
+  border-top: 3px solid var(--emerald) !important;
+}
+
+/* COMPLETED */
+#map-phases .phase.completed {
+  background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.02)) !important;
+  border-color: rgba(16,185,129,0.4) !important;
+}
+#map-phases .phase.completed::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 22px !important;
+  height: 22px !important;
+  background: var(--emerald) !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 6px rgba(16,185,129,0.4) !important;
+  z-index: 2 !important;
+}
+
+/* CURRENT (HOJE) */
+#map-phases .phase.current {
+  border-color: var(--rose) !important;
+  box-shadow: var(--elev-3), 0 0 24px rgba(255,46,99,0.35) !important;
+  animation: phase-current-pulse 2.4s ease-in-out infinite !important;
+}
+@keyframes phase-current-pulse {
+  0%, 100% { box-shadow: var(--elev-2), 0 0 16px rgba(255,46,99,0.3); }
+  50% { box-shadow: var(--elev-3), 0 0 28px rgba(255,46,99,0.5); }
+}
+
+/* MOBILE PEQUENO */
+@media (max-width: 380px) {
+  #map-phases .phases-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  #map-phases .phase {
+    padding: 14px 10px !important;
+    min-height: 165px !important;
+  }
+  #map-phases .phase .phase-icon { font-size: 52px !important; }
+  #map-phases .phase .phase-title { font-size: 12px !important; }
+  #map-phases .phase .phase-num { font-size: 9px !important; padding: 3px 8px !important; }
+  #map-phases .phase .phase-status { font-size: 9px !important; padding: 4px 8px !important; }
+}
+
+/* ============================================================
+   FIM FORCE FIX
+   ============================================================ */
+
+
+
 </style>
 </head>
 <body>
