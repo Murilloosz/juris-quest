@@ -23,7 +23,7 @@
 <title>JURIS QUEST — A Jornada da Aprovação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;500;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
@@ -205,6 +205,79 @@ input,select{font-family:inherit;}
 
 /* Mapa de fases */
 .ato-header{display:flex;align-items:center;gap:12px;margin:24px 0 12px;}
+
+/* === Journey header NOVO (substitui o ato-header bagunçado) === */
+.journey-header {
+  margin: 8px 0 20px;
+  display: block;
+  width: 100%;
+}
+.journey-header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.journey-header-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+.journey-header-desc strong { font-weight: 700; }
+
+/* === Phase card LIMPO (sem fonte arcade vertical) === */
+.phase {
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+.phase .phase-type-icon {
+  position: absolute;
+  top: 6px; right: 8px;
+  font-size: 14px;
+}
+.phase .phase-icon {
+  font-size: 28px !important;
+  margin: 6px 0 4px !important;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+.phase .phase-num {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  margin-bottom: 6px;
+}
+.phase .phase-title {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+  flex: 1;
+  text-align: center !important;
+  margin-top: 2px !important;
+  word-break: break-word;
+  hyphens: auto;
+}
+.phase .phase-status {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  margin-top: 8px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block !important;
+  text-align: center;
+}
+.phase-mode-badge {
+  position: absolute;
+  bottom: 6px; left: 6px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  letter-spacing: 0.5px;
+}
 .ato-badge{padding:6px 12px;border:2px solid;font-family:'Press Start 2P',monospace;font-size:10px;}
 .ato-1 .ato-badge{border-color:var(--cyan);color:var(--cyan);background:rgba(8,217,214,.2);}
 .ato-2 .ato-badge{border-color:var(--amber);color:var(--amber);background:rgba(255,215,0,.2);}
@@ -1417,6 +1490,1010 @@ button { word-break: keep-all; }
   50% { transform: scale(1.15); }
 }
 
+
+/* ==================== 🎨 REDESIGN v4 — SISTEMA DE DESIGN ==================== */
+
+/* ---------- Variáveis CSS: dark (padrão) e light themes ---------- */
+:root {
+  /* Cores principais (mantém identidade) */
+  --rose: #ff2e63;
+  --rose-soft: #ff6c8e;
+  --cyan: #08d9d6;
+  --cyan-soft: #4fe6e4;
+  --amber: #ffd700;
+  --amber-soft: #ffe566;
+  --emerald: #10b981;
+  --fuchsia: #e879f9;
+
+  /* Background system — gradiente sofisticado */
+  --bg-base: #0a0410;
+  --bg-mid: #1a0a2e;
+  --bg-top: #2a0d3e;
+  --bg-grad: linear-gradient(180deg, var(--bg-base) 0%, var(--bg-mid) 50%, var(--bg-top) 100%);
+
+  /* Surface (cards) com elevação */
+  --surf-1: rgba(255, 255, 255, 0.03);
+  --surf-2: rgba(255, 255, 255, 0.05);
+  --surf-3: rgba(255, 255, 255, 0.08);
+
+  /* Borders sutis */
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-mid: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 46, 99, 0.3);
+
+  /* Texto hierárquico */
+  --text-primary: #fbeaff;
+  --text-secondary: rgba(251, 234, 255, 0.7);
+  --text-muted: rgba(251, 234, 255, 0.45);
+
+  /* Sombras suaves (elevation system) */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-glow-rose: 0 0 24px rgba(255, 46, 99, 0.35);
+  --shadow-glow-cyan: 0 0 24px rgba(8, 217, 214, 0.35);
+  --shadow-glow-amber: 0 0 24px rgba(255, 215, 0, 0.35);
+
+  /* Raios */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+
+  /* Transições suaves */
+  --t-fast: 0.12s ease-out;
+  --t-base: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modo claro (alternativo) */
+body[data-theme="light"] {
+  --bg-base: #f8f3ef;
+  --bg-mid: #fdf6f1;
+  --bg-top: #ffffff;
+  --bg-grad: linear-gradient(180deg, var(--bg-base) 0%, var(--bg-top) 100%);
+  --surf-1: rgba(0, 0, 0, 0.025);
+  --surf-2: rgba(0, 0, 0, 0.04);
+  --surf-3: rgba(0, 0, 0, 0.06);
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --border-mid: rgba(139, 21, 56, 0.18);
+  --border-strong: rgba(196, 30, 74, 0.4);
+  --text-primary: #2d0a14;
+  --text-secondary: rgba(45, 10, 20, 0.7);
+  --text-muted: rgba(45, 10, 20, 0.5);
+  --shadow-sm: 0 1px 3px rgba(139, 21, 56, 0.08);
+  --shadow-md: 0 4px 12px rgba(139, 21, 56, 0.12);
+  --shadow-lg: 0 8px 32px rgba(139, 21, 56, 0.18);
+  --rose: #c41e4a;
+  --cyan: #06a8a5;
+  --amber: #b8870a;
+}
+
+/* ---------- BACKGROUND COM GRADIENTE + RUÍDO SUTIL ---------- */
+body {
+  background: var(--bg-grad) !important;
+  background-attachment: fixed;
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Ruído sutil pra dar textura — usando SVG inline */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/></svg>");
+  opacity: 0.5;
+}
+/* Conteúdo acima do ruído */
+.screen, .modal-backdrop { position: relative; z-index: 1; }
+
+/* ---------- TIPOGRAFIA REFINADA ---------- */
+/* Reservar Press Start 2P APENAS pra HEADERS arcade */
+.font-arcade,
+.screen-header .header-title,
+.modal-title,
+.ato-title,
+.subject-tab .tab-label {
+  font-family: 'Press Start 2P', monospace !important;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* Body — usar Rajdhani (legível mas com personalidade) */
+body, .input, button, p, span, div {
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+}
+
+/* Stats e números — Orbitron (sci-fi mas legível) */
+.font-orbit, .stat-value, .stat-num, .player-code-tag,
+#hud-xp, #hud-streak, #stats-xp {
+  font-family: 'Orbitron', monospace !important;
+  font-feature-settings: "tnum";
+}
+
+/* Texto-base de leitura: aumentar peso, melhorar contraste */
+body { font-size: 15px; line-height: 1.6; font-weight: 500; }
+
+/* Botões — não usar arcade (era cansativo) */
+.btn, button:not(.font-arcade) {
+  font-family: 'Rajdhani', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+/* Quick-edit-row e similares — leitura clara */
+.quick-edit-row .label {
+  font-family: 'Rajdhani', sans-serif !important;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* ---------- BORDAS SUAVES (cantos modernos) ---------- */
+/* Sobrescrever pixel-corners pra ter cantos suaves */
+.pixel-corners,
+.card,
+.btn,
+.input,
+.phase,
+.modal-content,
+.hud,
+.duel-card,
+.stat-box,
+.stat-box-redux,
+.subject-tab,
+.subject-progress,
+.tag,
+.ans-btn,
+.mode-btn,
+.duel-tab,
+.hoje-panel,
+.today-task {
+  border-radius: var(--r-md) !important;
+  clip-path: none !important; /* remove pixel-corners */
+}
+
+/* Modal maior */
+.modal-content { border-radius: var(--r-xl) !important; }
+/* Avatar redondo continua */
+.avatar-frame { border-radius: 50% !important; clip-path: none !important; }
+.hud-avatar { border-radius: 50%; }
+
+/* ---------- ELEVAÇÃO E PROFUNDIDADE ---------- */
+/* Cards normais */
+.card {
+  background: var(--surf-2) !important;
+  border: 1px solid var(--border-soft) !important;
+  box-shadow: var(--shadow-sm) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Cards com glow (poupado pra momentos especiais) */
+.card.glow {
+  background: var(--surf-3) !important;
+  border-color: var(--border-strong) !important;
+  box-shadow: var(--shadow-md), var(--shadow-glow-rose) !important;
+}
+
+/* HUD com elevação maior */
+.hud {
+  background: rgba(0,0,0,0.5) !important;
+  border: 1px solid var(--border-soft) !important;
+  box-shadow: var(--shadow-md) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Modal flutuante */
+.modal-content {
+  background: linear-gradient(180deg, var(--surf-3), var(--surf-2)) !important;
+  border: 1px solid var(--border-mid) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Phases com elevação sutil */
+.phase {
+  background: var(--surf-2) !important;
+  border: 1px solid var(--border-soft) !important;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+}
+.phase:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-mid);
+}
+.phase.current {
+  border-color: var(--rose) !important;
+  box-shadow: var(--shadow-md), var(--shadow-glow-rose) !important;
+}
+.phase.completed {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  background: linear-gradient(135deg, var(--surf-2), rgba(16,185,129,0.05)) !important;
+}
+
+/* ---------- BOTÕES COM ESTILO MODERNO ---------- */
+.btn {
+  border-radius: var(--r-md) !important;
+  padding: 12px 20px !important;
+  transition: all var(--t-base) !important;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid transparent !important;
+}
+.btn.cyan {
+  background: linear-gradient(135deg, var(--cyan), #06a8a5) !important;
+  color: #0a2f2d !important;
+  font-weight: 800 !important;
+}
+.btn.cyan:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md), var(--shadow-glow-cyan);
+}
+.btn.ghost {
+  background: var(--surf-1) !important;
+  border-color: var(--border-mid) !important;
+  color: var(--text-secondary) !important;
+}
+.btn.ghost:hover {
+  background: var(--surf-3) !important;
+  border-color: var(--border-strong) !important;
+  color: var(--text-primary) !important;
+}
+.btn:active { transform: translateY(1px) !important; }
+
+/* ---------- INPUTS REFINADOS ---------- */
+.input {
+  background: var(--surf-1) !important;
+  border: 1.5px solid var(--border-mid) !important;
+  color: var(--text-primary) !important;
+  padding: 14px 14px !important;
+  font-size: 16px !important;
+  transition: all var(--t-base);
+}
+.input::placeholder { color: var(--text-muted); }
+.input:focus {
+  background: var(--surf-2) !important;
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 0 3px rgba(8, 217, 214, 0.15) !important;
+  outline: none !important;
+}
+
+/* ---------- GLOW ESTRATÉGICO (só momentos especiais) ---------- */
+/* Remover glow geral do antigo .glow */
+.glow {
+  /* mantém o nome mas remove animação constante */
+  animation: none !important;
+}
+
+/* Glow só em ELEMENTOS ATIVOS importantes */
+.phase.current,
+.subject-tab.active,
+.hud-streak[data-streak-high] {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+@keyframes pulse-soft {
+  0%, 100% { box-shadow: var(--shadow-md), 0 0 12px rgba(255,46,99,0.25); }
+  50% { box-shadow: var(--shadow-md), 0 0 24px rgba(255,46,99,0.5); }
+}
+
+/* ---------- SUBJECT TABS ATUALIZADOS ---------- */
+.subject-tabs {
+  background: var(--surf-1) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: var(--r-lg) !important;
+  padding: 6px !important;
+}
+.subject-tab {
+  border-radius: var(--r-md) !important;
+  transition: all var(--t-base);
+}
+.subject-tab:hover { background: var(--surf-2); }
+.subject-tab.active {
+  background: var(--surf-3) !important;
+  box-shadow: var(--shadow-sm), 0 0 16px rgba(255,46,99,0.2);
+}
+
+/* ---------- TAGS (banca, status) ---------- */
+.tag, .ans-btn {
+  border-radius: var(--r-sm) !important;
+  padding: 4px 10px !important;
+  font-weight: 600;
+}
+
+/* ---------- AVATAR FRAME REFINADO ---------- */
+.avatar-frame {
+  background: radial-gradient(circle, rgba(255,46,99,0.2) 0%, rgba(0,0,0,0.4) 70%) !important;
+  border: 3px solid var(--rose) !important;
+  box-shadow: var(--shadow-md), 0 0 24px rgba(255,46,99,0.3) !important;
+}
+.avatar-frame .edit-badge {
+  border-radius: 50% !important;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- TODAY PANEL (HOJE VOCÊ PRECISA) ---------- */
+.hoje-panel {
+  background: linear-gradient(135deg, var(--surf-3), var(--surf-2)) !important;
+  border: 1px solid var(--border-mid) !important;
+  border-left: 3px solid var(--cyan) !important;
+}
+.today-task {
+  background: var(--surf-1) !important;
+  border: 1px solid var(--border-soft) !important;
+  transition: all var(--t-fast);
+}
+.today-task:hover {
+  background: var(--surf-3) !important;
+  border-color: var(--border-mid) !important;
+  transform: translateX(2px);
+}
+
+/* ---------- MODE BUTTONS (Caçada, Simulado, etc) ---------- */
+.mode-btn {
+  background: linear-gradient(135deg, var(--surf-2), var(--surf-1)) !important;
+  border: 1px solid var(--border-soft) !important;
+  transition: all var(--t-base);
+  padding: 16px !important;
+}
+.mode-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- STATS BOXES ---------- */
+.stat-box, .stat-box-redux {
+  background: linear-gradient(135deg, var(--surf-2), var(--surf-1)) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: var(--r-md) !important;
+}
+
+/* ---------- BARRA DE XP MODERNA ---------- */
+.xp-bar {
+  background: var(--surf-1);
+  border: 1px solid var(--border-soft);
+  height: 10px !important;
+  border-radius: 999px !important;
+  overflow: hidden;
+}
+.xp-fill {
+  background: linear-gradient(90deg, var(--rose), var(--amber)) !important;
+  height: 100%;
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(255,46,99,0.4);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- BACK BUTTON ---------- */
+.back-btn {
+  background: var(--surf-1) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: var(--r-md) !important;
+  padding: 8px 14px !important;
+  color: var(--text-secondary) !important;
+  transition: all var(--t-fast);
+  font-weight: 600;
+}
+.back-btn:hover {
+  background: var(--surf-3) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ---------- BOTÃO TROCAR TEMA (☀️/🌙) ---------- */
+#theme-toggle {
+  position: relative;
+  font-size: 16px !important;
+}
+
+/* ---------- MOBILE: tipografia legível ---------- */
+@media (max-width: 480px) {
+  body { font-size: 14px; }
+  .font-arcade { font-size: 11px !important; letter-spacing: 1.2px !important; }
+  .btn { padding: 12px 16px !important; font-size: 13px !important; }
+  .card { padding: 14px !important; }
+}
+
+/* ---------- ACESSIBILIDADE: respeitar prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================= FIM REDESIGN ========================= */
+
+
+/* ==================== 🥂 PREMIUM v5 ==================== */
+
+/* ---------- VARIÁVEIS METÁLICAS + SOMBRAS PROFISSIONAIS ---------- */
+:root {
+  /* Metálicos pra conquistas e patentes (sensação de prêmio) */
+  --gold: #d4af37;
+  --gold-shimmer: linear-gradient(135deg, #fde08d 0%, #d4af37 50%, #8b6914 100%);
+  --silver: #c0c0c0;
+  --silver-shimmer: linear-gradient(135deg, #f0f0f0 0%, #c0c0c0 50%, #6e6e6e 100%);
+  --bronze: #cd7f32;
+  --bronze-shimmer: linear-gradient(135deg, #f5b56f 0%, #cd7f32 50%, #6e4317 100%);
+  --platinum: linear-gradient(135deg, #fafafa 0%, #e5e4e2 50%, #b5b5b5 100%);
+
+  /* Sombras Apple-style (estratificadas) */
+  --elev-1: 0 1px 2px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.12);
+  --elev-2: 0 2px 4px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.12);
+  --elev-3: 0 4px 12px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.18);
+  --elev-4: 0 8px 24px rgba(0,0,0,0.12), 0 16px 48px rgba(0,0,0,0.24);
+  --elev-floating: 0 24px 64px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-strong: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-blur-strong: blur(40px) saturate(200%);
+}
+
+body[data-theme="light"] {
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-strong: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(139, 21, 56, 0.12);
+}
+
+/* ---------- TIPOGRAFIA EDITORIAL (premium) ---------- */
+body, p, span, div, .input, button {
+  font-family: 'Inter', 'Rajdhani', sans-serif !important;
+  font-feature-settings: "cv11", "ss01", "ss03"; /* Inter optical features */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.011em;
+}
+
+/* Headings com DM Serif Display (sensação editorial premium) */
+h1, h2, .premium-headline {
+  font-family: 'DM Serif Display', 'Inter', serif !important;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Mantém arcade só em pontos icônicos (não em prosa) */
+.font-arcade,
+.screen-header .header-title,
+.ato-badge,
+.modal-title:not(.modal-title-editorial) {
+  font-family: 'Press Start 2P', monospace !important;
+  letter-spacing: 1.5px;
+}
+
+/* Press Start 2P fica MENOR pra não cansar */
+.font-arcade { font-size: 11px !important; }
+.modal-title { font-size: 14px !important; line-height: 1.4; }
+
+/* Botões: Inter peso 600 */
+.btn, button {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  text-transform: none !important; /* sem caps lock — mais clean */
+  font-size: 14px;
+}
+
+/* Stats numéricos: Orbitron continua */
+.font-orbit, .stat-value, .stat-num, #hud-xp, #hud-streak {
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 700;
+}
+
+/* ---------- GLASSMORPHISM REAL (iOS-style) ---------- */
+.card, .hud, .modal-content, .subject-progress, .hoje-panel,
+.duel-card, .stat-box-redux {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--elev-2) !important;
+}
+
+/* Cards com glow ganham elevação maior + glass forte */
+.card.glow {
+  background: var(--glass-bg-strong) !important;
+  backdrop-filter: var(--glass-blur-strong);
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  box-shadow: var(--elev-3), 0 0 0 1px rgba(255,46,99,0.15) !important;
+}
+
+/* Modal flutuando */
+.modal-content {
+  background: var(--glass-bg-strong) !important;
+  backdrop-filter: var(--glass-blur-strong);
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  box-shadow: var(--elev-floating) !important;
+}
+
+/* ---------- ESPAÇAMENTO GENEROSO (Apple) ---------- */
+.card { padding: 24px !important; margin-bottom: 20px !important; }
+.hud { padding: 18px 22px !important; margin-bottom: 20px !important; }
+.modal-content { padding: 32px !important; }
+.btn { padding: 14px 24px !important; }
+.input { padding: 16px 18px !important; }
+.phase { padding: 16px 12px !important; min-height: 110px; }
+.mode-btn { padding: 20px !important; }
+
+/* Container respira mais */
+.container, .container-narrow, .container-form {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Mobile mantém respiro razoável */
+@media (max-width: 480px) {
+  .card { padding: 18px !important; margin-bottom: 14px !important; }
+  .hud { padding: 14px 16px !important; }
+  .modal-content { padding: 22px !important; }
+  .container, .container-narrow, .container-form { padding-left: 16px; padding-right: 16px; }
+}
+
+/* ---------- GRADIENT BORDERS ANIMADOS (Vercel style) ---------- */
+.gradient-border, .phase.current, .card.glow {
+  position: relative;
+}
+.phase.current::before, .card.glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(255,46,99,0.6),
+    rgba(255,215,0,0.4),
+    rgba(8,217,214,0.6),
+    rgba(255,46,99,0.6)
+  );
+  background-size: 200% 200%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: gradient-shift 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+
+/* ---------- MICRO-ANIMAÇÕES POLIDAS ---------- */
+
+/* Hover lift suave (todos os cards interativos) */
+.phase, .mode-btn, .duel-card, .today-task, .btn {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.18s !important;
+}
+.phase:not(:disabled):hover,
+.mode-btn:hover,
+.today-task:hover,
+.btn:not(:disabled):hover {
+  transform: translateY(-3px) !important;
+  box-shadow: var(--elev-3) !important;
+}
+.btn:active, .phase:active, .mode-btn:active {
+  transform: translateY(0) scale(0.98) !important;
+  transition-duration: 0.08s !important;
+}
+
+/* Fade-in escalonado das fases (efeito stagger) */
+.phases-grid > .phase {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: stagger-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.phases-grid > .phase:nth-child(1) { animation-delay: 0.02s; }
+.phases-grid > .phase:nth-child(2) { animation-delay: 0.05s; }
+.phases-grid > .phase:nth-child(3) { animation-delay: 0.08s; }
+.phases-grid > .phase:nth-child(4) { animation-delay: 0.11s; }
+.phases-grid > .phase:nth-child(5) { animation-delay: 0.14s; }
+.phases-grid > .phase:nth-child(6) { animation-delay: 0.17s; }
+.phases-grid > .phase:nth-child(7) { animation-delay: 0.20s; }
+.phases-grid > .phase:nth-child(n+8) { animation-delay: 0.24s; }
+@keyframes stagger-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ripple ao tocar (mobile-friendly) */
+.btn, .phase, .mode-btn, .subject-tab {
+  position: relative;
+  overflow: hidden;
+}
+.btn::after, .phase::after, .mode-btn::after, .subject-tab::after {
+  content: '';
+  position: absolute;
+  inset: auto auto auto 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s, opacity 0.4s;
+  opacity: 0;
+  pointer-events: none;
+}
+.btn:active::after, .phase:active::after, .mode-btn:active::after, .subject-tab:active::after {
+  width: 200%;
+  height: 200%;
+  opacity: 1;
+  transition-duration: 0s;
+}
+
+/* Modal entrada premium */
+.modal-content {
+  animation: modal-in-premium 0.32s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+@keyframes modal-in-premium {
+  0% { opacity: 0; transform: translateY(24px) scale(0.94); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- METÁLICOS EM CONQUISTAS / PATENTES ---------- */
+
+/* Patente atual no HUD com brilho dourado */
+#hud-patente {
+  background: var(--gold-shimmer);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800 !important;
+  filter: drop-shadow(0 1px 2px rgba(212, 175, 55, 0.3));
+}
+
+/* Patente em stats screen — destaque ouro */
+#stats-patente {
+  background: var(--gold-shimmer);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800 !important;
+}
+
+/* XP — gradiente sofisticado */
+#hud-xp, #stats-xp {
+  background: linear-gradient(135deg, #fde08d, #ffd700, #d4af37);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cartas/conquistas — moldura metálica */
+.card-collected, .badge-trophy {
+  position: relative;
+  background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.05)) !important;
+  border: 1px solid rgba(212,175,55,0.4) !important;
+}
+.card-collected::before {
+  content: '✨';
+  position: absolute;
+  top: 6px; right: 6px;
+  font-size: 12px;
+  filter: drop-shadow(0 0 4px gold);
+}
+
+/* Ranking top 3 — medalhas reais */
+.rank-row[data-rank="1"] {
+  background: linear-gradient(90deg, rgba(212,175,55,0.15), transparent) !important;
+  border-left: 3px solid var(--gold) !important;
+}
+.rank-row[data-rank="2"] {
+  background: linear-gradient(90deg, rgba(192,192,192,0.12), transparent) !important;
+  border-left: 3px solid var(--silver) !important;
+}
+.rank-row[data-rank="3"] {
+  background: linear-gradient(90deg, rgba(205,127,50,0.12), transparent) !important;
+  border-left: 3px solid var(--bronze) !important;
+}
+
+/* Carta de aprovação — premium dourado */
+.carta-aprovacao {
+  background: var(--gold-shimmer) !important;
+  color: #2d1810 !important;
+  box-shadow: var(--elev-4), 0 0 32px rgba(212,175,55,0.4) !important;
+}
+
+/* ---------- BOTÕES PREMIUM ---------- */
+.btn.cyan {
+  background: linear-gradient(135deg, #08d9d6 0%, #06a8a5 100%) !important;
+  color: #0a2f2d !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(8, 217, 214, 0.3) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    var(--elev-2),
+    0 0 0 0 rgba(8, 217, 214, 0) !important;
+}
+.btn.cyan:not(:disabled):hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    var(--elev-3),
+    0 0 24px rgba(8, 217, 214, 0.4) !important;
+}
+
+.btn.rose, .btn[style*="rose"] {
+  background: linear-gradient(135deg, #ff6c8e 0%, #ff2e63 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,46,99,0.3) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), var(--elev-2) !important;
+}
+
+/* Ghost button refinado */
+.btn.ghost {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-secondary) !important;
+}
+
+/* ---------- INPUTS PREMIUM ---------- */
+.input {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid var(--glass-border) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+.input:focus {
+  background: var(--glass-bg-strong) !important;
+  border-color: var(--cyan) !important;
+  box-shadow:
+    0 0 0 4px rgba(8, 217, 214, 0.12),
+    var(--elev-2) !important;
+}
+
+/* ---------- HUD AVATAR + STATS REFINADO ---------- */
+.hud-avatar {
+  font-size: 36px !important;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+#hud-name {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- SVG ICONS CUSTOM ---------- */
+/* Estilo base pra SVG icons que adicionarmos */
+.svg-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- LOADING / SPINNER PREMIUM ---------- */
+.spinner-premium {
+  width: 40px; height: 40px;
+  border: 3px solid var(--glass-border);
+  border-top-color: var(--rose);
+  border-radius: 50%;
+  animation: spin 0.8s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- SCROLLBAR PREMIUM ---------- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 46, 99, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 46, 99, 0.5); }
+
+/* ---------- SELEÇÃO DE TEXTO ---------- */
+::selection { background: rgba(255, 46, 99, 0.4); color: #fff; }
+
+/* ---------- FOCUS VISIBLE PREMIUM (acessibilidade + estética) ---------- */
+*:focus { outline: none !important; }
+*:focus-visible {
+  outline: 2px solid var(--cyan) !important;
+  outline-offset: 3px !important;
+  border-radius: var(--r-md);
+}
+
+/* ---------- HEADER SCREEN (login, etc) — TIPOGRAFIA EDITORIAL ---------- */
+.screen-header .header-title {
+  font-family: 'DM Serif Display', serif !important;
+  font-size: 32px !important;
+  letter-spacing: -0.02em !important;
+  background: linear-gradient(135deg, #ff6c8e, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none !important;
+  margin-bottom: 8px;
+}
+.screen-header .header-subtitle {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 15px !important;
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* ---------- TAGS REFINADAS ---------- */
+.tag {
+  border-radius: 999px !important;
+  padding: 4px 12px !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ---------- AVATAR FRAME PREMIUM (com aura) ---------- */
+.avatar-frame {
+  position: relative;
+  background: radial-gradient(circle, rgba(255,46,99,0.25) 0%, rgba(0,0,0,0.3) 70%) !important;
+  border: 2px solid transparent !important;
+  background-clip: padding-box;
+}
+.avatar-frame::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(135deg, #ff6c8e, #ffd700, #8b1538);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---------- XP BAR PREMIUM ---------- */
+.xp-bar {
+  height: 8px !important;
+  background: rgba(0,0,0,0.4) !important;
+  border: 1px solid var(--glass-border) !important;
+  overflow: hidden;
+  position: relative;
+}
+.xp-fill {
+  background: linear-gradient(90deg,
+    #ff2e63 0%, #ff6c8e 30%, #ffd700 70%, #fde08d 100%) !important;
+  box-shadow: 0 0 12px rgba(255,46,99,0.5);
+  position: relative;
+}
+.xp-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  animation: xp-shine 2.5s ease-in-out infinite;
+}
+@keyframes xp-shine {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+/* ---------- SUBJECT TAB PREMIUM ---------- */
+.subject-tab {
+  position: relative;
+  background: transparent !important;
+}
+.subject-tab.active {
+  background: var(--glass-bg-strong) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.subject-tab .tab-icon { transition: transform 0.3s; }
+.subject-tab.active .tab-icon { transform: scale(1.15); }
+
+/* ---------- PHASE PREMIUM (cards do mapa) ---------- */
+.phase {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border) !important;
+}
+.phase.completed {
+  background: linear-gradient(135deg,
+    rgba(16,185,129,0.08),
+    rgba(16,185,129,0.03)) !important;
+  border-color: rgba(16,185,129,0.3) !important;
+}
+.phase.completed::after {
+  content: '✓';
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 22px; height: 22px;
+  background: var(--emerald);
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.4);
+}
+
+/* ---------- MODE BUTTONS PREMIUM ---------- */
+.mode-btn {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border) !important;
+}
+.mode-btn:hover {
+  border-color: var(--rose) !important;
+  background: var(--glass-bg-strong) !important;
+}
+
+/* ---------- "HOJE VOCÊ PRECISA" PREMIUM ---------- */
+.hoje-panel {
+  background: linear-gradient(135deg,
+    rgba(8,217,214,0.08) 0%,
+    rgba(255,46,99,0.04) 100%) !important;
+  border: 1px solid var(--glass-border) !important;
+  position: relative;
+  overflow: hidden;
+}
+.hoje-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: conic-gradient(from 0deg at 50% 50%,
+    transparent, rgba(8,217,214,0.05), transparent);
+  animation: rotate-glow-slow 16s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.hoje-panel > * { position: relative; z-index: 1; }
+@keyframes rotate-glow-slow {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- DUEL CARDS PREMIUM ---------- */
+.duel-card {
+  background: var(--glass-bg) !important;
+  border-left: 3px solid var(--rose) !important;
+}
+
+/* ---------- DESKTOP: cards mais espaçosos ---------- */
+@media (min-width: 768px) {
+  .container, .container-narrow {
+    max-width: 800px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  .container-form { max-width: 460px; }
+  .phases-grid { gap: 16px !important; }
+  .card { padding: 32px !important; }
+}
+
+/* ---------- LIGHT MODE: ajustes premium ---------- */
+body[data-theme="light"] .screen-header .header-title {
+  background: linear-gradient(135deg, #c41e4a, #b8870a);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+body[data-theme="light"] #hud-patente {
+  background: linear-gradient(135deg, #b8860b, #d4af37, #8b6914);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ======================== FIM PREMIUM ======================== */
+
 /* Streak chama */
 .fire{color:#fb923c;}
 </style>
@@ -1576,6 +2653,8 @@ button { word-break: keep-all; }
           <div class="hud-stat" id="hud-freezes-wrap" style="display:none;" title="Freezes acumulados — protegem sua chama"><span>🧊</span><span id="hud-freezes" class="font-orbit" style="color:#7dd3fc;font-weight:700;">0</span></div>
           <div class="hud-actions">
             <button aria-label="Ativar ou desativar som" onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
+            <button id="theme-toggle" aria-label="Alternar tema claro ou escuro" onclick="toggleTheme()" title="Tema">🌙</button>
+            <button aria-label="Caderno de erros — Suas Feridas" onclick="goWounds()" title="Suas Feridas">🩹</button>
             <button aria-label="Ativar ou desativar notificações" onclick="toggleNotifications()" title="Notificações">🔔</button>
             <button aria-label="Lei Seca — Flashcards" onclick="goFlashcards()" title="Lei Seca">🃏</button>
             <button aria-label="Minha pilha de questões marcadas" onclick="goMyPile()" title="Minha Pilha">🚩</button>
@@ -2091,7 +3170,7 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A dignidade da pessoa humana é objetivo fundamental da República.',c:1,e:'ERRADO. É FUNDAMENTO (art. 1º, III), não objetivo.'},
   {b:'CESPE',t:'cebraspe',s:'O Brasil rege-se nas relações internacionais pelo princípio da concessão de asilo político.',c:0,e:'CERTO. Art. 4º, X.'},
   {b:'CESPE',t:'cebraspe',s:'Todo poder emana do povo, que o exerce exclusivamente por meio de representantes eleitos.',c:1,e:'ERRADO. "Por meio de representantes ou diretamente" (art. 1º, p.ú.).'},
-  {b:'CESPE',t:'cebraspe',s:'A soberania e a cidadania são fundamentos da República.',c:0,e:'CERTO. Art. 1º, I e II.'},
+  {b:'CESPE',t:'cebraspe',s:'A construção de uma sociedade livre, justa e solidária é um dos OBJETIVOS fundamentais da República Federativa do Brasil.',c:0,e:'CERTO. Art. 3º, I — Objetivos (CGEP: Construir, Garantir, Erradicar, Promover). NÃO confundir com FUNDAMENTOS (art. 1º).'},
   {b:'CESPE',t:'cebraspe',s:'A defesa da paz e a prevalência dos direitos humanos são objetivos fundamentais.',c:1,e:'ERRADO. São princípios das relações internacionais (art. 4º, II e VI).'},
   // FGV
   {b:'FGV',t:'multiple',s:'Sobre os fundamentos da República, assinale a alternativa que NÃO contém um fundamento:',o:['Cidadania.','Pluralismo político.','Erradicação da pobreza.','Soberania.','Dignidade da pessoa humana.'],c:2,e:'Erradicação da pobreza é OBJETIVO (art. 3º), não fundamento.'},
@@ -2108,14 +3187,14 @@ const QBANK = {
   {b:'IBFC',t:'multiple',s:'A cidadania, na CF, é classificada como:',o:['Direito individual.','Fundamento da República.','Objetivo fundamental.','Princípio internacional.'],c:1,e:'Art. 1º, II.'},
   // AOCP
   {b:'AOCP',t:'multiple',s:'Sobre o poder, todo poder emana:',o:['Do Estado.','Do governo.','Do povo, que o exerce por representantes ou diretamente.','Do Presidente.','Do Congresso.'],c:2,e:'Art. 1º, parágrafo único.'},
-  {b:'AOCP',t:'multiple',s:'É princípio que rege o Brasil nas relações internacionais:',o:['Pluralismo político.','Soberania.','Cidadania.','Prevalência dos direitos humanos.','Dignidade humana.'],c:3,e:'Art. 4º, II.'},
+  {b:'FGV',t:'multiple',s:'A defesa da paz é um dos princípios das relações internacionais do Brasil (art. 4º, VI).',o:['Verdadeiro — é o inciso VI.','Falso — é objetivo fundamental.','Falso — é princípio dos direitos humanos.','Falso — refere-se a relações internas.','Falso — foi revogado.'],c:0,e:'Resposta: Verdadeiro. Defesa da paz integra o art. 4º (princípios das relações internacionais). NÃO confunda com objetivos (art. 3º) nem fundamentos (art. 1º).'},
   // Quadrix (estilo CESPE)
-  {b:'Quadrix',t:'cebraspe',s:'Os valores sociais do trabalho e da livre iniciativa são fundamentos da República.',c:0,e:'CERTO. Art. 1º, IV.'},
-  {b:'Quadrix',t:'cebraspe',s:'Erradicar a pobreza é princípio que rege o Brasil nas relações internacionais.',c:1,e:'ERRADO. É objetivo fundamental (art. 3º, III).'},
+  {b:'Quadrix',t:'cebraspe',s:'A cidadania e o pluralismo político são fundamentos da República, junto com soberania, dignidade e valores sociais.',c:0,e:'CERTO. Art. 1º, IV.'},
+  {b:'Quadrix',t:'cebraspe',s:'A garantia do desenvolvimento nacional é um dos OBJETIVOS fundamentais da República Federativa do Brasil (art. 3º, II).',c:1,e:'ERRADO. É objetivo fundamental (art. 3º, III).'},
   // Extras CESPE
   {b:'CESPE',t:'cebraspe',s:'A República Federativa do Brasil tem como fundamento o repúdio ao terrorismo.',c:1,e:'ERRADO. É princípio das relações internacionais (art. 4º, VIII).'},
   {b:'CESPE',t:'cebraspe',s:'A cooperação entre os povos para o progresso da humanidade é princípio das relações internacionais.',c:0,e:'CERTO. Art. 4º, IX.'},
-  {b:'CESPE',t:'cebraspe',s:'A garantia do desenvolvimento nacional é objetivo da República.',c:0,e:'CERTO. Art. 3º, II.'},
+  {b:'CESPE',t:'cebraspe',s:'Promover o bem de todos, sem preconceitos de origem, raça, sexo, cor ou idade, é objetivo fundamental da República (art. 3º, IV).',c:0,e:'CERTO. Art. 3º, II.'},
   {b:'CESPE',t:'cebraspe',s:'A não-intervenção é princípio das relações internacionais.',c:0,e:'CERTO. Art. 4º, IV.'},
   // Mais FGV
   {b:'FGV',t:'multiple',s:'A repulsa ao racismo, ao lado da concessão de asilo político, está prevista como:',o:['Direito individual.','Objetivo fundamental.','Princípio das relações internacionais.','Fundamento da República.','Direito social.'],c:2,e:'Art. 4º, VIII e X.'},
@@ -2183,7 +3262,7 @@ const QBANK = {
   {b:'FCC',t:'multiple',s:'A ação popular pode ser proposta por:',o:['Qualquer pessoa.','Cidadão, com título de eleitor.','Partidos políticos.','Apenas o Ministério Público.','Defensoria Pública.'],c:1,e:'Art. 5º, LXXIII + Lei 4.717/65.'},
   {b:'FCC',t:'multiple',s:'O habeas data destina-se a:',o:['Liberdade de locomoção.','Direito líquido e certo.','Informações pessoais em registros públicos ou de caráter público.','Tutela do patrimônio público.','Suprir omissão legislativa.'],c:2,e:'Art. 5º, LXXII.'},
   {b:'VUNESP',t:'multiple',s:'A legitimidade ativa para o mandado de segurança coletivo NÃO inclui:',o:['Partido político com representação no CN.','Organização sindical.','Entidade de classe.','Associação legalmente constituída há mais de 1 ano.','Qualquer cidadão isoladamente.'],c:4,e:'Art. 5º, LXX.'},
-  {b:'VUNESP',t:'multiple',s:'O mandado de segurança individual exige:',o:['Direito líquido e certo.','Direito controvertido.','Demonstração de hipossuficiência.','Pedido administrativo prévio sempre.','Inscrição na OAB.'],c:0,e:'Art. 5º, LXIX.'},
+  {b:'VUNESP',t:'multiple',s:'O habeas data (CF, art. 5º, LXXII) é remédio constitucional cabível para:',o:['Proteger liberdade de locomoção.','Assegurar conhecimento ou retificação de dados pessoais constantes de registros públicos.','Substituir o mandado de injunção.','Proteger direito líquido e certo de terceiro.','Proteger patrimônio público.'],c:1,e:'Resposta: art. 5º, LXXII — informações pessoais do impetrante (não de terceiros).',o:['Direito líquido e certo.','Direito controvertido.','Demonstração de hipossuficiência.','Pedido administrativo prévio sempre.','Inscrição na OAB.'],c:0,e:'Art. 5º, LXIX.'},
   {b:'IBFC',t:'multiple',s:'É gratuito o exercício do direito de petição aos Poderes Públicos.',o:['Apenas para advogados.','Apenas a defesa de direitos.','A todos, em defesa de direitos ou contra ilegalidade.','Mediante taxa simbólica.'],c:2,e:'Art. 5º, XXXIV, a.'},
   {b:'IBFC',t:'multiple',s:'A ação popular visa anular ato lesivo:',o:['A interesse particular.','Ao patrimônio público ou de entidade que o Estado participe, à moralidade administrativa, ao meio ambiente e ao patrimônio histórico e cultural.','Apenas ao patrimônio histórico.','Apenas aos cofres federais.'],c:1,e:'Art. 5º, LXXIII.'},
   {b:'AOCP',t:'multiple',s:'Conceder-se-á habeas data:',o:['Para garantir liberdade de locomoção.','Para retificar dados ou conhecer informações pessoais.','Para anular ato lesivo.','Para garantir direito líquido e certo.','Para suprir omissão.'],c:1,e:'Art. 5º, LXXII.'},
@@ -2192,7 +3271,7 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O preso será informado do direito de permanecer calado.',c:0,e:'CERTO. Art. 5º, LXIII.'},
   {b:'CESPE',t:'cebraspe',s:'É assegurada ao preso a identificação dos responsáveis por sua prisão ou interrogatório.',c:0,e:'CERTO. Art. 5º, LXIV.'},
   {b:'CESPE',t:'cebraspe',s:'A prisão ilegal será imediatamente relaxada pela autoridade administrativa.',c:1,e:'ERRADO. Pela autoridade JUDICIÁRIA (art. 5º, LXV).'},
-  {b:'FGV',t:'multiple',s:'A prisão ilegal será imediatamente relaxada pela autoridade:',o:['Policial.','Administrativa.','Judiciária.','Ministerial.','Militar.'],c:2,e:'Art. 5º, LXV.'},
+  {b:'FCC',t:'multiple',s:'O mandado de injunção (CF, art. 5º, LXXI) cabe quando:',o:['Há omissão judicial.','Há falta de norma regulamentadora que torne inviável exercício de direito constitucional.','Houver direito líquido e certo.','Houver inconstitucionalidade.','Houver excesso de poder.'],c:1,e:'Resposta: MI ataca OMISSÃO LEGISLATIVA quando falta lei pra exercer direito. Diferente do MS (ato comissivo).'},
   {b:'FCC',t:'multiple',s:'Ninguém será levado à prisão ou nela mantido quando a lei admitir:',o:['Soltura.','Liberdade provisória, com ou sem fiança.','Tornozeleira eletrônica.','Apenas o relaxamento.','Indulto.'],c:1,e:'Art. 5º, LXVI.'},
   {b:'VUNESP',t:'multiple',s:'Não haverá prisão civil por dívida, salvo:',o:['Cheque sem fundos.','Inadimplemento voluntário e inescusável de obrigação alimentícia (depositário infiel não cabe — Súm. Vinc. 25).','Empréstimo bancário.','Imposto.','Pensão alimentícia e depositário infiel.'],c:1,e:'Art. 5º, LXVII + Súm. Vinc. 25 STF.'},
   {b:'IBFC',t:'multiple',s:'O LXXIV do art. 5º trata da:',o:['Assistência jurídica gratuita aos que comprovarem insuficiência de recursos.','Indenização por erro judicial.','Gratuidade do habeas corpus.','Gratuidade da ação popular para o cidadão de boa-fé.'],c:0,e:'Art. 5º, LXXIV.'},
@@ -2224,7 +3303,7 @@ const QBANK = {
   {b:'AOCP',t:'multiple',s:'É órgão de segurança pública responsável pela defesa do patrimônio rodoviário federal:',o:['Polícia Civil.','Polícia Federal.','Polícia Rodoviária Federal.','Polícia Ferroviária Federal.','Polícia Penal.'],c:2,e:'Art. 144, § 2º.'},
   {b:'Quadrix',t:'cebraspe',s:'A polícia ostensiva fardada e visível é função da Polícia Militar.',c:0,e:'CERTO. Art. 144, § 5º.'},
   {b:'Quadrix',t:'cebraspe',s:'A polícia judiciária na esfera estadual é exercida pela Polícia Militar.',c:1,e:'ERRADO. Pela POLÍCIA CIVIL (art. 144, § 4º).'},
-  {b:'CESPE',t:'cebraspe',s:'A apuração de infrações penais militares cabe à polícia civil.',c:1,e:'ERRADO. Exceto as militares (art. 144, § 4º).'},
+  {b:'CESPE',t:'cebraspe',s:'À Polícia Federal compete prevenir e reprimir o tráfico ilícito de entorpecentes e drogas afins, o contrabando e o descaminho (CF, art. 144, §1º, II).',c:0,e:'ERRADO. Exceto as militares (art. 144, § 4º).'},
   {b:'CESPE',t:'cebraspe',s:'A polícia militar pode exercer polícia judiciária militar para crimes militares previstos no CPM.',c:0,e:'CERTO. Atribuição da PM/Justiça Militar.'},
   {b:'CESPE',t:'cebraspe',s:'A Lei 13.675/2018 instituiu o Sistema Único de Segurança Pública (SUSP).',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'FGV',t:'multiple',s:'A Lei 13.675/18 criou:',o:['O SUSP — Sistema Único de Segurança Pública.','A PNSP.','A Força Nacional.','O Susp e a PNSPDS.','Apenas a Força Nacional.'],c:3,e:'A lei criou o SUSP e a Política Nacional de Segurança Pública e Defesa Social.'},
@@ -2291,10 +3370,10 @@ const QBANK = {
   {b:'IBFC',t:'multiple',s:'Discricionariedade administrativa significa:',o:['Liberdade total.','Margem de escolha conforme conveniência e oportunidade, dentro da legalidade.','Arbitrariedade.','Vinculação total.'],c:1,e:'Resposta correta: Margem de escolha conforme conveniência e oportunidade, dentro da legalidade..'},
   {b:'IBFC',t:'multiple',s:'É vinculado o ato administrativo quando:',o:['A lei estabelece todos os elementos.','O administrador escolhe livremente.','Há discricionariedade no objeto.','Há margem no motivo.'],c:0,e:'Resposta correta: A lei estabelece todos os elementos..'},
   {b:'AOCP',t:'multiple',s:'A interdição de uma fábrica que descumpre normas ambientais é exercício do:',o:['Poder hierárquico.','Poder disciplinar.','Poder de polícia ambiental.','Poder regulamentar.','Poder discricionário puro.'],c:2,e:'Resposta correta: Poder de polícia ambiental..'},
-  {b:'Quadrix',t:'cebraspe',s:'O poder de polícia administrativa pode ser exercido por particulares.',c:1,e:'ERRADO. Em regra, é privativo do Estado. (Cabe particulares apenas em atos materiais auxiliares — STF.)'},
+  {b:'Quadrix',t:'cebraspe',s:'O poder discricionário permite à Administração escolher entre conveniência e oportunidade dentro dos limites legais (mérito administrativo).',c:1,e:'ERRADO. Em regra, é privativo do Estado. (Cabe particulares apenas em atos materiais auxiliares — STF.)'},
   {b:'Quadrix',t:'cebraspe',s:'O ciclo do poder de polícia tem quatro fases: ordem, consentimento, fiscalização e sanção.',c:0,e:'CERTO. Doutrina majoritária (Diogo Figueiredo).'},
   {b:'CESPE',t:'cebraspe',s:'Os atos de polícia administrativa podem ter natureza preventiva ou repressiva.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
-  {b:'CESPE',t:'cebraspe',s:'O poder de polícia somente pode ser exercido sobre particulares.',c:1,e:'ERRADO. Pode incidir sobre direitos, atividades e bens.'},
+  {b:'CESPE',t:'cebraspe',s:'O atributo da autoexecutoriedade do poder de polícia significa que a Administração pode executar suas decisões sem precisar recorrer ao Poder Judiciário.',c:0,e:'ERRADO. Pode incidir sobre direitos, atividades e bens.'},
   {b:'FGV',t:'multiple',s:'A imposição obrigatória de comportamento ao administrado pela polícia administrativa é a:',o:['Coercibilidade.','Discricionariedade.','Autoexecutoriedade.','Imperatividade do ato.','Vinculação.'],c:0,e:'Resposta correta: Coercibilidade..'},
   {b:'FCC',t:'multiple',s:'O poder regulamentar é exercido por:',o:['Tribunais apenas.','Chefe do Executivo, principalmente, mediante decretos.','Câmara Municipal.','Procurador-Geral.','Tribunal de Contas.'],c:1,e:'Art. 84, IV CF.'},
   {b:'VUNESP',t:'multiple',s:'A licença é ato:',o:['Discricionário e precário.','Vinculado, permanente.','Discricionário e permanente.','Vinculado e precário.','Negocial discricionário.'],c:1,e:'A licença é VINCULADA. Autorização que é discricionária e precária.'},
@@ -2330,7 +3409,7 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A administração pública, no exercício da autotutela, deve anular seus atos ilegais.',c:0,e:'CERTO. Súmula 473.'},
   {b:'CESPE',t:'cebraspe',s:'A revogação de ato administrativo pode atingir direitos adquiridos.',c:1,e:'ERRADO. Súmula 473.'},
   {b:'CESPE',t:'cebraspe',s:'A Administração tem prazo de 5 anos para anular atos administrativos de que decorram efeitos favoráveis ao destinatário de boa-fé.',c:0,e:'CERTO. Art. 54 Lei 9.784/99.'},
-  {b:'FGV',t:'multiple',s:'O prazo decadencial para a Adm anular atos favoráveis a destinatário de boa-fé é:',o:['3 anos.','5 anos.','10 anos.','Imprescritível.','1 ano.'],c:1,e:'Art. 54 Lei 9.784/99.'},
+  {b:'FCC',t:'multiple',s:'A REVOGAÇÃO de ato administrativo, segundo a doutrina:',o:['Atinge atos vinculados.','Atinge atos discricionários por motivo de conveniência ou oportunidade, com efeitos ex nunc.','Tem efeitos retroativos (ex tunc).','É obrigatória.','Cabe ao Judiciário.'],c:1,e:'Resposta: REVOGAÇÃO ≠ ANULAÇÃO. Revogação = ato discricionário, ex nunc. Anulação = ato ilegal, ex tunc (Súmula 473 STF).'},
   {b:'FCC',t:'multiple',s:'O ato administrativo NÃO pode ser:',o:['Vinculado.','Discricionário.','Arbitrário.','Revogável.','Anulável.'],c:2,e:'Discricionário ≠ arbitrário.'},
   {b:'VUNESP',t:'multiple',s:'O atributo da tipicidade do ato administrativo significa:',o:['Que o ato deve ser publicado.','Que cada ato corresponde a uma figura típica prevista em lei.','Que é discricionário.','Que é coercitivo.','Que é vinculado.'],c:1,e:'Resposta correta: Que cada ato corresponde a uma figura típica prevista em lei..'},
   {b:'IBFC',t:'multiple',s:'Pode ser revogado pela própria Administração:',o:['Ato ilegal apenas.','Ato vinculado apenas.','Ato discricionário, por motivo de conveniência.','Ato judicial.'],c:2,e:'Resposta correta: Ato discricionário, por motivo de conveniência..'},
@@ -2411,28 +3490,28 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'O CP adota a teoria da ubiquidade para o lugar do crime.',c:0,e:'CERTO. Art. 6º CP.'},
   {b:'CESPE',t:'cebraspe',s:'Considera-se praticado o crime no momento do resultado.',c:1,e:'ERRADO. Teoria da ATIVIDADE (momento da ação/omissão).'},
   {b:'CESPE',t:'cebraspe',s:'Aplica-se a lei brasileira a crime cometido em aeronave brasileira em alto-mar.',c:0,e:'CERTO. Art. 5º, § 1º.'},
-  {b:'CESPE',t:'cebraspe',s:'O crime cometido a bordo de aeronave mercante brasileira em país estrangeiro está sempre sujeito à lei brasileira.',c:1,e:'ERRADO. Só se a lei estrangeira não punir.'},
+  {b:'CESPE',t:'cebraspe',s:'O domicílio do agente é critério usado pela teoria do RESULTADO para definir o local do crime no Brasil.',c:1,e:'ERRADO. Só se a lei estrangeira não punir.'},
   {b:'CESPE',t:'cebraspe',s:'A extraterritorialidade incondicionada aplica-se a crime contra a vida ou liberdade do Presidente da República.',c:0,e:'CERTO. Art. 7º, I, "a".'},
   {b:'CESPE',t:'cebraspe',s:'A extraterritorialidade condicionada exige que o agente entre no território nacional e haja dupla incriminação.',c:0,e:'CERTO. Art. 7º, § 2º.'},
-  {b:'CESPE',t:'cebraspe',s:'A lei penal brasileira aplica-se a crime cometido por estrangeiro contra brasileiro fora do Brasil incondicionalmente.',c:1,e:'ERRADO. É condicionada (art. 7º, § 3º).'},
+  {b:'CESPE',t:'cebraspe',s:'A pena de morte é admitida no Brasil apenas em caso de guerra declarada (art. 5º, XLVII, CF).',c:1,e:'ERRADO. É condicionada (art. 7º, § 3º).'},
   {b:'CESPE',t:'cebraspe',s:'O genocídio cometido por brasileiro fora do Brasil sujeita-se à lei brasileira, sem qualquer condição.',c:0,e:'CERTO. Art. 7º, I, "d" — incondicionada.'},
   {b:'CESPE',t:'cebraspe',s:'A pena cumprida no estrangeiro atenua a pena imposta no Brasil pelo mesmo crime, quando diversas, ou nela é computada se idênticas.',c:0,e:'CERTO. Art. 8º CP.'},
   {b:'FGV',t:'multiple',s:'A teoria adotada pelo CP para o tempo do crime é:',o:['Resultado.','Atividade.','Ubiquidade.','Mista.','Intenção.'],c:1,e:'Resposta correta: Atividade..'},
   {b:'FGV',t:'multiple',s:'A teoria adotada pelo CP para o lugar do crime é:',o:['Atividade.','Resultado.','Ubiquidade (mista).','Intenção.','Pavilhão.'],c:2,e:'Resposta correta: Ubiquidade (mista)..'},
-  {b:'FCC',t:'multiple',s:'Crime cometido em embarcação mercante brasileira em alto-mar:',o:['Sujeita-se à lei do porto.','Sujeita-se à lei brasileira (princípio do pavilhão).','Não sujeita à lei brasileira.','Aplica-se a lei do ofendido.','Depende de tratado.'],c:1,e:'Art. 5º, § 1º.'},
+  {b:'IBFC',t:'multiple',s:'A territorialidade da lei penal brasileira (CP, art. 5º):',o:['É absoluta, sem exceções.','Comporta exceções previstas em tratados e convenções internacionais.','Não vale em zonas fronteiriças.','Aplica-se só a brasileiros.','Foi revogada pela CF/88.'],c:1,e:'Resposta: Territorialidade TEMPERADA. Comporta exceções (tratados internacionais, imunidade diplomática, etc.).'},
   {b:'FCC',t:'multiple',s:'O período compreendido entre o início da execução e a consumação determina:',o:['O lugar do crime.','O tempo do crime (atividade).','O momento da consumação.','O lugar do resultado.','A jurisdição.'],c:1,e:'Resposta correta: O tempo do crime (atividade)..'},
-  {b:'VUNESP',t:'multiple',s:'A extraterritorialidade incondicionada aplica-se nos casos de crime:',o:['Contra a vida do PR, patrimônio da União, administração pública por brasileiro e genocídio.','Cometido por estrangeiro em qualquer lugar.','Praticado em aeronave estrangeira.','Cometido no mar territorial.','Apenas no exterior por brasileiro.'],c:0,e:'Art. 7º, I.'},
+  {b:'AOCP',t:'multiple',s:'A novatio legis IN MELLIUS (lei nova mais benéfica):',o:['Não retroage.','Retroage para beneficiar o réu, mesmo após o trânsito em julgado.','Só vale antes da sentença.','Não atinge condenados definitivos.','Depende de manifestação do MP.'],c:1,e:'Resposta: Art. 5º, XL, CF + art. 2º, CP. Lei mais benéfica SEMPRE retroage, inclusive após condenação definitiva.'},
   {b:'VUNESP',t:'multiple',s:'A pena cumprida no estrangeiro:',o:['Não tem efeito.','Atenua a pena ou é nela computada.','Substitui a pena brasileira.','Anula a pena.','Aplica-se ao reincidente.'],c:1,e:'Art. 8º CP.'},
   {b:'IBFC',t:'multiple',s:'Considera-se lugar do crime aquele em que:',o:['Ocorreu a ação.','Ocorreu o resultado.','Ocorreu a ação ou o resultado, no todo ou em parte (ubiquidade).','O agente reside.'],c:2,e:'Art. 6º.'},
   {b:'IBFC',t:'multiple',s:'O crime de tortura praticado fora do Brasil contra brasileiro:',o:['Sujeita-se à lei brasileira incondicionalmente.','Sujeita-se à extraterritorialidade hipercondicionada.','Não se aplica a lei BR.','Aplica-se a Lei 9.455 sempre.'],c:1,e:'Lei 9.455/97, art. 2º.'},
   {b:'AOCP',t:'multiple',s:'A teoria do tempo do crime no CP:',o:['Adota a atividade, vale o momento da ação ou omissão, ainda que outro seja o do resultado.','Adota a teoria do resultado.','Adota a teoria mista.','Não há teoria expressa.','Adota a teoria da intenção.'],c:0,e:'Resposta correta: Adota a atividade, vale o momento da ação ou omissão, ainda que outro seja o do resultado..'},
   {b:'Quadrix',t:'cebraspe',s:'Crime cometido por brasileiro no exterior pode ser processado no Brasil mesmo sem dupla incriminação.',c:1,e:'ERRADO. Exige dupla incriminação (art. 7º, § 2º).'},
-  {b:'Quadrix',t:'cebraspe',s:'No crime tentado adota-se a teoria da atividade para fins de tempo do crime.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
-  {b:'CESPE',t:'cebraspe',s:'Aplica-se a lei brasileira ao crime cometido em aeronave estrangeira privada em sobrevoo do território brasileiro.',c:0,e:'CERTO. Art. 5º, § 2º.'},
+  {b:'Quadrix',t:'cebraspe',s:'A lei penal excepcional ou temporária, decorrido seu prazo de vigência, continua aplicável aos fatos praticados durante sua vigência (ultratividade).',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'Quando há trânsito em julgado de sentença penal estrangeira, ela pode ser homologada no Brasil pelo STJ para fins civis e penais específicos.',c:0,e:'CERTO. Art. 5º, § 2º.'},
   {b:'CESPE',t:'cebraspe',s:'A lei penal brasileira aplica-se às embarcações brasileiras públicas em qualquer lugar.',c:0,e:'CERTO. Princípio do pavilhão absoluto.'},
   {b:'FGV',t:'multiple',s:'O princípio da territorialidade no Brasil é:',o:['Absoluto.','Relativo, temperado por tratados, convenções e regras de Direito Internacional.','Inexistente.','Aplicável apenas a brasileiros.','Restrito a aeronaves.'],c:1,e:'Art. 5º CP.'},
   {b:'FCC',t:'multiple',s:'O território brasileiro, para fins penais, abrange:',o:['Apenas o solo continental.','Solo, espaço aéreo, mar territorial, embarcações e aeronaves públicas em qualquer lugar e privadas em sobrevoo ou alto-mar.','Apenas o mar territorial.','Apenas o continente.','O solo e o subsolo apenas.'],c:1,e:'Art. 5º, §§ 1º e 2º.'},
-  {b:'VUNESP',t:'multiple',s:'Não se aplica a lei penal brasileira a crime cometido em:',o:['Embarcação brasileira mercante em alto-mar.','Aeronave brasileira pública no estrangeiro.','Embarcação estrangeira mercante atracada em porto brasileiro.','Aeronave estrangeira privada sobrevoando o território.','Embarcação estrangeira pública em mar territorial brasileiro.'],c:4,e:'Pavilhão público estrangeiro.'},
+  {b:'Quadrix',t:'multiple',s:'Sobre o conflito aparente de normas (especialidade, subsidiariedade, consunção):',o:['Teoria do resultado','Teoria da atividade — considera-se praticado quando a ação/omissão ocorre','Teoria mista','Teoria da ubiquidade','Teoria objetiva'],c:1,e:'Resposta: TEMPO = ATIVIDADE (art. 4º, CP). LUGAR = UBIQUIDADE (art. 6º, CP). DECORA: Tempo é Atividade.'},
   {b:'IBFC',t:'multiple',s:'Aplica-se a lei brasileira aos crimes praticados em:',o:['Embarcações brasileiras privadas em alto-mar.','Embarcações estrangeiras privadas em alto-mar.','Embarcações estrangeiras públicas atracadas no Brasil.','Apenas em território continental.'],c:0,e:'Pavilhão.'},
   {b:'AOCP',t:'multiple',s:'O princípio da personalidade ativa autoriza:',o:['Aplicar a lei brasileira a crimes do nacional no exterior.','Aplicar a lei estrangeira a crime cometido no Brasil.','Punir o agente pela sua nacionalidade apenas.','Universalizar a jurisdição.'],c:0,e:'Art. 7º, II, "b".'},
   {b:'CESPE',t:'cebraspe',s:'A sentença estrangeira pode ser homologada no Brasil para fins de reparação de dano.',c:0,e:'CERTO. Art. 9º CP.'},
@@ -2441,7 +3520,7 @@ const QBANK = {
 
 'penal-crimes-pessoa': [  {b:'FGV',t:'multiple',s:'No homicídio QUALIFICADO PELA MOTIVAÇÃO (art. 121, §2º):',o:['A pena é a mesma do homicídio simples.','As qualificadoras subjetivas (motivo torpe, fútil, feminicídio) impedem o privilégio do §1º.','Sempre cabe perdão judicial.','Não pode ser hediondo.','É culposo.'],c:1,e:'Resposta correta: Qualificadoras SUBJETIVAS (motivo torpe/fútil) são incompatíveis com privilégio (§1º). Já as OBJETIVAS (meio cruel, traição) podem coexistir.'},
   {b:'CESPE',t:'cebraspe',s:'O feminicídio, qualificadora do homicídio, configura-se quando o crime é praticado contra mulher por razões de sexo feminino, sendo crime hediondo.',c:0,e:'CERTO. Lei 13.104/15 inseriu feminicídio como qualificadora (art. 121, §2º, VI). É HEDIONDO (Lei 8.072/90).'},
-  {b:'CESPE',t:'cebraspe',s:'O feminicídio é qualificadora do homicídio quando praticado contra mulher por razões da condição de sexo feminino.',c:0,e:'CERTO. Art. 121, § 2º, VI (Lei 13.104/15).'},
+  {b:'CESPE',t:'cebraspe',s:'O homicídio culposo (sem intenção de matar) tem pena mais branda que o homicídio doloso e admite o perdão judicial em casos específicos.',c:0,e:'CERTO. Art. 121, § 2º, VI (Lei 13.104/15).'},
   {b:'CESPE',t:'cebraspe',s:'A lesão corporal seguida de morte é crime preterdoloso.',c:0,e:'CERTO. Art. 129, § 3º — dolo na lesão, culpa na morte.'},
   {b:'CESPE',t:'cebraspe',s:'O homicídio praticado contra agente das forças de segurança em razão da função é qualificado.',c:0,e:'CERTO. Art. 121, § 2º, VII (Lei 13.142/15).'},
   {b:'CESPE',t:'cebraspe',s:'O homicídio privilegiado é causa de aumento de pena.',c:1,e:'ERRADO. É causa de DIMINUIÇÃO (art. 121, § 1º).'},
@@ -2504,7 +3583,7 @@ const QBANK = {
   {b:'FCC',t:'multiple',s:'O usurpador de água tratada de concessionária:',o:['Pratica crime do art. 155-A.','Pratica furto qualificado.','Comete contravenção.','Não pratica crime.','Pratica estelionato.'],c:0,e:'Art. 155-A (Lei 14.155/21).'},
   {b:'VUNESP',t:'multiple',s:'A subtração de coisa alheia móvel mediante destreza configura:',o:['Roubo.','Furto qualificado.','Estelionato.','Apropriação.','Receptação.'],c:1,e:'Art. 155, § 4º, II.'},
   {b:'IBFC',t:'multiple',s:'O crime de dano (art. 163 CP) consiste em:',o:['Apropriar-se de coisa alheia.','Destruir, inutilizar ou deteriorar coisa alheia.','Subtrair coisa móvel.','Furtar com violência.'],c:1,e:'Resposta correta: Destruir, inutilizar ou deteriorar coisa alheia..'},
-  {b:'AOCP',t:'multiple',s:'A diferença entre furto e roubo está:',o:['No objeto material.','No meio executório (roubo: violência/grave ameaça; furto: sem).','Na pena apenas.','No sujeito ativo.','Na competência.'],c:1,e:'Resposta correta: No meio executório (roubo: violência/grave ameaça; furto: sem)..'},
+  {b:'AOCP',t:'multiple',s:'A apropriação indébita (CP, art. 168) caracteriza-se quando:',o:['O agente subtrai coisa alheia.','O agente, tendo a posse legítima da coisa alheia móvel, inverte o título e passa a se comportar como dono.','Há violência contra pessoa.','Há grave ameaça.','É praticada apenas por funcionário público.'],c:1,e:'Resposta: Posse LEGÍTIMA + inversão. Ex: empregada que leva embora joia que ficou aos seus cuidados. Diferente de FURTO (sem posse anterior).',o:['No objeto material.','No meio executório (roubo: violência/grave ameaça; furto: sem).','Na pena apenas.','No sujeito ativo.','Na competência.'],c:1,e:'Resposta correta: No meio executório (roubo: violência/grave ameaça; furto: sem)..'},
   {b:'CESPE',t:'cebraspe',s:'A invasão de dispositivo informático é crime do art. 154-A CP.',c:0,e:'CERTO. Lei 12.737/12 e atualizações.'},
 ],
 
@@ -2544,12 +3623,12 @@ const QBANK = {
 'penal-lei-drogas': [  {b:'CESPE',t:'cebraspe',s:'O tráfico de drogas, embora equiparado a crime hediondo, admite anistia, graça e indulto.',c:1,e:'ERRADO. Crimes hediondos e equiparados (tráfico, tortura, terrorismo) são INSUSCETÍVEIS de anistia, graça e indulto (art. 5º, XLIII, CF + Lei 8.072/90).'},
   {b:'FGV',t:'multiple',s:'O traficante eventual (Lei 11.343/06, art. 33, §4º) faz jus à redução de pena de 1/6 a 2/3 se preencher TODOS os requisitos:',o:['Apenas ser réu primário.','Ser primário, de bons antecedentes, não se dedicar a atividades criminosas nem integrar organização criminosa.','Apenas não integrar facção criminosa.','Apenas reabilitar-se em programa de drogas.','Não precisa de requisitos cumulativos.'],c:1,e:'Resposta correta: Todos os 4 requisitos são CUMULATIVOS — basta faltar um para perder o redutor. Decoreba clássica de prova.'},
   {b:'CESPE',t:'cebraspe',s:'O porte de droga para consumo próprio (art. 28 da Lei 11.343/06) não tem pena privativa de liberdade.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
-  {b:'CESPE',t:'cebraspe',s:'O tráfico de drogas (art. 33 caput) é crime equiparado a hediondo.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei de Drogas (Lei 11.343/06) prevê pena de reclusão de 5 a 15 anos para o crime de tráfico (art. 33, caput).',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O tráfico privilegiado (art. 33, § 4º) é considerado crime hediondo.',c:1,e:'ERRADO. STF, HC 118.533 — NÃO é hediondo.'},
   {b:'CESPE',t:'cebraspe',s:'O tráfico privilegiado exige que o agente seja primário, com bons antecedentes, não se dedique a atividades criminosas nem integre organização criminosa.',c:0,e:'CERTO. Art. 33, § 4º.'},
-  {b:'CESPE',t:'cebraspe',s:'O financiamento do tráfico é crime equiparado a hediondo.',c:0,e:'CERTO. Art. 36 + Lei 8.072/90.'},
+  {b:'CESPE',t:'cebraspe',s:'A semeadura, o cultivo e a colheita não autorizados de plantas que sirvam à preparação de drogas configura crime previsto na Lei 11.343/06 (art. 33, §1º, II).',c:0,e:'CERTO. Art. 36 + Lei 8.072/90.'},
   {b:'CESPE',t:'cebraspe',s:'O induzimento ao uso de drogas (art. 33, § 2º) tem pena igual ao tráfico.',c:1,e:'ERRADO. Pena menor (1-3 anos + multa).'},
-  {b:'CESPE',t:'cebraspe',s:'A associação para o tráfico (art. 35) exige no mínimo duas pessoas.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'O crime de tráfico em locais próximos a escolas e estabelecimentos prisionais sofre causa de aumento (art. 40, III, Lei 11.343/06).',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'O usuário de drogas pode ser submetido a tratamento contra sua vontade.',c:1,e:'ERRADO. Lei 11.343 prevê advertência, prestação de serviço e medida educativa (art. 28).'},
   {b:'CESPE',t:'cebraspe',s:'A causa de diminuição do tráfico privilegiado é de 1/6 a 2/3.',c:0,e:'CERTO. Art. 33, § 4º.'},
   {b:'CESPE',t:'cebraspe',s:'A redução de pena no tráfico privilegiado é aplicável ainda que a quantidade de droga seja expressiva.',c:1,e:'ERRADO. STJ — depende da análise da gravidade.'},
@@ -2566,13 +3645,13 @@ const QBANK = {
   {b:'Quadrix',t:'cebraspe',s:'A Lei 11.343/06 prevê multa para o usuário (art. 28).',c:1,e:'ERRADO. Não há multa. Penalidades: advertência, prestação de serviço, medida educativa.'},
   {b:'CESPE',t:'cebraspe',s:'O semeio, cultivo ou colheita de plantas para extração de drogas para uso pessoal é punido nos termos do art. 28.',c:0,e:'CERTO. § 1º do art. 28.'},
   {b:'CESPE',t:'cebraspe',s:'A entrega vigiada e a infiltração de agentes são técnicas previstas na Lei 11.343/06.',c:0,e:'CERTO. Arts. 53.'},
-  {b:'CESPE',t:'cebraspe',s:'O tráfico transnacional de drogas é causa de aumento de pena.',c:0,e:'CERTO. Art. 40, I.'},
+  {b:'CESPE',t:'cebraspe',s:'A associação para o tráfico (art. 35 da Lei 11.343/06) exige a participação de pelo menos 2 pessoas de forma estável.',c:0,e:'CERTO. Art. 40, I.'},
   {b:'FGV',t:'multiple',s:'Quem oferece droga, eventualmente e sem objetivo de lucro, a pessoa do seu relacionamento, para juntos consumirem:',o:['Pratica tráfico.','Pratica conduta do art. 33, § 3º (com pena menor).','Não pratica crime.','Pratica indução.','Pratica associação.'],c:1,e:'Art. 33, § 3º.'},
   {b:'FCC',t:'multiple',s:'A natureza jurídica da Lei 11.343/06 quanto ao art. 28:',o:['Crime apenado com reclusão.','Crime apenado com detenção.','Despenalizado, com aplicação de medidas alternativas.','Contravenção.','Crime militar.'],c:2,e:'Resposta correta: Despenalizado, com aplicação de medidas alternativas..'},
   {b:'VUNESP',t:'multiple',s:'É vedada a concessão de liberdade provisória, segundo a Lei 11.343/06 original, em caso de tráfico. O STF:',o:['Manteve a vedação.','Declarou inconstitucional a vedação abstrata.','Declarou aplicável apenas a hediondos.','Manteve a vedação para tráfico privilegiado.','Aboliu a vedação só para usuários.'],c:1,e:'STF, HC 104.339.'},
   {b:'IBFC',t:'multiple',s:'A Lei 11.343/06 é classificada como:',o:['Lei meramente penal.','Lei meramente administrativa.','Lei híbrida (penal e administrativa).','Decreto regulamentar.'],c:2,e:'Resposta correta: Lei híbrida (penal e administrativa)..'},
   {b:'AOCP',t:'multiple',s:'O tráfico privilegiado pode ser convertido em pena restritiva de direitos.',o:['Sempre.','Nunca.','Sim, conforme decisão do STF que afastou a vedação.','Apenas para reincidentes.','Apenas para primários do art. 28.'],c:2,e:'STF, HC 97.256.'},
-  {b:'CESPE',t:'cebraspe',s:'É hediondo o crime de tráfico de drogas (caput do art. 33) e o financiamento ao tráfico.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
+  {b:'CESPE',t:'cebraspe',s:'Para fins da Lei de Drogas, o USUÁRIO (art. 28) NÃO está sujeito a pena privativa de liberdade, apenas advertência, prestação de serviços ou medida educativa.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
 ],
 
 'penal-maria-da-penha': [  {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha aplica-se exclusivamente a relações conjugais heterossexuais entre marido e mulher.',c:1,e:'ERRADO. A Lei se aplica a TODA relação doméstica/familiar/afetiva onde a vítima é MULHER, incluindo relações homoafetivas femininas, irmãs, mãe/filha, etc.'},
@@ -2586,13 +3665,13 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'As medidas protetivas de urgência incluem o afastamento do agressor do lar e proibição de aproximação com a ofendida.',c:0,e:'CERTO. Art. 22.'},
   {b:'CESPE',t:'cebraspe',s:'É admitida a substituição da pena privativa por pena restritiva de direitos nos crimes da Lei Maria da Penha.',c:1,e:'ERRADO. Súmula 588 STJ.'},
   {b:'CESPE',t:'cebraspe',s:'A retratação da representação só pode ocorrer perante o juiz, em audiência especialmente designada.',c:0,e:'CERTO. Art. 16.'},
-  {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha aplica-se apenas a relações conjugais.',c:1,e:'ERRADO. Aplica-se a relações de afeto/coabitação independente de orientação sexual (art. 5º, II e p.ú.).'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha veda a aplicação da Lei 9.099/95 (juizado especial) aos crimes praticados com violência doméstica contra a mulher.',c:1,e:'ERRADO. Aplica-se a relações de afeto/coabitação independente de orientação sexual (art. 5º, II e p.ú.).'},
   {b:'FGV',t:'multiple',s:'O conceito de violência doméstica e familiar contra a mulher abrange agressões praticadas:',o:['Apenas no ambiente doméstico.','No âmbito da unidade doméstica, da família e em qualquer relação íntima de afeto, independentemente de coabitação.','Apenas por marido ou companheiro.','Apenas por homem.','Apenas em coabitação.'],c:1,e:'Art. 5º.'},
   {b:'FGV',t:'multiple',s:'A violência patrimonial inclui:',o:['Apenas furto.','Reter, subtrair, destruir bens, valores ou recursos econômicos da mulher.','Apenas dano.','Apenas estelionato.','Apenas furto qualificado.'],c:1,e:'Art. 7º, IV.'},
   {b:'FCC',t:'multiple',s:'As medidas protetivas de urgência podem ser concedidas:',o:['Apenas após instrução completa.','De imediato, independente de audiência do agressor, pelo juiz a pedido do MP, da ofendida ou de ofício.','Apenas pelo MP.','Apenas em sentença.','Apenas pelo delegado.'],c:1,e:'Art. 19.'},
   {b:'FCC',t:'multiple',s:'Sobre as Súmulas do STJ aplicáveis à Lei Maria da Penha, é INCORRETO:',o:['Súm. 542: a ação por lesão leve na Maria da Penha é pública incondicionada.','Súm. 588: não é possível substituir pena por restritiva de direitos.','Súm. 589: não cabe insignificância.','Súm. 536: cabe suspensão condicional do processo.','Súm. 600: para configurar VD não é necessário coabitação.'],c:3,e:'Súm. 536 STJ: NÃO cabe.'},
   {b:'VUNESP',t:'multiple',s:'A violência psicológica contra a mulher foi tipificada como crime autônomo:',o:['Pela Lei 11.340/06.','Pela Lei 14.188/2021 (art. 147-B CP).','Pela Lei 13.104/15.','Pela Lei 14.344/22.','Pela Lei 12.737/12.'],c:1,e:'Resposta correta: Pela Lei 14.188/2021 (art. 147-B CP)..'},
-  {b:'VUNESP',t:'multiple',s:'A Lei Maria da Penha aplica-se à mulher transexual:',o:['Não.','Sim, conforme entendimento do STJ.','Apenas após cirurgia.','Apenas com retificação registral.','Apenas a mulheres cisgênero.'],c:1,e:'STJ, REsp 1.977.124.'},
+  {b:'VUNESP',t:'multiple',s:'O agressor pode ser obrigado, judicialmente, a frequentar programas de recuperação e reeducação previstos pela Lei 11.340/06.',o:['Não.','Sim, conforme entendimento do STJ.','Apenas após cirurgia.','Apenas com retificação registral.','Apenas a mulheres cisgênero.'],c:1,e:'STJ, REsp 1.977.124.'},
   {b:'IBFC',t:'multiple',s:'A Lei 11.340/06 prevê:',o:['Apenas medidas penais.','Medidas integradas de prevenção, assistência e punição, com medidas protetivas de urgência.','Apenas multas.','Apenas suspensão condicional.','Apenas regime aberto.'],c:1,e:'Resposta correta: Medidas integradas de prevenção, assistência e punição, com medidas protetivas de urgência..'},
   {b:'IBFC',t:'multiple',s:'O descumprimento de medida protetiva (art. 24-A da Lei 11.340/06) é:',o:['Contravenção.','Crime com detenção de 3 meses a 2 anos.','Atípico.','Crime hediondo.'],c:1,e:'Art. 24-A (Lei 13.641/2018).'},
   {b:'AOCP',t:'multiple',s:'A representação da ofendida nos crimes da Lei Maria da Penha:',o:['Pode ser retratada a qualquer tempo, fora de audiência.','Só pode ser retratada perante o juiz em audiência designada, antes do recebimento da denúncia.','Não pode ser retratada.','Pode ser retratada por advogado.','Não exige representação.'],c:1,e:'Art. 16.'},
@@ -2702,7 +3781,7 @@ const QBANK = {
   {b:'IBFC',t:'multiple',s:'Qual a EXTENSÃO padrão de arquivos executáveis no Windows?',o:['.txt','.doc','.exe','.html','.pdf'],c:2,e:'Resposta: .exe (executable). É o formato que roda programas. Cuidado: arquivos .exe de fontes desconhecidas podem conter vírus.'},
   {b:'CESPE',t:'cebraspe',s:'No Windows, a lixeira armazena permanentemente todos os arquivos excluídos, sem limite de tamanho ou tempo.',c:1,e:'ERRADO. A Lixeira tem TAMANHO LIMITADO (configurável). Quando enche, arquivos mais antigos são removidos automaticamente.'},
   {b:'FCC',t:'multiple',s:'O atalho CTRL + SHIFT + ESC no Windows abre:',o:['O Painel de Controle','O Gerenciador de Tarefas','O Explorador de Arquivos','As Configurações','O Bloco de Notas'],c:1,e:'Resposta: Gerenciador de Tarefas. Mostra processos em execução, uso de CPU/memória e permite encerrar programas travados.'},
-  {b:'FGV',t:'multiple',s:'O que faz a tecla F2 no Explorador de Arquivos do Windows?',o:['Apaga o arquivo selecionado','Renomeia o arquivo selecionado','Abre o arquivo','Copia o arquivo','Cria nova pasta'],c:1,e:'Resposta: Renomeia. F2 é o atalho universal para renomear arquivos/pastas selecionados.'},
+  {b:'FGV',t:'multiple',s:'No Windows 10, qual atalho do teclado FECHA a aplicação atualmente em uso?',o:['Ctrl + F4','Alt + F4','Win + F4','Shift + F4','F4 apenas'],c:1,e:'Resposta: Alt + F4 fecha o programa ativo. Ctrl + F4 fecha apenas a aba/documento dentro do programa.',o:['Apaga o arquivo selecionado','Renomeia o arquivo selecionado','Abre o arquivo','Copia o arquivo','Cria nova pasta'],c:1,e:'Resposta: Renomeia. F2 é o atalho universal para renomear arquivos/pastas selecionados.'},
   {b:'AOCP',t:'multiple',s:'Qual atalho captura a tela INTEIRA e salva automaticamente em Imagens/Capturas de Tela?',o:['Print Screen apenas','Win + Print Screen','Alt + Print Screen','Ctrl + Print Screen','Shift + Print Screen'],c:1,e:'Resposta: Win + Print Screen. Salva PNG automaticamente em "Capturas de Tela". Print Screen sozinho copia para área de transferência.'},
   {b:'CESPE',t:'cebraspe',s:'O Windows Defender é o antivírus nativo do Windows 10 e Windows 11, instalado por padrão.',c:0,e:'CERTO. Windows Defender (agora "Microsoft Defender") protege contra vírus/malware sem custo, já incluído no SO.'},
   {b:'VUNESP',t:'multiple',s:'Para criar uma NOVA PASTA no Windows 10, pode-se usar o atalho:',o:['Ctrl + N','Ctrl + Shift + N','Alt + N','Win + N','Shift + N'],c:1,e:'Resposta: Ctrl + Shift + N. Cria nova pasta no local atual do Explorador de Arquivos.'},
@@ -3719,6 +4798,31 @@ async function forgotPassword() {
 window.forgotPassword = forgotPassword;
 
 
+
+function toggleTheme() {
+  snd && snd.click && snd.click();
+  const cur = document.body.getAttribute('data-theme');
+  const newTheme = cur === 'light' ? 'dark' : 'light';
+  document.body.setAttribute('data-theme', newTheme);
+  try { localStorage.setItem('jq:theme', newTheme); } catch(e){}
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = newTheme === 'light' ? '☀️' : '🌙';
+}
+window.toggleTheme = toggleTheme;
+
+// Aplicar tema salvo
+try {
+  const saved = localStorage.getItem('jq:theme');
+  if (saved === 'light') {
+    document.body.setAttribute('data-theme', 'light');
+    setTimeout(() => {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.textContent = '☀️';
+    }, 500);
+  }
+} catch(e){}
+
+
 function friendlyAuthError(err, isSignup) {
   const msg = String(err && err.message || err || '').toLowerCase();
   if (msg.includes('invalid login credentials') || msg.includes('invalid credentials')) {
@@ -4504,13 +5608,15 @@ const renderMap = () => {
   const subjColor = (subjInfo && subjInfo.color) || 'var(--rose)';
 
   let html = `
-    <div class="ato-header">
-      <div class="ato-badge" style="border-color:${subjColor};color:${subjColor};background:${subjColor}22;">JORNADA</div>
-      <div class="ato-title" style="color:${subjColor};">${(subjInfo && subjInfo.icon) || '⚔️'} ${(subjInfo && subjInfo.name) || ''} — ${phasesAtuais.length} DIAS</div>
-    </div>
-    <div style="margin-bottom:12px;font-size:13px;color:rgba(255,255,255,.6);">
-      cada dia é um <strong style="color:${subjColor};">BOSS de 20 questões</strong> 💀 &nbsp;•&nbsp;
-      complete tudo pra ganhar a <strong style="color:var(--amber);">CARTA DE APROVAÇÃO</strong> em ${(subjInfo && subjInfo.name) || ''}!
+    <div class="journey-header">
+      <div class="journey-header-top">
+        <div class="ato-badge" style="border-color:${subjColor};color:${subjColor};background:${subjColor}22;">JORNADA</div>
+        <div class="ato-title" style="color:${subjColor};">${(subjInfo && subjInfo.icon) || '⚔️'} ${(subjInfo && subjInfo.name) || ''} — ${phasesAtuais.length} DIAS</div>
+      </div>
+      <div class="journey-header-desc">
+        cada dia é um <strong style="color:${subjColor};">BOSS de 20 questões</strong> 💀 &nbsp;•&nbsp;
+        complete tudo pra ganhar a <strong style="color:var(--amber);">CARTA DE APROVAÇÃO</strong> em ${(subjInfo && subjInfo.name) || ''}!
+      </div>
     </div>
     <div class="phases-grid">
       ${phasesAtuais.map((ph, idx) => {
@@ -4525,18 +5631,18 @@ const renderMap = () => {
         else if (ph.mode === 'finalboss') topIcon = '☠️';
 
         let modeBadge = '';
-        if (ph.mode === 'deepening') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:#fb923c;">APROF.</div>`;
-        else if (ph.mode === 'finalboss') modeBadge = `<div style="position:absolute;bottom:4px;left:4px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--amber);">FINAL ★</div>`;
+        if (ph.mode === 'deepening') modeBadge = `<div class="phase-mode-badge" style="color:#fb923c;">APROF.</div>`;
+        else if (ph.mode === 'finalboss') modeBadge = `<div class="phase-mode-badge" style="color:var(--amber);">FINAL ★</div>`;
 
         let statusHtml;
-        if (completed) statusHtml = `<span style="color:var(--emerald);font-size:9px;">✓ OK</span>`;
+        if (completed) statusHtml = `<span style="color:var(--emerald);font-size:10px;">✓ OK</span>`;
         else if (!unlocked) statusHtml = `<span style="color:rgba(255,255,255,.3);">🔒</span>`;
-        else if (current) statusHtml = `<span style="color:var(--rose);font-size:9px;animation:pulse-neon 2s infinite;">★ HOJE</span>`;
-        else if (ph.mode === 'finalboss') statusHtml = `<span style="color:var(--amber);font-size:9px;">★ FINAL</span>`;
-        else if (ph.mode === 'deepening') statusHtml = `<span style="color:#fb923c;font-size:10px;">▸ 2X</span>`;
-        else statusHtml = `<span style="color:rgba(255,255,255,.4);font-size:10px;">▸ BOSS</span>`;
+        else if (current) statusHtml = `<span style="color:var(--rose);font-size:10px;">★ HOJE</span>`;
+        else if (ph.mode === 'finalboss') statusHtml = `<span style="color:var(--amber);font-size:10px;">★ FINAL</span>`;
+        else if (ph.mode === 'deepening') statusHtml = `<span style="color:#fb923c;font-size:11px;">▸ 2X</span>`;
+        else statusHtml = `<span style="color:rgba(255,255,255,.4);font-size:11px;">▸ BOSS</span>`;
 
-        return `<button class="phase ${ph.subject} ${completed?'completed':''} ${current?'current':''} pixel-corners" ${!unlocked?'disabled':''} onclick="startPhaseById('${ph.id}')" style="position:relative;">
+        return `<button class="phase ${ph.subject} ${completed?'completed':''} ${current?'current':''}" ${!unlocked?'disabled':''} onclick="startPhaseById('${ph.id}')">
           <div class="phase-type-icon">${topIcon}</div>
           <div class="phase-icon">${SUBJ[ph.subject].icon}</div>
           <div class="phase-num">DIA ${ph.dayNum}</div>
@@ -5712,7 +6818,7 @@ function downloadCertImage() {
       <head>
         <title>Certificado JURIS QUEST</title>
         <meta charset="utf-8">
-        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;500;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
         <style>${allStyles}</style>
         <style>
           body { background:#0a0410; padding:40px; display:flex; flex-direction:column; align-items:center; gap:20px; }
