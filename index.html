@@ -3488,6 +3488,31 @@ body[data-theme="light"] #hud-patente {
 
 <script>
 
+
+// 🛡️ ERROR HANDLER GLOBAL — captura erros silenciosos
+window.addEventListener('error', function(event) {
+  try {
+    const msg = event?.error?.message || event?.message || 'Erro desconhecido';
+    const src = event?.filename || 'script';
+    const line = event?.lineno || '?';
+    console.error('[JURIS QUEST ERROR]', msg, 'em', src + ':' + line);
+    // Não mostrar pro usuário a menos que seja crítico
+    if (msg.includes('Cannot read') || msg.includes('undefined') || msg.includes('null')) {
+      // Tentar recuperar — re-render da tela atual
+      try {
+        const visibleScreen = document.querySelector('.screen:not([style*="display: none"])');
+        if (visibleScreen) console.warn('[RECOVERY] Tela visível:', visibleScreen.id);
+      } catch(e){}
+    }
+  } catch(e) {}
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+  try {
+    console.error('[JURIS QUEST PROMISE ERROR]', event?.reason);
+  } catch(e) {}
+});
+
 /* 🔒 ANTI-CLICKJACKING — proteção via JavaScript redirecionando se estiver em iframe.
    Notas: X-Frame-Options só funciona como HTTP header (não como meta tag) — então
    confiamos no redirect JS abaixo + CSP do GitHub Pages/Netlify que já protege. */
@@ -4762,6 +4787,22 @@ let onbData = {};
 let modalCallback = null;
 let timerInterval = null;
 
+// 🔒 Garante que progress tem todas as propriedades necessárias
+function ensureProgressIntegrity(p) {
+  if (!p || typeof p !== 'object') return defaultProgress();
+  const def = defaultProgress();
+  const fixed = { ...def, ...p };
+  // Garantir arrays
+  ['completedPhases','badges','collectedCards','srsQueue','myPile','rouletteHistory'].forEach(k => {
+    if (!Array.isArray(fixed[k])) fixed[k] = [];
+  });
+  // Garantir objetos
+  ['statsBySubject','statsByBanca','woundsRegistry','flashcardsSeen'].forEach(k => {
+    if (!fixed[k] || typeof fixed[k] !== 'object') fixed[k] = (def[k] || {});
+  });
+  return fixed;
+}
+
 const defaultProgress = () => ({
   xp:0, lives:3, streak:0, completedPhases:[], currentPhase:1, lastPlayDate:null,
   badges:[], questionsAnswered:0, correctAnswers:0,
@@ -5311,6 +5352,15 @@ async function upsertProgress() {
     correct_answers: progress.correctAnswers || 0,
     stats_by_subject: progress.statsBySubject || {},
     srs_queue: progress.srsQueue || [],
+      my_pile: progress.myPile || [],
+      flashcards_seen: progress.flashcardsSeen || {},
+      streak_freezes: progress.streakFreezes || 0,
+      freeze_used_date: progress.freezeUsedDate,
+      roulette_last_spin: progress.rouletteLastSpin,
+      roulette_history: progress.rouletteHistory || [],
+      xp_boost_until: progress.xpBoostUntil,
+      missions_completed: progress.missionsCompleted || 0,
+      stats_by_banca: progress.statsByBanca || {},
       wounds_registry: progress.woundsRegistry || {},
     sound_on: progress.soundOn ?? true,
     updated_at: new Date().toISOString(),
@@ -5362,7 +5412,17 @@ function hydrateFromCloud(cloudProfile, cloudProg) {
       soundOn: cloudProg.sound_on ?? true,
       avatar: cloudProfile?.avatar || '👮‍♀️',
       avatarColor: cloudProfile?.avatar_color || '#ff2e63',
+      myPile: cloudProg.my_pile || [],
+      flashcardsSeen: cloudProg.flashcards_seen || {},
+      streakFreezes: cloudProg.streak_freezes || 0,
+      freezeUsedDate: cloudProg.freeze_used_date || null,
+      rouletteLastSpin: cloudProg.roulette_last_spin || null,
+      rouletteHistory: cloudProg.roulette_history || [],
+      xpBoostUntil: cloudProg.xp_boost_until || null,
+      missionsCompleted: cloudProg.missions_completed || 0,
+      statsByBanca: cloudProg.stats_by_banca || {},
     };
+    progress = ensureProgressIntegrity(progress);
   }
   // Reset diário
   if (progress) {
@@ -5403,15 +5463,20 @@ function setLoginMode(mode) {
 window.setLoginMode = setLoginMode;
 
 function toggleLoginMode() {
-  loginMode = loginMode === 'signin' ? 'signup' : 'signin';
+  // Função legada — delega para setLoginMode (a nova)
+  const newMode = loginMode === 'signin' ? 'signup' : 'signin';
+  if (typeof setLoginMode === 'function') {
+    setLoginMode(newMode);
+    return;
+  }
+  // Fallback ultra-defensivo: só atualiza se elementos existirem
+  loginMode = newMode;
   const isSignup = loginMode === 'signup';
-  document.getElementById('login-mode-label').textContent = isSignup ? '▸ CRIAR CONTA ◂' : '▸ ENTRAR ◂';
-  document.getElementById('signup-name-wrap').style.display = isSignup ? 'block' : 'none';
-  document.getElementById('btn-submit-login').textContent = isSignup ? 'CADASTRAR ▶' : 'ENTRAR ▶';
-  document.getElementById('toggle-mode-text').textContent = isSignup ? 'Já tem conta? ' : 'Primeira vez? ';
-  document.getElementById('toggle-mode-btn').textContent = isSignup ? 'Entrar' : 'Criar conta';
-  document.getElementById('err-auth').style.display = 'none';
-  ['err-name','err-email','err-pass'].forEach(id => { const e=document.getElementById(id); if(e) e.style.display='none'; });
+  const safe = (id, fn) => { const el = document.getElementById(id); if (el) try { fn(el); } catch(e){} };
+  safe('signup-name-wrap', el => el.style.display = isSignup ? 'block' : 'none');
+  safe('btn-submit-login', el => el.textContent = isSignup ? 'CRIAR CONTA ▶' : 'ENTRAR ▶');
+  safe('err-auth', el => el.style.display = 'none');
+  ['err-name','err-email','err-pass','err-pass2'].forEach(id => safe(id, e => e.style.display = 'none'));
 }
 
 // Ranking
@@ -5536,7 +5601,7 @@ const loadAll = () => {
     if (u) user = JSON.parse(u);
     if (p) {
       const saved = JSON.parse(p);
-      progress = {...defaultProgress(), ...saved};
+      progress = ensureProgressIntegrity({...defaultProgress(), ...saved});
       if (!progress.statsBySubject) progress.statsBySubject = {const:{right:0,total:0},adm:{right:0,total:0},penal:{right:0,total:0},mix:{right:0,total:0}};
       if (!progress.srsQueue) progress.srsQueue = [];
       if (!progress.collectedCards) progress.collectedCards = [];
@@ -6380,7 +6445,16 @@ function startTimer() {
 }
 
 function answerQ(idx) {
+  // 🔒 Guard contra activePhase undefined
+  if (!activePhase || !activePhase.questions || !phaseState) {
+    console.error('[answerQ] activePhase ou phaseState undefined');
+    return;
+  }
   const q = activePhase.questions[phaseState.qIdx];
+  if (!q) {
+    console.error('[answerQ] questão não encontrada no índice', phaseState.qIdx);
+    return;
+  }
   const correct = q.correct === idx;
   if (correct) snd.correct(); else snd.wrong();
   const newAnswers = [...phaseState.answers, {idx, correct, q}];
