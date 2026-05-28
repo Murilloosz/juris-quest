@@ -1598,7 +1598,7 @@ body::before {
   opacity: 0.5;
 }
 /* Conteúdo acima do ruído */
-.screen, .modal-backdrop { position: relative; z-index: 1; }
+.screen { position: relative; z-index: 1; }
 
 /* ---------- TIPOGRAFIA REFINADA ---------- */
 /* Reservar Press Start 2P APENAS pra HEADERS arcade */
@@ -2097,18 +2097,9 @@ h1, h2, .premium-headline {
 
 /* Fade-in escalonado das fases (efeito stagger) */
 .phases-grid > .phase {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: stagger-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* Stagger desativado pra evitar cards presos em opacity:0 */
+  opacity: 1;
 }
-.phases-grid > .phase:nth-child(1) { animation-delay: 0.02s; }
-.phases-grid > .phase:nth-child(2) { animation-delay: 0.05s; }
-.phases-grid > .phase:nth-child(3) { animation-delay: 0.08s; }
-.phases-grid > .phase:nth-child(4) { animation-delay: 0.11s; }
-.phases-grid > .phase:nth-child(5) { animation-delay: 0.14s; }
-.phases-grid > .phase:nth-child(6) { animation-delay: 0.17s; }
-.phases-grid > .phase:nth-child(7) { animation-delay: 0.20s; }
-.phases-grid > .phase:nth-child(n+8) { animation-delay: 0.24s; }
 @keyframes stagger-in {
   to { opacity: 1; transform: translateY(0); }
 }
@@ -2617,24 +2608,19 @@ body[data-theme="light"] #hud-patente {
 #map-phases .phases-grid {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
-  gap: 14px !important;
+  gap: 16px !important;
   width: 100% !important;
   max-width: 100% !important;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 900px) {
   #map-phases .phases-grid {
     grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
   }
 }
 
-@media (min-width: 1024px) {
-  #map-phases .phases-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
-  }
-}
-
-/* CARD QUADRADO - vertical com texto centralizado, sem quebra letra-por-letra */
+/* CARD GRANDE - retangular, aproveita o espaço */
 #map-phases .phases-grid > button.phase,
 #map-phases .phases-grid > .phase {
   display: flex !important;
@@ -2642,12 +2628,12 @@ body[data-theme="light"] #hud-patente {
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
-  gap: 6px !important;
-  padding: 16px 12px !important;
-  min-height: 190px !important;
+  gap: 10px !important;
+  padding: 24px 16px !important;
+  min-height: 230px !important;
   width: 100% !important;
-  aspect-ratio: 1 / 1 !important;
-  border-radius: 14px !important;
+  aspect-ratio: auto !important;
+  border-radius: 18px !important;
   cursor: pointer !important;
   position: relative !important;
   overflow: hidden !important;
@@ -2696,14 +2682,14 @@ body[data-theme="light"] #hud-patente {
 
 /* ÍCONE GRANDE NO MEIO */
 #map-phases .phase .phase-icon {
-  font-size: 64px !important;
+  font-size: 76px !important;
   width: auto !important;
   height: auto !important;
   display: block !important;
-  margin: 8px 0 6px 0 !important;
+  margin: 10px 0 8px 0 !important;
   background: transparent !important;
   border: none !important;
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.45)) !important;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)) !important;
   line-height: 1 !important;
   text-align: center !important;
   writing-mode: horizontal-tb !important;
@@ -2714,8 +2700,8 @@ body[data-theme="light"] #hud-patente {
 #map-phases .phase .phase-title {
   font-family: 'Inter', sans-serif !important;
   font-weight: 600 !important;
-  font-size: 13px !important;
-  line-height: 1.3 !important;
+  font-size: 15px !important;
+  line-height: 1.35 !important;
   margin: 0 !important;
   padding: 0 4px !important;
   text-align: center !important;
@@ -2737,10 +2723,10 @@ body[data-theme="light"] #hud-patente {
 #map-phases .phase .phase-status {
   font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 10px !important;
+  font-size: 11px !important;
   letter-spacing: 0.5px !important;
   text-transform: uppercase !important;
-  padding: 5px 10px !important;
+  padding: 7px 14px !important;
   border-radius: 999px !important;
   background: rgba(255,255,255,0.06) !important;
   display: inline-flex !important;
@@ -2866,16 +2852,29 @@ body[data-theme="light"] #hud-patente {
 @media (max-width: 380px) {
   #map-phases .phases-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
+    gap: 12px !important;
   }
   #map-phases .phase {
-    padding: 14px 10px !important;
-    min-height: 165px !important;
+    padding: 18px 12px !important;
+    min-height: 200px !important;
   }
-  #map-phases .phase .phase-icon { font-size: 52px !important; }
-  #map-phases .phase .phase-title { font-size: 12px !important; }
-  #map-phases .phase .phase-num { font-size: 9px !important; padding: 3px 8px !important; }
-  #map-phases .phase .phase-status { font-size: 9px !important; padding: 4px 8px !important; }
+  #map-phases .phase .phase-icon { font-size: 60px !important; }
+  #map-phases .phase .phase-title { font-size: 13px !important; }
+  #map-phases .phase .phase-num { font-size: 9px !important; padding: 4px 9px !important; }
+  #map-phases .phase .phase-status { font-size: 10px !important; padding: 6px 12px !important; }
+}
+
+
+/* 🔒 GARANTIR que cards de fase NUNCA fiquem invisíveis */
+#map-phases .phase,
+#map-phases .phases-grid > .phase,
+#map-phases .phase.current,
+#map-phases .phase.completed {
+  opacity: 1 !important;
+}
+/* Disabled fica levemente apagado mas VISÍVEL */
+#map-phases .phase:disabled {
+  opacity: 0.6 !important;
 }
 
 /* ============================================================
@@ -2884,6 +2883,63 @@ body[data-theme="light"] #hud-patente {
 
 
 
+
+/* ============================================================
+   🛡️ PROTEÇÃO DE CLIQUES — garantir que nada bloqueie interação
+   ============================================================ */
+
+/* Modais escondidos NUNCA bloqueiam cliques */
+.modal-backdrop.hidden,
+.modal-backdrop[style*="display: none"],
+.modal-backdrop[style*="display:none"] {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* Quando modal NÃO tem a classe hidden, deve estar interativo */
+#modal:not(.hidden) {
+  display: flex !important;
+  pointer-events: auto !important;
+}
+
+/* Telas sempre permitem interação no conteúdo */
+.screen.active {
+  pointer-events: auto !important;
+}
+.screen.active * {
+  pointer-events: auto;
+}
+
+/* Garantir que pseudo-elementos decorativos NUNCA bloqueiem */
+body::before, body::after,
+.hoje-panel::before,
+.phase.current::before,
+.card.glow::before,
+.xp-fill::after,
+.avatar-frame::after {
+  pointer-events: none !important;
+}
+
+/* Botão de iniciar desafio e botões de resposta SEMPRE clicáveis */
+.btn, button.btn,
+.q-option, button.q-option,
+.ans-btn, button.ans-btn,
+#phase-content button,
+.phase {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 5;
+}
+
+/* Garantir que phase-content e seus filhos recebem cliques */
+#phase-content, #phase-content * {
+  pointer-events: auto;
+}
+
+/* ============================================================
+   FIM PROTEÇÃO DE CLIQUES
+   ============================================================ */
 </style>
 </head>
 <body>
@@ -3143,7 +3199,7 @@ body[data-theme="light"] #hud-patente {
     </div>
 
     <!-- Mapa de fases -->
-    <div id="map-phases" class="phases-grid"></div>
+    <div id="map-phases"></div>
 
     <!-- Footer -->
     <div class="app-footer">
