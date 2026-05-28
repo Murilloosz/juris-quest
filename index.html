@@ -2605,7 +2605,7 @@ body[data-theme="light"] #hud-patente {
    🔥 FORCE FIX — Cards quadrados lado a lado
    ============================================================ */
 
-#map-phases .phases-grid {
+:is(#map-phases,#pm-map-phases) .phases-grid {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
   gap: 16px !important;
@@ -2614,15 +2614,15 @@ body[data-theme="light"] #hud-patente {
 }
 
 @media (min-width: 900px) {
-  #map-phases .phases-grid {
+  :is(#map-phases,#pm-map-phases) .phases-grid {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 20px !important;
   }
 }
 
 /* CARD GRANDE - retangular, aproveita o espaço */
-#map-phases .phases-grid > button.phase,
-#map-phases .phases-grid > .phase {
+:is(#map-phases,#pm-map-phases) .phases-grid > button.phase,
+:is(#map-phases,#pm-map-phases) .phases-grid > .phase {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -2650,19 +2650,19 @@ body[data-theme="light"] #hud-patente {
   white-space: normal !important;
 }
 
-#map-phases .phase:not(:disabled):hover {
+:is(#map-phases,#pm-map-phases) .phase:not(:disabled):hover {
   transform: translateY(-3px) !important;
   box-shadow: var(--elev-3) !important;
 }
 
-#map-phases .phase:disabled {
+:is(#map-phases,#pm-map-phases) .phase:disabled {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
   filter: grayscale(0.3) !important;
 }
 
 /* NUM (DIA X) - badge pequena no topo */
-#map-phases .phase .phase-num {
+:is(#map-phases,#pm-map-phases) .phase .phase-num {
   font-family: 'Inter', sans-serif !important;
   font-size: 10px !important;
   font-weight: 800 !important;
@@ -2681,7 +2681,7 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* ÍCONE GRANDE NO MEIO */
-#map-phases .phase .phase-icon {
+:is(#map-phases,#pm-map-phases) .phase .phase-icon {
   font-size: 76px !important;
   width: auto !important;
   height: auto !important;
@@ -2697,7 +2697,7 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* TÍTULO COMPLETO, ATÉ 3 LINHAS */
-#map-phases .phase .phase-title {
+:is(#map-phases,#pm-map-phases) .phase .phase-title {
   font-family: 'Inter', sans-serif !important;
   font-weight: 600 !important;
   font-size: 15px !important;
@@ -2720,7 +2720,7 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* STATUS BADGE EMBAIXO */
-#map-phases .phase .phase-status {
+:is(#map-phases,#pm-map-phases) .phase .phase-status {
   font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
   font-size: 11px !important;
@@ -2739,7 +2739,7 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* TIPO ICON (skull/fire) - canto superior direito */
-#map-phases .phase .phase-type-icon {
+:is(#map-phases,#pm-map-phases) .phase .phase-type-icon {
   position: absolute !important;
   top: 8px !important;
   right: 8px !important;
@@ -2750,8 +2750,8 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* MODE BADGE - canto superior esquerdo (APROF/FINAL) */
-#map-phases .phase .phase-mode-badge,
-#map-phases .phase-mode-badge {
+:is(#map-phases,#pm-map-phases) .phase .phase-mode-badge,
+:is(#map-phases,#pm-map-phases) .phase-mode-badge {
   position: absolute !important;
   top: 8px !important;
   left: 8px !important;
@@ -2769,30 +2769,30 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* Esconder o phase-top que não usamos */
-#map-phases .phase .phase-top,
-#map-phases .phase .phase-bottom,
-#map-phases .phase .phase-text-wrap {
+:is(#map-phases,#pm-map-phases) .phase .phase-top,
+:is(#map-phases,#pm-map-phases) .phase .phase-bottom,
+:is(#map-phases,#pm-map-phases) .phase .phase-text-wrap {
   display: contents !important;
 }
 
 /* STATUS POR TIPO */
-#map-phases .phase .phase-status[data-status="boss"] {
+:is(#map-phases,#pm-map-phases) .phase .phase-status[data-status="boss"] {
   color: var(--text-secondary) !important;
 }
-#map-phases .phase .phase-status[data-status="deepening"] {
+:is(#map-phases,#pm-map-phases) .phase .phase-status[data-status="deepening"] {
   color: #fb923c !important;
   background: rgba(251,146,60,0.18) !important;
   border-color: rgba(251,146,60,0.35) !important;
 }
-#map-phases .phase .phase-status[data-status="final"] {
+:is(#map-phases,#pm-map-phases) .phase .phase-status[data-status="final"] {
   color: var(--amber) !important;
   background: rgba(255,215,0,0.18) !important;
   border-color: rgba(255,215,0,0.35) !important;
 }
-#map-phases .phase .phase-status[data-status="locked"] {
+:is(#map-phases,#pm-map-phases) .phase .phase-status[data-status="locked"] {
   opacity: 0.5 !important;
 }
-#map-phases .phase .phase-status[data-status="current"] {
+:is(#map-phases,#pm-map-phases) .phase .phase-status[data-status="current"] {
   color: #fff !important;
   background: var(--rose) !important;
   border-color: var(--rose) !important;
@@ -2800,25 +2800,25 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* CORES POR MATÉRIA - borda lateral */
-#map-phases .phase.const {
+:is(#map-phases,#pm-map-phases) .phase.const {
   border-top: 3px solid var(--cyan) !important;
 }
-#map-phases .phase.adm {
+:is(#map-phases,#pm-map-phases) .phase.adm {
   border-top: 3px solid var(--amber) !important;
 }
-#map-phases .phase.penal {
+:is(#map-phases,#pm-map-phases) .phase.penal {
   border-top: 3px solid var(--rose) !important;
 }
-#map-phases .phase.info {
+:is(#map-phases,#pm-map-phases) .phase.info {
   border-top: 3px solid var(--emerald) !important;
 }
 
 /* COMPLETED */
-#map-phases .phase.completed {
+:is(#map-phases,#pm-map-phases) .phase.completed {
   background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.02)) !important;
   border-color: rgba(16,185,129,0.4) !important;
 }
-#map-phases .phase.completed::after {
+:is(#map-phases,#pm-map-phases) .phase.completed::after {
   content: '✓' !important;
   position: absolute !important;
   top: 8px !important;
@@ -2838,7 +2838,7 @@ body[data-theme="light"] #hud-patente {
 }
 
 /* CURRENT (HOJE) */
-#map-phases .phase.current {
+:is(#map-phases,#pm-map-phases) .phase.current {
   border-color: var(--rose) !important;
   box-shadow: var(--elev-3), 0 0 24px rgba(255,46,99,0.35) !important;
   animation: phase-current-pulse 2.4s ease-in-out infinite !important;
@@ -2850,30 +2850,30 @@ body[data-theme="light"] #hud-patente {
 
 /* MOBILE PEQUENO */
 @media (max-width: 380px) {
-  #map-phases .phases-grid {
+  :is(#map-phases,#pm-map-phases) .phases-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 12px !important;
   }
-  #map-phases .phase {
+  :is(#map-phases,#pm-map-phases) .phase {
     padding: 18px 12px !important;
     min-height: 200px !important;
   }
-  #map-phases .phase .phase-icon { font-size: 60px !important; }
-  #map-phases .phase .phase-title { font-size: 13px !important; }
-  #map-phases .phase .phase-num { font-size: 9px !important; padding: 4px 9px !important; }
-  #map-phases .phase .phase-status { font-size: 10px !important; padding: 6px 12px !important; }
+  :is(#map-phases,#pm-map-phases) .phase .phase-icon { font-size: 60px !important; }
+  :is(#map-phases,#pm-map-phases) .phase .phase-title { font-size: 13px !important; }
+  :is(#map-phases,#pm-map-phases) .phase .phase-num { font-size: 9px !important; padding: 4px 9px !important; }
+  :is(#map-phases,#pm-map-phases) .phase .phase-status { font-size: 10px !important; padding: 6px 12px !important; }
 }
 
 
 /* 🔒 GARANTIR que cards de fase NUNCA fiquem invisíveis */
-#map-phases .phase,
-#map-phases .phases-grid > .phase,
-#map-phases .phase.current,
-#map-phases .phase.completed {
+:is(#map-phases,#pm-map-phases) .phase,
+:is(#map-phases,#pm-map-phases) .phases-grid > .phase,
+:is(#map-phases,#pm-map-phases) .phase.current,
+:is(#map-phases,#pm-map-phases) .phase.completed {
   opacity: 1 !important;
 }
 /* Disabled fica levemente apagado mas VISÍVEL */
-#map-phases .phase:disabled {
+:is(#map-phases,#pm-map-phases) .phase:disabled {
   opacity: 0.6 !important;
 }
 
@@ -2940,6 +2940,123 @@ body::before, body::after,
 /* ============================================================
    FIM PROTEÇÃO DE CLIQUES
    ============================================================ */
+
+/* ============================================================
+   🎖️ CONCURSOS PM-NE — estilos
+   ============================================================ */
+.pmne-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 16px;
+}
+@media (min-width: 720px) {
+  .pmne-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.pm-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 22px 14px;
+  min-height: 175px;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--pm-cor);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--pm-cor) 18%, transparent), color-mix(in srgb, var(--pm-cor) 4%, transparent));
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--pm-cor) 25%, transparent);
+  transition: transform .2s, box-shadow .2s;
+  text-align: center;
+}
+.pm-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--pm-cor) 45%, transparent);
+}
+.pm-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--pm-cor);
+}
+.pm-card-icon { font-size: 44px; line-height: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
+.pm-card-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--pm-cor2);
+  letter-spacing: 0.3px;
+}
+.pm-card-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.pm-card-cta {
+  margin-top: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--pm-cor);
+  padding: 6px 16px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+/* Botão de acesso ao módulo no mapa */
+.pmne-access-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(135deg, #2563eb22, #16a34a22, #dc262622);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.pmne-access-btn:hover { transform: translateY(-2px); box-shadow: var(--elev-2); }
+/* Header da tela PM-NE com gradiente NE */
+.pmne-header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  background: linear-gradient(90deg, #2563eb, #16a34a, #dc2626, #ea580c, #7c3aed);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+
+/* 🏠 HUB inicial */
+.hub-grid { display: flex; flex-direction: column; gap: 18px; margin-top: 24px; }
+@media (min-width: 720px) { .hub-grid { flex-direction: row; } .hub-card { flex: 1; } }
+.hub-card {
+  display: flex !important; flex-direction: column !important; align-items: center !important;
+  justify-content: center !important; gap: 10px !important; padding: 36px 20px !important;
+  min-height: 200px !important; border-radius: 20px !important; cursor: pointer; position: relative;
+  overflow: hidden; border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  transition: transform .22s, box-shadow .22s; text-align: center;
+}
+.hub-card:hover { transform: translateY(-4px); box-shadow: var(--elev-3); }
+.hub-card-geral { background: linear-gradient(160deg, rgba(255,46,99,.15), rgba(255,215,0,.06)) !important; }
+.hub-card-pm { background: linear-gradient(160deg, #2563eb22, #16a34a18, #dc262611) !important; }
+.hub-card-icon { font-size: 56px !important; line-height: 1; filter: drop-shadow(0 3px 8px rgba(0,0,0,.4)); }
+.hub-card-title { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.5px; color: var(--text-primary); }
+.hub-card-sub { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-secondary); font-weight: 500; max-width: 280px; line-height: 1.4; }
+.hub-card-cta { margin-top: 6px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; color: #fff; background: var(--rose); padding: 8px 20px; border-radius: 999px; letter-spacing: 0.5px; }
+.hub-card-pm .hub-card-cta { background: linear-gradient(90deg, #2563eb, #16a34a) !important; }
 </style>
 </head>
 <body>
@@ -3097,6 +3214,7 @@ body::before, body::after,
           <div class="hud-stat" id="hud-freezes-wrap" style="display:none;" title="Freezes acumulados — protegem sua chama"><span>🧊</span><span id="hud-freezes" class="font-orbit" style="color:#7dd3fc;font-weight:700;">0</span></div>
           <div class="hud-actions">
             <button aria-label="Ativar ou desativar som" onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
+            <button aria-label="Página inicial" onclick="goHub()" title="Início">🏠</button>
             <button id="theme-toggle" aria-label="Alternar tema claro ou escuro" onclick="toggleTheme()" title="Tema">🌙</button>
             <button aria-label="Caderno de erros — Suas Feridas" onclick="goWounds()" title="Suas Feridas">🩹</button>
             <button aria-label="Ativar ou desativar notificações" onclick="toggleNotifications()" title="Notificações">🔔</button>
@@ -3198,6 +3316,10 @@ body::before, body::after,
       <div class="subject-progress-detail" id="subject-progress-detail">0 de 9 dias concluídos</div>
     </div>
 
+    <button class="pmne-access-btn" onclick="openPMNE()">
+      🎖️ CONCURSOS PM NORDESTE <span style="opacity:.7;">— 9 estados exclusivos</span>
+    </button>
+
     <!-- Mapa de fases -->
     <div id="map-phases"></div>
 
@@ -3214,6 +3336,59 @@ body::before, body::after,
   <div class="container-narrow">
     <button class="back-btn" onclick="exitPhase()">← sair da fase</button>
     <div id="phase-content"></div>
+  </div>
+</div>
+
+
+
+<!-- 🏠 HUB inicial -->
+<div id="screen-hub" class="screen">
+  <div class="container-narrow">
+    <div style="text-align:center;margin:24px 0 8px;">
+      <div class="screen-header">
+        <div class="header-title">JURIS QUEST</div>
+      </div>
+      <div id="hub-greet" style="font-size:15px;color:var(--text-secondary);font-weight:600;margin-top:4px;">Bem-vinda!</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">Escolha como quer estudar hoje</div>
+    </div>
+    <div class="hub-grid">
+      <button class="hub-card hub-card-geral" onclick="goMap()">
+        <div class="hub-card-icon">📚</div>
+        <div class="hub-card-title">ESTUDO GERAL</div>
+        <div class="hub-card-sub">Constitucional • Administrativo • Penal • Informática</div>
+        <div class="hub-card-cta">COMEÇAR ▶</div>
+      </button>
+      <button class="hub-card hub-card-pm" onclick="openPMNE()">
+        <div class="hub-card-icon">🎖️</div>
+        <div class="hub-card-title">CONCURSOS PM-NE</div>
+        <div class="hub-card-sub">9 polícias militares do Nordeste • questões exclusivas</div>
+        <div class="hub-card-cta">VER CONCURSOS ▶</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 🗺️ Mapa de uma PM específica -->
+<div id="screen-pm-map" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="exitPMMap()">← outros concursos</button>
+    <div style="text-align:center;margin:12px 0;">
+      <div id="pm-map-title" class="pmne-header-title" style="font-size:22px;">PM</div>
+      <div id="pm-map-sub" style="font-size:12px;color:var(--text-secondary);font-weight:500;"></div>
+    </div>
+    <div id="pm-map-phases"></div>
+  </div>
+</div>
+
+<!-- 🎖️ Tela Concursos PM-NE -->
+<div id="screen-pmne" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="exitPMNE()">← voltar ao mapa</button>
+    <div style="text-align:center;margin:16px 0;">
+      <div class="pmne-header-title">🎖️ Concursos PM Nordeste</div>
+      <div style="font-size:13px;color:var(--text-secondary);font-weight:500;">9 polícias militares • cada uma com questões exclusivas</div>
+    </div>
+    <div class="pmne-grid" id="pmne-grid"></div>
   </div>
 </div>
 
@@ -4853,13 +5028,14 @@ function ensureProgressIntegrity(p) {
     if (!Array.isArray(fixed[k])) fixed[k] = [];
   });
   // Garantir objetos
-  ['statsBySubject','statsByBanca','woundsRegistry','flashcardsSeen'].forEach(k => {
+  ['statsBySubject','statsByBanca','woundsRegistry','flashcardsSeen','pmDone'].forEach(k => {
     if (!fixed[k] || typeof fixed[k] !== 'object') fixed[k] = (def[k] || {});
   });
   return fixed;
 }
 
 const defaultProgress = () => ({
+  pmDone: {},
   xp:0, lives:3, streak:0, completedPhases:[], currentPhase:1, lastPlayDate:null,
   badges:[], questionsAnswered:0, correctAnswers:0,
   statsBySubject:{const:{right:0,total:0},adm:{right:0,total:0},penal:{right:0,total:0},info:{right:0,total:0},mix:{right:0,total:0}},
@@ -5306,6 +5482,343 @@ try {
     }, 500);
   }
 } catch(e){}
+
+
+
+/* ============================================================
+   🎖️ MÓDULO CONCURSOS PM-NE — 9 estados, cores e questões exclusivas
+   ============================================================ */
+
+const PM_NE = {
+  ba: {nome:'PM-BAHIA',     uf:'BA', cor:'#2563eb', cor2:'#60a5fa', icon:'🔵', banca:'IBADE/FCC', capital:'Salvador'},
+  pe: {nome:'PM-PERNAMBUCO',uf:'PE', cor:'#16a34a', cor2:'#4ade80', icon:'🟢', banca:'CESPE/IAUPE', capital:'Recife'},
+  ce: {nome:'PM-CEARÁ',     uf:'CE', cor:'#dc2626', cor2:'#f87171', icon:'🔴', banca:'CESPE/AOCP', capital:'Fortaleza'},
+  ma: {nome:'PM-MARANHÃO',  uf:'MA', cor:'#ea580c', cor2:'#fb923c', icon:'🟠', banca:'FGV/IMPARH', capital:'São Luís'},
+  pb: {nome:'PM-PARAÍBA',   uf:'PB', cor:'#7c3aed', cor2:'#a78bfa', icon:'🟣', banca:'IBFC/FCC', capital:'João Pessoa'},
+  rn: {nome:'PM-R.G.NORTE', uf:'RN', cor:'#0891b2', cor2:'#22d3ee', icon:'🩵', banca:'FGV/IDECAN', capital:'Natal'},
+  al: {nome:'PM-ALAGOAS',   uf:'AL', cor:'#c026d3', cor2:'#e879f9', icon:'🟪', banca:'CESPE/FGV', capital:'Maceió'},
+  pi: {nome:'PM-PIAUÍ',     uf:'PI', cor:'#b45309', cor2:'#d97706', icon:'🟫', banca:'NUCEPE/FGV', capital:'Teresina'},
+  se: {nome:'PM-SERGIPE',   uf:'SE', cor:'#4f46e5', cor2:'#818cf8', icon:'🔷', banca:'IBFC/FGV', capital:'Aracaju'},
+};
+
+// Banco de questões EXCLUSIVAS por PM (sem repetição)
+const PM_QBANK = {
+  ba: [
+    {b:'IBADE',t:'cebraspe',s:'A Polícia Militar da Bahia, conforme a CF/88, é força auxiliar e reserva do Exército, subordinada ao Governador do Estado.',c:0,e:'CERTO. Art. 144, §6º, CF — as PMs e os corpos de bombeiros são forças auxiliares e reserva do Exército, subordinadas aos Governadores.'},
+    {b:'FCC',t:'multiple',s:'A capital da Bahia, sede do comando-geral da PMBA, é:',o:['Feira de Santana','Salvador','Ilhéus','Vitória da Conquista','Camaçari'],c:1,e:'Salvador é a capital baiana, primeira capital do Brasil (1549-1763).'},
+    {b:'IBADE',t:'cebraspe',s:'No uso diferenciado da força, o policial militar deve empregar sempre o nível máximo de força disponível, independentemente da resistência do abordado.',c:1,e:'ERRADO. O uso da força é PROGRESSIVO e PROPORCIONAL à resistência. Portaria Interministerial 4.226/2010 — força mínima necessária.'},
+    {b:'FCC',t:'cebraspe',s:'A dignidade da pessoa humana é fundamento da República e deve orientar toda a atuação policial militar.',c:0,e:'CERTO. Art. 1º, III, CF. A dignidade humana limita e orienta o poder de polícia, inclusive na abordagem.'},
+    {b:'IBADE',t:'multiple',s:'A abordagem policial a um cidadão exige:',o:['Apenas suspeita genérica','Fundada suspeita, com respeito aos direitos fundamentais','Autorização do prefeito','Mandado judicial sempre','Confissão prévia'],c:1,e:'A busca pessoal requer FUNDADA suspeita (art. 244 CPP), não mera intuição. Respeito à dignidade é obrigatório.'},
+    {b:'FCC',t:'cebraspe',s:'O militar estadual da Bahia, ao cometer crime militar, é julgado pela Justiça Militar Estadual.',c:0,e:'CERTO. Crimes militares estaduais são julgados pela Justiça Militar do Estado (art. 125, §4º, CF).'},
+    {b:'IBADE',t:'cebraspe',s:'Os direitos humanos aplicam-se apenas a cidadãos sem antecedentes criminais.',c:1,e:'ERRADO. Direitos humanos são UNIVERSAIS — valem para todos, inclusive presos e suspeitos. A condição de detido não retira a dignidade.'},
+    {b:'FCC',t:'multiple',s:'A hierarquia e a disciplina são pilares das instituições militares. Isso significa que:',o:['O subordinado nunca pode discordar','As ordens manifestamente ilegais NÃO devem ser cumpridas','Toda ordem deve ser cumprida sem questionar','A disciplina é facultativa','Hierarquia só vale em serviço'],c:1,e:'Ordem MANIFESTAMENTE ILEGAL não deve ser cumprida — o cumprimento não exclui responsabilidade penal do executor.'},
+  ],
+  pe: [
+    {b:'CESPE',t:'cebraspe',s:'A Polícia Militar de Pernambuco integra o sistema de segurança pública estadual e exerce o policiamento ostensivo e a preservação da ordem pública.',c:0,e:'CERTO. Art. 144, §5º, CF — às PMs cabem a polícia ostensiva e a preservação da ordem pública.'},
+    {b:'IAUPE',t:'multiple',s:'A capital de Pernambuco, sede da PMPE, é:',o:['Olinda','Caruaru','Recife','Petrolina','Jaboatão'],c:2,e:'Recife é a capital pernambucana, conhecida como a "Veneza brasileira" pelos rios e pontes.'},
+    {b:'CESPE',t:'cebraspe',s:'O policiamento ostensivo caracteriza-se pela visibilidade do agente, atuando de forma preventiva para inibir delitos.',c:0,e:'CERTO. OSTENSIVO = visível, fardado, preventivo. Diferente da polícia judiciária (investigativa, civil/federal).'},
+    {b:'IAUPE',t:'cebraspe',s:'A tortura é crime inafiançável e insuscetível de graça ou anistia, conforme a Constituição.',c:0,e:'CERTO. Art. 5º, XLIII, CF + Lei 9.455/97. Crime equiparado a hediondo. Policial jamais pode torturar, ainda que para obter confissão.'},
+    {b:'CESPE',t:'multiple',s:'Durante uma abordagem, o cidadão tem direito de:',o:['Ser agredido se resistir verbalmente','Permanecer calado e não produzir prova contra si','Ser detido sem motivo','Ter dados expostos publicamente','Nenhum direito durante abordagem'],c:1,e:'Direito ao silêncio (art. 5º, LXIII, CF). Ninguém é obrigado a produzir prova contra si mesmo.'},
+    {b:'IAUPE',t:'cebraspe',s:'O militar estadual de Pernambuco está sujeito a regulamento disciplinar próprio, que prevê transgressões e sanções administrativas.',c:0,e:'CERTO. O Código Disciplinar dos Militares de PE rege transgressões. Sanções vão de advertência a exclusão, respeitada a ampla defesa.'},
+    {b:'CESPE',t:'cebraspe',s:'A presunção de inocência permite que o policial trate todo suspeito como culpado até prova em contrário.',c:1,e:'ERRADO. É o OPOSTO. Presunção de INOCÊNCIA (art. 5º, LVII) — ninguém é culpado até trânsito em julgado. O suspeito deve ser tratado com respeito.'},
+    {b:'IAUPE',t:'multiple',s:'O Sertão do São Francisco, onde fica Petrolina, é polo de qual atividade econômica relevante para PE?',o:['Mineração de ouro','Fruticultura irrigada e vitivinicultura','Pesca de bacalhau','Extração de petróleo','Indústria automobilística'],c:1,e:'Petrolina/Juazeiro é polo de fruticultura irrigada (manga, uva) e produção de vinhos no Vale do São Francisco.'},
+  ],
+  ce: [
+    {b:'CESPE',t:'cebraspe',s:'A Polícia Militar do Ceará, como órgão de segurança pública, submete-se ao princípio da legalidade em todos os seus atos.',c:0,e:'CERTO. Art. 37, CF — a Administração Pública (inclui PM) obedece à legalidade: só pode fazer o que a lei autoriza.'},
+    {b:'AOCP',t:'multiple',s:'A capital cearense, sede do comando da PMCE, é:',o:['Sobral','Juazeiro do Norte','Fortaleza','Crato','Maracanaú'],c:2,e:'Fortaleza é a capital do Ceará, uma das maiores cidades do Nordeste.'},
+    {b:'CESPE',t:'cebraspe',s:'O uso de algemas é permitido em qualquer situação, independentemente de justificativa.',c:1,e:'ERRADO. Súmula Vinculante 11 do STF — algemas só em caso de resistência, fundado receio de fuga ou perigo. Uso exige justificativa por escrito.'},
+    {b:'AOCP',t:'cebraspe',s:'A inviolabilidade do domicílio cede diante de flagrante delito, desastre ou para prestar socorro, a qualquer hora.',c:0,e:'CERTO. Art. 5º, XI, CF. Sem consentimento, só entra: flagrante, desastre, socorro (qualquer hora) ou por ordem judicial (durante o dia).'},
+    {b:'CESPE',t:'multiple',s:'A atividade policial militar deve pautar-se pela:',o:['Truculência preventiva','Proporcionalidade e respeito aos direitos humanos','Suspeita baseada em aparência','Punição imediata sem processo','Discricionariedade absoluta'],c:1,e:'Proporcionalidade + DH. O policial é garantidor de direitos, não violador. A força deve ser a mínima necessária.'},
+    {b:'AOCP',t:'cebraspe',s:'A liberdade de locomoção pode ser restringida apenas nas hipóteses previstas em lei, como prisão em flagrante.',c:0,e:'CERTO. Art. 5º, XV e LXI, CF. Ninguém será preso senão em flagrante ou por ordem judicial fundamentada.'},
+    {b:'CESPE',t:'cebraspe',s:'O racismo é crime afiançável e prescritível segundo a Constituição.',c:1,e:'ERRADO. Art. 5º, XLII, CF — racismo é crime INAFIANÇÁVEL e IMPRESCRITÍVEL. Não prescreve nunca.'},
+    {b:'AOCP',t:'multiple',s:'O Cariri cearense é conhecido nacionalmente por:',o:['Praias urbanas','Religiosidade popular e Padre Cícero em Juazeiro','Indústria têxtil','Mineração','Vinícolas'],c:1,e:'O Cariri (Juazeiro do Norte) é centro de religiosidade popular ligada ao Padre Cícero, grande romaria.'},
+  ],
+  ma: [
+    {b:'FGV',t:'cebraspe',s:'A Polícia Militar do Maranhão exerce a polícia ostensiva, sendo vedada a usurpação de funções da polícia judiciária.',c:0,e:'CERTO. Cada órgão tem sua competência: PM (ostensiva/preventiva), PC (judiciária/investigativa). Art. 144, CF.'},
+    {b:'IMPARH',t:'multiple',s:'A capital do Maranhão, sede da PMMA, é:',o:['Imperatriz','Caxias','São Luís','Timon','Bacabal'],c:2,e:'São Luís é a capital, fundada por franceses, com centro histórico Patrimônio da Humanidade (UNESCO).'},
+    {b:'FGV',t:'cebraspe',s:'O policial militar pode ser responsabilizado civil, penal e administrativamente pelo mesmo ato, de forma independente.',c:0,e:'CERTO. As três esferas são INDEPENDENTES. Um disparo indevido pode gerar ação penal, civil (indenização) e processo administrativo.'},
+    {b:'IMPARH',t:'cebraspe',s:'A confissão obtida mediante tortura tem validade jurídica plena no processo.',c:1,e:'ERRADO. Prova obtida por tortura é ILÍCITA (art. 5º, LVI, CF) — nula, não pode ser usada. Tortura é crime grave.'},
+    {b:'FGV',t:'multiple',s:'O princípio da impessoalidade na atuação policial significa que:',o:['O policial age conforme simpatias pessoais','A atuação deve ser isenta, sem favorecer ou perseguir pessoas','Pode escolher quem fiscalizar','Atende só conhecidos','Ignora a lei se quiser'],c:1,e:'Impessoalidade (art. 37, CF) — o agente público serve ao interesse público, sem favoritismos ou perseguições.'},
+    {b:'IMPARH',t:'cebraspe',s:'A assistência de advogado e a comunicação da prisão à família são direitos do preso.',c:0,e:'CERTO. Art. 5º, LXII e LXIII, CF. A prisão deve ser comunicada ao juiz e à família; o preso tem direito a advogado e silêncio.'},
+    {b:'FGV',t:'cebraspe',s:'O militar estadual perde o posto e a patente apenas por decisão administrativa do comandante, sem processo.',c:1,e:'ERRADO. A perda de posto/patente de oficial depende de decisão do Tribunal de Justiça Militar ou TJ (art. 125, §4º, CF), com devido processo.'},
+    {b:'IMPARH',t:'multiple',s:'Os Lençóis Maranhenses, importante patrimônio natural do MA, são:',o:['Uma serra','Um conjunto de dunas e lagoas','Uma floresta','Um deserto sem água','Uma caverna'],c:1,e:'Lençóis Maranhenses: dunas de areia branca com lagoas de água doce sazonais. Parque Nacional desde 1981.'},
+  ],
+  pb: [
+    {b:'IBFC',t:'cebraspe',s:'A Polícia Militar da Paraíba subordina-se ao Governador do Estado, integrando o sistema de segurança pública.',c:0,e:'CERTO. As PMs subordinam-se aos Governadores (art. 144, §6º, CF) e integram a segurança pública estadual.'},
+    {b:'FCC',t:'multiple',s:'A capital da Paraíba, sede da PMPB, é:',o:['Campina Grande','Patos','João Pessoa','Sousa','Bayeux'],c:2,e:'João Pessoa é a capital, uma das cidades mais antigas do Brasil (1585) e ponto mais oriental das Américas.'},
+    {b:'IBFC',t:'cebraspe',s:'A busca pessoal independe de mandado judicial quando há fundada suspeita de porte de arma ou objeto ilícito.',c:0,e:'CERTO. Art. 244, CPP — busca pessoal cabe com fundada suspeita, sem mandado. Mas exige motivação concreta, não preconceito.'},
+    {b:'FCC',t:'cebraspe',s:'É permitido ao policial divulgar imagens de pessoa detida nas redes sociais para "dar exemplo".',c:1,e:'ERRADO. Viola a dignidade e a imagem (art. 5º, X, CF). Exposição vexatória pode configurar abuso de autoridade (Lei 13.869/19).'},
+    {b:'IBFC',t:'multiple',s:'O devido processo legal garante que:',o:['A punição venha antes do julgamento','Ninguém seja privado de liberdade sem o processo previsto em lei','O acusado prove inocência','A polícia julgue crimes','Não haja defesa'],c:1,e:'Devido processo legal (art. 5º, LIV) — privação de bens/liberdade só com o processo legal, ampla defesa e contraditório.'},
+    {b:'FCC',t:'cebraspe',s:'A atuação da PM deve observar a proteção dos grupos vulneráveis, como idosos, crianças e pessoas com deficiência.',c:0,e:'CERTO. Estatutos específicos (Idoso, ECA, LBI) impõem proteção. O policial deve garantir atendimento prioritário e respeitoso.'},
+    {b:'IBFC',t:'cebraspe',s:'A pena pode passar da pessoa do condenado, atingindo seus familiares, segundo a CF.',c:1,e:'ERRADO. Princípio da PESSOALIDADE da pena (art. 5º, XLV) — a pena NÃO passa da pessoa do condenado.'},
+    {b:'FCC',t:'multiple',s:'Campina Grande, na Paraíba, é mundialmente conhecida por:',o:['O Carnaval','O maior São João do mundo','As praias','A produção de vinho','O frevo'],c:1,e:'Campina Grande sedia "O Maior São João do Mundo", grande festa junina de relevância cultural e turística.'},
+  ],
+  rn: [
+    {b:'FGV',t:'cebraspe',s:'A Polícia Militar do Rio Grande do Norte exerce policiamento ostensivo fardado como regra de atuação.',c:0,e:'CERTO. O policiamento ostensivo pressupõe identificação visível (farda/viatura) para inibir delitos preventivamente.'},
+    {b:'IDECAN',t:'multiple',s:'A capital do Rio Grande do Norte, sede da PMRN, é:',o:['Mossoró','Natal','Parnamirim','Caicó','Currais Novos'],c:1,e:'Natal é a capital potiguar, conhecida como "Cidade do Sol", com as dunas de Genipabu.'},
+    {b:'FGV',t:'cebraspe',s:'O direito de reunião pacífica em local público independe de autorização, exigindo apenas aviso prévio à autoridade.',c:0,e:'CERTO. Art. 5º, XVI, CF — reunião pacífica, sem armas, em local público: independe de autorização, basta prévio aviso. PM garante a ordem, não reprime o direito.'},
+    {b:'IDECAN',t:'cebraspe',s:'O policial militar pode entrar em domicílio à noite sem ordem judicial fora das hipóteses constitucionais.',c:1,e:'ERRADO. À noite só entra com consentimento, flagrante, desastre ou socorro. Ordem judicial só vale DURANTE O DIA (art. 5º, XI).'},
+    {b:'FGV',t:'multiple',s:'A função social da polícia militar é principalmente:',o:['Punir criminosos','Proteger a sociedade e garantir direitos','Arrecadar multas','Vigiar opositores','Substituir o Judiciário'],c:1,e:'A PM protege a coletividade e GARANTE direitos — é instrumento de cidadania, não de repressão arbitrária.'},
+    {b:'IDECAN',t:'cebraspe',s:'A igualdade perante a lei impede que o policial trate pessoas de forma discriminatória por raça, cor ou condição social.',c:0,e:'CERTO. Art. 5º, caput, CF — todos são iguais perante a lei. Abordagem por "perfil racial" é ilegal e inconstitucional.'},
+    {b:'FGV',t:'cebraspe',s:'A casa é asilo inviolável, mas esse direito não se aplica a barracos ou moradias improvisadas.',c:1,e:'ERRADO. "Casa" abrange QUALQUER moradia, inclusive humildes ou improvisadas. A inviolabilidade protege todos igualmente.'},
+    {b:'IDECAN',t:'multiple',s:'Natal/RN abriga o ponto mais próximo do continente africano nas Américas e foi base estratégica em qual evento?',o:['Guerra do Paraguai','Segunda Guerra Mundial','Independência','Proclamação da República','Inconfidência'],c:1,e:'Natal foi base aérea estratégica dos EUA na 2ª Guerra ("Trampolim da Vitória"), pela proximidade com a África.'},
+  ],
+  al: [
+    {b:'CESPE',t:'cebraspe',s:'A Polícia Militar de Alagoas integra a segurança pública e atua na preservação da ordem pública.',c:0,e:'CERTO. Art. 144, CF — segurança pública é dever do Estado; a PM preserva a ordem pública e faz policiamento ostensivo.'},
+    {b:'FGV',t:'multiple',s:'A capital de Alagoas, sede da PMAL, é:',o:['Arapiraca','Maceió','Palmeira dos Índios','Penedo','União dos Palmares'],c:1,e:'Maceió é a capital alagoana, famosa pelas praias de águas cristalinas como Pajuçara e o Francês.'},
+    {b:'CESPE',t:'cebraspe',s:'O abuso de autoridade é crime e pode ser cometido por agente público que excede os limites de suas funções.',c:0,e:'CERTO. Lei 13.869/19 — abuso de autoridade pune o agente que age com finalidade específica de prejudicar ou por mero capricho.'},
+    {b:'FGV',t:'cebraspe',s:'O policial militar, ao prender em flagrante, está dispensado de informar os direitos do preso.',c:1,e:'ERRADO. Deve informar os direitos (silêncio, advogado) — art. 5º, LXIII, CF. Omitir pode viciar a prisão.'},
+    {b:'CESPE',t:'multiple',s:'A proporcionalidade no uso da força significa que:',o:['Sempre usar arma de fogo','A força deve ser compatível com a ameaça enfrentada','Nunca usar força','Usar o máximo sempre','Depende do humor do agente'],c:1,e:'Proporcionalidade: a resposta deve ser compatível e necessária frente à ameaça. Arma de fogo é último recurso.'},
+    {b:'FGV',t:'cebraspe',s:'A vedação à pena de caráter perpétuo aplica-se no ordenamento brasileiro.',c:0,e:'CERTO. Art. 5º, XLVII, CF — não há pena perpétua, de morte (salvo guerra), de trabalhos forçados ou cruéis.'},
+    {b:'CESPE',t:'cebraspe',s:'Cabe à PM, e não ao Poder Judiciário, decidir a culpa e aplicar a pena ao detido.',c:1,e:'ERRADO. A PM PRENDE em flagrante e encaminha; JULGAR e aplicar pena é função exclusiva do Judiciário (separação de poderes).'},
+    {b:'FGV',t:'multiple',s:'Alagoas tem em seu território o famoso quilombo histórico de:',o:['Palmares (Serra da Barriga)','Canudos','Caldeirão','Pedra Bonita','Cabanos'],c:0,e:'O Quilombo dos Palmares, na Serra da Barriga (União dos Palmares/AL), foi o maior quilombo do Brasil, liderado por Zumbi.'},
+  ],
+  pi: [
+    {b:'NUCEPE',t:'cebraspe',s:'A Polícia Militar do Piauí subordina-se ao Governador e exerce o policiamento ostensivo no Estado.',c:0,e:'CERTO. Subordinação ao Governador (art. 144, §6º) e competência de policiamento ostensivo (§5º) da CF.'},
+    {b:'FGV',t:'multiple',s:'A capital do Piauí, sede da PMPI, é:',o:['Parnaíba','Picos','Teresina','Floriano','Piripiri'],c:2,e:'Teresina é a capital piauiense, única capital nordestina não litorânea, conhecida pelo forte calor.'},
+    {b:'NUCEPE',t:'cebraspe',s:'O policial deve garantir a integridade física do preso sob sua custódia.',c:0,e:'CERTO. O Estado é GARANTIDOR (posição de garante). Lesões a preso sob custódia geram responsabilização do agente e do Estado.'},
+    {b:'FGV',t:'cebraspe',s:'A liberdade de expressão autoriza qualquer manifestação, inclusive incitação a crimes, sem limites.',c:1,e:'ERRADO. A liberdade de expressão NÃO é absoluta — não protege discurso de ódio, racismo ou incitação a crimes.'},
+    {b:'NUCEPE',t:'multiple',s:'O contraditório e a ampla defesa são assegurados:',o:['Só em processos penais','Em processos judiciais e administrativos','Apenas a réus ricos','Só após a condenação','Nunca a militares'],c:1,e:'Art. 5º, LV, CF — contraditório e ampla defesa valem em TODO processo, judicial OU administrativo (inclui PAD militar).'},
+    {b:'FGV',t:'cebraspe',s:'A função de polícia ostensiva inclui ações preventivas para evitar a ocorrência de delitos.',c:0,e:'CERTO. Ostensiva = preventiva e visível. Patrulhamento, presença e dissuasão evitam crimes antes que ocorram.'},
+    {b:'NUCEPE',t:'cebraspe',s:'O militar que cumpre ordem manifestamente ilegal fica isento de qualquer responsabilidade penal.',c:1,e:'ERRADO. Ordem MANIFESTAMENTE ilegal não escusa o executor — ambos respondem. Só a ordem legal (ou não manifestamente ilegal) exclui culpa.'},
+    {b:'FGV',t:'multiple',s:'O Parque Nacional da Serra da Capivara, no Piauí, é reconhecido pela UNESCO por:',o:['Praias','Pinturas rupestres pré-históricas','Vulcões','Geleiras','Arranha-céus'],c:1,e:'A Serra da Capivara (São Raimundo Nonato/PI) abriga milhares de sítios com arte rupestre milenar, Patrimônio da Humanidade.'},
+  ],
+  se: [
+    {b:'IBFC',t:'cebraspe',s:'A Polícia Militar de Sergipe é força auxiliar e reserva do Exército, conforme a Constituição Federal.',c:0,e:'CERTO. Art. 144, §6º, CF — PMs e bombeiros militares são forças auxiliares e reserva do Exército.'},
+    {b:'FGV',t:'multiple',s:'A capital de Sergipe, sede da PMSE, é:',o:['Itabaiana','Lagarto','Aracaju','Estância','Nossa Senhora do Socorro'],c:2,e:'Aracaju é a capital sergipana, primeira capital planejada do Brasil (1855).'},
+    {b:'IBFC',t:'cebraspe',s:'O respeito aos direitos humanos fortalece a legitimidade e a confiança da população na polícia.',c:0,e:'CERTO. Polícia cidadã e respeitosa gera confiança, cooperação e mais segurança. DH e eficiência policial caminham juntos.'},
+    {b:'FGV',t:'cebraspe',s:'A prisão preventiva pode ser decretada pelo próprio policial militar durante a abordagem.',c:1,e:'ERRADO. Prisão PREVENTIVA é decretada por JUIZ. A PM só pode efetuar prisão em FLAGRANTE delito (art. 301, CPP).'},
+    {b:'IBFC',t:'multiple',s:'O princípio da legalidade na atividade policial implica que o agente:',o:['Pode agir como quiser','Só pode fazer o que a lei permite','Cria suas próprias regras','Ignora a Constituição','Decide penas'],c:1,e:'Legalidade estrita: o agente público só faz o que a lei AUTORIZA (diferente do particular, que faz tudo que a lei não proíbe).'},
+    {b:'FGV',t:'cebraspe',s:'É assegurado ao preso o respeito à integridade física e moral.',c:0,e:'CERTO. Art. 5º, XLIX, CF — integridade física e moral do preso é direito constitucional. Maus-tratos são crime.'},
+    {b:'IBFC',t:'cebraspe',s:'A competência para legislar sobre direito penal é dos Estados, podendo cada PM criar seus crimes.',c:1,e:'ERRADO. Legislar sobre direito penal é competência PRIVATIVA da UNIÃO (art. 22, I, CF). Estados/PMs não criam crimes.'},
+    {b:'FGV',t:'multiple',s:'Sergipe é o menor estado do Brasil em qual aspecto?',o:['População','Extensão territorial (área)','Número de cidades','PIB total','Litoral'],c:1,e:'Sergipe é o menor estado brasileiro em ÁREA territorial (~21.900 km²).'},
+  ],
+};
+
+// Estado do módulo PM
+let activePM = null;
+
+// Aplica o tema de cor de uma PM (muda as cores de toda a interface)
+function applyContestTheme(pmId) {
+  const pm = PM_NE[pmId];
+  if (!pm) return;
+  const root = document.documentElement;
+  // Sobrescreve as variáveis principais com as cores da PM
+  root.style.setProperty('--rose', pm.cor);
+  root.style.setProperty('--rose-soft', pm.cor2);
+  root.style.setProperty('--cyan', pm.cor2);
+  root.style.setProperty('--border-strong', pm.cor + '4d');
+  document.body.setAttribute('data-contest', pmId);
+}
+
+// Remove o tema de concurso (volta ao padrão Fluently)
+function clearContestTheme() {
+  const root = document.documentElement;
+  root.style.removeProperty('--rose');
+  root.style.removeProperty('--rose-soft');
+  root.style.removeProperty('--cyan');
+  root.style.removeProperty('--border-strong');
+  document.body.removeAttribute('data-contest');
+  activePM = null;
+}
+
+// Abre a tela seletora de concursos PM-NE
+function openPMNE() {
+  audioInit(); snd.click();
+  renderPMNEGrid();
+  showScreen('screen-pmne');
+}
+
+// Renderiza o grid de PMs
+function renderPMNEGrid() {
+  const grid = $('pmne-grid');
+  if (!grid) return;
+  let html = '';
+  for (const id in PM_NE) {
+    const pm = PM_NE[id];
+    const total = (PM_QBANK[id] || []).length;
+    html += `<button class="pm-card" style="--pm-cor:${pm.cor};--pm-cor2:${pm.cor2};" onclick="enterPM('${id}')">
+      <div class="pm-card-icon">${pm.icon}</div>
+      <div class="pm-card-name">${pm.nome}</div>
+      <div class="pm-card-meta">${pm.banca} • ${total} questões</div>
+      <div class="pm-card-cta">ENTRAR ▶</div>
+    </button>`;
+  }
+  grid.innerHTML = html;
+}
+
+
+
+// Inicia o quiz exclusivo da PM (reusa a engine de fase existente)
+function startPMQuiz(pmId) {
+  const pm = PM_NE[pmId];
+  const bank = PM_QBANK[pmId] || [];
+  if (bank.length === 0) {
+    openModal({title:'Em breve!', msg:`Questões da ${pm.nome} serão adicionadas em breve.`, hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  if (progress.lives <= 0) {
+    openModal({title:'❤️ SEM VIDAS!', msg:'As vidas renovam a cada novo dia. Volte amanhã!', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  // Embaralha e formata as questões (reusa formatBankQuestion)
+  const shuffled = [...bank].sort(() => Math.random()-0.5);
+  activePhase = {
+    id:'pm-'+pmId, type:'contest', subject:'mix', isPM:true, pmId:pmId,
+    title:`${pm.icon} ${pm.nome}`,
+    subtitle:`Questões exclusivas • Banca ${pm.banca}`,
+    briefing:`Bateria de questões EXCLUSIVAS da ${pm.nome} (${pm.capital}/${pm.uf}). Foco em Direitos Humanos, Constituição, segurança pública e realidade do estado. Acerte o máximo pra dominar o edital!`,
+    questions: shuffled.map(formatBankQuestion),
+  };
+  phaseState = {stage:'briefing', qIdx:0, answers:[], score:0};
+  renderPhase();
+  showScreen('screen-phase');
+}
+
+// Sai do módulo PM (limpa tema)
+function exitPMNE() {
+  clearContestTheme();
+  snd.click();
+  goHub();
+}
+
+// Voltar do mapa da PM pra lista de concursos
+function exitPMMap() {
+  clearContestTheme();
+  snd.click();
+  openPMNE();
+}
+window.exitPMMap = exitPMMap;
+// Entra numa PM (aplica tema e abre o MAPA da PM)
+function enterPM(pmId) {
+  const pm = PM_NE[pmId];
+  if (!pm) return;
+  audioInit(); snd.click();
+  activePM = pmId;
+  applyContestTheme(pmId);
+  renderPMMap(pmId);
+  showScreen('screen-pm-map');
+}
+
+// Divide as questões da PM em 3 dias (2 dias + boss)
+function getPMDays(pmId) {
+  const bank = PM_QBANK[pmId] || [];
+  const half = Math.ceil(bank.length / 2);
+  return [
+    {key:'d1', day:1, mode:'topic',     title:'Direitos & Cidadania', qs: bank.slice(0, half)},
+    {key:'d2', day:2, mode:'topic',     title:'Constituição & Segurança', qs: bank.slice(half)},
+    {key:'boss', day:3, mode:'finalboss', title:'BOSS FINAL — Edital Completo', qs: bank},
+  ];
+}
+
+// Renderiza o MAPA de uma PM (mesmo layout do mapa principal, SEM abas de matéria)
+function renderPMMap(pmId) {
+  const pm = PM_NE[pmId];
+  const cont = $('pm-map-phases');
+  if (!pm || !cont) return;
+  const days = getPMDays(pmId);
+  const done = (progress.pmDone && progress.pmDone[pmId]) || {};
+
+  // Atualiza header da tela
+  const hd = $('pm-map-title');
+  if (hd) hd.innerHTML = pm.icon + ' ' + pm.nome;
+  const sub = $('pm-map-sub');
+  if (sub) sub.textContent = pm.capital + '/' + pm.uf + ' • Banca ' + pm.banca;
+
+  // Progresso
+  const totalDone = days.filter(d => done[d.key]).length;
+
+  let html = `
+    <div class="journey-header">
+      <div class="journey-header-top">
+        <div class="ato-badge" style="border-color:${pm.cor};color:${pm.cor2};background:${pm.cor}22;">JORNADA</div>
+        <div class="ato-title" style="color:${pm.cor2};">${pm.icon} ${pm.nome} — ${days.length} DIAS</div>
+      </div>
+      <div class="journey-header-desc">
+        questões <strong style="color:${pm.cor2};">EXCLUSIVAS</strong> da ${pm.nome} 💀 &nbsp;•&nbsp;
+        ${totalDone}/${days.length} concluídos • complete tudo pra dominar o edital!
+      </div>
+    </div>
+    <div class="phases-grid">`;
+
+  days.forEach((d, idx) => {
+    const completed = !!done[d.key];
+    // desbloqueado: dia 1 sempre; outros se o anterior foi feito
+    const unlocked = idx === 0 || !!done[days[idx-1].key];
+    const current = !completed && unlocked;
+    let topIcon = d.mode === 'finalboss' ? '☠️' : '💀';
+    let statusType, statusText;
+    if (!unlocked) { statusType='locked'; statusText='🔒 BLOQUEADO'; }
+    else if (completed) { statusType='boss'; statusText='✓ FEITO'; }
+    else if (current && d.mode==='finalboss') { statusType='final'; statusText='★ FINAL'; }
+    else if (current) { statusType='current'; statusText='★ HOJE'; }
+    else { statusType='boss'; statusText='▸ BOSS'; }
+
+    html += `<button class="phase ${completed?'completed':''} ${current?'current':''}" ${!unlocked?'disabled':''} onclick="startPMDay('${pmId}','${d.key}')" style="border-top:3px solid ${pm.cor} !important;">
+      <div class="phase-top">
+        <div class="phase-icon" style="color:${pm.cor2};background:${pm.cor}1a;">${pm.icon}</div>
+        <div class="phase-num" style="color:${pm.cor2};">DIA ${d.day}</div>
+        <div class="phase-type-icon">${topIcon}</div>
+      </div>
+      <div class="phase-title">${esc(d.title)}</div>
+      <div class="phase-bottom">
+        <div class="phase-status" data-status="${statusType}">${statusText}</div>
+      </div>
+    </button>`;
+  });
+  html += `</div>`;
+  cont.innerHTML = html;
+}
+
+// Inicia o quiz de um dia da PM (reusa engine de fase)
+function startPMDay(pmId, dayKey) {
+  const pm = PM_NE[pmId];
+  const days = getPMDays(pmId);
+  const day = days.find(d => d.key === dayKey);
+  if (!pm || !day) return;
+  audioInit();
+  // checar bloqueio
+  const done = (progress.pmDone && progress.pmDone[pmId]) || {};
+  const idx = days.findIndex(d => d.key === dayKey);
+  const unlocked = idx === 0 || !!done[days[idx-1].key];
+  if (!unlocked) { snd.error && snd.error(); return; }
+  if (progress.lives <= 0) {
+    openModal({title:'❤️ SEM VIDAS!', msg:'As vidas renovam a cada novo dia. Volte amanhã!', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  snd.click();
+  const shuffled = [...day.qs].sort(() => Math.random()-0.5);
+  activePhase = {
+    id:'pmday-'+pmId+'-'+dayKey, type:'contest', subject:'mix',
+    isPM:true, pmId:pmId, pmKey:dayKey, mode:day.mode,
+    title:`${pm.icon} ${pm.nome} — DIA ${day.day}`,
+    subtitle:day.title,
+    briefing:`${day.title} — questões exclusivas da ${pm.nome}. Acerte 60%+ pra concluir o dia e desbloquear o próximo.`,
+    questions: shuffled.map(formatBankQuestion),
+  };
+  phaseState = {stage:'briefing', qIdx:0, answers:[], score:0};
+  renderPhase();
+  showScreen('screen-phase');
+}
+
+window.startPMDay = startPMDay;
+window.renderPMMap = renderPMMap;
+
+// ===== HUB INICIAL =====
+function goHub() {
+  clearContestTheme();
+  showScreen('screen-hub');
+  // Atualiza saudação
+  const greet = $('hub-greet');
+  if (greet && user) greet.textContent = 'Olá, ' + (user.name || 'guerreira') + '!';
+}
+window.goHub = goHub;
+
+
+window.openPMNE = openPMNE;
+window.enterPM = enterPM;
+window.exitPMNE = exitPMNE;
+window.clearContestTheme = clearContestTheme;
 
 
 function friendlyAuthError(err, isSignup) {
@@ -5853,7 +6366,7 @@ const submitLogin = async () => {
         const temPerfil = user.cargo || user.banca || user.nivel;
         if (temPerfil) {
           checkDeviceFingerprint();
-          goMap();
+          goHub();
         } else {
           onbStep = 0;
           onbData = { avatar: progress.avatar || '👮‍♀️', avatarColor: progress.avatarColor || '#ff2e63' };
@@ -6359,6 +6872,19 @@ function startSimulado() {
 }
 
 function exitPhase() {
+  // Se for fase de concurso PM, volta ao mapa da PM (mantém tema)
+  try {
+    if (activePhase && activePhase.isPM && activePhase.pmId) {
+      const pid = activePhase.pmId;
+      applyContestTheme(pid);
+      renderPMMap(pid);
+      showScreen('screen-pm-map');
+      activePhase = null;
+      return;
+    }
+  } catch(e) { console.error('[exitPhase PM]', e); }
+  // Se estava numa fase de concurso PM, limpa o tema de cor
+  try { if (activePhase && activePhase.isPM) { clearContestTheme(); } } catch(e){}
   snd.click();
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   activePhase = null; phaseState = null;
@@ -6570,6 +7096,12 @@ function finishPhase() {
   if (passed && typeof ph.id === 'number' && !progress.completedPhases.includes(ph.id)) {
     progress.completedPhases.push(ph.id);
     if (ph.id === progress.currentPhase) progress.currentPhase = Math.min(PHASES.length, ph.id + 1);
+  }
+  // Marca dia de concurso PM como concluído
+  if (passed && ph.isPM && ph.pmId && ph.pmKey) {
+    if (!progress.pmDone) progress.pmDone = {};
+    if (!progress.pmDone[ph.pmId]) progress.pmDone[ph.pmId] = {};
+    progress.pmDone[ph.pmId][ph.pmKey] = true;
   }
 
   if (!passed) progress.lives = Math.max(0, progress.lives - (ph.type === 'boss' ? 2 : 1));
