@@ -3105,6 +3105,42 @@ body::before, body::after,
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* 👑 Botões do painel admin */
+.admin-btn {
+  padding: 12px 16px !important;
+  border-radius: 10px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass-bg) !important;
+  color: var(--text-primary) !important;
+  text-align: center !important;
+  transition: transform .15s, box-shadow .15s !important;
+  letter-spacing: 0.3px !important;
+}
+.admin-btn:hover { transform: translateY(-2px); box-shadow: var(--elev-2); }
+.admin-btn-warn { background: linear-gradient(90deg, #dc2626, #ef4444) !important; color: #fff !important; border-color: #dc2626 !important; }
+.admin-btn-info { background: linear-gradient(90deg, var(--rose), var(--rose-soft, #ff6b9d)) !important; color: #fff !important; border-color: var(--rose) !important; }
+.admin-action-btn {
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  background: var(--rose) !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.admin-action-btn:hover { background: var(--rose-soft, #ff6b9d) !important; }
+.hub-card-admin {
+  background: linear-gradient(160deg, rgba(255,215,0,.25), rgba(212,175,55,.1)) !important;
+  border-color: rgba(255,215,0,.4) !important;
+}
+.hub-card-admin .hub-card-cta { background: linear-gradient(90deg, #d4af37, #ffd700) !important; color: #2d1810 !important; }
 </style>
 </head>
 <body>
@@ -3617,28 +3653,47 @@ body::before, body::after,
 <!-- SUPERADMIN — Dashboard das alunas -->
 <div id="screen-admin" class="screen">
   <div class="container">
-    <button class="back-btn" onclick="goMap()">← voltar ao mapa</button>
+    <button class="back-btn" onclick="goHub()">← início</button>
     <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:var(--amber);">
       <div style="text-align:center;">
         <div style="font-size:48px;margin-bottom:8px;">👑</div>
         <div class="font-arcade" style="color:var(--amber);font-size:16px;">PAINEL DO MESTRE</div>
-        <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;">Acompanhe todas as alunas da turma</div>
+        <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;">Controle total das alunas e do sistema</div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;text-align:center;">
-        <div style="padding:12px;background:rgba(255,46,99,.1);border:1px solid var(--rose);">
+        <div style="padding:12px;background:rgba(255,46,99,.1);border:1px solid var(--rose);border-radius:8px;">
           <div style="color:rgba(255,255,255,.5);font-size:11px;">ALUNAS</div>
           <div id="admin-total" class="font-orbit" style="font-weight:900;font-size:24px;color:var(--rose);">0</div>
         </div>
-        <div style="padding:12px;background:rgba(255,215,0,.1);border:1px solid var(--amber);">
+        <div style="padding:12px;background:rgba(255,215,0,.1);border:1px solid var(--amber);border-radius:8px;">
           <div style="color:rgba(255,255,255,.5);font-size:11px;">XP MÉDIO</div>
           <div id="admin-avg-xp" class="font-orbit" style="font-weight:900;font-size:24px;color:var(--amber);">0</div>
         </div>
-        <div style="padding:12px;background:rgba(16,185,129,.1);border:1px solid var(--emerald);">
-          <div style="color:rgba(255,255,255,.5);font-size:11px;">ATIVAS HOJE</div>
+        <div style="padding:12px;background:rgba(16,185,129,.1);border:1px solid var(--emerald);border-radius:8px;">
+          <div style="color:rgba(255,255,255,.5);font-size:11px;">XP TOTAL</div>
           <div id="admin-active-today" class="font-orbit" style="font-weight:900;font-size:24px;color:var(--emerald);">0</div>
         </div>
       </div>
     </div>
+
+    <!-- AÇÕES EM MASSA -->
+    <div class="card pixel-corners" style="margin-bottom:16px;">
+      <div class="font-arcade" style="font-size:11px;color:var(--amber);margin-bottom:14px;">⚡ AÇÕES EM MASSA</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+        <button class="admin-btn admin-btn-warn" onclick="adminResetRanking()">🏆 ZERAR RANKING</button>
+        <button class="admin-btn admin-btn-warn" onclick="adminResetXPAll()">⚡ ZERAR XP TODAS</button>
+        <button class="admin-btn admin-btn-info" onclick="adminBroadcast()">📢 ENVIAR AVISO</button>
+        <button class="admin-btn admin-btn-info" onclick="adminExportCSV()">📥 EXPORTAR CSV</button>
+        <button class="admin-btn admin-btn-info" onclick="adminRefresh()">🔄 ATUALIZAR</button>
+      </div>
+    </div>
+
+    <!-- BUSCA -->
+    <div class="card pixel-corners" style="margin-bottom:16px;">
+      <div class="font-arcade" style="font-size:11px;color:var(--cyan);margin-bottom:8px;">🔍 BUSCAR ALUNA</div>
+      <input type="text" id="admin-search" placeholder="Nome, email ou código (M-XXXX)..." oninput="adminFilter()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);border-radius:8px;color:var(--text-primary);font-size:14px;">
+    </div>
+
     <div id="admin-loading" style="text-align:center;padding:40px;color:rgba(255,255,255,.5);">
       <div class="font-arcade" style="font-size:11px;">CARREGANDO ALUNAS...</div>
     </div>
@@ -4028,8 +4083,8 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A eficiência foi introduzida expressamente no caput do art. 37 pela EC 19/1998.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
   {b:'CESPE',t:'cebraspe',s:'A motivação é princípio expresso no caput do art. 37 da Constituição Federal.',c:1,e:'ERRADO. Não consta do LIMPE. É implícita na CF, expressa na Lei 9.784/99.'},
   {b:'CESPE',t:'cebraspe',s:'O princípio da supremacia do interesse público é explícito na Constituição.',c:1,e:'ERRADO. É implícito.'},
-  {b:'CESPE',t:'cebraspe',s:'A Administração pode revogar atos discricionários por motivo de conveniência e oportunidade, respeitados direitos adquiridos.',c:0,e:'CERTO. Súmula 473 STF.'},
-  {b:'CESPE',t:'cebraspe',s:'A vinculação do administrador à lei é absoluta, não havendo qualquer espaço para discricionariedade.',c:1,e:'ERRADO. Há margem discricionária (mérito).'},
+  {b:'CESPE',t:'cebraspe',s:'A polícia federal exerce, com exclusividade, as funções de polícia judiciária da União (CF, art. 144, §1º, IV).',c:0,e:'CERTO. Art. 144, §1º, IV, CF. PF tem exclusividade nas funções de polícia judiciária federal.'},
+  {b:'CESPE',t:'cebraspe',s:'As guardas municipais podem atuar na proteção dos bens, serviços e instalações dos municípios, conforme dispuser a lei (CF, art. 144, §8º).',c:0,e:'CERTO. Art. 144, §8º, CF + Lei 13.022/14 (Estatuto Geral das Guardas Municipais).'},
   {b:'FGV',t:'multiple',s:'Os princípios da Administração Pública explícitos no caput do art. 37 são, na ordem:',o:['Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência.','Legalidade, Eficiência, Moralidade, Publicidade e Impessoalidade.','Moralidade, Legalidade, Impessoalidade, Eficiência e Publicidade.','Legalidade, Impessoalidade, Motivação, Publicidade e Eficiência.','Legalidade, Impessoalidade, Moralidade, Publicidade e Razoabilidade.'],c:0,e:'LIMPE.'},
   {b:'FGV',t:'multiple',s:'A autotutela permite à Administração:',o:['Apenas revogar atos.','Anular atos ilegais e revogar inconvenientes, respeitados direitos adquiridos.','Cobrar tributos.','Indeferir pedidos sem motivar.','Demitir servidores sem PAD.'],c:1,e:'Súmulas 346 e 473 STF.'},
   {b:'FCC',t:'multiple',s:'O princípio da impessoalidade possui dois sentidos:',o:['Finalidade pública e vedação à promoção pessoal.','Igualdade e moralidade.','Eficiência e celeridade.','Legalidade e publicidade.','Imparcialidade e neutralidade.'],c:0,e:'Doutrina majoritária.'},
@@ -5915,6 +5970,21 @@ function goHub() {
   // Atualiza saudação
   const greet = $('hub-greet');
   if (greet && user) greet.textContent = 'Olá, ' + (user.name || 'guerreira') + '!';
+  // Mostrar botão admin no HUB se for admin
+  setTimeout(() => {
+    if (isAdmin && isAdmin()) {
+      const grid = document.querySelector('#screen-hub .hub-grid');
+      if (grid && !document.getElementById('hub-admin-btn')) {
+        const btn = document.createElement('button');
+        btn.id = 'hub-admin-btn';
+        btn.className = 'hub-card hub-card-admin';
+        btn.onclick = () => goAdmin();
+        btn.innerHTML = '<div class="hub-card-icon">👑</div><div class="hub-card-title">PAINEL ADMIN</div><div class="hub-card-sub">Controle total: ranking, alunas, broadcasts</div><div class="hub-card-cta">ENTRAR ▶</div>';
+        grid.appendChild(btn);
+      }
+    }
+  }, 100);
+
 }
 window.goHub = goHub;
 
@@ -5923,6 +5993,45 @@ window.openPMNE = openPMNE;
 window.enterPM = enterPM;
 window.exitPMNE = exitPMNE;
 window.clearContestTheme = clearContestTheme;
+
+
+
+// 🔍 DIAGNÓSTICO DO RANKING — chama no console: rankingDiagnostico()
+async function rankingDiagnostico() {
+  console.log('%c🏆 DIAGNÓSTICO DO RANKING', 'font-size:16px;color:#ffd700;font-weight:bold');
+  const r = { supabaseOk: false, viewExists: false, profilesExist: false, optedIn: 0, total: 0, mine: false };
+  try {
+    if (typeof sb === 'undefined' || !sb) { console.log('❌ Supabase não conectado'); return r; }
+    r.supabaseOk = true;
+    console.log('✅ Supabase conectado');
+    const { data, error } = await sb.from('public_ranking').select('*');
+    if (error) {
+      console.log('❌ View public_ranking erro:', error.message);
+      if (error.message.includes('does not exist')) {
+        console.log('💡 Solução: rode o SQL supabase_pvp_schema.sql no Supabase SQL Editor');
+      }
+      return r;
+    }
+    r.viewExists = true;
+    console.log('✅ View public_ranking existe');
+    r.total = data?.length || 0;
+    r.optedIn = r.total;
+    console.log(`📊 Total no ranking: ${r.total} pessoa(s)`);
+    if (r.total > 0) {
+      console.log('Top 5:');
+      data.slice(0,5).forEach((p,i) => console.log(`  #${i+1} ${p.name||'?'} - ${p.xp||0}xp - ${p.streak||0}🔥`));
+    }
+    if (user && user.id) {
+      const eu = data.find(p => p.user_id === user.id);
+      r.mine = !!eu;
+      if (eu) console.log(`✅ VOCÊ aparece no ranking (${eu.xp}xp)`);
+      else console.log('⚠️ Você NÃO está no ranking. Solução: vá em Stats e ative "Aparecer no ranking"');
+    }
+  } catch(e) { console.error('❌ Erro:', e); }
+  console.log('Resultado:', r);
+  return r;
+}
+window.rankingDiagnostico = rankingDiagnostico;
 
 
 function friendlyAuthError(err, isSignup) {
@@ -6061,7 +6170,7 @@ function hydrateFromCloud(cloudProfile, cloudProg) {
       dataProva: cloudProfile.data_prova,
       horasDia: cloudProfile.horas_dia,
       nivel: cloudProfile.nivel,
-      showInRanking: cloudProfile.show_in_ranking,
+      showInRanking: cloudProfile.show_in_ranking !== false, // default true se null
       lastLoginAt: new Date().toISOString(),
       createdAt: cloudProfile.created_at,
     };
@@ -6154,6 +6263,13 @@ function toggleLoginMode() {
 
 // Ranking
 async function goRanking() {
+  // Garantir que o status público está sincronizado com a nuvem
+  try {
+    if (user && user.id && user.showInRanking !== false && sb) {
+      sb.from('profiles').update({ show_in_ranking: true }).eq('user_id', user.id).then(() => {});
+    }
+  } catch(e) {}
+
   snd.click();
   showScreen('screen-ranking');
   $('ranking-loading').classList.remove('hidden');
@@ -6434,7 +6550,7 @@ const submitLogin = async () => {
         return;
       }
       // Cria perfil inicial e vai pra onboarding
-      user = { name, email, createdAt: new Date().toISOString(), showInRanking: false };
+      user = { name, email, createdAt: new Date().toISOString(), showInRanking: true };
       progress = defaultProgress();
       saveUser(); saveProgress();
       await upsertProfile(); await upsertProgress();
@@ -6479,7 +6595,7 @@ const submitLogin = async () => {
         }
       } else {
         // Primeiro login mas sem perfil — manda pra onboarding
-        user = { name: signinData.user?.user_metadata?.name || email.split('@')[0], email, showInRanking: false };
+        user = { name: signinData.user?.user_metadata?.name || email.split('@')[0], email, showInRanking: true };
         progress = defaultProgress();
         saveUser(); saveProgress();
         onbStep = 0;
@@ -6856,7 +6972,7 @@ const confirmReset = () => {
           name: user.name,
           email: user.email,
           createdAt: user.createdAt,
-          showInRanking: false,
+          showInRanking: true,
         };
         saveUser();
       }
@@ -8669,7 +8785,7 @@ async function goAdmin() {
     const avgXp = list.length > 0 ? Math.round(list.reduce((s,r) => s + (r.xp||0), 0) / list.length) : 0;
     document.getElementById('admin-avg-xp').textContent = avgXp;
     // ativas hoje: não temos last_play_date no view, deixa 0 por enquanto
-    document.getElementById('admin-active-today').textContent = '—';
+    document.getElementById('admin-active-today').textContent = list.reduce((s,r) => s + (r.xp||0), 0).toLocaleString('pt-BR');
 
     if (list.length === 0) {
       document.getElementById('admin-list').innerHTML = `
@@ -8687,19 +8803,20 @@ async function goAdmin() {
           <table class="admin-table">
             <thead>
               <tr>
-                <th>#</th><th>Aluna</th><th>Patente</th><th>XP</th><th>Dias</th><th>Streak</th>
+                <th>#</th><th>Aluna</th><th>Patente</th><th>XP</th><th>Dias</th><th>Streak</th><th>Ações</th>
               </tr>
             </thead>
             <tbody>
               ${list.map((r, i) => {
                 const pat = getPatente(r.xp || 0);
-                return `<tr>
+                return `<tr data-search="${esc((r.name||'')+' '+(r.player_code||'')+' '+(r.email||''))}">
                   <td style="font-family:Orbitron;color:rgba(255,255,255,.5);">${i+1}</td>
-                  <td><span style="font-size:18px;filter:drop-shadow(0 0 4px ${r.avatar_color||'#ff2e63'});">${esc(r.avatar||'👮‍♀️')}</span> <strong>${esc(r.name)}</strong></td>
+                  <td><span style="font-size:18px;filter:drop-shadow(0 0 4px ${r.avatar_color||'#ff2e63'});">${esc(r.avatar||'👮‍♀️')}</span> <strong>${esc(r.name)}</strong><br><small style="opacity:.5;font-family:Orbitron;">${esc(r.player_code||'')}</small></td>
                   <td style="font-size:11px;color:rgba(255,255,255,.7);">${pat.icon} ${esc(pat.nome)}</td>
                   <td style="font-family:Orbitron;font-weight:700;color:var(--amber);">${r.xp||0}</td>
-                  <td style="color:var(--cyan);">${r.days_done||0}/30</td>
+                  <td style="color:var(--cyan);">${r.days_done||0}</td>
                   <td>🔥 ${r.streak||0}</td>
+                  <td><button class="admin-action-btn" onclick="adminUserPanel('${r.id||''}','${esc(r.name||'')}','${esc(r.player_code||'')}')">⚙️ AÇÕES</button></td>
                 </tr>`;
               }).join('')}
             </tbody>
@@ -8712,6 +8829,160 @@ async function goAdmin() {
     document.getElementById('admin-loading').textContent = 'Erro: ' + (e.message || e);
   }
 }
+
+// ============================================================
+// 👑 FUNÇÕES ADMINISTRATIVAS AVANÇADAS
+// ============================================================
+function adminRefresh() { if (!isAdmin()) return; snd.click(); goAdmin(); }
+
+function adminFilter() {
+  const q = (document.getElementById('admin-search')?.value || '').toLowerCase().trim();
+  document.querySelectorAll('#admin-list tbody tr').forEach(tr => {
+    const s = (tr.getAttribute('data-search') || '').toLowerCase();
+    tr.style.display = (!q || s.includes(q)) ? '' : 'none';
+  });
+}
+
+async function adminResetRanking() {
+  if (!isAdmin() || !sb) return;
+  openModal({title:'⚠️ ZERAR RANKING?', msg:'Isso vai zerar XP, streak e dias de TODAS as alunas. NÃO pode ser desfeito!', onConfirm: async () => {
+    closeModal();
+    try {
+      const { error } = await sb.from('progress').update({ xp: 0, streak: 0, completed_phases: [] }).neq('user_id', '00000000-0000-0000-0000-000000000000');
+      if (error) throw error;
+      openModal({title:'✅ RANKING ZERADO!', msg:'Todas as alunas voltaram ao zero.', hideCancel:true, onConfirm:()=>{closeModal();adminRefresh();}});
+    } catch(e) { openModal({title:'❌ ERRO', msg:e.message||e, hideCancel:true, onConfirm:()=>closeModal()}); }
+  }});
+}
+
+async function adminResetXPAll() {
+  if (!isAdmin() || !sb) return;
+  openModal({title:'⚠️ ZERAR XP DE TODAS?', msg:'Apenas o XP. Streaks e progresso continuam.', onConfirm: async () => {
+    closeModal();
+    try {
+      const { error } = await sb.from('progress').update({ xp: 0 }).neq('user_id', '00000000-0000-0000-0000-000000000000');
+      if (error) throw error;
+      openModal({title:'✅ XP ZERADO', msg:'XP de todas zerado.', hideCancel:true, onConfirm:()=>{closeModal();adminRefresh();}});
+    } catch(e) { openModal({title:'❌ ERRO', msg:e.message||e, hideCancel:true, onConfirm:()=>closeModal()}); }
+  }});
+}
+
+async function adminBroadcast() {
+  if (!isAdmin()) return;
+  const msg = prompt('Aviso que será enviado a todas as alunas:');
+  if (!msg || !msg.trim()) return;
+  try {
+    if (!sb) throw new Error('Sem conexão');
+    const { error } = await sb.from('broadcast_messages').insert({ message: msg.trim(), sent_by: user.id || user.email, sent_at: new Date().toISOString() });
+    if (error) {
+      openModal({title:'⚠️ TABELA AUSENTE', msg:'Pra enviar avisos, rode no Supabase: CREATE TABLE broadcast_messages (id BIGSERIAL PRIMARY KEY, message TEXT, sent_by TEXT, sent_at TIMESTAMPTZ DEFAULT NOW());', hideCancel:true, onConfirm:()=>closeModal()});
+      return;
+    }
+    openModal({title:'📢 AVISO ENVIADO!', msg:'Mensagem enviada a todas as alunas.', hideCancel:true, onConfirm:()=>closeModal()});
+  } catch(e) { openModal({title:'❌ ERRO', msg:e.message||e, hideCancel:true, onConfirm:()=>closeModal()}); }
+}
+
+function adminExportCSV() {
+  if (!isAdmin()) return;
+  const rows = document.querySelectorAll('#admin-list tbody tr');
+  if (rows.length === 0) { alert('Sem dados pra exportar'); return; }
+  let csv = 'Pos,Aluna,Patente,XP,Dias,Streak\n';
+  rows.forEach(tr => {
+    const c = tr.querySelectorAll('td');
+    if (c.length < 6) return;
+    const g = i => (c[i]?.textContent || '').replace(/\n/g,' ').replace(/,/g,';').trim();
+    csv += [g(0),g(1),g(2),g(3),g(4),g(5)].join(',') + '\n';
+  });
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'juris_quest_alunas_' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  snd.success && snd.success();
+}
+
+function adminUserPanel(userId, name, code) {
+  if (!isAdmin()) return;
+  if (!userId) { alert('Sem ID dessa aluna'); return; }
+  const actions = [
+    {label:'⚡ Dar XP bônus', fn:`adminGiveXP('${userId}','${name}')`},
+    {label:'🔄 Zerar XP dessa aluna', fn:`adminResetUserXP('${userId}','${name}')`},
+    {label:'📋 Zerar progresso completo', fn:`adminResetUserProgress('${userId}','${name}')`},
+    {label:'🙈 Ocultar do ranking', fn:`adminHideUser('${userId}','${name}')`},
+    {label:'🚫 Banir do ranking', fn:`adminBanUser('${userId}','${name}')`},
+  ];
+  const htmlMsg = `<div style="text-align:left;"><div style="font-family:Orbitron;color:var(--amber);font-size:11px;margin-bottom:14px;">Código: ${code||'—'}</div><div style="display:flex;flex-direction:column;gap:8px;">${actions.map(a => `<button class="admin-btn admin-btn-info" onclick="${a.fn}">${a.label}</button>`).join('')}</div></div>`;
+  openModal({title:`⚙️ ${name}`, msg:htmlMsg, hideCancel:true, onConfirm:()=>closeModal()});
+  setTimeout(() => {
+    const el = document.querySelector('#modal .modal-msg, #modal p, #modal div[class*="msg"]');
+    if (el && el.textContent.includes('<button')) el.innerHTML = htmlMsg;
+  }, 30);
+}
+
+async function adminGiveXP(userId, name) {
+  const amt = parseInt(prompt(`Quanto XP dar pra ${name}?`, '100'), 10);
+  if (!amt || isNaN(amt)) return;
+  try {
+    const { data: prog } = await sb.from('progress').select('xp').eq('user_id', userId).single();
+    const newXP = (prog?.xp || 0) + amt;
+    await sb.from('progress').update({ xp: newXP }).eq('user_id', userId);
+    closeModal();
+    openModal({title:'✅ XP DADO', msg:`${name} ganhou ${amt} XP. Total: ${newXP}`, hideCancel:true, onConfirm:()=>{closeModal();adminRefresh();}});
+  } catch(e) { alert('Erro: ' + e.message); }
+}
+
+async function adminResetUserXP(userId, name) {
+  if (!confirm(`Zerar XP de ${name}?`)) return;
+  try {
+    await sb.from('progress').update({ xp: 0 }).eq('user_id', userId);
+    closeModal();
+    openModal({title:'✅ XP ZERADO', msg:`${name} voltou ao zero.`, hideCancel:true, onConfirm:()=>{closeModal();adminRefresh();}});
+  } catch(e) { alert('Erro: ' + e.message); }
+}
+
+async function adminResetUserProgress(userId, name) {
+  if (!confirm(`Zerar TUDO de ${name}?`)) return;
+  try {
+    await sb.from('progress').update({ xp: 0, streak: 0, completed_phases: [], lives: 3 }).eq('user_id', userId);
+    closeModal();
+    openModal({title:'✅ RESETADA', msg:`${name} começou do zero.`, hideCancel:true, onConfirm:()=>{closeModal();adminRefresh();}});
+  } catch(e) { alert('Erro: ' + e.message); }
+}
+
+async function adminHideUser(userId, name) {
+  if (!confirm(`Ocultar ${name} do ranking?`)) return;
+  try {
+    await sb.from('profiles').update({ show_in_ranking: false }).eq('user_id', userId);
+    closeModal();
+    openModal({title:'🙈 OCULTADA', msg:`${name} foi ocultada.`, hideCancel:true, onConfirm:()=>{closeModal();adminRefresh();}});
+  } catch(e) { alert('Erro: ' + e.message); }
+}
+
+async function adminBanUser(userId, name) {
+  if (!confirm(`BANIR ${name}?`)) return;
+  try {
+    await sb.from('profiles').update({ show_in_ranking: false, banned: true }).eq('user_id', userId);
+    closeModal();
+    openModal({title:'🚫 BANIDA', msg:`${name} foi banida.`, hideCancel:true, onConfirm:()=>{closeModal();adminRefresh();}});
+  } catch(e) {
+    if (e.message && e.message.includes('column')) alert('Adicione: ALTER TABLE profiles ADD COLUMN banned BOOLEAN DEFAULT false;');
+    else alert('Erro: ' + e.message);
+  }
+}
+
+window.adminRefresh = adminRefresh;
+window.adminFilter = adminFilter;
+window.adminResetRanking = adminResetRanking;
+window.adminResetXPAll = adminResetXPAll;
+window.adminBroadcast = adminBroadcast;
+window.adminExportCSV = adminExportCSV;
+window.adminUserPanel = adminUserPanel;
+window.adminGiveXP = adminGiveXP;
+window.adminResetUserXP = adminResetUserXP;
+window.adminResetUserProgress = adminResetUserProgress;
+window.adminHideUser = adminHideUser;
+window.adminBanUser = adminBanUser;
 
 
 /* ============================================================
