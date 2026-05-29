@@ -3057,6 +3057,39 @@ body::before, body::after,
 .hub-card-sub { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-secondary); font-weight: 500; max-width: 280px; line-height: 1.4; }
 .hub-card-cta { margin-top: 6px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; color: #fff; background: var(--rose); padding: 8px 20px; border-radius: 999px; letter-spacing: 0.5px; }
 .hub-card-pm .hub-card-cta { background: linear-gradient(90deg, #2563eb, #16a34a) !important; }
+
+/* 🔙 Botão de voltar — sempre visível e consistente */
+.back-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-secondary) !important;
+  padding: 9px 16px !important;
+  border-radius: 999px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  margin: 12px 0 !important;
+  transition: all .18s !important;
+  text-decoration: none !important;
+  text-transform: lowercase !important;
+  letter-spacing: 0 !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-height: 38px !important;
+  z-index: 5;
+  position: relative;
+}
+.back-btn:hover {
+  background: var(--glass-bg-strong) !important;
+  border-color: var(--rose) !important;
+  color: var(--text-primary) !important;
+  transform: translateX(-2px);
+}
+.back-btn:active { transform: translateX(-1px) scale(0.98); }
 </style>
 </head>
 <body>
@@ -3196,6 +3229,9 @@ body::before, body::after,
 
 <!-- Map -->
 <div id="screen-map" class="screen">
+  <div class="container">
+    <button class="back-btn" onclick="goHub()">← início</button>
+  </div>
   <div class="container">
     <!-- HUD -->
     <div class="hud pixel-corners">
@@ -3383,7 +3419,7 @@ body::before, body::after,
 <!-- 🎖️ Tela Concursos PM-NE -->
 <div id="screen-pmne" class="screen">
   <div class="container-narrow">
-    <button class="back-btn" onclick="exitPMNE()">← voltar ao mapa</button>
+    <button class="back-btn" onclick="goHub()">← início</button>
     <div style="text-align:center;margin:16px 0;">
       <div class="pmne-header-title">🎖️ Concursos PM Nordeste</div>
       <div style="font-size:13px;color:var(--text-secondary);font-weight:500;">9 polícias militares • cada uma com questões exclusivas</div>
@@ -3674,6 +3710,7 @@ body::before, body::after,
 <!-- ⚔️ Jogar duelo (responder as 10 questões) -->
 <div id="screen-duel-play" class="screen">
   <div class="container-narrow">
+    <button class="back-btn" onclick="exitDuelPlay()">← sair do duelo</button>
     <div id="duel-play-content"></div>
   </div>
 </div>
@@ -5689,6 +5726,20 @@ function exitPMMap() {
   openPMNE();
 }
 window.exitPMMap = exitPMMap;
+
+function exitDuelPlay() {
+  if (typeof openModal === 'function') {
+    openModal({
+      title:'⚔️ SAIR DO DUELO?',
+      msg:'Se sair agora, o duelo será marcado como derrota. Tem certeza?',
+      onConfirm: () => { closeModal(); try { clearInterval(window.__duelTimer); } catch(e){} goDuels(); }
+    });
+  } else {
+    goDuels();
+  }
+}
+window.exitDuelPlay = exitDuelPlay;
+
 // Entra numa PM (aplica tema e abre o MAPA da PM)
 function enterPM(pmId) {
   const pm = PM_NE[pmId];
@@ -5701,13 +5752,43 @@ function enterPM(pmId) {
 }
 
 // Divide as questões da PM em 3 dias (2 dias + boss)
+// Helper: pega N questões aleatórias de um conjunto de tópicos do QBANK principal
+function _pickQs(topicIds, n) {
+  let pool = [];
+  topicIds.forEach(tid => {
+    if (QBANK[tid]) pool = pool.concat(QBANK[tid]);
+  });
+  // Embaralha e pega N
+  pool.sort(() => Math.random() - 0.5);
+  return pool.slice(0, n);
+}
+
 function getPMDays(pmId) {
-  const bank = PM_QBANK[pmId] || [];
-  const half = Math.ceil(bank.length / 2);
+  const constBank = PM_QBANK[pmId] || []; // exclusivo
+  // Reusa QBANK principal pras outras matérias
+  const penalTopics = ['penal-principios','penal-aplicacao-tempo-lugar','penal-crimes-pessoa','penal-patrimonio','penal-administracao','penal-lei-drogas','penal-maria-da-penha','penal-armas-tortura-hediondos','penal-eca-dh'];
+  const admTopics   = ['adm-principios-limpe','adm-poderes','adm-atos-administrativos','adm-servidores-improbidade'];
+  const infoTopics  = ['info-windows','info-office','info-internet','info-seguranca','info-hardware'];
+
+  // Pad com mais questões se o banco de Const tiver menos de 20 (reusa pra completar)
+  const constQs = constBank.length >= 20
+    ? constBank.slice(0, 20)
+    : [...constBank, ..._pickQs(penalTopics.concat(admTopics).slice(0,3), 20 - constBank.length)];
+
+  // Boss = mix de 5+5+5+5
+  const bossQs = [
+    ...constBank.slice(0, 5),
+    ..._pickQs(penalTopics, 5),
+    ..._pickQs(admTopics, 5),
+    ..._pickQs(infoTopics, 5),
+  ];
+
   return [
-    {key:'d1', day:1, mode:'topic',     title:'Direitos & Cidadania', qs: bank.slice(0, half)},
-    {key:'d2', day:2, mode:'topic',     title:'Constituição & Segurança', qs: bank.slice(half)},
-    {key:'boss', day:3, mode:'finalboss', title:'BOSS FINAL — Edital Completo', qs: bank},
+    {key:'d1', day:1, mode:'topic',     title:'Direitos & Constituição',     subj:'const', qs: constQs},
+    {key:'d2', day:2, mode:'topic',     title:'Direito Penal',                subj:'penal', qs: _pickQs(penalTopics, 20)},
+    {key:'d3', day:3, mode:'topic',     title:'Direito Administrativo',       subj:'adm',   qs: _pickQs(admTopics, 20)},
+    {key:'d4', day:4, mode:'topic',     title:'Informática',                  subj:'info',  qs: _pickQs(infoTopics, 20)},
+    {key:'boss', day:5, mode:'finalboss', title:'BOSS FINAL — Edital Completo', subj:'mix', qs: bossQs},
   ];
 }
 
@@ -5735,8 +5816,8 @@ function renderPMMap(pmId) {
         <div class="ato-title" style="color:${pm.cor2};">${pm.icon} ${pm.nome} — ${days.length} DIAS</div>
       </div>
       <div class="journey-header-desc">
-        questões <strong style="color:${pm.cor2};">EXCLUSIVAS</strong> da ${pm.nome} 💀 &nbsp;•&nbsp;
-        ${totalDone}/${days.length} concluídos • complete tudo pra dominar o edital!
+        Const exclusivo + Penal + Adm + Info + Boss Final 💀 &nbsp;•&nbsp;
+        <strong style="color:${pm.cor2};">${totalDone}/${days.length}</strong> concluídos • 20 questões por dia!
       </div>
     </div>
     <div class="phases-grid">`;
@@ -5746,6 +5827,8 @@ function renderPMMap(pmId) {
     // desbloqueado: dia 1 sempre; outros se o anterior foi feito
     const unlocked = idx === 0 || !!done[days[idx-1].key];
     const current = !completed && unlocked;
+    // Ícone da matéria (Const ⚖️, Penal ⚔️, Adm 🏛️, Info 💻, Boss 👑)
+    const subjIcon = d.mode === 'finalboss' ? '👑' : (SUBJ[d.subj]?.icon || pm.icon);
     let topIcon = d.mode === 'finalboss' ? '☠️' : '💀';
     let statusType, statusText;
     if (!unlocked) { statusType='locked'; statusText='🔒 BLOQUEADO'; }
@@ -5756,7 +5839,7 @@ function renderPMMap(pmId) {
 
     html += `<button class="phase ${completed?'completed':''} ${current?'current':''}" ${!unlocked?'disabled':''} onclick="startPMDay('${pmId}','${d.key}')" style="border-top:3px solid ${pm.cor} !important;">
       <div class="phase-top">
-        <div class="phase-icon" style="color:${pm.cor2};background:${pm.cor}1a;">${pm.icon}</div>
+        <div class="phase-icon" style="color:${pm.cor2};background:${pm.cor}1a;">${subjIcon}</div>
         <div class="phase-num" style="color:${pm.cor2};">DIA ${d.day}</div>
         <div class="phase-type-icon">${topIcon}</div>
       </div>
