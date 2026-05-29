@@ -3141,6 +3141,144 @@ body::before, body::after,
   border-color: rgba(255,215,0,.4) !important;
 }
 .hub-card-admin .hub-card-cta { background: linear-gradient(90deg, #d4af37, #ffd700) !important; color: #2d1810 !important; }
+
+/* 🎮 MODO CAMPANHA — estilos */
+.campaign-header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  background: linear-gradient(90deg, #10b981, #0891b2, #7c3aed, #dc2626, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.campaign-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 12px 0 20px;
+}
+.campaign-stats > div {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+}
+.cmp-stat-num {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--amber);
+}
+.cmp-stat-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.campaign-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding: 8px 0;
+}
+@media (min-width: 720px) {
+  .campaign-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.cmp-phase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  padding: 16px 10px;
+  min-height: 210px;
+  border-radius: 18px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--cmp-cor, #ff2e63);
+  background: linear-gradient(160deg, rgba(255,46,99,.18), rgba(255,46,99,.04));
+  transition: transform .2s, box-shadow .2s;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+.cmp-phase:not(:disabled):hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.5);
+}
+.cmp-phase.locked {
+  opacity: 0.5;
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+}
+.cmp-phase.current {
+  animation: cmp-pulse 1.8s ease-in-out infinite;
+}
+.cmp-phase.done { border-style: dashed; }
+.cmp-phase.boss {
+  background: linear-gradient(160deg, rgba(255,215,0,.35), rgba(212,175,55,.15));
+  border-color: #ffd700;
+  border-width: 3px;
+}
+@keyframes cmp-pulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(255,46,99,.45); }
+  50% { box-shadow: 0 0 30px rgba(255,46,99,.7); }
+}
+.cmp-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--cmp-cor, #ff2e63);
+  letter-spacing: 0.5px;
+}
+.cmp-icon {
+  font-size: 44px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,.5));
+  margin: 4px 0;
+}
+.cmp-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text-primary);
+  padding: 0 2px;
+  text-align: center;
+}
+.cmp-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.cmp-stars {
+  display: flex;
+  gap: 2px;
+  margin-top: 4px;
+}
+.cmp-star {
+  font-size: 14px;
+  color: rgba(255,255,255,0.15);
+  transition: color .2s;
+}
+.cmp-star.on {
+  color: #ffd700;
+  text-shadow: 0 0 6px rgba(255,215,0,.6);
+}
+.hub-card-campaign {
+  background: linear-gradient(160deg, rgba(16,185,129,.18), rgba(124,58,237,.12), rgba(220,38,38,.06)) !important;
+  border-color: rgba(16,185,129,.3) !important;
+}
+.hub-card-campaign .hub-card-cta {
+  background: linear-gradient(90deg, #10b981, #7c3aed, #dc2626) !important;
+  color: #fff !important;
+}
 </style>
 </head>
 <body>
@@ -3428,6 +3566,20 @@ body::before, body::after,
 
 
 
+
+<!-- 🎮 Tela MODO CAMPANHA -->
+<div id="screen-campaign" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="goHub()">← início</button>
+    <div style="text-align:center;margin:16px 0;">
+      <div class="campaign-header-title">🎮 MODO CAMPANHA</div>
+      <div style="font-size:12px;color:var(--text-secondary);font-weight:500;">20 fases progressivas • questões inéditas</div>
+    </div>
+    <div id="campaign-stats" class="campaign-stats"></div>
+    <div id="campaign-grid" class="campaign-grid"></div>
+  </div>
+</div>
+
 <!-- 🏠 HUB inicial -->
 <div id="screen-hub" class="screen">
   <div class="container-narrow">
@@ -3444,6 +3596,12 @@ body::before, body::after,
         <div class="hub-card-title">ESTUDO GERAL</div>
         <div class="hub-card-sub">Constitucional • Administrativo • Penal • Informática</div>
         <div class="hub-card-cta">COMEÇAR ▶</div>
+      </button>
+      <button class="hub-card hub-card-campaign" onclick="openCampaign()">
+        <div class="hub-card-icon">🎮</div>
+        <div class="hub-card-title">MODO CAMPANHA</div>
+        <div class="hub-card-sub">20 fases inéditas • dificuldade progressiva</div>
+        <div class="hub-card-cta">JOGAR ▶</div>
       </button>
       <button class="hub-card hub-card-pm" onclick="openPMNE()">
         <div class="hub-card-icon">🎖️</div>
@@ -5141,7 +5299,7 @@ function ensureProgressIntegrity(p) {
     if (!Array.isArray(fixed[k])) fixed[k] = [];
   });
   // Garantir objetos
-  ['statsBySubject','statsByBanca','woundsRegistry','flashcardsSeen','pmDone'].forEach(k => {
+  ['statsBySubject','statsByBanca','woundsRegistry','flashcardsSeen','pmDone','campaignDone','campaignStars'].forEach(k => {
     if (!fixed[k] || typeof fixed[k] !== 'object') fixed[k] = (def[k] || {});
   });
   return fixed;
@@ -6033,6 +6191,265 @@ async function rankingDiagnostico() {
 }
 window.rankingDiagnostico = rankingDiagnostico;
 
+
+
+/* ============================================================
+   🎮 MODO CAMPANHA — Candy Crush style
+   ============================================================ */
+
+// Configuração das 20 fases (matérias + dificuldade)
+const CAMPAIGN_PHASES = [
+  // Fases 1-5: 5 questões cada
+  {n:1, qs:5,  subj:'const', diff:1, title:'Princípios Básicos da CF'},
+  {n:2, qs:5,  subj:'adm',   diff:1, title:'LIMPE — Os Princípios'},
+  {n:3, qs:5,  subj:'adm',   diff:1, title:'Poderes da Administração'},
+  {n:4, qs:5,  subj:'penal', diff:1, title:'Conceitos do Crime'},
+  {n:5, qs:5,  subj:'info',  diff:1, title:'Atalhos do Windows'},
+  // Fases 6-10: 10 questões cada
+  {n:6, qs:10, subj:'const', diff:2, title:'Direitos Fundamentais — Art. 5º'},
+  {n:7, qs:10, subj:'adm',   diff:2, title:'Atos Administrativos'},
+  {n:8, qs:10, subj:'penal', diff:2, title:'Crimes Contra a Pessoa'},
+  {n:9, qs:10, subj:'info',  diff:2, title:'Internet e Navegadores'},
+  {n:10,qs:10, subj:'const', diff:2, title:'Organização do Estado'},
+  // Fases 11-15: 15 questões — 2 matérias misturadas
+  {n:11,qs:15, subj:'mix', mix:['const','adm'],   diff:3, title:'Const + Adm — Princípios'},
+  {n:12,qs:15, subj:'mix', mix:['adm','penal'],   diff:3, title:'Adm + Penal — Improbidade'},
+  {n:13,qs:15, subj:'mix', mix:['penal','info'],  diff:3, title:'Penal + Info — Crimes Digitais'},
+  {n:14,qs:15, subj:'mix', mix:['info','const'],  diff:3, title:'Info + Const — LGPD'},
+  {n:15,qs:15, subj:'mix', mix:['const','penal'], diff:3, title:'Const + Penal — Direitos do Preso'},
+  // Fases 16-20: 20 questões — desafio final
+  {n:16,qs:20, subj:'mix', mix:['adm','info'],    diff:4, title:'Adm + Info — Gov Digital'},
+  {n:17,qs:20, subj:'mix', mix:['const','adm'],   diff:4, title:'Const + Adm — Servidores'},
+  {n:18,qs:20, subj:'mix', mix:['penal','adm'],   diff:4, title:'Penal + Adm — Abuso de Autoridade'},
+  {n:19,qs:20, subj:'mix', mix:['const','info'],  diff:4, title:'Const + Info — Sigilo de Dados'},
+  {n:20,qs:20, subj:'mix', mix:['const','adm','penal','info'], diff:5, title:'BOSS FINAL — Todas as Matérias'},
+];
+
+// Banco de questões INÉDITAS por matéria (~80 questões totais)
+const CAMPAIGN_QBANK = {
+  const: [
+    // Fácil (diff 1)
+    {b:'FGV',t:'cebraspe',s:'A República Federativa do Brasil é formada pela união indissolúvel dos Estados, Municípios e do Distrito Federal.',c:0,e:'CERTO. Art. 1º, caput, CF. União INDISSOLÚVEL — não pode haver separação. Inclui Estados, Municípios e DF.'},
+    {b:'CESPE',t:'cebraspe',s:'A soberania é fundamento da República e significa que o Brasil depende de aprovação de organismos internacionais para legislar.',c:1,e:'ERRADO. Soberania = poder supremo do Estado, INDEPENDENTE de outros. Art. 1º, I, CF. Não há subordinação a organismos externos.'},
+    {b:'FCC',t:'multiple',s:'Os objetivos fundamentais da República Federativa do Brasil, conforme o art. 3º da CF, NÃO incluem:',o:['Construir uma sociedade livre, justa e solidária','Garantir o desenvolvimento nacional','Erradicar a pobreza','Conceder asilo político','Promover o bem de todos'],c:3,e:'Asilo político é um PRINCÍPIO das relações internacionais (art. 4º, X), não objetivo fundamental do Brasil (art. 3º).'},
+    {b:'VUNESP',t:'cebraspe',s:'A dignidade da pessoa humana é fundamento da República Federativa do Brasil.',c:0,e:'CERTO. Art. 1º, III, CF. Junto com soberania, cidadania, valores sociais do trabalho e pluralismo político.'},
+    {b:'IBFC',t:'multiple',s:'São fundamentos da República Federativa do Brasil (SO-CI-DI-VA-PLU):',o:['Soberania, cidadania, dignidade, valores sociais, pluralismo','Igualdade, liberdade, fraternidade','Soberania, segurança, saúde, educação','Trabalho, família, propriedade','Democracia, ordem, progresso'],c:0,e:'Mnemônico SO-CI-DI-VA-PLU: Soberania, Cidadania, Dignidade, Valores sociais do trabalho/livre iniciativa, Pluralismo político.'},
+    // Médio (diff 2-3)
+    {b:'CESPE',t:'cebraspe',s:'O direito à vida, inscrito no caput do art. 5º da CF, é absoluto, não admitindo qualquer exceção.',c:1,e:'ERRADO. NENHUM direito é absoluto. A própria CF admite pena de morte em caso de guerra declarada (art. 5º, XLVII, a).'},
+    {b:'FGV',t:'multiple',s:'O remédio constitucional cabível para proteger o direito de locomoção é:',o:['Mandado de segurança','Habeas corpus','Habeas data','Ação popular','Mandado de injunção'],c:1,e:'Habeas corpus protege a liberdade de locomoção (art. 5º, LXVIII). Habeas data é pra dados pessoais.'},
+    {b:'CESPE',t:'cebraspe',s:'O mandado de segurança coletivo pode ser impetrado por partido político com representação no Congresso Nacional.',c:0,e:'CERTO. Art. 5º, LXX, a. Partidos com representação podem impetrar MS coletivo em defesa de interesses dos filiados ou da coletividade.'},
+    {b:'FCC',t:'multiple',s:'A organização político-administrativa do Brasil compreende:',o:['Apenas União e Estados','União, Estados, DF e Municípios','Apenas União','União e Municípios','União, Estados e Territórios'],c:1,e:'Art. 18, CF. A FEDERAÇÃO brasileira é formada por União, Estados, Distrito Federal e Municípios, todos autônomos.'},
+    {b:'VUNESP',t:'cebraspe',s:'A criação de novos Estados depende de aprovação da população diretamente interessada por plebiscito.',c:0,e:'CERTO. Art. 18, §3º, CF. Mudanças territoriais exigem plebiscito da população interessada + lei complementar.'},
+    // Difícil (diff 3-5)
+    {b:'CESPE',t:'cebraspe',s:'Os direitos sociais previstos no art. 6º da CF têm aplicação imediata, independentemente de regulamentação infraconstitucional.',c:1,e:'ERRADO. Direitos sociais geralmente têm eficácia LIMITADA — dependem de lei pra plena efetivação. Diferente dos direitos individuais (art. 5º, §1º).'},
+    {b:'FGV',t:'cebraspe',s:'Os tratados internacionais de direitos humanos aprovados por 3/5 dos membros de cada Casa em 2 turnos equivalem a emendas constitucionais.',c:0,e:'CERTO. Art. 5º, §3º, CF (EC 45/2004). Procedimento equivalente à PEC = tratado vira norma constitucional.'},
+    {b:'CESPE',t:'multiple',s:'O princípio da reserva legal absoluta impõe que:',o:['Qualquer ato normativo pode tratar do tema','Apenas LEI em sentido estrito pode tratar do tema','Decretos suprem a ausência de lei','Costumes podem criar obrigações','Resoluções administrativas bastam'],c:1,e:'Reserva legal ABSOLUTA = só lei formal (votada no parlamento) pode regular. Ex: criar crimes (art. 5º, XXXIX).'},
+    {b:'FGV',t:'cebraspe',s:'A intervenção federal nos Estados é regra geral, devendo ocorrer sempre que o Presidente entender necessário.',c:1,e:'ERRADO. Intervenção é EXCEÇÃO (art. 34, CF). Só nas hipóteses TAXATIVAS previstas na Constituição.'},
+    {b:'CESPE',t:'multiple',s:'A separação dos Poderes é cláusula pétrea. Isso significa que:',o:['Pode ser alterada por lei ordinária','Pode ser abolida por emenda','NÃO pode ser objeto de emenda tendente a aboli-la','Não vale na prática','Só vale no governo federal'],c:2,e:'Art. 60, §4º, III, CF. Cláusulas pétreas (forma federativa, voto direto/secreto/universal/periódico, separação dos Poderes, direitos individuais) não podem ser ABOLIDAS por emenda.'},
+  ],
+  adm: [
+    // Fácil (diff 1)
+    {b:'FGV',t:'cebraspe',s:'O mnemônico LIMPE representa os princípios expressos da Administração Pública: Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência.',c:0,e:'CERTO. Art. 37, caput, CF. LIMPE são os 5 princípios EXPRESSOS. A eficiência foi acrescentada pela EC 19/98.'},
+    {b:'CESPE',t:'cebraspe',s:'O princípio da legalidade na Administração Pública significa que o agente pode fazer tudo que a lei não proíba.',c:1,e:'ERRADO. Pra ADMINISTRAÇÃO, legalidade é ESTRITA: só pode fazer o que a lei AUTORIZA. Pro particular sim (faz tudo que não é proibido).'},
+    {b:'FCC',t:'multiple',s:'O princípio da impessoalidade na Administração Pública implica que:',o:['Servidores podem favorecer parentes','Atos administrativos atendem ao interesse público, sem favoritismos','Cargo público pode ser usado para promoção pessoal','Decisões dependem da simpatia do agente','Servidor escolhe quem fiscalizar'],c:1,e:'Impessoalidade = administrar sem preferências/perseguições. Visa o INTERESSE PÚBLICO, não o particular.'},
+    {b:'VUNESP',t:'cebraspe',s:'A publicidade dos atos administrativos pode ser excepcionada quando houver sigilo necessário à segurança da sociedade ou do Estado.',c:0,e:'CERTO. Art. 5º, XXXIII, CF. Regra é publicidade; sigilo é EXCEÇÃO (segurança pública, intimidade, processo em segredo de justiça).'},
+    {b:'IBFC',t:'multiple',s:'Os Poderes administrativos clássicos são:',o:['Executivo, Legislativo e Judiciário','Hierárquico, Disciplinar, Regulamentar, de Polícia e Discricionário','Apenas hierárquico','Político e administrativo','Centralização e descentralização'],c:1,e:'Poderes administrativos: HIERÁRQUICO (subordinação), DISCIPLINAR (punir), REGULAMENTAR (regulamentar lei), POLÍCIA (limitar direitos pra bem comum), DISCRICIONÁRIO (mérito).'},
+    // Médio (diff 2)
+    {b:'CESPE',t:'cebraspe',s:'O poder de polícia administrativa pode aplicar sanções como multa, interdição de atividade e apreensão de bens.',c:0,e:'CERTO. Lei 13.726/18 + jurisprudência. Poder de polícia limita direitos em prol do bem comum (ex: vigilância sanitária multar restaurante).'},
+    {b:'FGV',t:'multiple',s:'A diferença entre ato vinculado e ato discricionário é:',o:['Vinculado: livre escolha; Discricionário: regra fixa','Vinculado: lei define tudo; Discricionário: margem de conveniência e oportunidade','Não há diferença prática','Vinculado só vale pra Judiciário','Ambos são iguais'],c:1,e:'VINCULADO: lei prescreve TUDO (ex: aposentadoria por idade). DISCRICIONÁRIO: agente tem margem (ex: remover servidor por conveniência).'},
+    {b:'CESPE',t:'cebraspe',s:'A revogação de ato administrativo é cabível por motivo de ilegalidade.',c:1,e:'ERRADO. Revogação é por MÉRITO (conveniência/oportunidade). ANULAÇÃO é por ilegalidade. Súmula 473 STF.'},
+    {b:'FCC',t:'cebraspe',s:'Os atos administrativos gozam de presunção de legitimidade e veracidade, podendo ser executados antes mesmo de discussão judicial.',c:0,e:'CERTO. Atributos do ato: presunção de legitimidade, imperatividade, autoexecutoriedade e tipicidade. Quem alega ilegalidade prova.'},
+    {b:'VUNESP',t:'multiple',s:'A autoexecutoriedade do ato administrativo permite à Administração:',o:['Aprisionar pessoas sem mandado','Executar suas decisões diretamente, sem autorização judicial prévia','Criar leis','Julgar definitivamente','Cobrar sem processo'],c:1,e:'Autoexecutoriedade: a Adm executa seus atos diretamente (ex: demolir obra irregular). Tem limites — não cabe pra TODOS atos.'},
+    // Difícil (diff 3-5)
+    {b:'CESPE',t:'cebraspe',s:'A improbidade administrativa, conforme Lei 8.429/92 (com alterações da Lei 14.230/21), exige DOLO específico em todos os tipos.',c:1,e:'ERRADO. A Lei 14.230/21 mudou: agora exige dolo para a MAIORIA dos atos, mas há nuances. Improbidade culposa foi praticamente extinta.'},
+    {b:'FGV',t:'multiple',s:'O servidor público estável só perderá o cargo por:',o:['Decisão do chefe imediato','Sentença judicial transitada em julgado, processo administrativo com ampla defesa, ou insuficiência de desempenho','Vontade do prefeito','Mera transferência','Falta de simpatia'],c:1,e:'Art. 41, §1º, CF. Perda do cargo de servidor estável: sentença transitada em julgado, PAD com ampla defesa, ou avaliação periódica negativa.'},
+    {b:'CESPE',t:'cebraspe',s:'A licitação é regra para contratações públicas, sendo a contratação direta cabível apenas em casos previstos em lei.',c:0,e:'CERTO. Art. 37, XXI, CF + Lei 14.133/21 (Nova Lei de Licitações). Dispensa e inexigibilidade são EXCEÇÕES taxativas.'},
+    {b:'FCC',t:'multiple',s:'A responsabilidade civil do Estado por danos causados por seus agentes é:',o:['Subjetiva, exigindo prova de culpa','Objetiva, na modalidade do risco administrativo','Inexistente — só o agente responde','Solidária com o particular','Penal apenas'],c:1,e:'Art. 37, §6º, CF. Responsabilidade OBJETIVA (independe de culpa) na modalidade RISCO ADMINISTRATIVO. Admite excludentes (fato exclusivo da vítima, caso fortuito).'},
+    {b:'VUNESP',t:'cebraspe',s:'O concurso público é exigência para investidura em cargo ou emprego público, salvo nomeações para cargos em comissão de livre nomeação.',c:0,e:'CERTO. Art. 37, II, CF. Cargo em comissão (confiança) dispensa concurso, mas deve ter percentual mínimo reservado para servidores efetivos.'},
+  ],
+  penal: [
+    // Fácil (diff 1)
+    {b:'FGV',t:'cebraspe',s:'Crime é uma conduta TÍPICA, ANTIJURÍDICA e CULPÁVEL, segundo a teoria tripartite adotada majoritariamente.',c:0,e:'CERTO. Conceito analítico tripartite (Welzel): tipicidade + antijuridicidade + culpabilidade. Ausência de qualquer = não há crime.'},
+    {b:'CESPE',t:'cebraspe',s:'A culpa exclusiva da vítima exclui a tipicidade do crime.',c:1,e:'ERRADO. Culpa exclusiva da vítima exclui o NEXO CAUSAL (e a tipicidade, indiretamente), mas tecnicamente exclui o tipo objetivo. Conceito-armadilha.'},
+    {b:'FCC',t:'multiple',s:'Quanto à voluntariedade, os crimes podem ser:',o:['Apenas dolosos','Dolosos (vontade) e culposos (imprudência, negligência, imperícia)','Apenas culposos','Apenas tentados','Apenas consumados'],c:1,e:'Crimes dolosos: vontade ou aceitação do resultado. Culposos: negligência, imprudência ou imperícia (sem vontade do resultado).'},
+    {b:'VUNESP',t:'cebraspe',s:'A tentativa ocorre quando, iniciada a execução, o crime não se consuma por circunstâncias alheias à vontade do agente.',c:0,e:'CERTO. Art. 14, II, CP. Tentativa = INICIA execução + NÃO consuma + por motivo ALHEIO ao agente.'},
+    {b:'IBFC',t:'multiple',s:'O princípio da legalidade penal (nullum crimen nulla poena sine lege) está expresso em qual artigo?',o:['Art. 1º, CF','Art. 5º, XXXIX, CF e art. 1º, CP','Art. 37, CF','Art. 144, CF','Art. 60, CF'],c:1,e:'Princípio da legalidade: previsto na CF (art. 5º, XXXIX) E no CP (art. 1º). Não há crime sem lei anterior que o defina.'},
+    // Médio (diff 2)
+    {b:'CESPE',t:'cebraspe',s:'O homicídio simples é crime hediondo no ordenamento brasileiro.',c:1,e:'ERRADO. Apenas homicídio QUALIFICADO é hediondo (art. 1º, I, Lei 8.072/90). Homicídio simples NÃO é hediondo (salvo se praticado em atividade típica de grupo de extermínio).'},
+    {b:'FGV',t:'multiple',s:'O feminicídio é qualificadora do homicídio quando praticado:',o:['Por qualquer mulher','Contra mulher por razões da condição do sexo feminino','Por marido apenas','Em casa','À noite'],c:1,e:'Art. 121, §2º, VI, CP. Feminicídio: homicídio contra MULHER por razões da CONDIÇÃO DO SEXO FEMININO (violência doméstica/familiar ou menosprezo à condição de mulher).'},
+    {b:'CESPE',t:'cebraspe',s:'O furto qualificado pela escalada se aplica quando o agente sobe muros ou janelas para subtrair a coisa.',c:0,e:'CERTO. Art. 155, §4º, II, CP. Escalada = uso de qualquer meio extraordinário pra entrar (escadas, muros, janelas).'},
+    {b:'FCC',t:'cebraspe',s:'O estelionato é crime que se configura mediante violência ou grave ameaça contra a vítima.',c:1,e:'ERRADO. Estelionato (art. 171, CP) usa FRAUDE/ARDIL/ENGANO — sem violência. Quando há violência, é ROUBO (art. 157).'},
+    {b:'VUNESP',t:'multiple',s:'O peculato-furto (art. 312, §1º, CP) ocorre quando o funcionário público:',o:['Apropria-se de bem público que tem sob sua posse','Subtrai bem do qual NÃO tem posse, valendo-se da função','Empresta bem público a colega','Não usa bem por preguiça','Doa bem público'],c:1,e:'Peculato-FURTO: funcionário NÃO tem a posse do bem, mas SUBTRAI valendo-se da facilidade da função. Peculato comum: já tem a posse e se apropria.'},
+    // Difícil (diff 3-5)
+    {b:'CESPE',t:'cebraspe',s:'Na Lei de Drogas (11.343/06), o porte para uso pessoal (art. 28) é crime, mas não comporta pena privativa de liberdade.',c:0,e:'CERTO. Art. 28: usuário SOFRE consequências (advertência, prestação de serviços, medida educativa) mas NÃO vai preso. Continua sendo CRIME (não foi descriminalizado).'},
+    {b:'FGV',t:'multiple',s:'A diferença entre traficante e usuário, na Lei de Drogas, considera:',o:['Apenas a quantidade','Quantidade, natureza, local, circunstâncias da apreensão e condições do agente','A cor da droga','A idade do agente apenas','O sexo do agente'],c:1,e:'Art. 28, §2º, Lei 11.343/06. Critérios: natureza+quantidade+local+circunstâncias+conduta+antecedentes. Juiz analisa o CONJUNTO.'},
+    {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha (11.340/06) se aplica apenas a vítimas mulheres heterossexuais.',c:1,e:'ERRADO. STJ pacificou: Lei Maria da Penha protege QUALQUER mulher (incluindo trans) vítima de violência doméstica, independente de orientação sexual.'},
+    {b:'FCC',t:'multiple',s:'A tortura, segundo a Lei 9.455/97, é crime:',o:['Comum, prescritível','Equiparado a hediondo, inafiançável e insuscetível de graça/anistia','Militar apenas','De menor potencial ofensivo','Contravenção'],c:1,e:'Art. 5º, XLIII, CF + Lei 9.455/97. Tortura: equiparada a hediondo, inafiançável, insuscetível de graça, anistia, indulto.'},
+    {b:'VUNESP',t:'cebraspe',s:'O adolescente que pratica ato infracional análogo a crime cumpre PENA, como qualquer adulto.',c:1,e:'ERRADO. Menor de 18 é INIMPUTÁVEL (art. 228, CF). Cumpre MEDIDA SOCIOEDUCATIVA (ECA, Lei 8.069/90), não pena.'},
+  ],
+  info: [
+    // Fácil (diff 1)
+    {b:'FGV',t:'cebraspe',s:'No Windows, o atalho Ctrl + C copia o item selecionado para a área de transferência.',c:0,e:'CERTO. Ctrl+C = copiar. Ctrl+V = colar. Ctrl+X = recortar. Ctrl+Z = desfazer.'},
+    {b:'CESPE',t:'cebraspe',s:'A tecla Print Screen (PrtScn) imprime imediatamente a tela na impressora padrão.',c:1,e:'ERRADO. PrtScn copia uma IMAGEM da tela pra área de transferência. Pra imprimir, precisa colar num programa e mandar imprimir.'},
+    {b:'FCC',t:'multiple',s:'O atalho do Windows para abrir o Explorador de Arquivos é:',o:['Win + R','Win + E','Win + D','Win + L','Win + F'],c:1,e:'Win+E abre o Explorador de Arquivos. Win+R = executar. Win+D = mostrar área de trabalho. Win+L = bloquear.'},
+    {b:'VUNESP',t:'cebraspe',s:'A Lixeira do Windows armazena temporariamente arquivos excluídos, permitindo restaurá-los.',c:0,e:'CERTO. Itens excluídos com Delete vão pra Lixeira (recuperáveis). Shift+Delete exclui DEFINITIVAMENTE (sem passar pela lixeira).'},
+    {b:'IBFC',t:'multiple',s:'No Windows, ao pressionar Win + L:',o:['Abre o Word','Bloqueia o computador (tela de login)','Liga o WiFi','Lista arquivos','Liga o som'],c:1,e:'Win+L = LOCK = bloqueia. Útil pra sair rapidinho sem fechar tudo. Volta com a senha.'},
+    // Médio (diff 2)
+    {b:'CESPE',t:'cebraspe',s:'No Excel, a fórmula =SOMA(A1:A10) soma TODOS os valores da célula A1 até A10 (intervalo).',c:0,e:'CERTO. Dois pontos (A1:A10) = INTERVALO contínuo. Ponto-e-vírgula (A1;A10) seria APENAS A1 e A10.'},
+    {b:'FGV',t:'multiple',s:'No Word, o atalho Ctrl + B aplica qual formatação ao texto?',o:['Itálico','Negrito (Bold)','Sublinhado','Cor azul','Bullet'],c:1,e:'Em INGLÊS: Ctrl+B = Bold (negrito). Ctrl+I = Italic. Ctrl+U = Underline. Atalhos universais Microsoft.'},
+    {b:'CESPE',t:'cebraspe',s:'O protocolo HTTPS é mais seguro que o HTTP por criptografar os dados transmitidos.',c:0,e:'CERTO. HTTPS = HTTP + SSL/TLS (criptografia). Cadeado verde no navegador indica conexão segura. Hoje é padrão.'},
+    {b:'FCC',t:'multiple',s:'A função do DNS (Domain Name System) é:',o:['Bloquear sites','Converter nomes de domínio em endereços IP','Criptografar e-mails','Comprimir arquivos','Acelerar downloads'],c:1,e:'DNS traduz www.juris.com → 192.168.x.x. Sem ele, teria que decorar IPs.'},
+    {b:'VUNESP',t:'multiple',s:'No PowerPoint, F5 inicia:',o:['Salvar','Apresentação desde o slide inicial','Imprimir','Fechar','Próximo slide'],c:1,e:'F5 = inicia apresentação do INÍCIO. Shift+F5 = inicia do slide ATUAL.'},
+    // Difícil (diff 3-5)
+    {b:'CESPE',t:'cebraspe',s:'Phishing é uma técnica de engenharia social que tenta enganar usuários para que revelem dados sensíveis (senhas, cartão).',c:0,e:'CERTO. Phishing = "pescaria" digital. E-mails/sites falsos imitam instituições (banco, governo) pra roubar dados. Sempre verificar URL!'},
+    {b:'FGV',t:'multiple',s:'Um ransomware é um tipo de malware que:',o:['Apenas exibe propagandas','Criptografa arquivos e exige resgate (geralmente em cripto)','Acelera o computador','Limpa vírus','Otimiza a memória'],c:1,e:'Ransomware = RANSOM (resgate). Sequestra dados criptografando-os. Pagar NÃO garante recuperação. Backup é a melhor defesa.'},
+    {b:'CESPE',t:'cebraspe',s:'A autenticação multifator (MFA) usa apenas a senha como única forma de proteção.',c:1,e:'ERRADO. MFA = MÚLTIPLOS fatores (algo que SABE + algo que TEM + algo que É). Ex: senha + código SMS + biometria. Mais seguro que só senha.'},
+    {b:'FCC',t:'multiple',s:'A LGPD (Lei Geral de Proteção de Dados, Lei 13.709/18) protege:',o:['Apenas dados de empresas','Dados pessoais de pessoas físicas, regulando seu tratamento','Apenas dados públicos','Apenas dados governamentais','Patentes industriais'],c:1,e:'LGPD: proteção de DADOS PESSOAIS (CPF, nome, biometria, etc) de PESSOAS FÍSICAS. Inspirada na GDPR europeia. Em vigor desde 2020.'},
+    {b:'VUNESP',t:'cebraspe',s:'A computação em nuvem permite armazenar e processar dados em servidores remotos, acessíveis via Internet.',c:0,e:'CERTO. Cloud = nuvem. Exemplos: Google Drive (armazenamento), AWS (servidor), Office 365 (apps). Vantagens: acesso de qualquer lugar, escalabilidade.'},
+  ],
+};
+
+// Estado da campanha
+let currentCampaignPhase = null;
+
+// Pega N questões da matéria conforme a fase
+function getCampaignQuestions(phaseConfig) {
+  const need = phaseConfig.qs;
+  let pool = [];
+  if (phaseConfig.subj === 'mix') {
+    // Mistura de matérias
+    phaseConfig.mix.forEach(s => {
+      pool = pool.concat(CAMPAIGN_QBANK[s] || []);
+    });
+  } else {
+    pool = [...(CAMPAIGN_QBANK[phaseConfig.subj] || [])];
+  }
+  // Embaralha e pega N
+  pool.sort(() => Math.random() - 0.5);
+  // Se faltar, completa com banco principal (filtrado por matéria)
+  if (pool.length < need && typeof QBANK !== 'undefined') {
+    const fallbackTopics = phaseConfig.subj === 'mix' ? phaseConfig.mix : [phaseConfig.subj];
+    fallbackTopics.forEach(subj => {
+      Object.keys(QBANK).forEach(tid => {
+        if (tid.startsWith(subj + '-')) pool = pool.concat(QBANK[tid] || []);
+      });
+    });
+    pool.sort(() => Math.random() - 0.5);
+  }
+  return pool.slice(0, need);
+}
+
+// Cálculo das estrelas baseado na taxa de acerto
+function computeStars(score, total) {
+  const pct = (score / total) * 100;
+  if (pct >= 90) return 3;
+  if (pct >= 70) return 2;
+  if (pct >= 50) return 1;
+  return 0;
+}
+
+// Abre tela da campanha
+function openCampaign() {
+  audioInit(); snd.click();
+  renderCampaignMap();
+  showScreen('screen-campaign');
+}
+
+// Renderiza o mapa estilo Candy Crush
+function renderCampaignMap() {
+  const grid = $('campaign-grid');
+  if (!grid) return;
+  const stars = (progress.campaignStars) || {};
+  const completed = (progress.campaignDone) || {};
+
+  let html = '';
+  CAMPAIGN_PHASES.forEach((p, idx) => {
+    const isDone = !!completed[p.n];
+    const prevDone = idx === 0 || !!completed[CAMPAIGN_PHASES[idx-1].n];
+    const isUnlocked = idx === 0 || prevDone;
+    const isCurrent = !isDone && isUnlocked;
+    const phStars = stars[p.n] || 0;
+
+    // Cor por nível de dificuldade
+    const colors = ['#10b981','#10b981','#0891b2','#7c3aed','#dc2626','#ffd700'];
+    const cor = colors[p.diff] || '#ff2e63';
+
+    // Ícones de matéria
+    const subjIcon = p.subj === 'mix' ? '🎯' : (typeof SUBJ !== 'undefined' && SUBJ[p.subj]?.icon) || '📖';
+    const isBoss = p.n === 20;
+
+    const lockClass = isUnlocked ? '' : 'locked';
+    const currentClass = isCurrent ? 'current' : '';
+    const doneClass = isDone ? 'done' : '';
+
+    let starsHTML = '';
+    for (let s = 1; s <= 3; s++) {
+      starsHTML += `<span class="cmp-star ${s <= phStars ? 'on' : ''}">★</span>`;
+    }
+
+    html += `<button class="cmp-phase ${lockClass} ${currentClass} ${doneClass} ${isBoss?'boss':''}"
+      ${!isUnlocked ? 'disabled' : ''}
+      style="--cmp-cor:${cor};"
+      onclick="startCampaignPhase(${p.n})">
+      <div class="cmp-num">FASE ${p.n}</div>
+      <div class="cmp-icon">${isUnlocked ? (isBoss?'👑':subjIcon) : '🔒'}</div>
+      <div class="cmp-title">${esc(p.title)}</div>
+      <div class="cmp-meta">${p.qs} questões</div>
+      <div class="cmp-stars">${starsHTML}</div>
+    </button>`;
+  });
+  grid.innerHTML = html;
+
+  // Stats no topo
+  const total = CAMPAIGN_PHASES.length;
+  const done = Object.keys(completed).length;
+  const totalStars = Object.values(stars).reduce((s,v) => s+v, 0);
+  const maxStars = total * 3;
+  const statEl = $('campaign-stats');
+  if (statEl) statEl.innerHTML = `
+    <div><span class="cmp-stat-num">${done}/${total}</span><span class="cmp-stat-label">FASES</span></div>
+    <div><span class="cmp-stat-num">${totalStars}/${maxStars}</span><span class="cmp-stat-label">⭐ ESTRELAS</span></div>
+    <div><span class="cmp-stat-num">${Math.round(totalStars/maxStars*100)}%</span><span class="cmp-stat-label">PROGRESSO</span></div>`;
+}
+
+// Inicia uma fase da campanha
+function startCampaignPhase(phaseNum) {
+  const phaseConfig = CAMPAIGN_PHASES.find(p => p.n === phaseNum);
+  if (!phaseConfig) return;
+  const completed = progress.campaignDone || {};
+  const idx = CAMPAIGN_PHASES.findIndex(p => p.n === phaseNum);
+  const prevDone = idx === 0 || !!completed[CAMPAIGN_PHASES[idx-1].n];
+  if (!prevDone) { snd.error && snd.error(); return; }
+  if (progress.lives <= 0) {
+    openModal({title:'❤️ SEM VIDAS!', msg:'Vidas renovam diariamente. Volte amanhã!', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  snd.click();
+  currentCampaignPhase = phaseConfig;
+  const qs = getCampaignQuestions(phaseConfig);
+  if (qs.length === 0) {
+    openModal({title:'⚠️ Em breve', msg:'Questões dessa fase em construção!', hideCancel:true, onConfirm:()=>closeModal()});
+    return;
+  }
+  activePhase = {
+    id: 'campaign-' + phaseNum,
+    type: 'campaign',
+    subject: phaseConfig.subj === 'mix' ? 'mix' : phaseConfig.subj,
+    isCampaign: true,
+    campaignNum: phaseNum,
+    title: `🎮 FASE ${phaseNum}`,
+    subtitle: phaseConfig.title,
+    briefing: `Bateria de ${phaseConfig.qs} questões INÉDITAS. Acerte 50%+ pra 1⭐, 70%+ pra 2⭐, 90%+ pra 3⭐!`,
+    questions: qs.map(formatBankQuestion),
+    mode: phaseNum === 20 ? 'finalboss' : 'topic',
+  };
+  phaseState = {stage:'briefing', qIdx:0, answers:[], score:0};
+  renderPhase();
+  showScreen('screen-phase');
+}
+
+window.openCampaign = openCampaign;
+window.startCampaignPhase = startCampaignPhase;
 
 function friendlyAuthError(err, isSignup) {
   const msg = String(err && err.message || err || '').toLowerCase();
@@ -7092,6 +7509,14 @@ function startSimulado() {
 }
 
 function exitPhase() {
+  // Se for fase de CAMPANHA, volta ao mapa da campanha
+  try {
+    if (activePhase && activePhase.isCampaign) {
+      activePhase = null;
+      openCampaign();
+      return;
+    }
+  } catch(e) { console.error('[exitPhase Campaign]', e); }
   // Se for fase de concurso PM, volta ao mapa da PM (mantém tema)
   try {
     if (activePhase && activePhase.isPM && activePhase.pmId) {
@@ -7322,6 +7747,20 @@ function finishPhase() {
     if (!progress.pmDone) progress.pmDone = {};
     if (!progress.pmDone[ph.pmId]) progress.pmDone[ph.pmId] = {};
     progress.pmDone[ph.pmId][ph.pmKey] = true;
+  }
+  // Marca fase da CAMPANHA + estrelas
+  if (ph.isCampaign && ph.campaignNum) {
+    if (!progress.campaignDone) progress.campaignDone = {};
+    if (!progress.campaignStars) progress.campaignStars = {};
+    const totalQ = phaseState.answers.length;
+    const stars = computeStars(phaseState.score, totalQ);
+    // Só marca como done se ganhou pelo menos 1 estrela
+    if (stars >= 1) {
+      progress.campaignDone[ph.campaignNum] = true;
+      // Salva a MELHOR pontuação
+      const prev = progress.campaignStars[ph.campaignNum] || 0;
+      if (stars > prev) progress.campaignStars[ph.campaignNum] = stars;
+    }
   }
 
   if (!passed) progress.lives = Math.max(0, progress.lives - (ph.type === 'boss' ? 2 : 1));
