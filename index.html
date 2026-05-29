@@ -3090,6 +3090,21 @@ body::before, body::after,
   transform: translateX(-2px);
 }
 .back-btn:active { transform: translateX(-1px) scale(0.98); }
+
+.hub-card-ranking {
+  background: linear-gradient(160deg, rgba(255,215,0,.18), rgba(212,175,55,.08), rgba(205,127,50,.05)) !important;
+  border-color: rgba(255,215,0,.25) !important;
+}
+.hub-card-ranking .hub-card-cta {
+  background: linear-gradient(90deg, #d4af37, #ffd700, #b8870a) !important;
+  color: #2d1810 !important;
+}
+.hub-card-ranking .hub-card-title {
+  background: var(--gold-shimmer);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 </style>
 </head>
 <body>
@@ -3400,6 +3415,12 @@ body::before, body::after,
         <div class="hub-card-sub">9 polícias militares do Nordeste • questões exclusivas</div>
         <div class="hub-card-cta">VER CONCURSOS ▶</div>
       </button>
+      <button class="hub-card hub-card-ranking" onclick="goRanking()">
+        <div class="hub-card-icon">🏆</div>
+        <div class="hub-card-title">RANKING</div>
+        <div class="hub-card-sub">Veja quem está dominando • compare seu progresso</div>
+        <div class="hub-card-cta">VER RANKING ▶</div>
+      </button>
     </div>
   </div>
 </div>
@@ -3533,7 +3554,7 @@ body::before, body::after,
 <!-- Ranking -->
 <div id="screen-ranking" class="screen">
   <div class="container-narrow">
-    <button class="back-btn" onclick="goMap()">← voltar ao mapa</button>
+    <button class="back-btn" onclick="goHub()">← início</button>
     <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:var(--amber);">
       <div style="text-align:center;">
         <div style="font-size:48px;margin-bottom:8px;">🏆</div>
