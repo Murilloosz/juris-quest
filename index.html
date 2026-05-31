@@ -3039,12 +3039,12 @@ body::before, body::after,
 }
 
 /* 🏠 HUB inicial */
-.hub-grid { display: flex; flex-direction: column; gap: 18px; margin-top: 24px; }
-@media (min-width: 720px) { .hub-grid { flex-direction: row; } .hub-card { flex: 1; } }
+.hub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+@media (min-width: 720px) { .hub-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
 .hub-card {
   display: flex !important; flex-direction: column !important; align-items: center !important;
-  justify-content: center !important; gap: 10px !important; padding: 36px 20px !important;
-  min-height: 200px !important; border-radius: 20px !important; cursor: pointer; position: relative;
+  justify-content: center !important; gap: 8px !important; padding: 18px 12px !important;
+  min-height: 165px !important; border-radius: 16px !important; cursor: pointer; position: relative;
   overflow: hidden; border: 1px solid var(--glass-border) !important;
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   transition: transform .22s, box-shadow .22s; text-align: center;
@@ -3288,6 +3288,237 @@ body::before, body::after,
   background: linear-gradient(90deg, #dc2626, #7c3aed) !important;
   color: #fff !important;
 }
+
+/* 👤 CARD DE PERFIL NO HUB */
+.hub-profile-card {
+  width: 100%;
+  display: block;
+  text-align: left;
+  background: linear-gradient(160deg, rgba(255,46,99,.12), rgba(124,58,237,.08), rgba(8,217,214,.05));
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+.hub-profile-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255,46,99,.2);
+  border-color: var(--rose);
+}
+.hub-profile-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.hub-profile-avatar {
+  font-size: 32px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.hub-profile-info { flex: 1; min-width: 0; }
+.hub-profile-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
+  color: var(--rose);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+.hub-profile-patente {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.hub-profile-code {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyan);
+  background: rgba(8,217,214,.12);
+  border: 1px solid rgba(8,217,214,.3);
+  border-radius: 6px;
+  padding: 2px 8px;
+  letter-spacing: 1px;
+}
+.hub-profile-lives { flex-shrink: 0; display: flex; gap: 1px; }
+.hub-profile-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.hub-profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,.04);
+  border-radius: 8px;
+  padding: 6px 4px;
+}
+.hub-profile-stat-num {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1.1;
+}
+.hub-profile-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+  margin-top: 3px;
+}
+.hub-profile-xpbar-wrap { margin-bottom: 6px; }
+.hub-profile-xpbar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.hub-profile-xpbar {
+  height: 8px;
+  background: rgba(255,255,255,.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.hub-profile-xpfill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), #ffaa00);
+  border-radius: 999px;
+  transition: width .6s ease;
+  width: 0%;
+}
+.hub-profile-cta {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--rose);
+  letter-spacing: 0.3px;
+  opacity: 0.75;
+}
+@media (max-width: 360px) {
+  .hub-profile-stat-num { font-size: 15px; }
+  .hub-profile-name { font-size: 11px; }
+}
+
+/* 🎛️ Barra de ações no HUB */
+.hub-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+.hub-actions-bar button {
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 9px;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s, background .15s, border-color .15s;
+}
+.hub-actions-bar button:hover {
+  transform: translateY(-2px);
+  background: rgba(255,46,99,.15);
+  border-color: var(--rose);
+}
+
+.hub-cron-compact { padding: 12px 14px !important; }
+.hub-cron-compact > div { gap: 8px !important; }
+
+/* Cards do HUB compactos pro grid 2/3 colunas */
+.hub-card-icon { font-size: 34px !important; }
+.hub-card-title { font-size: 14px !important; line-height: 1.15 !important; }
+.hub-card-sub { font-size: 10px !important; line-height: 1.3 !important; }
+.hub-card-cta { font-size: 11px !important; padding: 7px 14px !important; }
+@media (min-width: 720px) {
+  .hub-card-icon { font-size: 40px !important; }
+  .hub-card-title { font-size: 16px !important; }
+  .hub-card-sub { font-size: 11px !important; }
+}
+/* 🃏 Card LEI SECA */
+.hub-card-leiseca {
+  background: linear-gradient(160deg, rgba(232,121,249,.18), rgba(168,85,247,.1), rgba(124,58,237,.06)) !important;
+  border-color: rgba(232,121,249,.35) !important;
+}
+.hub-card-leiseca .hub-card-cta {
+  background: linear-gradient(90deg, #e879f9, #a855f7) !important;
+  color: #fff !important;
+}
+
+/* 📖 LEI SECA — modo leitura */
+.ls-subject-card {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; padding: 16px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 14px; cursor: pointer; transition: transform .15s, border-color .15s;
+  color: var(--text-primary);
+}
+.ls-subject-card:not(.ls-disabled):hover { transform: translateY(-2px); border-color: var(--rose); }
+.ls-disabled { cursor: not-allowed; opacity: .65; }
+.ls-group { margin-bottom: 12px; border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; }
+.ls-group-head {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 12px 14px; background: rgba(255,255,255,.04);
+  border: none; cursor: pointer; color: var(--text-primary);
+  font-weight: 700; font-size: 13px; text-align: left;
+}
+.ls-group-head:hover { background: rgba(255,46,99,.08); }
+.ls-group-count {
+  margin-left: auto; font-family: 'Orbitron', sans-serif; font-size: 11px;
+  background: var(--rose); color: #fff; border-radius: 999px; padding: 1px 8px;
+}
+.ls-group-arrow { font-size: 12px; color: var(--text-secondary); }
+.ls-group-body { padding: 8px; }
+.ls-article {
+  padding: 12px; margin-bottom: 8px; border-radius: 10px;
+  background: rgba(255,255,255,.03); border-left: 3px solid var(--glass-border);
+}
+.ls-article.ls-hot { border-left-color: #ff6b35; background: rgba(255,107,53,.06); }
+.ls-art-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.ls-art-num {
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 13px; color: var(--rose);
+}
+.ls-fire { font-size: 14px; }
+.ls-art-title { font-weight: 700; font-size: 13px; color: var(--text-primary); }
+.ls-art-text { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.82); }
+.ls-exp-btn {
+  margin-top: 10px; padding: 5px 12px; font-size: 11px; font-weight: 700;
+  background: rgba(255,215,0,.12); border: 1px solid rgba(255,215,0,.3);
+  border-radius: 8px; color: var(--amber); cursor: pointer;
+}
+.ls-exp-btn:hover { background: rgba(255,215,0,.2); }
+.ls-exp {
+  margin-top: 8px; padding: 10px 12px; font-size: 12px; line-height: 1.55;
+  color: rgba(255,255,255,.85); background: rgba(255,215,0,.06);
+  border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0;
+}
+body[data-theme="light"] .ls-art-text,
+body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
 </style>
 </head>
 <body>
@@ -3431,73 +3662,36 @@ body::before, body::after,
     <button class="back-btn" onclick="goHub()">← início</button>
   </div>
   <div class="container">
-    <!-- HUD -->
-    <div class="hud pixel-corners">
-      <div class="hud-row">
-        <div class="hud-user">
-          <div id="hud-avatar" class="hud-avatar">👮‍♀️</div>
-          <div>
-            <div id="hud-name" class="font-arcade" style="color:var(--rose);font-size:12px;">—</div>
-            <div id="hud-patente" style="color:rgba(255,255,255,.7);font-size:12px;margin-top:2px;">—</div>
-          </div>
-        </div>
+    <!-- Barra mínima durante o estudo (perfil/plano agora ficam no dashboard) -->
+    <div class="hud pixel-corners" style="margin-bottom:16px;">
+      <div class="hud-row" style="justify-content:flex-end;align-items:center;">
         <div class="hud-stats">
-          <div class="hud-stat"><span style="color:var(--amber);">⚡</span><span id="hud-xp" class="font-orbit" style="color:var(--amber);font-weight:700;">0</span><span style="color:rgba(255,255,255,.4);font-size:11px;">XP</span></div>
           <div class="hud-stat" id="hud-lives"></div>
-          <div class="hud-stat" title="Streak diário"><span class="fire">🔥</span><span id="hud-streak" class="font-orbit fire" style="font-weight:700;">0</span><span style="color:rgba(255,255,255,.4);font-size:11px;">DIAS</span></div>
           <div class="hud-stat" id="hud-freezes-wrap" style="display:none;" title="Freezes acumulados — protegem sua chama"><span>🧊</span><span id="hud-freezes" class="font-orbit" style="color:#7dd3fc;font-weight:700;">0</span></div>
           <div class="hud-actions">
             <button aria-label="Ativar ou desativar som" onclick="toggleSound()" title="Som"><span id="hud-sound">🔊</span></button>
-            <button aria-label="Página inicial" onclick="goHub()" title="Início">🏠</button>
-            <button id="theme-toggle" aria-label="Alternar tema claro ou escuro" onclick="toggleTheme()" title="Tema">🌙</button>
             <button aria-label="Caderno de erros — Suas Feridas" onclick="goWounds()" title="Suas Feridas">🩹</button>
-            <button aria-label="Ativar ou desativar notificações" onclick="toggleNotifications()" title="Notificações">🔔</button>
             <button aria-label="Lei Seca — Flashcards" onclick="goFlashcards()" title="Lei Seca">🃏</button>
             <button aria-label="Minha pilha de questões marcadas" onclick="goMyPile()" title="Minha Pilha">🚩</button>
-            <button aria-label="Duelos PvP entre jogadoras" onclick="goDuels()" title="Duelos">⚔️</button>
-            <button aria-label="Ranking público de jogadoras" onclick="goRanking()" title="Ranking">🏆</button>
             <button aria-label="Suas estatísticas" onclick="goStats()" title="Stats">📊</button>
-            <button id="hud-admin-btn" aria-label="Painel do mestre" onclick="goAdmin()" title="Painel Admin" style="display:none;">👑</button>
-            <button aria-label="Sair da conta" onclick="logout()" title="Sair">🚪</button>
           </div>
         </div>
       </div>
-      <div id="hud-xp-info" style="margin-top:12px;display:none;">
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:4px;">
-          <span id="hud-patente-atual"></span>
-          <span id="hud-patente-prox"></span>
-        </div>
-        <div class="xp-bar"><div id="hud-xp-fill" class="xp-fill" style="width:0%;"></div></div>
+      <!-- elementos ocultos mantidos p/ compatibilidade com renderMap -->
+      <div style="display:none;">
+        <span id="hud-avatar"></span><span id="hud-name"></span><span id="hud-patente"></span>
+        <span id="hud-xp"></span><span id="hud-streak"></span>
+        <span id="hud-patente-atual"></span><span id="hud-patente-prox"></span>
+        <div id="hud-xp-fill"></div>
+        <span id="hud-sound-x"></span>
       </div>
-    </div>
-
-    <!-- Cronograma -->
-    <div id="cron-box" class="cron pixel-corners hidden">
-      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:28px;">⏳</div>
-          <div>
-            <div class="font-arcade" style="color:var(--cyan);font-size:10px;">PROVA EM</div>
-            <div class="font-orbit" style="font-weight:700;font-size:24px;"><span id="cron-dias">0</span> <span style="font-size:14px;color:rgba(255,255,255,.6);">dias</span></div>
-          </div>
-        </div>
-        <div style="font-size:14px;color:rgba(255,255,255,.7);">
-          <div id="cron-restantes">📅 — dias de estudo restantes</div>
-          <div style="color:var(--cyan);margin-top:4px;">🎯 Meta hoje: <strong id="cron-meta">—</strong></div>
-        </div>
+      <div id="hud-xp-info" style="display:none;"></div>
+      <div id="cron-box" class="hidden" style="display:none;">
+        <span id="cron-dias"></span><span id="cron-restantes"></span><span id="cron-meta"></span>
       </div>
-    </div>
-
-    <!-- FEATURE 2 — Painel HOJE VOCÊ PRECISA -->
-    <div id="today-panel" class="hidden card pixel-corners" style="margin-bottom:16px;border-color:var(--emerald);background:linear-gradient(to right,rgba(16,185,129,.1),rgba(8,217,214,.05));">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-        <div style="font-size:28px;">🎯</div>
-        <div>
-          <div class="font-arcade" style="color:var(--emerald);font-size:11px;">HOJE VOCÊ PRECISA</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;">Seu plano do dia em 1 olhar</div>
-        </div>
+      <div id="today-panel" class="hidden" style="display:none;">
+        <div id="today-tasks"></div>
       </div>
-      <div id="today-tasks" style="display:grid;gap:8px;"></div>
     </div>
 
     <!-- Modos especiais -->
@@ -3592,19 +3786,103 @@ body::before, body::after,
 <!-- 🏠 HUB inicial -->
 <div id="screen-hub" class="screen">
   <div class="container-narrow">
-    <div style="text-align:center;margin:24px 0 8px;">
-      <div class="screen-header">
-        <div class="header-title">JURIS QUEST</div>
+    <div style="text-align:center;margin:12px 0 6px;">
+      <div class="screen-header" style="margin-bottom:2px;">
+        <div class="header-title" style="font-size:24px;">JURIS QUEST</div>
       </div>
-      <div id="hub-greet" style="font-size:15px;color:var(--text-secondary);font-weight:600;margin-top:4px;">Bem-vinda!</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">Escolha como quer estudar hoje</div>
+      <div id="hub-greet" style="font-size:14px;color:var(--text-secondary);font-weight:600;margin-top:2px;">Bem-vinda!</div>
     </div>
+
+    <!-- 👤 CARD DE PERFIL DO JOGADOR (clicável → abre stats) -->
+    <button id="hub-profile-card" class="hub-profile-card" onclick="goStats()">
+      <div class="hub-profile-top">
+        <div id="hub-profile-avatar" class="hub-profile-avatar">👮‍♀️</div>
+        <div class="hub-profile-info">
+          <div id="hub-profile-name" class="hub-profile-name">—</div>
+          <div id="hub-profile-patente" class="hub-profile-patente">—</div>
+          <div id="hub-profile-code" class="hub-profile-code" style="display:none;">⚔️ <span id="hub-profile-code-val">M-????</span></div>
+        </div>
+        <div class="hub-profile-lives" id="hub-profile-lives"></div>
+      </div>
+      <div class="hub-profile-stats">
+        <div class="hub-profile-stat">
+          <span class="hub-profile-stat-num" id="hub-profile-xp" style="color:var(--amber);">0</span>
+          <span class="hub-profile-stat-label">⚡ XP</span>
+        </div>
+        <div class="hub-profile-stat">
+          <span class="hub-profile-stat-num fire" id="hub-profile-streak">0</span>
+          <span class="hub-profile-stat-label">🔥 DIAS</span>
+        </div>
+        <div class="hub-profile-stat">
+          <span class="hub-profile-stat-num" id="hub-profile-fases" style="color:var(--cyan);">0</span>
+          <span class="hub-profile-stat-label">🎯 FASES</span>
+        </div>
+        <div class="hub-profile-stat">
+          <span class="hub-profile-stat-num" id="hub-profile-acerto" style="color:var(--emerald);">0%</span>
+          <span class="hub-profile-stat-label">✅ ACERTO</span>
+        </div>
+      </div>
+      <div class="hub-profile-xpbar-wrap">
+        <div class="hub-profile-xpbar-labels">
+          <span id="hub-profile-pat-atual"></span>
+          <span id="hub-profile-pat-prox"></span>
+        </div>
+        <div class="hub-profile-xpbar"><div id="hub-profile-xpfill" class="hub-profile-xpfill"></div></div>
+      </div>
+      <div class="hub-profile-cta">📊 ver estatísticas completas</div>
+    </button>
+
+    <!-- 🎛️ Barra de ações (movida do Estudo Geral) -->
+    <div class="hub-actions-bar">
+      <button aria-label="Ativar ou desativar som" onclick="toggleSound()" title="Som"><span id="hub-sound">🔊</span></button>
+      <button id="hub-theme-toggle" aria-label="Alternar tema claro ou escuro" onclick="toggleTheme()" title="Tema">🌙</button>
+      <button aria-label="Caderno de erros — Suas Feridas" onclick="goWounds()" title="Suas Feridas">🩹</button>
+      <button aria-label="Ativar ou desativar notificações" onclick="toggleNotifications()" title="Notificações">🔔</button>
+      <button aria-label="Lei Seca — Flashcards" onclick="goFlashcards()" title="Lei Seca">🃏</button>
+      <button aria-label="Minha pilha de questões marcadas" onclick="goMyPile()" title="Minha Pilha">🚩</button>
+      <button aria-label="Suas estatísticas" onclick="goStats()" title="Stats">📊</button>
+      <button aria-label="Sair da conta" onclick="logout()" title="Sair">🚪</button>
+    </div>
+
+    <!-- ⏳ Cronograma PROVA EM (linha compacta) -->
+    <div id="hub-cron-box" class="cron pixel-corners hidden hub-cron-compact" style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">⏳</span>
+          <span class="font-arcade" style="color:var(--cyan);font-size:9px;">PROVA EM</span>
+          <span class="font-orbit" style="font-weight:700;font-size:18px;"><span id="hub-cron-dias">0</span><span style="font-size:11px;color:rgba(255,255,255,.6);"> dias</span></span>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,.7);display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <span id="hub-cron-restantes">📅 —</span>
+          <span style="color:var(--cyan);">🎯 <strong id="hub-cron-meta">—</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🎯 Painel HOJE VOCÊ PRECISA (movido do Estudo Geral) -->
+    <div id="hub-today-panel" class="hidden card pixel-corners" style="margin-bottom:14px;padding:12px;border-color:var(--emerald);background:linear-gradient(to right,rgba(16,185,129,.1),rgba(8,217,214,.05));">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="font-size:22px;">🎯</div>
+        <div>
+          <div class="font-arcade" style="color:var(--emerald);font-size:10px;">HOJE VOCÊ PRECISA</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:1px;">Seu plano do dia em 1 olhar</div>
+        </div>
+      </div>
+      <div id="hub-today-tasks" style="display:grid;gap:8px;"></div>
+    </div>
+
     <div class="hub-grid">
       <button class="hub-card hub-card-geral" onclick="goMap()">
         <div class="hub-card-icon">📚</div>
         <div class="hub-card-title">ESTUDO GERAL</div>
         <div class="hub-card-sub">Constitucional • Administrativo • Penal • Informática</div>
         <div class="hub-card-cta">COMEÇAR ▶</div>
+      </button>
+      <button class="hub-card hub-card-leiseca" onclick="goFlashcards()">
+        <div class="hub-card-icon">🃏</div>
+        <div class="hub-card-title">LEI SECA</div>
+        <div class="hub-card-sub">Flashcards • decore artigos e súmulas em minutos</div>
+        <div class="hub-card-cta">ESTUDAR ▶</div>
       </button>
       <button class="hub-card hub-card-campaign" onclick="openCampaign()">
         <div class="hub-card-icon">🎮</div>
@@ -3786,16 +4064,57 @@ body::before, body::after,
 <!-- FEATURE 1 — Lei Seca (Flashcards) -->
 <div id="screen-flashcards" class="screen">
   <div class="container-narrow">
-    <button class="back-btn" onclick="goMap()">← voltar ao mapa</button>
+    <button class="back-btn" onclick="goHub()">← início</button>
     <div class="card glow pixel-corners" style="margin-bottom:16px;border-color:var(--fuchsia);">
       <div style="text-align:center;">
-        <div style="font-size:48px;margin-bottom:8px;">🃏</div>
+        <div style="font-size:40px;margin-bottom:6px;">📖</div>
         <div class="font-arcade" style="color:var(--fuchsia);font-size:14px;">LEI SECA</div>
-        <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:6px;">Flashcards de artigos críticos</div>
-        <div id="flash-counter" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5);"></div>
+        <div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:6px;">Leitura dos artigos com ênfase em concurso policial</div>
       </div>
     </div>
-    <div id="flashcard-container"></div>
+
+    <!-- Seletor de matéria -->
+    <div id="leiseca-home">
+      <div style="display:grid;gap:12px;">
+        <button class="ls-subject-card" onclick="openLeiSeca('penal')">
+          <div style="font-size:32px;">⚖️</div>
+          <div style="flex:1;text-align:left;">
+            <div style="font-weight:700;font-size:15px;color:var(--rose);">DIREITO PENAL</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);">Código Penal • 51 artigos essenciais • 🔥 mais cobrados</div>
+          </div>
+          <div style="font-size:18px;color:var(--rose);">▸</div>
+        </button>
+        <button class="ls-subject-card ls-disabled" disabled>
+          <div style="font-size:32px;opacity:.5;">📜</div>
+          <div style="flex:1;text-align:left;">
+            <div style="font-weight:700;font-size:15px;color:var(--text-muted);">DIREITO CONSTITUCIONAL</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.4);">Em breve — será adicionado no futuro</div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:6px;">EM BREVE</div>
+        </button>
+      </div>
+
+      <!-- Atalho pros flashcards (modo de revisão ativa) -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--glass-border);">
+        <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:10px;">Prefere revisar de outro jeito?</div>
+        <button class="btn ghost full" onclick="goFlashcardsMode()">🃏 Modo Flashcards (pergunta e resposta)</button>
+      </div>
+    </div>
+
+    <!-- Modo leitura (artigos) -->
+    <div id="leiseca-reader" class="hidden">
+      <button class="back-btn" onclick="backToLeiSecaHome()" style="margin-bottom:12px;">← matérias</button>
+      <div id="leiseca-reader-title" style="font-family:'Press Start 2P',monospace;font-size:11px;color:var(--rose);margin-bottom:6px;"></div>
+      <input type="text" id="leiseca-search" placeholder="🔍 Buscar artigo (ex: 121, roubo, legítima defesa)" oninput="filterLeiSeca()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);border-radius:10px;color:var(--text-primary);font-size:13px;margin-bottom:14px;">
+      <div id="leiseca-content"></div>
+    </div>
+
+    <!-- Modo flashcards (mantido) -->
+    <div id="flashcards-mode" class="hidden">
+      <button class="back-btn" onclick="backToLeiSecaHome()" style="margin-bottom:12px;">← Lei Seca</button>
+      <div id="flash-counter" style="text-align:center;margin-bottom:12px;font-size:12px;color:rgba(255,255,255,.5);"></div>
+      <div id="flashcard-container"></div>
+    </div>
   </div>
 </div>
 
@@ -4224,7 +4543,7 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A EC 104/2019 instituiu as Polícias Penais nos âmbitos federal, estadual e distrital.',c:0,e:'CERTO. Art. 144, VI.'},
   {b:'FGV',t:'multiple',s:'São órgãos da segurança pública listados no art. 144 da CF, EXCETO:',o:['Polícia Federal.','Polícia Rodoviária Federal.','Polícias Civis.','Polícias Militares e Corpos de Bombeiros Militares.','Polícia Comunitária.'],c:4,e:'Os incisos I a VI listam: PF, PRF, PFF, PCs, PMs+CBM, P. Penais.'},
   {b:'FGV',t:'multiple',s:'Compete às Polícias Militares:',o:['Investigar crimes comuns.','Polícia ostensiva e preservação da ordem pública.','Apuração de infrações federais.','Patrulhamento de rodovias federais.','Defesa civil exclusivamente.'],c:1,e:'Art. 144, § 5º.'},
-  {b:'FCC',t:'multiple',s:'A Polícia Federal exerce, com exclusividade, as funções de:',o:['Polícia administrativa.','Polícia judiciária da União.','Polícia ostensiva.','Defesa civil.','Polícia militar.'],c:1,e:'Art. 144, § 1º, IV.'},
+  {b:'FCC',t:'multiple',s:'Compete à Polícia Rodoviária Federal, na forma da lei, o patrulhamento ostensivo das:',o:['Rodovias estaduais.','Estradas municipais.','Rodovias federais.','Ferrovias estaduais.','Vias urbanas das capitais.'],c:2,e:'Art. 144, §2º, CF. PRF faz patrulhamento OSTENSIVO das RODOVIAS FEDERAIS. PRFerrov faz das ferrovias federais.'},
   {b:'FCC',t:'multiple',s:'Aos corpos de bombeiros militares cabe:',o:['Apurar crimes.','Patrulhamento de ferrovias.','Atividades de defesa civil, além das atribuições definidas em lei.','Polícia judiciária militar.','Combate ao tráfico.'],c:2,e:'Art. 144, § 5º.'},
   {b:'VUNESP',t:'multiple',s:'Subordinam-se aos Governadores dos Estados:',o:['Polícia Federal.','PMs, Corpos de Bombeiros, Polícia Civil e Polícia Penal.','Apenas as PMs.','Apenas as polícias militares e bombeiros.','Polícia Rodoviária Federal.'],c:1,e:'Art. 144, § 6º (PM/CBM) + autonomia estadual (PC/PP).'},
   {b:'VUNESP',t:'multiple',s:'As polícias militares são forças:',o:['De segurança nacional.','Auxiliares e reserva do Exército.','Subordinadas ao Ministro da Defesa.','Subordinadas à União.','Independentes.'],c:1,e:'Art. 144, § 6º.'},
@@ -4466,7 +4785,7 @@ const QBANK = {
   {b:'FCC',t:'multiple',s:'A ameaça é classificada como crime:',o:['De ação penal pública incondicionada.','De ação penal pública condicionada à representação do ofendido.','De ação penal privada.','De ação penal subsidiária.','Hediondo.'],c:1,e:'Art. 147, p.ú.'},
   {b:'VUNESP',t:'multiple',s:'A figura do homicídio privilegiado se caracteriza por:',o:['Motivo torpe.','Relevante valor social ou moral, ou domínio de violenta emoção logo em seguida a injusta provocação da vítima.','Emboscada.','Recurso que dificulte a defesa.','Meio cruel.'],c:1,e:'Art. 121, § 1º.'},
   {b:'VUNESP',t:'multiple',s:'A perseguição (stalking), do art. 147-A CP, foi introduzida pela:',o:['Lei 13.104/15.','Lei 13.642/18.','Lei 14.132/21.','Lei 14.344/22.','Lei 12.737/12.'],c:2,e:'Lei 14.132/2021.'},
-  {b:'IBFC',t:'multiple',s:'A violência psicológica contra a mulher, tipificada como crime autônomo, foi instituída pela:',o:['Lei 11.340/06.','Lei 13.104/15.','Lei 14.188/21.','Lei 14.344/22.'],c:2,e:'Lei 14.188/2021 — art. 147-B CP.'},
+  {b:'IBFC',t:'multiple',s:'Segundo a Lei Maria da Penha, a violência doméstica contra a mulher PODE ocorrer em qual destes ambientes?',o:['Apenas na residência da vítima.','Apenas em local público.','Em qualquer relação íntima de afeto, mesmo coabitação não exigida.','Apenas durante o casamento.'],c:2,e:'Art. 5º, III, Lei 11.340/06. Violência doméstica abrange qualquer relação íntima de AFETO, INDEPENDENTE de coabitação. Inclui ex-namorada(o).'},
   {b:'IBFC',t:'multiple',s:'A omissão de socorro (art. 135 CP) exige:',o:['Risco para o omitente.','Que o socorro pudesse ser prestado sem risco pessoal.','Pedido prévio.','Lesão corporal grave.'],c:1,e:'Resposta correta: Que o socorro pudesse ser prestado sem risco pessoal..'},
   {b:'AOCP',t:'multiple',s:'O homicídio simples consumado tem pena de:',o:['1 a 3 anos.','6 a 20 anos de reclusão.','12 a 30 anos de reclusão.','3 a 6 anos.','Detenção de 1 ano.'],c:1,e:'Art. 121, caput.'},
   {b:'Quadrix',t:'cebraspe',s:'No homicídio qualificado, a pena é de reclusão de 12 a 30 anos.',c:0,e:'CERTO. Art. 121, § 2º.'},
@@ -5322,6 +5641,7 @@ function ensureProgressIntegrity(p) {
 
 const defaultProgress = () => ({
   pmDone: {},
+  campaignDone: {}, campaignStars: {},
   xp:0, lives:3, streak:0, completedPhases:[], currentPhase:1, lastPlayDate:null,
   badges:[], questionsAnswered:0, correctAnswers:0,
   statsBySubject:{const:{right:0,total:0},adm:{right:0,total:0},penal:{right:0,total:0},info:{right:0,total:0},mix:{right:0,total:0}},
@@ -6143,6 +6463,8 @@ function goHub() {
   // Atualiza saudação
   const greet = $('hub-greet');
   if (greet && user) greet.textContent = 'Olá, ' + (user.name || 'guerreira') + '!';
+  // Atualiza card de perfil
+  try { renderHubProfile(); } catch(e) { console.error('[renderHubProfile]', e); }
   // Mostrar botão admin no HUB se for admin
   setTimeout(() => {
     if (isAdmin && isAdmin()) {
@@ -6160,6 +6482,96 @@ function goHub() {
 
 }
 window.goHub = goHub;
+
+// 👤 Atualiza o card de perfil no dashboard principal (HUB)
+function renderHubProfile() {
+  if (!user || !progress) return;
+  const info = xpInfo(progress.xp);
+  const set = (id, val) => { const el = $(id); if (el) el.textContent = val; };
+
+  // Avatar + cor
+  const av = $('hub-profile-avatar');
+  if (av) {
+    av.textContent = progress.avatar || '👮‍♀️';
+    av.style.filter = `drop-shadow(0 0 12px ${progress.avatarColor || '#ff2e63'})`;
+  }
+  set('hub-profile-name', (user.name || 'Guerreira').toUpperCase());
+  set('hub-profile-patente', `${info.atual.icon} ${info.atual.nome}`);
+  set('hub-profile-xp', progress.xp || 0);
+  set('hub-profile-streak', progress.streak || 0);
+
+  // Código de jogador (M-XXXX) pra duelos
+  const codeWrap = $('hub-profile-code');
+  const codeVal = $('hub-profile-code-val');
+  if (user.playerCode) {
+    if (codeVal) codeVal.textContent = user.playerCode;
+    if (codeWrap) codeWrap.style.display = 'block';
+  } else if (typeof loadMyPlayerCode === 'function' && sb && currentSession) {
+    // Buscar do Supabase em background
+    loadMyPlayerCode().then(code => {
+      if (code) {
+        if (codeVal) codeVal.textContent = code;
+        if (codeWrap) codeWrap.style.display = 'block';
+      }
+    }).catch(()=>{});
+  }
+
+  // Fases concluídas
+  const fasesDone = (progress.completedPhases || []).length;
+  set('hub-profile-fases', fasesDone);
+
+  // % de acerto global
+  const totalAns = progress.questionsAnswered || 0;
+  const totalRight = progress.correctAnswers || 0;
+  const acerto = totalAns > 0 ? Math.round((totalRight / totalAns) * 100) : 0;
+  set('hub-profile-acerto', acerto + '%');
+
+  // Vidas (corações)
+  const livesEl = $('hub-profile-lives');
+  if (livesEl) {
+    livesEl.innerHTML = [0,1,2].map(i =>
+      `<span style="color:${i < (progress.lives||0) ? '#fb7185' : 'rgba(255,255,255,.15)'};font-size:15px;">❤</span>`
+    ).join('');
+  }
+
+  // Barra de XP até próxima patente
+  if (info.proxima) {
+    set('hub-profile-pat-atual', info.atual.nome);
+    set('hub-profile-pat-prox', `${progress.xp - info.atual.xpMin}/${info.proxima.xpMin - info.atual.xpMin} → ${info.proxima.nome}`);
+    const fill = $('hub-profile-xpfill');
+    if (fill) fill.style.width = info.progresso + '%';
+  } else {
+    set('hub-profile-pat-atual', info.atual.nome);
+    set('hub-profile-pat-prox', '★ PATENTE MÁXIMA');
+    const fill = $('hub-profile-xpfill');
+    if (fill) fill.style.width = '100%';
+  }
+
+  // Cronograma PROVA EM no dashboard
+  try {
+    const cronBox = $('hub-cron-box');
+    if (user.dataProva && cronBox) {
+      const dias = daysBetween(new Date(), user.dataProva);
+      if (dias > 0) {
+        cronBox.classList.remove('hidden');
+        set('hub-cron-dias', dias);
+        const diasFaltam = PHASES.length - (progress.completedPhases || []).length;
+        set('hub-cron-restantes', `📅 ${diasFaltam} dias restantes`);
+        const meta = diasFaltam > 0 ? Math.max(1, Math.ceil(diasFaltam / Math.max(1, dias))) : 0;
+        set('hub-cron-meta', meta > 0 ? `${meta} fase${meta>1?'s':''}/dia` : 'Concluído! 🏆');
+      } else {
+        cronBox.classList.add('hidden');
+      }
+    } else if (cronBox) {
+      cronBox.classList.add('hidden');
+    }
+  } catch(e) { console.error('[hub cron]', e); }
+
+  // Painel HOJE VOCÊ PRECISA no dashboard
+  try { renderTodayPanel(); } catch(e) { console.error('[hub today]', e); }
+}
+window.renderHubProfile = renderHubProfile;
+
 
 
 window.openPMNE = openPMNE;
@@ -6260,7 +6672,43 @@ const CAMPAIGN_QBANK = {
     {b:'FGV',t:'cebraspe',s:'Os tratados internacionais de direitos humanos aprovados por 3/5 dos membros de cada Casa em 2 turnos equivalem a emendas constitucionais.',c:0,e:'CERTO. Art. 5º, §3º, CF (EC 45/2004). Procedimento equivalente à PEC = tratado vira norma constitucional.'},
     {b:'CESPE',t:'multiple',s:'O princípio da reserva legal absoluta impõe que:',o:['Qualquer ato normativo pode tratar do tema','Apenas LEI em sentido estrito pode tratar do tema','Decretos suprem a ausência de lei','Costumes podem criar obrigações','Resoluções administrativas bastam'],c:1,e:'Reserva legal ABSOLUTA = só lei formal (votada no parlamento) pode regular. Ex: criar crimes (art. 5º, XXXIX).'},
     {b:'FGV',t:'cebraspe',s:'A intervenção federal nos Estados é regra geral, devendo ocorrer sempre que o Presidente entender necessário.',c:1,e:'ERRADO. Intervenção é EXCEÇÃO (art. 34, CF). Só nas hipóteses TAXATIVAS previstas na Constituição.'},
-    {b:'CESPE',t:'multiple',s:'A separação dos Poderes é cláusula pétrea. Isso significa que:',o:['Pode ser alterada por lei ordinária','Pode ser abolida por emenda','NÃO pode ser objeto de emenda tendente a aboli-la','Não vale na prática','Só vale no governo federal'],c:2,e:'Art. 60, §4º, III, CF. Cláusulas pétreas (forma federativa, voto direto/secreto/universal/periódico, separação dos Poderes, direitos individuais) não podem ser ABOLIDAS por emenda.'},
+    {b:'CESPE',t:'multiple',s:'A separação dos Poderes é cláusula pétrea. Isso significa que:',o:['Pode ser alterada por lei ordinária','Pode ser abolida por emenda','NÃO pode ser objeto de emenda tendente a aboli-la','Não vale na prática','Só vale no governo federal'],c:2,e:'Art. 60, §4º, III, CF. Cláusulas pétreas (forma federativa, voto direto/secreto/universal/periódico, separação dos Poderes, direitos individuais) não podem ser ABOLIDAS por emenda.'},,
+    // 35 questões NOVAS de Constitucional (dificuldade crescente)
+    {b:'CESPE',t:'cebraspe',s:'A cidadania, fundamento da República, abrange direitos políticos e o direito de participar do governo.',c:0,e:'CERTO. Cidadania (art. 1º, II, CF) vai além do simples título de eleitor: inclui participação política ativa, accountability e exercício de direitos públicos subjetivos.'},
+    {b:'FGV',t:'cebraspe',s:'Os valores sociais do trabalho e da livre iniciativa, embora aparentemente contraditórios, coexistem como fundamentos da República.',c:0,e:'CERTO. Art. 1º, IV, CF. O Brasil é capitalista (livre iniciativa) mas com função social do trabalho — equilíbrio entre mercado e dignidade.'},
+    {b:'FCC',t:'multiple',s:'O pluralismo político, fundamento da República, garante:',o:['Bipartidarismo obrigatório','Existência de múltiplos partidos e ideologias','Voto único','Sistema parlamentarista','Monarquia constitucional'],c:1,e:'Art. 1º, V, CF. Múltiplos partidos e correntes ideológicas convivendo democraticamente.'},
+    {b:'VUNESP',t:'cebraspe',s:'Todo o poder emana do povo, que o exerce por meio de representantes eleitos ou diretamente, nos termos da CF.',c:0,e:'CERTO. Art. 1º, parágrafo único, CF. Democracia representativa + participativa (plebiscito, referendo, iniciativa popular).'},
+    {b:'IBFC',t:'multiple',s:'A independência nacional e a prevalência dos direitos humanos são princípios:',o:['Da organização política interna','Que regem as relações internacionais do Brasil','Apenas econômicos','Religiosos','Militares'],c:1,e:'Art. 4º, I e II, CF. Princípios das RELAÇÕES INTERNACIONAIS (10 ao todo).'},
+    {b:'CESPE',t:'cebraspe',s:'O Brasil rege-se, em suas relações internacionais, pelo princípio da defesa da paz, mas pode declarar guerra de agressão se houver interesse econômico.',c:1,e:'ERRADO. Art. 4º, VI e VII, CF. Defesa da paz e SOLUÇÃO PACÍFICA dos conflitos. Brasil REPUDIA o terrorismo e guerras agressivas.'},
+    {b:'FGV',t:'cebraspe',s:'Brasileiros natos não podem ser extraditados pelo Brasil, salvo em hipótese alguma.',c:0,e:'CERTO. Art. 5º, LI, CF. Brasileiro NATO NUNCA é extraditado. O naturalizado pode, em casos específicos (crime comum antes da naturalização ou tráfico ilícito de drogas).'},
+    {b:'FCC',t:'multiple',s:'A casa é asilo inviolável do indivíduo. Quem pode entrar SEM consentimento?',o:['Qualquer agente público em qualquer hora','Em caso de flagrante, desastre, socorro (qualquer hora) ou por ordem judicial durante o dia','Apenas a polícia, sempre','Vizinhos','Bombeiros apenas'],c:1,e:'Art. 5º, XI, CF. Inviolabilidade do domicílio — 4 exceções: flagrante / desastre / socorro / ordem judicial DIURNA.'},
+    {b:'VUNESP',t:'cebraspe',s:'A liberdade de manifestação do pensamento é absoluta no Brasil, sendo permitido o anonimato como proteção do manifestante.',c:1,e:'ERRADO. Art. 5º, IV, CF. Liberdade de pensamento existe, MAS é VEDADO o anonimato (responde por excessos).'},
+    {b:'CESPE',t:'cebraspe',s:'A pena cumprida no exterior pode ser computada na pena imposta no Brasil pelo mesmo fato, conforme a CF.',c:0,e:'CERTO. Art. 5º, XLIX (interpretação combinada com CP). Pena cumprida fora atenua/é computada — vedação ao bis in idem.'},
+    {b:'FGV',t:'multiple',s:'Constituem direitos sociais previstos no art. 6º da CF, EXCETO:',o:['Educação','Saúde','Moradia','Propriedade privada','Trabalho'],c:3,e:'Propriedade privada é direito INDIVIDUAL (art. 5º, XXII). Direitos sociais: educação, saúde, alimentação, trabalho, moradia, transporte, lazer, segurança, previdência, proteção à maternidade/infância, assistência aos desamparados.'},
+    {b:'CESPE',t:'cebraspe',s:'A criação de Municípios depende de plebiscito da população dos Municípios envolvidos e de lei estadual.',c:0,e:'CERTO. Art. 18, §4º, CF. Criação/incorporação/fusão/desmembramento de Município: plebiscito + estudos de viabilidade + lei estadual + dentro do período definido em LC federal.'},
+    {b:'IBFC',t:'multiple',s:'O Estado brasileiro NÃO pode:',o:['Cobrar tributos','Estabelecer cultos religiosos oficiais ou subvencionar igrejas','Legislar sobre direito penal','Manter Forças Armadas','Celebrar tratados'],c:1,e:'Art. 19, I, CF. Estado é LAICO. Não estabelece religião oficial nem subvenciona cultos (exceto colaboração de interesse público, ex: capelania militar).'},
+    {b:'FCC',t:'cebraspe',s:'Os Estados podem criar Tribunais de Contas Municipais, conforme a CF.',c:1,e:'ERRADO. Art. 31, §4º, CF. É VEDADA a criação de TCMs novos. Os existentes (SP e RJ) permaneceram.'},
+    {b:'VUNESP',t:'multiple',s:'O presidencialismo brasileiro caracteriza-se por:',o:['Separação entre chefe de Estado e chefe de governo','Concentração de chefia de Estado e de governo no Presidente','Sistema parlamentar','Monarquia hereditária','Confederação de estados'],c:1,e:'Presidencialismo: Presidente acumula CHEFIA DE ESTADO (representação) + CHEFIA DE GOVERNO (administração). No parlamentarismo, são funções separadas.'},
+    {b:'CESPE',t:'cebraspe',s:'O Presidente da República pode ser processado por crime de responsabilidade perante o Senado Federal, mediante autorização da Câmara por 2/3 dos votos.',c:0,e:'CERTO. Art. 51, I + art. 52, I, CF. Câmara autoriza (2/3); Senado julga. Crime comum: STF julga.'},
+    {b:'FGV',t:'multiple',s:'Quanto à elegibilidade, a idade mínima para Presidente da República é:',o:['18 anos','21 anos','30 anos','35 anos','45 anos'],c:3,e:'Art. 14, §3º, VI, CF. Idades mínimas: Presidente/VP/Senador 35; Governador/VG 30; Deputado/Prefeito/VP/Vereador 21; Juiz de Paz 18.'},
+    {b:'CESPE',t:'cebraspe',s:'Servidores públicos civis têm direito de greve, conforme a Constituição.',c:0,e:'CERTO. Art. 37, VII, CF. Direito de greve existe, será exercido nos termos da LEI ESPECÍFICA (que ainda não foi editada — STF aplica lei do setor privado por analogia).'},
+    {b:'IBFC',t:'cebraspe',s:'A regra da idade mínima para aposentadoria do servidor público foi alterada pela Reforma da Previdência (EC 103/19).',c:0,e:'CERTO. EC 103/19: aposentadoria voluntária do servidor — homem 65/mulher 62 + tempo mínimo de contribuição/serviço.'},
+    {b:'FCC',t:'multiple',s:'A Súmula Vinculante é editada pelo:',o:['STJ','TST','STF, após reiteradas decisões sobre matéria constitucional','Congresso','Presidente'],c:2,e:'Art. 103-A, CF + Lei 11.417/06. STF edita SV após reiteradas decisões sobre matéria constitucional. Vincula judiciário e administração pública.'},
+    {b:'VUNESP',t:'cebraspe',s:'O controle de constitucionalidade difuso pode ser exercido por qualquer juiz no caso concreto.',c:0,e:'CERTO. Controle DIFUSO = qualquer juiz/tribunal, no caso concreto, com efeitos inter partes. CONCENTRADO = só STF, em tese, com efeito erga omnes.'},
+    {b:'CESPE',t:'cebraspe',s:'O Ministério Público é órgão do Poder Judiciário, conforme a CF.',c:1,e:'ERRADO. MP é INSTITUIÇÃO PERMANENTE com autonomia funcional e administrativa — NÃO integra os 3 Poderes. Art. 127, CF.'},
+    {b:'FGV',t:'multiple',s:'A Defensoria Pública é instituição essencial à função jurisdicional do Estado e tem por função:',o:['Defender apenas o Governo','Promover a defesa dos necessitados, em todos os graus, judicial e extrajudicialmente','Acusar criminalmente','Julgar pequenas causas','Arrecadar tributos'],c:1,e:'Art. 134, CF. DP presta assistência jurídica integral e gratuita aos necessitados (carentes de recursos).'},
+    {b:'CESPE',t:'cebraspe',s:'A reforma constitucional por emenda exige aprovação de 3/5 dos membros de cada Casa do Congresso, em 2 turnos de votação.',c:0,e:'CERTO. Art. 60, §2º, CF. PEC: 3/5 (60%) × 2 turnos em cada Casa. Quóruns: lei comum 50%+1; LC 50%+1 absoluta; EC 3/5 + 2 turnos.'},
+    {b:'IBFC',t:'cebraspe',s:'A iniciativa popular pode propor lei mediante manifestação de 1% do eleitorado nacional, distribuído por 5 estados.',c:0,e:'CERTO. Art. 61, §2º, CF. Iniciativa popular: 1% eleitorado, ao menos 5 estados, com 0,3% em cada um. Forma de exercício direto da soberania.'},
+    {b:'FCC',t:'multiple',s:'A intervenção federal em Estado-membro pode ser decretada pelo:',o:['Congresso','Presidente da República, ouvidos os órgãos competentes','STF apenas','Senado independentemente','Governador'],c:1,e:'Art. 84, X, CF. Presidente DECRETA intervenção (após análise dos órgãos: Conselho da República, Conselho de Defesa, STF, ou requisição).'},
+    {b:'VUNESP',t:'cebraspe',s:'A República Federativa é cláusula pétrea: não pode ser abolida por emenda.',c:0,e:'CERTO. Art. 60, §4º, I, CF. Cláusulas pétreas: forma federativa, voto direto/secreto/universal/periódico, separação dos Poderes, direitos e garantias individuais.'},
+    {b:'CESPE',t:'cebraspe',s:'O TCU é órgão do Poder Legislativo, auxiliando o Congresso no controle externo.',c:0,e:'CERTO. Art. 71, CF. TCU é auxiliar do Congresso no controle externo. Tem autonomia técnica, mas integra estruturalmente o Legislativo.'},
+    {b:'FGV',t:'cebraspe',s:'O voto no Brasil é facultativo para analfabetos, jovens entre 16 e 18 anos e maiores de 70.',c:0,e:'CERTO. Art. 14, §1º, CF. Voto OBRIGATÓRIO: 18-70 anos. FACULTATIVO: 16-18, > 70 anos, analfabetos. NINGUÉM pode votar antes dos 16.'},
+    {b:'FCC',t:'multiple',s:'A perda dos direitos políticos é regulada pelo art. 15 da CF. NÃO é hipótese de perda/suspensão:',o:['Cancelamento da naturalização por sentença','Incapacidade civil absoluta','Condenação criminal transitada em julgado','Improbidade administrativa','Não votar por 1 turno apenas (sem justificativa)'],c:4,e:'Não votar 1x não suspende direitos — só causa multa. Art. 15 lista 5 hipóteses: cancelamento de naturalização; incapacidade civil; condenação criminal; recusa de obrigação (CC + escusa); improbidade administrativa.'},
+    {b:'CESPE',t:'cebraspe',s:'Os direitos fundamentais individuais são absolutos e ilimitados.',c:1,e:'ERRADO. Nenhum direito é absoluto. Direitos fundamentais convivem com outros e devem ser ponderados (ex: liberdade vs. honra alheia).'},
+    {b:'IBFC',t:'multiple',s:'O remédio constitucional cabível contra ilegalidade ou abuso de poder, quando não amparado por habeas corpus ou habeas data, é:',o:['Habeas corpus coletivo','Mandado de segurança','Mandado de injunção','Ação popular','Ação civil pública'],c:1,e:'Art. 5º, LXIX, CF. Mandado de segurança é remédio RESIDUAL pra direito líquido e certo NÃO amparado por HC/HD.'},
+    {b:'VUNESP',t:'cebraspe',s:'A ação popular pode ser proposta por qualquer cidadão para anular ato lesivo ao patrimônio público.',c:0,e:'CERTO. Art. 5º, LXXIII, CF + Lei 4.717/65. Pode pedir anulação de ato lesivo ao patrimônio público, à moralidade, ao meio ambiente, ao patrimônio histórico/cultural.'},
+    {b:'CESPE',t:'cebraspe',s:'A lei NÃO prejudicará o direito adquirido, o ato jurídico perfeito e a coisa julgada.',c:0,e:'CERTO. Art. 5º, XXXVI, CF. Princípio da SEGURANÇA JURÍDICA. Lei nova não retroage pra afetar essas situações já consolidadas.'},
+    {b:'FGV',t:'multiple',s:'A inafiançabilidade e imprescritibilidade aplicam-se aos crimes de:',o:['Furto e roubo','Racismo e ação de grupos armados contra a ordem constitucional','Trânsito','Tributários','Eleitorais'],c:1,e:'Art. 5º, XLII e XLIV, CF. RACISMO e AÇÃO DE GRUPOS ARMADOS contra ordem constitucional/Estado Democrático = INAFIANÇÁVEIS e IMPRESCRITÍVEIS.'},
   ],
   adm: [
     // Fácil (diff 1)
@@ -6280,7 +6728,53 @@ const CAMPAIGN_QBANK = {
     {b:'FGV',t:'multiple',s:'O servidor público estável só perderá o cargo por:',o:['Decisão do chefe imediato','Sentença judicial transitada em julgado, processo administrativo com ampla defesa, ou insuficiência de desempenho','Vontade do prefeito','Mera transferência','Falta de simpatia'],c:1,e:'Art. 41, §1º, CF. Perda do cargo de servidor estável: sentença transitada em julgado, PAD com ampla defesa, ou avaliação periódica negativa.'},
     {b:'CESPE',t:'cebraspe',s:'A licitação é regra para contratações públicas, sendo a contratação direta cabível apenas em casos previstos em lei.',c:0,e:'CERTO. Art. 37, XXI, CF + Lei 14.133/21 (Nova Lei de Licitações). Dispensa e inexigibilidade são EXCEÇÕES taxativas.'},
     {b:'FCC',t:'multiple',s:'A responsabilidade civil do Estado por danos causados por seus agentes é:',o:['Subjetiva, exigindo prova de culpa','Objetiva, na modalidade do risco administrativo','Inexistente — só o agente responde','Solidária com o particular','Penal apenas'],c:1,e:'Art. 37, §6º, CF. Responsabilidade OBJETIVA (independe de culpa) na modalidade RISCO ADMINISTRATIVO. Admite excludentes (fato exclusivo da vítima, caso fortuito).'},
-    {b:'VUNESP',t:'cebraspe',s:'O concurso público é exigência para investidura em cargo ou emprego público, salvo nomeações para cargos em comissão de livre nomeação.',c:0,e:'CERTO. Art. 37, II, CF. Cargo em comissão (confiança) dispensa concurso, mas deve ter percentual mínimo reservado para servidores efetivos.'},
+    {b:'VUNESP',t:'cebraspe',s:'O concurso público é exigência para investidura em cargo ou emprego público, salvo nomeações para cargos em comissão de livre nomeação.',c:0,e:'CERTO. Art. 37, II, CF. Cargo em comissão (confiança) dispensa concurso, mas deve ter percentual mínimo reservado para servidores efetivos.'},,
+    // 45 questões NOVAS de Administrativo
+    {b:'CESPE',t:'cebraspe',s:'A Administração Pública DIRETA é composta pelos órgãos das esferas federal, estadual, distrital e municipal.',c:0,e:'CERTO. Administração DIRETA: União, Estados, DF, Municípios — pelos seus órgãos. Indireta: autarquias, fundações, empresas públicas, sociedades de economia mista.'},
+    {b:'FGV',t:'multiple',s:'A autarquia é entidade da Administração Pública:',o:['Direta','Indireta, com personalidade jurídica de direito público','Privada','Política','Internacional'],c:1,e:'Autarquia (ex: INSS) = INDIRETA, direito PÚBLICO, criada por LEI específica. Possui patrimônio próprio e atribuições típicas do Estado.'},
+    {b:'FCC',t:'cebraspe',s:'A empresa pública e a sociedade de economia mista são pessoas jurídicas de direito privado, integrantes da Administração indireta.',c:0,e:'CERTO. Empresa pública (100% público, ex: Caixa) e SEM (capital misto, controle público, ex: Petrobras) — direito privado, indireta. Criadas mediante autorização legislativa.'},
+    {b:'VUNESP',t:'cebraspe',s:'A descentralização administrativa transfere a EXECUÇÃO de uma atividade para outra pessoa jurídica (ex: criar uma autarquia).',c:0,e:'CERTO. DESCENTRALIZAÇÃO = transferir entre pessoas jurídicas diferentes (ex: União cria INSS). DESCONCENTRAÇÃO = dentro da mesma PJ (ex: criar departamentos).'},
+    {b:'IBFC',t:'multiple',s:'O princípio da supremacia do interesse público sobre o privado é:',o:['Inexistente','Implícito e norteador da atuação administrativa','Apenas para emergências','Revogado','Só aplicável em guerra'],c:1,e:'Princípio IMPLÍCITO. Justifica a verticalidade da Administração (pode usar poderes de polícia, desapropriar, etc) — mas sempre dentro da lei e com proporcionalidade.'},
+    {b:'CESPE',t:'cebraspe',s:'O princípio da moralidade administrativa exige que os atos públicos sejam pautados pela honestidade, lealdade e boa-fé.',c:0,e:'CERTO. Art. 37, caput, CF + Súmula Vinc. 13 (vedação ao nepotismo). Moralidade = ética pública. Violação pode gerar improbidade.'},
+    {b:'FGV',t:'multiple',s:'A nomeação de cônjuge ou parente do agente público para cargo em comissão na mesma área de atuação configura:',o:['Ato legal e válido','Nepotismo, vedado pela Súmula Vinculante 13 do STF','Apenas falta ética sem consequência','Privilégio constitucional','Direito da família'],c:1,e:'SV 13 STF. Nepotismo é vedado em todos os poderes. Inclui cônjuge, companheiro, parentes até 3º grau, na mesma autoridade nomeante ou linha hierárquica.'},
+    {b:'CESPE',t:'cebraspe',s:'A eficiência, princípio expresso da Administração, foi inserida pela EC 19/98 e exige produtividade, qualidade e economicidade.',c:0,e:'CERTO. EC 19/98 (Reforma Administrativa) acrescentou EFICIÊNCIA ao caput do art. 37. Servir bem, com qualidade e custo adequado.'},
+    {b:'FCC',t:'multiple',s:'A delegação administrativa NÃO é admissível para:',o:['Distribuição de tarefas rotineiras','Edição de atos normativos, decisão de recursos e matérias exclusivas','Análise de processos simples','Atendimento ao público','Cumprimento de ordens'],c:1,e:'Lei 9.784/99, art. 13. NÃO se delega: edição de normas, decisão de recursos administrativos, matérias de competência exclusiva. O resto pode delegar.'},
+    {b:'VUNESP',t:'cebraspe',s:'O poder DISCIPLINAR permite à Administração apurar infrações e aplicar penalidades aos seus servidores.',c:0,e:'CERTO. Poder disciplinar — sobre quem tem vínculo com a Administração (servidor, contratado). Diferente do poder de polícia (sobre particulares em geral).'},
+    {b:'CESPE',t:'cebraspe',s:'O poder de polícia é apenas REPRESSIVO, atuando após a infração.',c:1,e:'ERRADO. É PREVENTIVO (licenças, autorizações) E REPRESSIVO (multas, interdições). Ex: vistoria do bombeiro = preventivo; multa de trânsito = repressivo.'},
+    {b:'IBFC',t:'multiple',s:'O poder hierárquico estrutura a Administração em:',o:['Órgãos isolados','Cadeia de comando: superiores e subordinados','Conselhos autônomos','Departamentos privatizados','Setor terceirizado'],c:1,e:'Hierarquia = subordinação. Permite dar ordens, fiscalizar, rever atos, delegar/avocar competências (dentro da mesma estrutura).'},
+    {b:'FGV',t:'cebraspe',s:'A delegação de competência é permitida desde que não envolva atos exclusivos (ex: decreto, decisão de recurso).',c:0,e:'CERTO. Lei 9.784/99, art. 13. NÃO podem ser delegados: edição de atos normativos; decisão de recursos administrativos; matérias de competência exclusiva.'},
+    {b:'CESPE',t:'cebraspe',s:'A imperatividade do ato administrativo significa que ele obriga terceiros independentemente de sua concordância.',c:0,e:'CERTO. Imperatividade = ato se impõe a particulares mesmo sem o consentimento deles (ex: multa, desapropriação). Diferente de atos negociais (consentimento bilateral).'},
+    {b:'FCC',t:'multiple',s:'Os elementos essenciais do ato administrativo são:',o:['Apenas o objeto','Competência, finalidade, forma, motivo e objeto','Vontade e capacidade','Forma escrita apenas','Servidor e prazo'],c:1,e:'5 elementos: COMPETÊNCIA (quem), FINALIDADE (pra quê), FORMA (como), MOTIVO (por quê de fato), OBJETO (o quê). Vícios em qualquer geram nulidade.'},
+    {b:'VUNESP',t:'cebraspe',s:'O ato administrativo VINCULADO permite à autoridade escolher entre várias opções legais.',c:1,e:'ERRADO. Inverteu! VINCULADO = lei prescreve TUDO (sem escolha). DISCRICIONÁRIO = há margem de conveniência/oportunidade (mérito).'},
+    {b:'CESPE',t:'cebraspe',s:'A convalidação de atos administrativos com vício SANÁVEL é admitida pela Lei 9.784/99.',c:0,e:'CERTO. Art. 55, Lei 9.784. Atos com vício sanável (forma, competência não-exclusiva) podem ser convalidados se não causarem lesão. Atos NULOS (objeto/finalidade ilícitos) não convalidam.'},
+    {b:'FGV',t:'multiple',s:'A revogação do ato administrativo:',o:['Tem efeitos retroativos','Tem efeitos ex nunc (não retroage)','Não existe no ordenamento','Cancela o ato desde a origem','Anula tudo'],c:1,e:'REVOGAÇÃO: efeitos EX NUNC (a partir de agora). ANULAÇÃO: efeitos EX TUNC (retroage). Súmula 473 STF.'},
+    {b:'CESPE',t:'cebraspe',s:'A licitação pode ser DISPENSADA em casos de emergência ou calamidade pública.',c:0,e:'CERTO. Lei 14.133/21, art. 75, VIII. Emergência/calamidade = dispensa pra atender necessidade imediata, contrato limitado a 1 ano.'},
+    {b:'IBFC',t:'cebraspe',s:'A modalidade PREGÃO é obrigatória para aquisição de bens e serviços comuns.',c:0,e:'CERTO. Lei 14.133/21 (e antes da Lei 10.520). Pregão é OBRIGATÓRIO pra bens/serviços comuns. Preferencialmente eletrônico.'},
+    {b:'FCC',t:'multiple',s:'A inexigibilidade de licitação se aplica quando:',o:['O contrato é pequeno','Há inviabilidade de competição (fornecedor único, artista consagrado)','A Administração quer favorecer alguém','O preço é alto','O prazo é curto'],c:1,e:'Lei 14.133/21, art. 74. INEXIGIBILIDADE = não há como competir (ex: fornecedor exclusivo, artista consagrado, serviço técnico singular). Diferente de dispensa.'},
+    {b:'VUNESP',t:'cebraspe',s:'O servidor público estável só perde o cargo por sentença judicial trânsita em julgado, PAD com ampla defesa ou avaliação de desempenho insuficiente.',c:0,e:'CERTO. Art. 41, §1º, CF. 3 hipóteses + uma 4ª da EC 19 (excesso de despesa com pessoal).'},
+    {b:'CESPE',t:'cebraspe',s:'O estágio probatório do servidor é de 3 anos, ao fim do qual adquire estabilidade se aprovado em avaliação especial.',c:0,e:'CERTO. EC 19/98. Estágio probatório = 3 anos + avaliação especial = ESTABILIDADE. Cargo efetivo via concurso.'},
+    {b:'FGV',t:'multiple',s:'A acumulação de cargos públicos é, em regra:',o:['Permitida sem restrições','Vedada, salvo exceções constitucionais (2 cargos de professor, etc)','Sempre permitida','Decisão do chefe','Direito do servidor'],c:1,e:'Art. 37, XVI, CF. VEDADA, exceto: 2 professores; professor + técnico/científico; 2 saúde regulamentadas. Sempre exigida compatibilidade de horários e teto remuneratório.'},
+    {b:'CESPE',t:'cebraspe',s:'A improbidade administrativa, após a Lei 14.230/21, exige DOLO específico para ser configurada em quase todas as hipóteses.',c:0,e:'CERTO. Lei 14.230/21 mudou: exige dolo na maioria dos atos. A improbidade culposa foi praticamente eliminada (salvo lesão dolosa específica).'},
+    {b:'FCC',t:'multiple',s:'Sanções da Lei de Improbidade incluem:',o:['Apenas multa','Perda da função, ressarcimento, multa, suspensão de direitos políticos, proibição de contratar','Apenas advertência','Prisão imediata','Apenas demissão'],c:1,e:'Art. 12, Lei 8.429/92. Sanções: perda de cargo + suspensão de direitos políticos + ressarcimento + multa + proibição de contratar com poder público. Cumuláveis.'},
+    {b:'VUNESP',t:'cebraspe',s:'A responsabilidade civil do Estado é objetiva, na modalidade do RISCO ADMINISTRATIVO, admitindo excludentes.',c:0,e:'CERTO. Art. 37, §6º, CF. OBJETIVA = independe de culpa. Risco administrativo (não integral) — admite excludentes: força maior, culpa exclusiva da vítima, fato de terceiro.'},
+    {b:'CESPE',t:'cebraspe',s:'O Estado responde por danos causados por seus agentes a terceiros, mesmo que o agente tenha agido com excesso ou abuso.',c:0,e:'CERTO. Teoria do RISCO ADMINISTRATIVO. Estado responde objetivamente; tem direito de regresso contra o agente que agiu com dolo ou culpa.'},
+    {b:'IBFC',t:'multiple',s:'O servidor público que cometer abuso de autoridade responde:',o:['Apenas civilmente','Civil, administrativa e penalmente, esferas independentes','Apenas administrativamente','Apenas penalmente','Não responde'],c:1,e:'3 esferas INDEPENDENTES: civil (indenizar), administrativa (PAD/demissão), penal (crime de abuso, Lei 13.869/19). Pode responder nas 3 pelo mesmo fato.'},
+    {b:'FGV',t:'cebraspe',s:'Os contratos administrativos têm cláusulas exorbitantes, conferindo prerrogativas à Administração sobre o particular contratado.',c:0,e:'CERTO. Cláusulas EXORBITANTES (incomuns no direito privado): alteração unilateral, rescisão unilateral, fiscalização, aplicação de penalidades, retomada do objeto.'},
+    {b:'CESPE',t:'cebraspe',s:'A concessão de serviço público depende SEMPRE de licitação na modalidade concorrência.',c:0,e:'CERTO. Art. 175, CF + Lei 8.987/95. Serviços públicos via CONCESSÃO ou PERMISSÃO precisam de licitação — em regra, concorrência.'},
+    {b:'FCC',t:'multiple',s:'Os bens públicos podem ser:',o:['Apenas de uso comum','De uso comum (ruas), de uso especial (escolas), dominicais (terras devolutas)','Apenas patrimoniais','Apenas militares','Apenas judiciais'],c:1,e:'Art. 99, CC. USO COMUM (povo usa: ruas, praças), USO ESPECIAL (Administração usa: prédios públicos), DOMINICAIS (patrimônio disponível, podem ser vendidos).'},
+    {b:'VUNESP',t:'cebraspe',s:'Os bens de uso comum do povo são INALIENÁVEIS enquanto mantida essa qualificação.',c:0,e:'CERTO. Bens de uso comum/especial: INALIENÁVEIS, IMPRESCRITÍVEIS (não usucapem), IMPENHORÁVEIS. Dominicais podem ser vendidos.'},
+    {b:'CESPE',t:'cebraspe',s:'A intervenção do Estado na propriedade privada pode ocorrer mediante desapropriação, requisição, ocupação temporária, servidão administrativa, tombamento ou limitação administrativa.',c:0,e:'CERTO. 6 formas. Desapropriação (transfere propriedade), requisição (uso emergencial), tombamento (proteção cultural), servidão (uso parcial), limitação (restrição geral), ocupação (uso temporário).'},
+    {b:'IBFC',t:'multiple',s:'A desapropriação por NECESSIDADE OU UTILIDADE PÚBLICA exige:',o:['Apenas decreto','Decreto + pagamento prévio em dinheiro de indenização justa','Vontade do proprietário','Permissão de juiz','Lei do Senado'],c:1,e:'Art. 5º, XXIV, CF. Desapropriação ordinária: lei + indenização PRÉVIA, JUSTA e em DINHEIRO. Reforma agrária: pagamento em títulos.'},
+    {b:'FGV',t:'multiple',s:'A Súmula Vinculante 13 do STF veda:',o:['Nepotismo na Administração','Greve de servidores','Acumulação de cargos','Cargos em comissão','Eleição direta'],c:0,e:'SV 13: nepotismo é vedado em todos os Poderes. Aplica-se a cônjuges, parentes até 3º grau, na mesma autoridade nomeante ou linha hierárquica.'},
+    {b:'CESPE',t:'cebraspe',s:'Os princípios da razoabilidade e proporcionalidade são limitadores do poder discricionário.',c:0,e:'CERTO. A discricionariedade NÃO é livre — deve respeitar razoabilidade (lógica/bom senso) e proporcionalidade (meio compatível com o fim). Excesso = ilegalidade.'},
+    {b:'FCC',t:'cebraspe',s:'O motivo do ato administrativo é a causa fática que determina sua prática, sendo elemento essencial.',c:0,e:'CERTO. MOTIVO = pressuposto de fato e de direito que justifica o ato (ex: falta grave do servidor justifica demissão). Não confundir com motivação (exposição escrita).'},
+    {b:'VUNESP',t:'cebraspe',s:'A motivação do ato administrativo é, em regra, obrigatória.',c:0,e:'CERTO. Art. 50, Lei 9.784. Motivação obrigatória, exceto em atos de pura discricionariedade onde a lei dispensa expressamente. Sem motivação adequada = vício de forma.'},
+    {b:'CESPE',t:'cebraspe',s:'A teoria dos motivos determinantes vincula a Administração aos motivos declarados, mesmo que falsos.',c:0,e:'CERTO. Se o motivo declarado for falso/inexistente, o ato é NULO — mesmo que houvesse outro motivo válido não declarado.'},
+    {b:'FGV',t:'multiple',s:'A licitação tem por finalidades, EXCETO:',o:['Garantir igualdade entre licitantes','Selecionar a proposta mais vantajosa','Promover o desenvolvimento nacional sustentável','Beneficiar empresa específica do governo','Estimular inovação'],c:3,e:'Lei 14.133/21, art. 11. Finalidades: igualdade, proposta vantajosa, desenvolvimento sustentável, inovação. Beneficiar específico contradiz a impessoalidade.'},
+    {b:'IBFC',t:'cebraspe',s:'O processo administrativo, conforme Lei 9.784/99, deve observar contraditório e ampla defesa.',c:0,e:'CERTO. Art. 5º, LV, CF + Lei 9.784. Contraditório e ampla defesa em todo processo administrativo, inclusive na esfera disciplinar.'},
+    {b:'CESPE',t:'cebraspe',s:'O recurso administrativo, em regra, tem efeito SUSPENSIVO.',c:1,e:'ERRADO. Lei 9.784, art. 61. Recurso administrativo, EM REGRA, tem efeito SOMENTE DEVOLUTIVO. Suspensivo é exceção (precisa lei específica ou risco de dano).'},
+    {b:'FCC',t:'multiple',s:'A prescrição administrativa para o exercício de direitos contra a Fazenda Pública é, em regra, de:',o:['1 ano','2 anos','5 anos','10 anos','20 anos'],c:2,e:'Decreto 20.910/32. PRESCRIÇÃO QUINQUENAL contra a Fazenda Pública (5 anos). Direitos contra a União/Estados/Municípios prescrevem em 5 anos.'},
+    {b:'VUNESP',t:'cebraspe',s:'A LGPD aplica-se também ao setor público, com regras adaptadas.',c:0,e:'CERTO. Lei 13.709/18, arts. 23-32. Setor público trata dados pessoais com fundamento no exercício de competências legais (não consentimento como regra).'},
   ],
   penal: [
     // Fácil (diff 1)
@@ -6300,7 +6794,73 @@ const CAMPAIGN_QBANK = {
     {b:'FGV',t:'multiple',s:'A diferença entre traficante e usuário, na Lei de Drogas, considera:',o:['Apenas a quantidade','Quantidade, natureza, local, circunstâncias da apreensão e condições do agente','A cor da droga','A idade do agente apenas','O sexo do agente'],c:1,e:'Art. 28, §2º, Lei 11.343/06. Critérios: natureza+quantidade+local+circunstâncias+conduta+antecedentes. Juiz analisa o CONJUNTO.'},
     {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha (11.340/06) se aplica apenas a vítimas mulheres heterossexuais.',c:1,e:'ERRADO. STJ pacificou: Lei Maria da Penha protege QUALQUER mulher (incluindo trans) vítima de violência doméstica, independente de orientação sexual.'},
     {b:'FCC',t:'multiple',s:'A tortura, segundo a Lei 9.455/97, é crime:',o:['Comum, prescritível','Equiparado a hediondo, inafiançável e insuscetível de graça/anistia','Militar apenas','De menor potencial ofensivo','Contravenção'],c:1,e:'Art. 5º, XLIII, CF + Lei 9.455/97. Tortura: equiparada a hediondo, inafiançável, insuscetível de graça, anistia, indulto.'},
-    {b:'VUNESP',t:'cebraspe',s:'O adolescente que pratica ato infracional análogo a crime cumpre PENA, como qualquer adulto.',c:1,e:'ERRADO. Menor de 18 é INIMPUTÁVEL (art. 228, CF). Cumpre MEDIDA SOCIOEDUCATIVA (ECA, Lei 8.069/90), não pena.'},
+    {b:'VUNESP',t:'cebraspe',s:'O adolescente que pratica ato infracional análogo a crime cumpre PENA, como qualquer adulto.',c:1,e:'ERRADO. Menor de 18 é INIMPUTÁVEL (art. 228, CF). Cumpre MEDIDA SOCIOEDUCATIVA (ECA, Lei 8.069/90), não pena.'},,
+    // 65 questões NOVAS de Penal
+    {b:'CESPE',t:'cebraspe',s:'O princípio da retroatividade da lei penal mais benéfica aplica-se mesmo após o trânsito em julgado da sentença.',c:0,e:'CERTO. Art. 5º, XL, CF + art. 2º CP. Lex mitior retroage SEMPRE — inclusive após trânsito em julgado, beneficiando o réu.'},
+    {b:'FGV',t:'cebraspe',s:'A lei penal mais GRAVOSA NUNCA retroage para alcançar fatos anteriores.',c:0,e:'CERTO. Princípio da irretroatividade da lex gravior. Art. 5º, XL, CF. Só retroage se favorecer o réu.'},
+    {b:'FCC',t:'multiple',s:'A contagem do prazo penal NÃO se confunde com a do processo. No penal:',o:['Exclui o dia do começo','Inclui o dia do começo, exclui o do fim','Sempre conta em horas','Não conta','Conta domingos e feriados separadamente'],c:1,e:'Art. 10, CP. Prazo penal: INCLUI o dia do início, EXCLUI o do fim. Conta dia, mês e ano de forma corrida. Não se prorroga.'},
+    {b:'VUNESP',t:'cebraspe',s:'O lugar do crime, no CP, segue a teoria da UBIQUIDADE — tanto onde ocorreu a conduta quanto onde ocorreu o resultado.',c:0,e:'CERTO. Art. 6º, CP. Lugar = onde se realizou conduta OU onde se produziu (ou deveria) o resultado. Útil pra crimes à distância.'},
+    {b:'IBFC',t:'multiple',s:'A territorialidade da lei penal brasileira:',o:['É absoluta','É temperada — admite extraterritorialidade nos casos do art. 7º','Exclui crimes praticados em navios','Não vale em terras indígenas','Só vale na capital'],c:1,e:'Art. 5º, CP. Territorialidade TEMPERADA. Regra: aplicar a lei brasileira ao crime no Brasil. Exceção: extraterritorialidade (art. 7º) — incondicional ou condicionada.'},
+    {b:'CESPE',t:'cebraspe',s:'Os crimes praticados a bordo de aeronaves brasileiras (mesmo no exterior) sujeitam-se à lei penal brasileira.',c:0,e:'CERTO. Art. 5º, §1º, CP. Aeronaves e embarcações brasileiras PÚBLICAS = território nacional, onde estejam. Privadas = só em alto-mar/espaço aéreo internacional.'},
+    {b:'FGV',t:'multiple',s:'A culpabilidade é composta por:',o:['Apenas dolo','Imputabilidade, potencial consciência da ilicitude e exigibilidade de conduta diversa','Apenas culpa','Vontade e capacidade','Tipicidade e antijuridicidade'],c:1,e:'Teoria normativa pura. Culpabilidade = juízo de reprovação. 3 elementos: IMPUTABILIDADE (capacidade de entender), POTENCIAL CONSCIÊNCIA DA ILICITUDE, EXIGIBILIDADE DE CONDUTA DIVERSA.'},
+    {b:'CESPE',t:'cebraspe',s:'O menor de 18 anos é INIMPUTÁVEL, sujeito às medidas socioeducativas do ECA.',c:0,e:'CERTO. Art. 228, CF + art. 27, CP + Lei 8.069/90 (ECA). Inimputabilidade absoluta = não responde criminalmente. Cumpre medida socioeducativa (até 21 anos).'},
+    {b:'FCC',t:'cebraspe',s:'A embriaguez VOLUNTÁRIA exclui a imputabilidade do agente, isentando-o de pena.',c:1,e:'ERRADO. Embriaguez voluntária/culposa NÃO exclui imputabilidade (teoria da actio libera in causa). Só a INVOLUNTÁRIA e COMPLETA exclui (caso fortuito/força maior).'},
+    {b:'VUNESP',t:'multiple',s:'O erro sobre elemento do tipo penal:',o:['Sempre exclui o crime','Exclui o dolo, mas permite punir por culpa se prevista','Aumenta a pena','Não afeta o crime','Configura tentativa'],c:1,e:'Art. 20, CP. Erro de TIPO essencial: exclui o DOLO. Se houver previsão culposa e o erro for evitável, pune por culpa. Inevitável: isenta totalmente.'},
+    {b:'CESPE',t:'cebraspe',s:'O erro sobre a ILICITUDE do fato (erro de proibição) pode isentar de pena se inevitável.',c:0,e:'CERTO. Art. 21, CP. Erro de proibição INEVITÁVEL = isenta. EVITÁVEL = diminui pena (1/6 a 1/3).'},
+    {b:'IBFC',t:'multiple',s:'O dolo eventual ocorre quando o agente:',o:['Quer o resultado diretamente','Prevê e assume o risco de produzir o resultado','Não prevê','Age sem culpa','Erra na execução'],c:1,e:'Art. 18, I, CP. Dolo DIRETO = quer o resultado. Dolo EVENTUAL = prevê + assume o risco ("foda-se se acontecer"). Diferente da culpa consciente (prevê mas confia que não vai ocorrer).'},
+    {b:'FGV',t:'cebraspe',s:'O crime culposo exige previsão expressa em lei.',c:0,e:'CERTO. Art. 18, parágrafo único, CP. Crime culposo SÓ existe se a lei prever expressamente (ex: homicídio culposo existe; furto culposo não existe).'},
+    {b:'CESPE',t:'cebraspe',s:'A culpa CONSCIENTE difere do dolo eventual porque o agente, embora preveja o resultado, acredita sinceramente que não ocorrerá.',c:0,e:'CERTO. CONSCIENTE: prevê + confia que evita (acredita poder evitar). EVENTUAL: prevê + ASSUME o risco. Linha tênue, mas decisiva.'},
+    {b:'FCC',t:'multiple',s:'A tentativa é punida com a pena do crime consumado:',o:['Sempre integral','Diminuída de 1 a 2/3, conforme proximidade da consumação','Triplicada','Igual à culposa','Apenas multa'],c:1,e:'Art. 14, parágrafo único, CP. Tentativa = pena do consumado REDUZIDA de 1/3 a 2/3, conforme iter criminis percorrido.'},
+    {b:'VUNESP',t:'cebraspe',s:'A desistência voluntária da tentativa exclui a tipicidade do crime tentado, respondendo o agente apenas pelos atos já praticados.',c:0,e:'CERTO. Art. 15, CP. Desistência VOLUNTÁRIA (parar voluntariamente) e ARREPENDIMENTO EFICAZ (impedir o resultado) excluem tentativa. Responde pelos atos já praticados.'},
+    {b:'IBFC',t:'cebraspe',s:'O arrependimento POSTERIOR aplica-se a crimes sem violência/grave ameaça, reparados até o recebimento da denúncia.',c:0,e:'CERTO. Art. 16, CP. Crime SEM violência/grave ameaça + reparação ATÉ recebimento da denúncia = diminui pena 1/3 a 2/3. Causa de diminuição.'},
+    {b:'CESPE',t:'cebraspe',s:'O crime IMPOSSÍVEL ocorre quando, por absoluta ineficácia do meio ou impropriedade do objeto, jamais se chegaria à consumação.',c:0,e:'CERTO. Art. 17, CP. Crime impossível NÃO é punido. Ex: tentar matar cadáver, atirar com arma defeituosa, furtar bolso vazio.'},
+    {b:'FGV',t:'multiple',s:'A legítima defesa exige:',o:['Apenas agressão','Agressão injusta, atual ou iminente, com uso de meios moderados','Resposta tardia','Vingança','Ação ofensiva'],c:1,e:'Art. 25, CP. Legítima defesa: AGRESSÃO INJUSTA (não autorizada) + ATUAL ou IMINENTE + uso MODERADO dos meios necessários. Não cabe defesa de defesa.'},
+    {b:'CESPE',t:'cebraspe',s:'O estado de necessidade exige que o perigo NÃO tenha sido causado voluntariamente pelo agente.',c:0,e:'CERTO. Art. 24, CP. Estado de necessidade: perigo ATUAL + não causado voluntariamente + bem sacrificado < bem salvo + inexigibilidade de sacrifício do bem ameaçado.'},
+    {b:'FCC',t:'multiple',s:'O homicídio simples tem pena de:',o:['1 a 4 anos','6 a 20 anos','3 a 10 anos','10 a 30 anos','12 a 30 anos'],c:1,e:'Art. 121, CP. Homicídio simples = 6 a 20 anos. Qualificado = 12 a 30 anos. Privilegiado: 1/6 a 1/3 de diminuição.'},
+    {b:'VUNESP',t:'cebraspe',s:'O homicídio privilegiado é caracterizado por motivo de relevante valor social ou moral, ou sob domínio de violenta emoção logo após injusta provocação da vítima.',c:0,e:'CERTO. Art. 121, §1º, CP. Privilegiado reduz pena de 1/6 a 1/3. Não é qualificadora — é causa de diminuição.'},
+    {b:'CESPE',t:'cebraspe',s:'O feminicídio é qualificadora aplicável quando o homicídio é cometido contra mulher por razões da condição do sexo feminino.',c:0,e:'CERTO. Art. 121, §2º, VI, CP. Inserida pela Lei 13.104/15. Pena: 12 a 30 anos. Hediondo. Razões da condição feminina: violência doméstica/familiar ou menosprezo/discriminação.'},
+    {b:'IBFC',t:'multiple',s:'A lesão corporal SEGUIDA DE MORTE difere do homicídio porque:',o:['Há intenção de matar','Não há intenção de matar — morte foi resultado culposo da lesão dolosa','São idênticos','Pena é maior','Pena é menor'],c:1,e:'Art. 129, §3º, CP. Crime preterdoloso: DOLO na lesão + CULPA na morte. Sem intenção de matar. Pena: 4 a 12 anos.'},
+    {b:'FGV',t:'cebraspe',s:'A rixa é crime praticado por três ou mais pessoas, em conflito recíproco.',c:0,e:'CERTO. Art. 137, CP. Rixa = ≥ 3 pessoas em luta corporal mútua. Pena: 15 dias a 2 meses + multa. Qualificada se houver morte ou lesão grave.'},
+    {b:'CESPE',t:'cebraspe',s:'A ameaça (art. 147 CP) só se configura quando praticada por escrito ou gesto.',c:1,e:'ERRADO. Art. 147, CP. Ameaça por palavra, ESCRITO, GESTO ou QUALQUER outro meio simbólico. Mal injusto e grave, prometido a alguém.'},
+    {b:'FCC',t:'multiple',s:'A perseguição (stalking), tipificada pela Lei 14.132/21:',o:['Não é crime','É crime, art. 147-A CP, pena 6 meses a 2 anos + multa','Só é contravenção','Só vale entre cônjuges','É só online'],c:1,e:'Art. 147-A, CP (Lei 14.132/21). Perseguir alguém de forma reiterada, ameaçando integridade ou perturbando esfera de liberdade/privacidade. Pena duplica se contra mulher por razão do sexo.'},
+    {b:'VUNESP',t:'cebraspe',s:'O furto simples tem pena de 1 a 4 anos de reclusão, além de multa.',c:0,e:'CERTO. Art. 155, CP. Subtrair, para si ou outrem, coisa alheia móvel. Pena: 1 a 4 anos + multa. Qualificado (rompimento de obstáculo, escalada, etc): 2 a 8 anos.'},
+    {b:'CESPE',t:'cebraspe',s:'No furto noturno, a pena é aumentada de 1/3 (art. 155, §1º CP).',c:0,e:'CERTO. Furto repouso noturno = aumento de 1/3. Pra furto comum, não pra qualificado (jurisprudência).'},
+    {b:'IBFC',t:'multiple',s:'A diferença essencial entre furto e roubo é:',o:['O valor subtraído','O uso de violência ou grave ameaça à pessoa','O local','A vítima','O momento'],c:1,e:'Furto (art. 155): sem violência/ameaça. Roubo (art. 157): COM violência (real ou própria) ou grave ameaça. Pena do roubo: 4 a 10 anos.'},
+    {b:'FGV',t:'cebraspe',s:'A extorsão mediante sequestro tem pena agravada se o sequestrado é menor de 18 anos ou maior de 60.',c:0,e:'CERTO. Art. 159, §1º, CP. Pena base: 8 a 15 anos. Agravada: 12 a 20 anos (vítima menor/idoso/gestante/PcD). Hediondo. Se resulta lesão grave: 16-24; morte: 24-30.'},
+    {b:'CESPE',t:'cebraspe',s:'O latrocínio é julgado pelo Tribunal do Júri por ser crime doloso contra a vida.',c:1,e:'ERRADO. Apesar de envolver morte, latrocínio é crime contra o PATRIMÔNIO. Súmula 603 STF: júri NÃO julga latrocínio.'},
+    {b:'FCC',t:'multiple',s:'O estelionato (art. 171 CP):',o:['Usa violência','Usa fraude/ardil para obter vantagem ilícita em prejuízo alheio','É culposo','É hediondo','É inafiançável'],c:1,e:'Estelionato = FRAUDE. Obter vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro. Pena: 1 a 5 anos. Sem violência.'},
+    {b:'VUNESP',t:'cebraspe',s:'A apropriação indébita exige que o agente já tenha a posse legítima do bem, e dela se apropria indevidamente.',c:0,e:'CERTO. Art. 168, CP. Apropriação indébita = tem a POSSE legítima (ex: babá que cuida da joia) + apropria-se. Diferente do furto (não tem a posse).'},
+    {b:'IBFC',t:'cebraspe',s:'A receptação consiste em adquirir, receber, transportar, conduzir, ocultar ou influir em coisa que sabe ser produto de crime.',c:0,e:'CERTO. Art. 180, CP. Receptação DOLOSA: SABE ser produto de crime. Culposa: deveria saber pela natureza/preço. Pena: 1 a 4 anos.'},
+    {b:'FGV',t:'multiple',s:'O peculato consiste em:',o:['Funcionário público se apropriar de bem público que tem a posse','Particular subtrair bem público','Furto comum','Apenas corrupção','Apenas concussão'],c:0,e:'Art. 312, CP. Peculato = APROPRIAR-SE de bem público sob sua POSSE. Variante peculato-furto: subtrai (não tem posse). Pena: 2 a 12 anos + multa.'},
+    {b:'CESPE',t:'cebraspe',s:'A concussão exige que o agente seja funcionário público e EXIJA vantagem indevida.',c:0,e:'CERTO. Art. 316, CP. Concussão = EXIGIR vantagem (impor, intimidar). Diferente da corrupção passiva (solicita ou recebe, sem exigir). Pena: 2 a 12 anos.'},
+    {b:'FCC',t:'multiple',s:'A corrupção PASSIVA é praticada:',o:['Pelo particular que paga','Pelo funcionário público que solicita ou recebe vantagem','Por qualquer pessoa','Apenas em licitações','Apenas em obras'],c:1,e:'Art. 317, CP. PASSIVA = funcionário público SOLICITA, RECEBE ou ACEITA vantagem. ATIVA (art. 333) = particular oferece. Pena: 2 a 12 anos.'},
+    {b:'VUNESP',t:'cebraspe',s:'A prevaricação ocorre quando o funcionário pratica, omite ou retarda ato por interesse pessoal.',c:0,e:'CERTO. Art. 319, CP. PREVARICAÇÃO = ato/omissão contra disposição expressa de lei, por interesse pessoal ou sentimento pessoal. Pena: 3 meses a 1 ano + multa.'},
+    {b:'CESPE',t:'cebraspe',s:'A Lei de Drogas (11.343/06) trata o USUÁRIO como criminoso, mas com penas alternativas (não privativas de liberdade).',c:0,e:'CERTO. Art. 28: usuário = CRIME. Penas: advertência, prestação de serviços, medida educativa. NÃO há pena privativa de liberdade pra usuário.'},
+    {b:'IBFC',t:'multiple',s:'O tráfico de drogas (art. 33 Lei 11.343/06) é considerado:',o:['Contravenção','Crime hediondo equiparado, inafiançável e insuscetível de graça/anistia','Crime de menor potencial','Crime culposo','Crime ambiental'],c:1,e:'Art. 5º, XLIII, CF + Lei 8.072/90. Tráfico = HEDIONDO EQUIPARADO. Inafiançável, insuscetível de graça/anistia/indulto. Pena: 5 a 15 anos + multa.'},
+    {b:'FGV',t:'cebraspe',s:'O tráfico privilegiado (art. 33, §4º, Lei 11.343) pode ter natureza NÃO hedionda.',c:0,e:'CERTO. STF (HC 118.533): tráfico privilegiado (réu primário, bons antecedentes, sem organização) NÃO é hediondo. Permite progressão mais branda.'},
+    {b:'CESPE',t:'cebraspe',s:'A Lei Maria da Penha aplica-se a relações homoafetivas entre mulheres.',c:0,e:'CERTO. Art. 5º, parágrafo único, Lei 11.340. Independe de orientação sexual da vítima e do agressor. STJ confirma aplicação em relações entre mulheres.'},
+    {b:'FCC',t:'multiple',s:'A medida protetiva de urgência da Lei Maria da Penha pode determinar:',o:['Apenas multa','Afastamento do agressor do lar, proibição de contato, suspensão de visitas, etc','Apenas indenização','Apenas prisão','Apenas serviços comunitários'],c:1,e:'Arts. 22-23, Lei 11.340. Medidas: afastamento, proibição de aproximação/contato, suspensão de posse de armas, restrição de visitas, alimentos provisórios, etc.'},
+    {b:'VUNESP',t:'cebraspe',s:'O descumprimento de medida protetiva da Lei Maria da Penha é crime autônomo.',c:0,e:'CERTO. Art. 24-A, Lei 11.340 (inserido pela Lei 13.641/18). Descumprir medida = crime, pena 3 meses a 2 anos.'},
+    {b:'IBFC',t:'cebraspe',s:'A tortura praticada por agente público no exercício da função tem pena aumentada de 1/6 a 1/3.',c:0,e:'CERTO. Art. 1º, §4º, II, Lei 9.455/97. Causas de aumento: agente público, criança/adolescente/idoso/PcD/gestante, sequestro. Também perda de cargo.'},
+    {b:'FGV',t:'multiple',s:'Constituem crimes hediondos (Lei 8.072/90):',o:['Furto e roubo','Homicídio qualificado, latrocínio, estupro, etc','Trânsito','Receptação','Apropriação indébita'],c:1,e:'Art. 1º, Lei 8.072/90. Hediondos: homicídio qualificado, latrocínio, extorsão qualificada, estupro, atentado violento ao pudor, epidemia, falsificação medicamentos, genocídio, milícia privada, posse/porte de arma restrita, comércio ilegal de armas.'},
+    {b:'CESPE',t:'cebraspe',s:'O estatuto do desarmamento (Lei 10.826/03) tipifica porte ilegal de arma de fogo de uso permitido.',c:0,e:'CERTO. Art. 14, Lei 10.826. Porte ilegal de arma USO PERMITIDO: 2 a 4 anos. USO RESTRITO: 3 a 6 anos (hediondo).'},
+    {b:'FCC',t:'cebraspe',s:'A posse irregular de arma de fogo em residência é crime, mesmo registrada anteriormente.',c:1,e:'ERRADO. Posse com registro válido NÃO é crime. Posse IRREGULAR (sem registro/sem renovação) é crime. Art. 12, Lei 10.826. Sempre verificar o registro.'},
+    {b:'VUNESP',t:'multiple',s:'O adolescente que comete ato infracional análogo a crime hediondo:',o:['Cumpre pena no presídio','Cumpre medida socioeducativa, podendo ser internação','Não responde','Cumpre serviço comunitário obrigatoriamente','Recebe perdão judicial'],c:1,e:'Art. 112, ECA. Medidas socioeducativas: advertência, obrigação de reparar dano, prestação de serviços, liberdade assistida, semiliberdade, INTERNAÇÃO (em casos graves, até 3 anos).'},
+    {b:'CESPE',t:'cebraspe',s:'O ECA (Lei 8.069/90) define criança como pessoa de até 12 anos incompletos.',c:0,e:'CERTO. Art. 2º, ECA. CRIANÇA = até 12 anos incompletos. ADOLESCENTE = 12 a 18 anos.'},
+    {b:'IBFC',t:'multiple',s:'O abandono material de incapaz (art. 244 CP):',o:['É contravenção','É crime contra a assistência familiar','É crime tributário','É crime ambiental','Não existe'],c:1,e:'Art. 244, CP. Crime contra a ASSISTÊNCIA FAMILIAR. Deixar sem justa causa de prover subsistência de cônjuge, filho ou ascendente. Pena: 1 a 4 anos + multa.'},
+    {b:'FGV',t:'cebraspe',s:'A organização criminosa é definida na Lei 12.850/13 como associação de 4 ou mais pessoas com estrutura para obtenção de vantagens.',c:0,e:'CERTO. Art. 1º, §1º, Lei 12.850/13. ORCRIM: 4+ pessoas, organizadas, divisão de tarefas, para vantagem ilícita, mediante infrações cujas penas máximas sejam > 4 anos OU caráter transnacional.'},
+    {b:'CESPE',t:'cebraspe',s:'A colaboração premiada permite ao colaborador redução de pena, perdão judicial ou substituição.',c:0,e:'CERTO. Art. 4º, Lei 12.850. Benefícios: perdão judicial, redução até 2/3, substituição por restritiva. Exige eficácia: identificar coautores, recuperar produto, etc.'},
+    {b:'FCC',t:'multiple',s:'A Lei de Abuso de Autoridade (13.869/19) pune o agente público que:',o:['Aplica multa','Exerce função pública','Excede limites de suas funções com finalidade específica de prejudicar ou por capricho','Cumpre ordens','Reclama'],c:2,e:'Lei 13.869/19. Crimes de abuso EXIGEM dolo específico (prejudicar alguém, beneficiar-se, mero capricho). Não pune mero erro/divergência.'},
+    {b:'VUNESP',t:'cebraspe',s:'A interceptação telefônica é legal mediante autorização judicial fundamentada, conforme Lei 9.296/96.',c:0,e:'CERTO. Lei 9.296/96. Interceptação só com ORDEM JUDICIAL, fundamentada, em investigação criminal/instrução processual. Limite: 15 dias renováveis. Crimes punidos com reclusão.'},
+    {b:'IBFC',t:'cebraspe',s:'A invasão de dispositivo informático alheio (art. 154-A CP) é crime, mesmo sem prejuízo financeiro.',c:0,e:'CERTO. Art. 154-A, CP (Lei Carolina Dieckmann + atualizações). Invadir dispositivo informático com fim de obter/adulterar dados, instalar vulnerabilidades, etc. Pena: 1 a 4 anos.'},
+    {b:'FGV',t:'multiple',s:'A teoria do CRIME CONTINUADO aplica-se quando:',o:['Vários crimes da mesma espécie, em condições semelhantes (tempo, local, modo) parecem continuação um do outro','Crimes em concurso material','Crime único','Crime tentado','Crime habitual'],c:0,e:'Art. 71, CP. Crime continuado: pluralidade de crimes da MESMA espécie, em CONDIÇÕES SIMILARES, ficção jurídica de unidade. Pena: 1 crime + aumento 1/6 a 2/3.'},
+    {b:'CESPE',t:'cebraspe',s:'No concurso material, as penas dos crimes são SOMADAS.',c:0,e:'CERTO. Art. 69, CP. Concurso material (duas ou mais ações = dois ou mais crimes): SOMA das penas. Concurso formal: pena de um + aumento (1/6 a 1/2).'},
+    {b:'FCC',t:'multiple',s:'A reincidência ocorre quando:',o:['O agente comete novo crime','Comete novo crime após condenação trânsita em julgado por crime anterior','Confessa','Tem antecedentes','Cumpre pena'],c:1,e:'Art. 63, CP. REINCIDÊNCIA = novo crime APÓS TRÂNSITO EM JULGADO de condenação anterior. Aumenta pena, dificulta progressão, impede sursis em alguns casos. 5 anos após cumprimento = limpa.'},
+    {b:'VUNESP',t:'cebraspe',s:'A pena privativa de liberdade pode ser cumprida nos regimes fechado, semi-aberto ou aberto, conforme o quantum da pena.',c:0,e:'CERTO. Art. 33, CP. Fechado: > 8 anos. Semi-aberto: > 4 a 8 anos. Aberto: ≤ 4 anos. Reincidente: regime mais gravoso.'},
+    {b:'IBFC',t:'cebraspe',s:'A progressão de regime exige cumprimento de fração da pena no regime atual.',c:0,e:'CERTO. Lei 7.210/84 (LEP) + Lei 13.964/19. Frações: 16% (não reincidente, sem violência); 20% (não reincidente, com violência); 25% (não reincidente, hediondo); 40% (hediondo + reincidente em hediondo); etc.'},
+    {b:'FGV',t:'multiple',s:'A multa penal, quando descumprida, é considerada:',o:['Pena privativa','Dívida de valor, exequível pela Fazenda Pública','Pena restritiva','Apenas administrativa','Confiscada'],c:1,e:'Art. 51, CP (alteração Lei 9.268/96). Multa = DÍVIDA DE VALOR após trânsito. Inscrita em dívida ativa, cobrada como qualquer outra. Não converte em prisão.'},
+    {b:'VUNESP',t:'cebraspe',s:'A prisão em flagrante é forma de prisão sem ordem judicial prévia, mas deve ser comunicada imediatamente ao juiz.',c:0,e:'CERTO. Art. 5º, LXII, CF + art. 306 CPP. Flagrante: prisão lícita sem mandado. Comunicação ao juiz em 24h. Audiência de custódia em 24h também.'},
+    {b:'CESPE',t:'cebraspe',s:'A audiência de custódia visa avaliar a legalidade da prisão e o estado do preso em até 24 horas após a captura.',c:0,e:'CERTO. CNJ Resolução 213/15 + CPP. Em 24h o preso é apresentado ao juiz pra verificar legalidade, eventuais maus tratos, e decidir se mantém preso ou solta.'},
   ],
   info: [
     // Fácil (diff 1)
@@ -6317,10 +6877,56 @@ const CAMPAIGN_QBANK = {
     {b:'VUNESP',t:'multiple',s:'No PowerPoint, F5 inicia:',o:['Salvar','Apresentação desde o slide inicial','Imprimir','Fechar','Próximo slide'],c:1,e:'F5 = inicia apresentação do INÍCIO. Shift+F5 = inicia do slide ATUAL.'},
     // Difícil (diff 3-5)
     {b:'CESPE',t:'cebraspe',s:'Phishing é uma técnica de engenharia social que tenta enganar usuários para que revelem dados sensíveis (senhas, cartão).',c:0,e:'CERTO. Phishing = "pescaria" digital. E-mails/sites falsos imitam instituições (banco, governo) pra roubar dados. Sempre verificar URL!'},
-    {b:'FGV',t:'multiple',s:'Um ransomware é um tipo de malware que:',o:['Apenas exibe propagandas','Criptografa arquivos e exige resgate (geralmente em cripto)','Acelera o computador','Limpa vírus','Otimiza a memória'],c:1,e:'Ransomware = RANSOM (resgate). Sequestra dados criptografando-os. Pagar NÃO garante recuperação. Backup é a melhor defesa.'},
+    {b:'FGV',t:'multiple',s:'Um SPYWARE é um software malicioso que:',o:['Cria backups automáticos','Espiona atividades do usuário sem autorização','Acelera a internet','Bloqueia anúncios','Atualiza drivers'],c:1,e:'Spyware = SPY (espião). Coleta dados sigilosamente (digitação, sites visitados, senhas) e envia ao atacante. Defesa: antivírus + sites confiáveis.'},
     {b:'CESPE',t:'cebraspe',s:'A autenticação multifator (MFA) usa apenas a senha como única forma de proteção.',c:1,e:'ERRADO. MFA = MÚLTIPLOS fatores (algo que SABE + algo que TEM + algo que É). Ex: senha + código SMS + biometria. Mais seguro que só senha.'},
     {b:'FCC',t:'multiple',s:'A LGPD (Lei Geral de Proteção de Dados, Lei 13.709/18) protege:',o:['Apenas dados de empresas','Dados pessoais de pessoas físicas, regulando seu tratamento','Apenas dados públicos','Apenas dados governamentais','Patentes industriais'],c:1,e:'LGPD: proteção de DADOS PESSOAIS (CPF, nome, biometria, etc) de PESSOAS FÍSICAS. Inspirada na GDPR europeia. Em vigor desde 2020.'},
-    {b:'VUNESP',t:'cebraspe',s:'A computação em nuvem permite armazenar e processar dados em servidores remotos, acessíveis via Internet.',c:0,e:'CERTO. Cloud = nuvem. Exemplos: Google Drive (armazenamento), AWS (servidor), Office 365 (apps). Vantagens: acesso de qualquer lugar, escalabilidade.'},
+    {b:'VUNESP',t:'cebraspe',s:'A computação em nuvem permite armazenar e processar dados em servidores remotos, acessíveis via Internet.',c:0,e:'CERTO. Cloud = nuvem. Exemplos: Google Drive (armazenamento), AWS (servidor), Office 365 (apps). Vantagens: acesso de qualquer lugar, escalabilidade.'},,
+    // 45 questões NOVAS de Informática
+    {b:'CESPE',t:'cebraspe',s:'No Windows, o atalho Ctrl + Z desfaz a última ação na maioria dos programas.',c:0,e:'CERTO. Ctrl+Z = DESFAZER (Undo). Ctrl+Y = refazer (Redo). Universal em quase todos os aplicativos.'},
+    {b:'FGV',t:'multiple',s:'O atalho Ctrl + Shift + T no navegador serve para:',o:['Fechar aba','Reabrir a última aba fechada','Limpar histórico','Abrir favoritos','Imprimir'],c:1,e:'Ctrl+Shift+T = reabre última aba fechada (até várias). Ctrl+T = nova aba. Ctrl+W = fechar aba. Ctrl+N = nova janela. Universal nos navegadores.'},
+    {b:'CESPE',t:'cebraspe',s:'A tecla F2 no Windows permite RENOMEAR um arquivo ou pasta selecionado.',c:0,e:'CERTO. F2 = renomear. F3 = pesquisar. F4 = endereço (no Explorer). F5 = atualizar. F11 = tela cheia. Teclas úteis pra produtividade.'},
+    {b:'VUNESP',t:'cebraspe',s:'O modo de exibição "Detalhes" do Explorador de Arquivos exibe nome, data de modificação, tipo e tamanho.',c:0,e:'CERTO. Modos: Ícones grandes/médios/pequenos, Lista, Detalhes (mais info), Conteúdo. Detalhes é o mais usado pra análise.'},
+    {b:'IBFC',t:'multiple',s:'O atalho Win + D no Windows:',o:['Desliga o PC','Mostra a Área de Trabalho (minimiza tudo)','Abre Documentos','Apaga arquivos','Abre Defender'],c:1,e:'Win+D = mostra Desktop (minimiza tudo). Repetir = restaura. Win+, = espia. Win+M = minimiza. Win+Home = minimiza tudo exceto atual.'},
+    {b:'CESPE',t:'cebraspe',s:'O Painel de Controle do Windows permite gerenciar configurações do sistema, hardware e software.',c:0,e:'CERTO. Painel de Controle (Control Panel) = configurações clássicas. No Win10/11 muita coisa migrou pra Configurações (Settings). Ambos coexistem.'},
+    {b:'FGV',t:'multiple',s:'No Excel, a função =MÉDIA(B1:B5) calcula:',o:['A soma','A média aritmética dos valores no intervalo','O maior valor','O menor valor','A contagem'],c:1,e:'MÉDIA = média aritmética. SOMA = soma. MAIOR = maior valor. MENOR = menor. CONT.NÚM = conta números. SE = condicional. PROCV = busca vertical.'},
+    {b:'CESPE',t:'cebraspe',s:'No Excel, o cifrão ($) usado em referência (ex: $A$1) cria uma referência ABSOLUTA, que não muda ao copiar a fórmula.',c:0,e:'CERTO. $A$1 = absoluta (linha e coluna fixas). $A1 = mista (coluna fixa). A$1 = mista (linha fixa). A1 = relativa (muda ao copiar).'},
+    {b:'FCC',t:'multiple',s:'A função do Excel que retorna VERDADEIRO/FALSO com base em uma condição é:',o:['SOMA','SE','PROCV','CONCATENAR','MÉDIA'],c:1,e:'=SE(condição; valor_se_verdadeiro; valor_se_falso). Lógica condicional. Pode ser aninhada e combinada com E()/OU().'},
+    {b:'VUNESP',t:'cebraspe',s:'No Word, o atalho Ctrl + S salva o documento atual.',c:0,e:'CERTO. Ctrl+S = SAVE. Ctrl+O = Open. Ctrl+N = New. Ctrl+P = Print. Ctrl+W = fechar. Ctrl+A = selecionar tudo. Atalhos universais.'},
+    {b:'IBFC',t:'multiple',s:'O Word permite formatar texto em negrito com o atalho:',o:['Ctrl + I','Ctrl + B (Bold)','Ctrl + U','Ctrl + N','Ctrl + L'],c:1,e:'Inglês: Ctrl+B (Bold) = negrito; Ctrl+I (Italic) = itálico; Ctrl+U (Underline) = sublinhado. Português MS: Ctrl+N negrito (Negrito), Ctrl+I itálico, Ctrl+S sublinhado.'},
+    {b:'CESPE',t:'cebraspe',s:'No PowerPoint, a tecla F5 inicia a apresentação a partir do PRIMEIRO slide.',c:0,e:'CERTO. F5 = início desde a 1ª. Shift+F5 = início desde o slide atual. Esc = sair. B = tela preta. W = tela branca.'},
+    {b:'FGV',t:'multiple',s:'O Outlook é um programa Microsoft para:',o:['Edição de texto','Gerenciamento de e-mails, calendário e contatos','Planilhas','Apresentações','Edição de imagens'],c:1,e:'Outlook = cliente de email + calendário + contatos + tarefas. Parte do Office. Substitui Outlook Express (descontinuado).'},
+    {b:'CESPE',t:'cebraspe',s:'O protocolo IMAP mantém os e-mails no servidor, sincronizando entre múltiplos dispositivos.',c:0,e:'CERTO. IMAP (Internet Message Access Protocol) = sincroniza. Útil pra acessar mesmo email no celular, PC, web — tudo sincronizado. Diferente do POP3 (baixa e apaga do servidor).'},
+    {b:'FCC',t:'multiple',s:'O protocolo HTTP opera por padrão na porta:',o:['21','22','80','443','3306'],c:2,e:'HTTP = porta 80. HTTPS = 443. FTP = 21. SSH = 22. SMTP = 25. POP3 = 110. IMAP = 143. DNS = 53. Conhecer as principais portas é cobrado.'},
+    {b:'VUNESP',t:'cebraspe',s:'Uma URL como https://www.exemplo.com/pagina indica conexão segura via SSL/TLS.',c:0,e:'CERTO. HTTPS = HTTP Secure = HTTP + criptografia SSL/TLS. Cadeado no navegador. Hoje é padrão (Chrome marca HTTP como "inseguro").'},
+    {b:'IBFC',t:'multiple',s:'O DNS (Domain Name System) tem como função:',o:['Bloquear ataques','Traduzir nomes de domínio em endereços IP','Compactar dados','Acelerar downloads','Criar e-mails'],c:1,e:'DNS = "lista telefônica da Internet". Traduz www.google.com → IP (ex: 142.250.x.x). Sem DNS, teríamos que decorar números.'},
+    {b:'CESPE',t:'cebraspe',s:'A intranet é uma rede privada de uma organização, geralmente acessível apenas por seus membros.',c:0,e:'CERTO. INTRANET = rede privada interna (uma empresa). EXTRANET = parte da intranet aberta a parceiros externos. INTERNET = rede pública mundial.'},
+    {b:'FGV',t:'multiple',s:'O navegador web que pertence à Microsoft e substituiu o Internet Explorer é:',o:['Chrome','Firefox','Edge','Safari','Opera'],c:2,e:'Microsoft Edge substituiu o Internet Explorer (descontinuado). Baseado no Chromium desde 2020. Chrome (Google), Firefox (Mozilla), Safari (Apple), Opera (Opera Software).'},
+    {b:'CESPE',t:'cebraspe',s:'Cookies são pequenos arquivos de texto que os sites armazenam no navegador do usuário.',c:0,e:'CERTO. Cookies guardam preferências, sessões, dados de carrinho. Podem ser usados pra rastreamento (LGPD exige consentimento). Podem ser apagados.'},
+    {b:'FCC',t:'cebraspe',s:'A computação em nuvem (cloud computing) elimina TOTALMENTE a necessidade de dispositivos locais.',c:1,e:'ERRADO. Você ainda precisa de um dispositivo (PC, celular) pra ACESSAR a nuvem. A nuvem fornece processamento/armazenamento REMOTO, não substitui o dispositivo de acesso.'},
+    {b:'VUNESP',t:'multiple',s:'Exemplos de serviços de armazenamento em nuvem:',o:['Word, Excel, PowerPoint','Google Drive, OneDrive, Dropbox','Windows, Linux, Mac','Photoshop, Premiere','Chrome, Firefox'],c:1,e:'Cloud storage: Google Drive (Google), OneDrive (Microsoft), Dropbox, iCloud (Apple). Sincronizam arquivos entre dispositivos via internet.'},
+    {b:'IBFC',t:'cebraspe',s:'Um VÍRUS de computador necessita de um arquivo hospedeiro para se propagar.',c:0,e:'CERTO. VÍRUS precisa de hospedeiro (arquivo .exe, .doc, etc) — se infectar nada, não se replica. WORM é independente (se propaga sozinho na rede). Diferentes tipos de malware.'},
+    {b:'CESPE',t:'cebraspe',s:'O WORM, diferente do vírus, se propaga pela rede SEM precisar de arquivo hospedeiro.',c:0,e:'CERTO. WORM (verme) = autônomo, explora vulnerabilidades de rede. Famosos: WannaCry, Conficker. Pode derrubar redes inteiras rapidamente.'},
+    {b:'FGV',t:'multiple',s:'O CAVALO DE TROIA (trojan) caracteriza-se por:',o:['Se replicar sozinho','Aparentar ser legítimo, mas conter código malicioso','Apagar arquivos','Sequestrar dados','Espionar redes'],c:1,e:'Trojan = disfarce. Parece útil (jogo, programa) mas dentro tem código malicioso. Não se replica. Abre portas pra invasor.'},
+    {b:'CESPE',t:'cebraspe',s:'Um KEYLOGGER é um software que registra as teclas digitadas pelo usuário, podendo capturar senhas.',c:0,e:'CERTO. KEYLOGGER = registra tudo digitado. Defesa: antivírus, teclado virtual em sites bancários, MFA (mesmo se pegar senha, precisa do 2º fator).'},
+    {b:'FCC',t:'multiple',s:'O FIREWALL tem como principal função:',o:['Apagar vírus','Controlar tráfego de rede, permitindo ou bloqueando conexões','Acelerar internet','Criar backups','Editar arquivos'],c:1,e:'Firewall = "muro de fogo". Filtra pacotes IN/OUT por regras (porta, protocolo, IP). 1ª linha de defesa. Pode ser hardware (corporativo) ou software (Windows Defender Firewall).'},
+    {b:'VUNESP',t:'cebraspe',s:'O ANTIVÍRUS protege somente contra vírus, não detectando outros tipos de malware.',c:1,e:'ERRADO. Antivírus MODERNOS (ou suites de segurança) detectam vírus, worms, trojans, ransomware, spyware, adware, rootkits, etc. Termo "antivírus" virou genérico.'},
+    {b:'IBFC',t:'multiple',s:'A CRIPTOGRAFIA SIMÉTRICA caracteriza-se por:',o:['Duas chaves diferentes','Uma única chave para cifrar e decifrar','Sem chaves','Hash unidirecional','Apenas assinatura'],c:1,e:'SIMÉTRICA = MESMA chave pra cifrar e decifrar (ex: AES). Rápida, mas precisa trocar a chave de forma segura. ASSIMÉTRICA: par de chaves (pública/privada, ex: RSA).'},
+    {b:'CESPE',t:'cebraspe',s:'A assinatura digital usa criptografia ASSIMÉTRICA: chave privada para assinar e pública para verificar.',c:0,e:'CERTO. Assinatura digital: cifrada com chave PRIVADA do remetente, verificada com PÚBLICA. Garante autoria (não-repúdio) e integridade.'},
+    {b:'FGV',t:'multiple',s:'O HASH (função de resumo) é usado para:',o:['Cifrar dados','Verificar integridade de um arquivo (qualquer alteração muda o hash)','Comprimir','Apagar dados','Compartilhar'],c:1,e:'HASH = impressão digital do arquivo. Algoritmos: MD5 (obsoleto), SHA-1 (obsoleto), SHA-256 (atual). Mesmo arquivo = mesmo hash. Alterou 1 bit = hash totalmente diferente.'},
+    {b:'CESPE',t:'cebraspe',s:'A LGPD (Lei 13.709/18) exige consentimento expresso para tratamento de dados pessoais sensíveis.',c:0,e:'CERTO. Dados sensíveis (raça, religião, saúde, biometria, etc) = consentimento ESPECÍFICO e DESTACADO. Dados comuns: também consentimento, mas com mais bases legais alternativas.'},
+    {b:'FCC',t:'multiple',s:'A ANPD (Autoridade Nacional de Proteção de Dados) é o órgão responsável por:',o:['Investigar crimes','Fiscalizar o cumprimento da LGPD','Editar leis','Julgar processos','Apenas registrar empresas'],c:1,e:'ANPD = órgão fiscalizador da LGPD. Aplica sanções (multa até 2% do faturamento, limitada a 50 milhões por infração). Vinculada à Presidência (antes), agora autarquia.'},
+    {b:'VUNESP',t:'cebraspe',s:'A pseudonimização permite tratar dados de forma que não possam ser associados a um indivíduo sem informação adicional separada.',c:0,e:'CERTO. Art. 13, LGPD. PSEUDONIMIZAÇÃO mantém dados pseudonimizados separados da identificação real. ANONIMIZAÇÃO é mais forte (não há como reverter).'},
+    {b:'IBFC',t:'multiple',s:'A autenticação MULTIFATOR (MFA) combina:',o:['Apenas senha','Algo que você SABE + algo que você TEM + algo que você É','Apenas SMS','Apenas biometria','Apenas e-mail'],c:1,e:'3 fatores: SABE (senha), TEM (celular/token), É (biometria). MFA = ≥ 2 desses. Muito mais seguro que só senha. Bancos exigem MFA.'},
+    {b:'CESPE',t:'cebraspe',s:'O CPU (Central Processing Unit) é o "cérebro" do computador, responsável por executar instruções.',c:0,e:'CERTO. CPU = processador. Executa instruções, faz cálculos, controla periféricos. Núcleos: maioria atual tem 4-16. Frequência (GHz): velocidade.'},
+    {b:'FGV',t:'cebraspe',s:'A memória RAM é VOLÁTIL — perde os dados ao desligar o computador.',c:0,e:'CERTO. RAM = Random Access Memory. VOLÁTIL (precisa de energia). Usada para programas EM EXECUÇÃO. HD/SSD = NÃO volátil (mantém dados).'},
+    {b:'FCC',t:'multiple',s:'A diferença principal entre HD e SSD é:',o:['HD é mais rápido','SSD não tem partes móveis (mais rápido e silencioso)','HD não armazena dados','SSD é maior','HD usa flash memory'],c:1,e:'HD = disco MAGNÉTICO mecânico (lento, frágil, barato/GB). SSD = memória FLASH (rápido, robusto, mais caro/GB). NVMe = SSD ainda mais rápido (PCIe).'},
+    {b:'VUNESP',t:'cebraspe',s:'O BIOS/UEFI é o firmware responsável por inicializar o hardware ao ligar o computador.',c:0,e:'CERTO. BIOS (antigo) / UEFI (atual): firmware na placa-mãe. POST (Power On Self Test) verifica hardware, depois carrega o SO. UEFI suporta discos > 2TB, boot mais rápido, mais seguro.'},
+    {b:'IBFC',t:'multiple',s:'O gerenciador de tarefas do Windows (Ctrl+Shift+Esc) permite:',o:['Editar documentos','Ver e encerrar processos, monitorar CPU/memória/disco','Criar planilhas','Navegar na web','Instalar drivers'],c:1,e:'Gerenciador de Tarefas (Task Manager): Ctrl+Shift+Esc. Mostra processos, desempenho (CPU/RAM/disco/rede), apps na inicialização. Útil pra encerrar programa travado.'},
+    {b:'CESPE',t:'cebraspe',s:'O Linux é um sistema operacional de código ABERTO (open source), gratuito na maioria das distribuições.',c:0,e:'CERTO. Linux = kernel open source. Distribuições populares: Ubuntu, Debian, Fedora, Mint, Arch. Usado em servidores, supercomputadores e por entusiastas.'},
+    {b:'FGV',t:'multiple',s:'A nuvem que oferece infraestrutura completa (servidores, redes, storage) é chamada:',o:['SaaS','PaaS','IaaS','BaaS','None'],c:2,e:'IaaS (Infrastructure as a Service) = AWS EC2, Azure VMs. PaaS (Platform) = Heroku, App Engine. SaaS (Software) = Office 365, Google Workspace, Salesforce.'},
+    {b:'CESPE',t:'cebraspe',s:'O backup INCREMENTAL salva apenas as alterações feitas desde o último backup.',c:0,e:'CERTO. COMPLETO = tudo. INCREMENTAL = só mudanças desde o último (incremental ou completo). DIFERENCIAL = mudanças desde o último COMPLETO. Estratégia 3-2-1: 3 cópias, 2 mídias, 1 offsite.'},
+    {b:'FCC',t:'cebraspe',s:'Um PIXEL é a menor unidade de uma imagem digital.',c:0,e:'CERTO. PIXEL (Picture Element) = unidade de cor da imagem digital. Resolução = qtd de pixels (ex: 1920x1080 = Full HD). PPI/DPI = densidade.'},
+    {b:'VUNESP',t:'cebraspe',s:'A largura de banda (bandwidth) refere-se à quantidade máxima de dados que podem ser transmitidos em uma conexão por unidade de tempo.',c:0,e:'CERTO. Bandwidth medido em bps (bits por segundo). Mbps = megabit/s. MBps = MEGABYTE/s (8x maior). 100 Mbps real ≈ 12,5 MB/s. Não confundir bits e bytes!'},
   ],
 };
 
@@ -6539,7 +7145,7 @@ async function upsertProfile() {
     cargo: user.cargo || null,
     banca: user.banca || null,
     data_prova: user.dataProva || null,
-    horas_dia: user.horasDia ? parseInt(user.horasDia) : null,
+    horas_dia: user.horasDia ? parseInt(user.horasDia, 10) : null,
     nivel: user.nivel || null,
     avatar: progress?.avatar || '👮‍♀️',
     avatar_color: progress?.avatarColor || '#ff2e63',
@@ -6930,10 +7536,10 @@ const submitLogin = async () => {
     localStorage.setItem(attemptsKey, JSON.stringify(data));
   } catch(e) {}
 
-  const email = $('inp-email').value.trim().toLowerCase();
-  const pass = $('inp-pass').value;
+  const email = ($('inp-email')?.value || '').trim().toLowerCase();
+  const pass = $('inp-pass')?.value || '';
   const isSignup = loginMode === 'signup';
-  const name = isSignup ? $('inp-name').value.trim() : '';
+  const name = isSignup ? ($('inp-name')?.value || '').trim() : '';
 
   // 🔒 VALIDAÇÃO DE TAMANHO E CARACTERES
   if (email.length > 254) { if($('err-email')){$('err-email').textContent='⚠️ Email muito longo';$('err-email').style.display='block';} return; }
@@ -7127,7 +7733,7 @@ const onbNext = () => {
       if (isNaN(d.getTime()) || d < hoje) err = 'Data inválida (deve ser futura). Deixe em branco se ainda não souber.';
     }
   } else if (s.type === 'number') {
-    const n = parseInt(onbData[s.key]);
+    const n = parseInt(onbData[s.key], 10);
     if (!n || isNaN(n) || n < 1 || n > 16) err = 'Informe um número entre 1 e 16';
   }
   if (err) { snd.wrong(); $('err-onb').querySelector('span').textContent = err; $('err-onb').style.display = 'block'; return; }
@@ -7552,6 +8158,7 @@ function exitPhase() {
 }
 
 function renderPhase() {
+  if (!activePhase || !phaseState) { console.error('[renderPhase guard] estado ausente'); return; }
   const ph = activePhase, ps = phaseState;
   const sc = SUBJ[ph.subject];
 
@@ -7663,6 +8270,7 @@ function renderPhase() {
 }
 
 function phaseStartQuestions() {
+  if (!activePhase || !activePhase.questions || !phaseState) { console.error('[phaseStartQuestions guard] estado ausente'); return; }
   snd.click();
   phaseState.stage = 'question';
   if (activePhase.timed) startTimer();
@@ -7731,6 +8339,7 @@ function nextQ() {
 }
 
 function finishPhase() {
+  if (!activePhase || !phaseState) { console.error('[finishPhase guard] estado ausente'); return; }
   const ph = activePhase, ps = phaseState;
   const total = ph.questions.length;
   const percent = (ps.score / total) * 100;
@@ -8147,7 +8756,352 @@ function exportProgress() {
 ============================================================ */
 let flashState = null;
 
+
+
+// ============================================================
+// 📖 LEI SECA — modo leitura didático
+// ============================================================
+const CP_LEISECA = {
+  penal: {
+    titulo: 'Código Penal (Decreto-Lei 2.848/40)',
+    grupos: [
+      {
+        tema: '⚖️ Parte Geral — Aplicação da Lei Penal',
+        artigos: [
+          {art:'Art. 1º', hot:true, titulo:'Anterioridade da lei (legalidade)',
+           texto:'Não há crime sem lei anterior que o defina. Não há pena sem prévia cominação legal.',
+           exp:'Princípio da LEGALIDADE / RESERVA LEGAL (nullum crimen, nulla poena sine lege). Pilar do Direito Penal: só lei (em sentido estrito) pode criar crime e pena, e ela tem que ser ANTERIOR ao fato. Também na CF, art. 5º, XXXIX.'},
+          {art:'Art. 2º', hot:true, titulo:'Lei penal no tempo',
+           texto:'Ninguém pode ser punido por fato que lei posterior deixa de considerar crime (abolitio criminis). A lei posterior mais benéfica retroage, ainda que já tenha havido condenação transitada em julgado.',
+           exp:'A lei penal NÃO retroage, SALVO pra beneficiar o réu (retroatividade benéfica). Se a lei nova descriminaliza (abolitio criminis), apaga os efeitos penais. Se só abranda a pena (lex mitior), também retroage. CF, art. 5º, XL.'},
+          {art:'Art. 3º', hot:false, titulo:'Lei excepcional ou temporária',
+           texto:'A lei excepcional ou temporária aplica-se ao fato praticado durante sua vigência, mesmo depois de revogada ou esgotado o prazo.',
+           exp:'Ultratividade da lei temporária: ela continua valendo pros fatos cometidos na vigência dela, mesmo depois de expirar. Exceção à regra da retroatividade benéfica.'},
+          {art:'Art. 4º', hot:true, titulo:'Tempo do crime',
+           texto:'Considera-se praticado o crime no momento da ação ou omissão, ainda que outro seja o momento do resultado.',
+           exp:'Teoria da ATIVIDADE. O que importa é QUANDO o agente agiu (ou deixou de agir), não quando o resultado ocorreu. Relevante pra definir imputabilidade (ex: menor que completa 18 entre a ação e o resultado).'},
+          {art:'Art. 5º', hot:true, titulo:'Territorialidade',
+           texto:'Aplica-se a lei brasileira ao crime cometido no território nacional, sem prejuízo de convenções, tratados e regras de direito internacional.',
+           exp:'Territorialidade TEMPERADA/MITIGADA: regra é aplicar a lei brasileira a crimes no Brasil, mas há exceções (extraterritorialidade, imunidades diplomáticas). Embarcações/aeronaves públicas brasileiras = território nacional onde estiverem.'},
+          {art:'Art. 6º', hot:true, titulo:'Lugar do crime',
+           texto:'Considera-se praticado o crime no lugar em que ocorreu a ação ou omissão, no todo ou em parte, bem como onde se produziu ou deveria produzir-se o resultado.',
+           exp:'Teoria da UBIQUIDADE (ou mista). Lugar do crime = onde houve a CONDUTA ou onde ocorreu o RESULTADO. Mnemônico: LUTA (LUgar = Teoria da ubiquidade) x TEA (TEmpo = Atividade). Importa pra crimes à distância.'},
+          {art:'Art. 7º', hot:true, titulo:'Extraterritorialidade',
+           texto:'Ficam sujeitos à lei brasileira, embora cometidos no estrangeiro, certos crimes: contra a vida/liberdade do Presidente; contra patrimônio/fé pública da União, Estados, DF, Municípios; contra a administração pública por quem está a seu serviço; genocídio (autor brasileiro ou domiciliado no Brasil); entre outros.',
+           exp:'A lei brasileira alcança crimes cometidos FORA do país em hipóteses INCONDICIONADAS (§1º — não dependem de condição) e CONDICIONADAS (§2º — dependem de requisitos como o agente entrar no território). Tema muito cobrado.'},
+        ]
+      },
+      {
+        tema: '🧩 Parte Geral — Do Crime',
+        artigos: [
+          {art:'Art. 13', hot:true, titulo:'Relação de causalidade (nexo causal)',
+           texto:'O resultado de que depende a existência do crime somente é imputável a quem lhe deu causa. Considera-se causa a ação ou omissão sem a qual o resultado não teria ocorrido.',
+           exp:'Teoria da equivalência dos antecedentes (conditio sine qua non): tudo que contribui pro resultado é causa. §1º trata da causa superveniente relativamente independente (rompe o nexo). §2º: relevância da omissão (dever de agir).'},
+          {art:'Art. 14', hot:true, titulo:'Crime consumado e tentado',
+           texto:'Diz-se o crime: CONSUMADO, quando nele se reúnem todos os elementos de sua definição legal; TENTADO, quando, iniciada a execução, não se consuma por circunstâncias alheias à vontade do agente. Pena da tentativa: a do crime, reduzida de 1/3 a 2/3.',
+           exp:'TENTATIVA exige: início da execução + não consumação + por causa ALHEIA à vontade. Reduz a pena de 1/3 a 2/3 (quanto mais perto da consumação, menor a redução). Crimes que não admitem tentativa: culposos, contravenções (em regra), omissivos próprios.'},
+          {art:'Art. 15', hot:true, titulo:'Desistência voluntária e arrependimento eficaz',
+           texto:'O agente que, voluntariamente, desiste de prosseguir na execução ou impede que o resultado se produza, só responde pelos atos já praticados.',
+           exp:'"Ponte de ouro." DESISTÊNCIA VOLUNTÁRIA: para antes de esgotar os atos ("posso prosseguir mas não quero"). ARREPENDIMENTO EFICAZ: já fez tudo, mas impede o resultado. Em ambos, exclui a tentativa — responde só pelo que já praticou.'},
+          {art:'Art. 16', hot:true, titulo:'Arrependimento posterior',
+           texto:'Nos crimes cometidos sem violência ou grave ameaça à pessoa, reparado o dano ou restituída a coisa, até o recebimento da denúncia ou queixa, por ato voluntário do agente, a pena será reduzida de 1/3 a 2/3.',
+           exp:'Diferente do arrependimento eficaz! Aqui o crime JÁ se consumou. Requisitos: crime SEM violência/grave ameaça + reparação ATÉ o recebimento da denúncia + voluntária. É causa de DIMINUIÇÃO de pena (não exclui o crime).'},
+          {art:'Art. 17', hot:true, titulo:'Crime impossível',
+           texto:'Não se pune a tentativa quando, por ineficácia absoluta do meio ou por absoluta impropriedade do objeto, é impossível consumar-se o crime.',
+           exp:'Crime impossível (quase-crime / tentativa inidônea): não há punição. Ex: atirar em alguém já morto (objeto impróprio), tentar matar com arma de brinquedo (meio ineficaz). A ineficácia/impropriedade tem que ser ABSOLUTA.'},
+          {art:'Art. 18', hot:true, titulo:'Crime doloso e culposo',
+           texto:'Diz-se o crime: DOLOSO, quando o agente quis o resultado ou assumiu o risco de produzi-lo; CULPOSO, quando deu causa ao resultado por imprudência, negligência ou imperícia. Salvo casos expressos, só se pune crime doloso.',
+           exp:'DOLO DIRETO (quis) e DOLO EVENTUAL (assumiu o risco). CULPA: imprudência (ação afoita), negligência (falta de cuidado/omissão), imperícia (falta de aptidão técnica). Regra: crime é doloso; culposo só quando a lei prevê EXPRESSAMENTE.'},
+          {art:'Art. 19', hot:false, titulo:'Agravação pelo resultado',
+           texto:'Pelo resultado que agrava especialmente a pena, só responde o agente que o houver causado ao menos culposamente.',
+           exp:'Veda a responsabilidade objetiva. No crime preterdoloso (dolo no antecedente + culpa no consequente), o resultado mais grave só agrava se o agente agiu ao menos com culpa quanto a ele. Ex: lesão seguida de morte.'},
+          {art:'Art. 20', hot:true, titulo:'Erro de tipo',
+           texto:'O erro sobre elemento constitutivo do tipo legal de crime exclui o dolo, mas permite a punição por crime culposo, se previsto em lei.',
+           exp:'ERRO DE TIPO: o agente não sabe que está cometendo o fato típico (ex: caça e atira achando ser animal, mas era pessoa). Exclui o DOLO. Se evitável e houver previsão culposa, responde por culpa; se inevitável, isenta totalmente.'},
+          {art:'Art. 21', hot:true, titulo:'Erro de proibição (erro sobre a ilicitude)',
+           texto:'O desconhecimento da lei é inescusável. O erro sobre a ilicitude do fato, se inevitável, isenta de pena; se evitável, poderá diminuí-la de 1/6 a 1/3.',
+           exp:'Cuidado com a pegadinha: DESCONHECER A LEI não livra ninguém. Mas o ERRO DE PROIBIÇÃO (achar que a conduta era lícita) inevitável ISENTA; evitável DIMINUI. Afeta a CULPABILIDADE (potencial consciência da ilicitude), não o dolo.'},
+          {art:'Art. 22', hot:true, titulo:'Coação irresistível e obediência hierárquica',
+           texto:'Se o fato é cometido sob coação irresistível ou em estrita obediência a ordem, não manifestamente ilegal, de superior hierárquico, só é punível o autor da coação ou da ordem.',
+           exp:'Excludentes de CULPABILIDADE (inexigibilidade de conduta diversa). Coação MORAL irresistível: pune-se o coator. Obediência hierárquica de ordem NÃO manifestamente ilegal: pune-se quem deu a ordem. Se a ordem for claramente ilegal, ambos respondem.'},
+          {art:'Art. 23', hot:true, titulo:'Excludentes de ilicitude',
+           texto:'Não há crime quando o agente pratica o fato: I - em estado de necessidade; II - em legítima defesa; III - em estrito cumprimento de dever legal ou no exercício regular de direito.',
+           exp:'As 4 EXCLUDENTES DE ILICITUDE (causas de justificação): Estado de necessidade, Legítima defesa, Estrito cumprimento do dever legal, Exercício regular de direito. Mnemônico: LEEE. Excesso (doloso ou culposo) é punível.'},
+          {art:'Art. 24', hot:true, titulo:'Estado de necessidade',
+           texto:'Considera-se em estado de necessidade quem pratica o fato para salvar de perigo atual, que não provocou por sua vontade, nem podia de outro modo evitar, direito próprio ou alheio, cujo sacrifício não era razoável exigir.',
+           exp:'Requisitos: perigo ATUAL + não provocado voluntariamente + inevitável de outro modo + bem protegido ≥ bem sacrificado (razoabilidade). Ex: náufrago que toma a única boia. Diferente da legítima defesa (que pressupõe AGRESSÃO humana).'},
+          {art:'Art. 25', hot:true, titulo:'Legítima defesa',
+           texto:'Entende-se em legítima defesa quem, usando moderadamente dos meios necessários, repele injusta agressão, atual ou iminente, a direito seu ou de outrem.',
+           exp:'Requisitos: agressão INJUSTA + ATUAL ou IMINENTE + uso MODERADO dos meios NECESSÁRIOS + direito próprio ou de terceiro. Cabe contra agressão de inimputável. Não cabe legítima defesa de legítima defesa real. Excesso é punível.'},
+          {art:'Art. 26', hot:true, titulo:'Inimputáveis (doença mental)',
+           texto:'É isento de pena o agente que, por doença mental ou desenvolvimento mental incompleto ou retardado, era, ao tempo da ação ou omissão, inteiramente incapaz de entender o caráter ilícito do fato ou de determinar-se de acordo com esse entendimento.',
+           exp:'Critério BIOPSICOLÓGICO. Inimputável: isento de pena, recebe MEDIDA DE SEGURANÇA. Parágrafo único: semi-imputável (entendimento parcial) tem pena reduzida de 1/3 a 2/3. Não confundir com menoridade (art. 27).'},
+          {art:'Art. 27', hot:true, titulo:'Menores de 18 anos',
+           texto:'Os menores de 18 anos são penalmente inimputáveis, ficando sujeitos às normas estabelecidas na legislação especial.',
+           exp:'Inimputabilidade por MENORIDADE — critério puramente BIOLÓGICO (basta ser < 18 ao tempo do crime, art. 4º). Responde pelo ECA (medidas socioeducativas), não pelo CP. Também na CF, art. 228.'},
+          {art:'Art. 28', hot:true, titulo:'Emoção, paixão e embriaguez',
+           texto:'Não excluem a imputabilidade penal a emoção ou a paixão, nem a embriaguez voluntária ou culposa. É isento de pena quem, por embriaguez completa proveniente de caso fortuito ou força maior, era inteiramente incapaz de entender o caráter ilícito do fato.',
+           exp:'Emoção/paixão NÃO isentam (podem atenuar). Embriaguez VOLUNTÁRIA ou CULPOSA não exclui imputabilidade (teoria da actio libera in causa). Só a embriaguez ACIDENTAL (caso fortuito/força maior) e COMPLETA isenta.'},
+        ]
+      },
+      {
+        tema: '🔒 Parte Geral — Das Penas',
+        artigos: [
+          {art:'Art. 32', hot:false, titulo:'Espécies de pena',
+           texto:'As penas são: I - privativas de liberdade; II - restritivas de direitos; III - de multa.',
+           exp:'Três espécies. Privativas de liberdade (reclusão, detenção, prisão simples). Restritivas de direitos (prestação de serviços, limitação de fim de semana, etc — substitutivas). Multa.'},
+          {art:'Art. 33', hot:true, titulo:'Reclusão e detenção / regimes',
+           texto:'A reclusão deve ser cumprida em regime fechado, semiaberto ou aberto. A detenção, em regime semiaberto ou aberto, salvo necessidade de transferência. Regime inicial: fechado (pena > 8 anos), semiaberto (> 4 e ≤ 8), aberto (≤ 4).',
+           exp:'RECLUSÃO admite regime fechado; DETENÇÃO não inicia no fechado (só por regressão). Regime inicial pela pena e reincidência. Tema clássico de prova — decore as faixas de pena x regime.'},
+          {art:'Art. 44', hot:true, titulo:'Penas restritivas de direitos',
+           texto:'As penas restritivas de direitos são autônomas e substituem as privativas de liberdade quando: pena ≤ 4 anos e crime sem violência/grave ameaça (ou qualquer, se culposo); réu não reincidente em crime doloso; circunstâncias favoráveis.',
+           exp:'Substituição da prisão por restritivas. Requisitos OBJETIVOS (pena ≤ 4 anos, sem violência) e SUBJETIVOS (não reincidente específico, circunstâncias favoráveis). Muito cobrada a combinação dos requisitos.'},
+          {art:'Art. 59', hot:true, titulo:'Fixação da pena (circunstâncias judiciais)',
+           texto:'O juiz, atendendo à culpabilidade, antecedentes, conduta social, personalidade do agente, motivos, circunstâncias e consequências do crime, bem como ao comportamento da vítima, estabelecerá a pena.',
+           exp:'As 8 CIRCUNSTÂNCIAS JUDICIAIS da 1ª fase da dosimetria (sistema trifásico de Nelson Hungria). Mnemônico ajuda: culpabilidade, antecedentes, conduta social, personalidade, motivos, circunstâncias, consequências, comportamento da vítima.'},
+          {art:'Art. 61', hot:true, titulo:'Circunstâncias agravantes',
+           texto:'São circunstâncias que sempre agravam a pena, quando não constituem ou qualificam o crime: a reincidência; ter o agente cometido o crime por motivo fútil ou torpe; para facilitar outro crime; contra ascendente/descendente/cônjuge; com abuso de autoridade; etc.',
+           exp:'Agravantes da 2ª fase da dosimetria. A reincidência é a principal. São TAXATIVAS (rol fechado). Diferente das atenuantes (art. 65) que admitem as inominadas (art. 66).'},
+          {art:'Art. 63', hot:true, titulo:'Reincidência',
+           texto:'Verifica-se a reincidência quando o agente comete novo crime depois de transitar em julgado a sentença que, no País ou no estrangeiro, o tenha condenado por crime anterior.',
+           exp:'REINCIDÊNCIA: novo crime APÓS trânsito em julgado de condenação anterior. Caduca em 5 anos após o cumprimento/extinção da pena (art. 64). Agrava pena, dificulta regime aberto, impede certos benefícios.'},
+          {art:'Art. 65', hot:true, titulo:'Circunstâncias atenuantes',
+           texto:'São circunstâncias que sempre atenuam a pena: ser o agente menor de 21 (na data do fato) ou maior de 70 (na sentença); desconhecimento da lei; motivo de relevante valor social/moral; ter procurado evitar/minorar consequências ou reparado o dano; confissão espontânea; etc.',
+           exp:'Atenuantes da 2ª fase. A MENORIDADE relativa (< 21 na data do fato) é atenuante preponderante. A CONFISSÃO ESPONTÂNEA é muito cobrada (Súmula 545 STJ: usada na dosimetria atenua).'},
+          {art:'Art. 68', hot:true, titulo:'Cálculo da pena (sistema trifásico)',
+           texto:'A pena-base será fixada atendendo ao art. 59; em seguida serão consideradas as circunstâncias atenuantes e agravantes; por último, as causas de diminuição e de aumento.',
+           exp:'SISTEMA TRIFÁSICO (Nelson Hungria): 1ª fase = pena-base (art. 59); 2ª fase = agravantes/atenuantes; 3ª fase = causas de aumento/diminuição (frações). Só na 3ª fase pode ultrapassar os limites legais.'},
+        ]
+      },
+      {
+        tema: '💀 Crimes contra a Pessoa',
+        artigos: [
+          {art:'Art. 121', hot:true, titulo:'Homicídio',
+           texto:'Matar alguém. Pena: reclusão, de 6 a 20 anos. §1º Privilegiado (relevante valor social/moral ou violenta emoção): diminui 1/6 a 1/3. §2º Qualificado (mediante paga, motivo torpe/fútil, meio cruel, etc): reclusão de 12 a 30 anos.',
+           exp:'Crime mais importante da Parte Especial. SIMPLES (6-20). PRIVILEGIADO (diminuição). QUALIFICADO (12-30, hediondo). FEMINICÍDIO (§2º-A, hoje §6º com a Lei 14.994/24 que o tornou crime autônomo). Competência do Tribunal do Júri.'},
+          {art:'Art. 121-A', hot:true, titulo:'Feminicídio (Lei 14.994/24)',
+           texto:'Matar mulher por razões da condição do sexo feminino. Pena: reclusão, de 20 a 40 anos. Considera-se que há razões da condição do sexo feminino quando o crime envolve violência doméstica/familiar ou menosprezo/discriminação à condição de mulher.',
+           exp:'A Lei 14.994/2024 transformou o feminicídio em CRIME AUTÔNOMO (antes era qualificadora do homicídio) com pena de 20 a 40 anos — a mais alta do CP. Hediondo. Tema quentíssimo em provas recentes.'},
+          {art:'Art. 129', hot:true, titulo:'Lesão corporal',
+           texto:'Ofender a integridade corporal ou a saúde de outrem. Pena: detenção, de 3 meses a 1 ano. §1º lesão grave; §2º gravíssima; §3º seguida de morte; §9º violência doméstica.',
+           exp:'Lesão LEVE (caput), GRAVE (§1º: incapacidade > 30 dias, perigo de vida, etc), GRAVÍSSIMA (§2º: incapacidade permanente, deformidade, aborto, etc), SEGUIDA DE MORTE (§3º, preterdolosa), e VIOLÊNCIA DOMÉSTICA (§9º). Cai muito.'},
+          {art:'Art. 147', hot:true, titulo:'Ameaça',
+           texto:'Ameaçar alguém, por palavra, escrito ou gesto, ou qualquer outro meio simbólico, de causar-lhe mal injusto e grave. Pena: detenção, de 1 a 6 meses, ou multa.',
+           exp:'Crime contra a liberdade pessoal. O mal prometido deve ser INJUSTO, GRAVE e FUTURO (ou iminente). Ação penal pública condicionada à representação. Base pra entender stalking (147-A) e violência psicológica (147-B).'},
+          {art:'Art. 147-A', hot:true, titulo:'Perseguição (stalking)',
+           texto:'Perseguir alguém, reiteradamente e por qualquer meio, ameaçando-lhe a integridade física ou psicológica, restringindo-lhe a liberdade ou perturbando sua esfera de liberdade ou privacidade. Pena: reclusão de 6 meses a 2 anos e multa.',
+           exp:'Lei 14.132/21. Revogou a antiga contravenção de perturbação. Exige conduta REITERADA. Pena aumenta 1/2 se contra criança/adolescente/idoso/mulher por razão do sexo, ou por 2+ pessoas.'},
+          {art:'Art. 147-B', hot:true, titulo:'Violência psicológica contra a mulher',
+           texto:'Causar dano emocional à mulher que a prejudique e perturbe seu pleno desenvolvimento ou que vise degradar/controlar suas ações, mediante ameaça, constrangimento, humilhação, manipulação, isolamento, etc. Pena: reclusão de 6 meses a 2 anos e multa.',
+           exp:'Lei 14.188/21. Crime autônomo de violência psicológica. Conecta-se com a Lei Maria da Penha. Tema recente e muito cobrado em concursos policiais.'},
+        ]
+      },
+      {
+        tema: '💰 Crimes contra o Patrimônio',
+        artigos: [
+          {art:'Art. 155', hot:true, titulo:'Furto',
+           texto:'Subtrair, para si ou para outrem, coisa alheia móvel. Pena: reclusão, de 1 a 4 anos, e multa. §1º furto noturno (+1/3); §4º qualificado (rompimento de obstáculo, abuso de confiança, escalada, concurso de pessoas): reclusão de 2 a 8 anos.',
+           exp:'Sem violência/grave ameaça (diferença essencial pro roubo). FURTO NOTURNO aumenta 1/3. Furto PRIVILEGIADO (§2º, réu primário + coisa de pequeno valor). QUALIFICADO (§4º). Furto de energia elétrica = §3º.'},
+          {art:'Art. 157', hot:true, titulo:'Roubo',
+           texto:'Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de reduzi-la à impossibilidade de resistência. Pena: reclusão, de 4 a 10 anos, e multa.',
+           exp:'Furto + VIOLÊNCIA ou GRAVE AMEAÇA. §2º causas de aumento (concurso de pessoas, arma branca, restrição de liberdade da vítima). §2º-A: aumento de 2/3 se arma de fogo. §3º: lesão grave ou LATROCÍNIO (roubo + morte: 20-30 anos, hediondo).'},
+          {art:'Art. 158', hot:true, titulo:'Extorsão',
+           texto:'Constranger alguém, mediante violência ou grave ameaça, e com o intuito de obter indevida vantagem econômica, a fazer, tolerar que se faça ou deixar de fazer alguma coisa. Pena: reclusão, de 4 a 10 anos, e multa.',
+           exp:'Diferença pro roubo: na extorsão a COLABORAÇÃO da vítima é imprescindível (ela faz/deixa de fazer algo). Súmula 96 STJ: consuma-se independentemente da obtenção da vantagem. §3º "sequestro relâmpago".'},
+          {art:'Art. 159', hot:true, titulo:'Extorsão mediante sequestro',
+           texto:'Sequestrar pessoa com o fim de obter, para si ou para outrem, qualquer vantagem, como condição ou preço do resgate. Pena: reclusão, de 8 a 15 anos.',
+           exp:'Crime HEDIONDO. Aumenta se vítima < 18 ou > 60, ou se o sequestro dura mais de 24h (§1º: 12-20 anos). Resulta lesão grave: 16-24. Resulta morte: 24-30. Delação premiada do §4º (concurso desfeito por um dos coautores).'},
+          {art:'Art. 168', hot:true, titulo:'Apropriação indébita',
+           texto:'Apropriar-se de coisa alheia móvel, de que tem a posse ou a detenção. Pena: reclusão, de 1 a 4 anos, e multa.',
+           exp:'O agente JÁ TEM a posse lícita da coisa (ex: emprestada) e depois se apropria. Diferença pro furto: no furto ele SUBTRAI (não tinha a posse). 168-A: apropriação indébita PREVIDENCIÁRIA.'},
+          {art:'Art. 171', hot:true, titulo:'Estelionato',
+           texto:'Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento. Pena: reclusão, de 1 a 5 anos, e multa.',
+           exp:'Crime de FRAUDE (engano da vítima). §2º-A: estelionato com PIX/transferência eletrônica. Após Lei 13.964/19, ação penal pública CONDICIONADA à representação (regra). Diferença pro furto mediante fraude: aqui a vítima ENTREGA o bem iludida.'},
+          {art:'Art. 180', hot:true, titulo:'Receptação',
+           texto:'Adquirir, receber, transportar, conduzir ou ocultar, em proveito próprio ou alheio, coisa que sabe ser produto de crime. Pena: reclusão, de 1 a 4 anos, e multa.',
+           exp:'Receptação DOLOSA (sabe que é produto de crime) x CULPOSA (§3º: deve presumir pela natureza/preço). §1º receptação qualificada (no exercício de atividade comercial). Crime acessório (depende de crime anterior).'},
+        ]
+      },
+      {
+        tema: '🔞 Crimes contra a Dignidade Sexual',
+        artigos: [
+          {art:'Art. 213', hot:true, titulo:'Estupro',
+           texto:'Constranger alguém, mediante violência ou grave ameaça, a ter conjunção carnal ou a praticar ou permitir que com ele se pratique outro ato libidinoso. Pena: reclusão, de 6 a 10 anos.',
+           exp:'Crime HEDIONDO. Após Lei 12.015/09, é crime único (uniu estupro + atentado violento ao pudor). Vítima pode ser homem ou mulher. Aumenta se resulta lesão grave (8-12) ou morte (12-30).'},
+          {art:'Art. 217-A', hot:true, titulo:'Estupro de vulnerável',
+           texto:'Ter conjunção carnal ou praticar outro ato libidinoso com menor de 14 anos. Pena: reclusão, de 8 a 15 anos.',
+           exp:'HEDIONDO. Vulnerabilidade ABSOLUTA do menor de 14 (Súmula 593 STJ: irrelevante consentimento, experiência sexual ou relacionamento). Também protege quem não pode oferecer resistência (enfermidade, deficiência).'},
+        ]
+      },
+      {
+        tema: '🏛️ Crimes contra a Administração Pública',
+        artigos: [
+          {art:'Art. 312', hot:true, titulo:'Peculato',
+           texto:'Apropriar-se o funcionário público de dinheiro, valor ou qualquer bem móvel, público ou particular, de que tem a posse em razão do cargo, ou desviá-lo, em proveito próprio ou alheio. Pena: reclusão, de 2 a 12 anos, e multa.',
+           exp:'Peculato-APROPRIAÇÃO e peculato-DESVIO (caput). §1º peculato-FURTO (não tem a posse, mas subtrai valendo-se do cargo). §2º peculato CULPOSO. §3º: reparação do dano antes da sentença extingue punibilidade (culposo) ou reduz (doloso).'},
+          {art:'Art. 316', hot:true, titulo:'Concussão',
+           texto:'Exigir, para si ou para outrem, direta ou indiretamente, ainda que fora da função ou antes de assumi-la, mas em razão dela, vantagem indevida. Pena: reclusão, de 2 a 12 anos, e multa.',
+           exp:'O funcionário EXIGE (impõe) a vantagem. Diferença pra corrupção passiva (que SOLICITA/RECEBE). §1º excesso de exação (cobrança indevida de tributo). Verbo-chave: EXIGIR.'},
+          {art:'Art. 317', hot:true, titulo:'Corrupção passiva',
+           texto:'Solicitar ou receber, para si ou para outrem, direta ou indiretamente, ainda que fora da função ou antes de assumi-la, mas em razão dela, vantagem indevida, ou aceitar promessa de tal vantagem. Pena: reclusão, de 2 a 12 anos, e multa.',
+           exp:'Praticada pelo FUNCIONÁRIO PÚBLICO (solicita/recebe/aceita). É o par da corrupção ATIVA (art. 333, praticada pelo particular). Bilateralidade não é exigida — pode haver passiva sem ativa.'},
+          {art:'Art. 319', hot:true, titulo:'Prevaricação',
+           texto:'Retardar ou deixar de praticar, indevidamente, ato de ofício, ou praticá-lo contra disposição expressa de lei, para satisfazer interesse ou sentimento pessoal. Pena: detenção, de 3 meses a 1 ano, e multa.',
+           exp:'O funcionário age (ou se omite) por INTERESSE OU SENTIMENTO PESSOAL. Elemento subjetivo é essencial. 319-A: prevaricação do diretor de presídio que deixa entrar celular.'},
+          {art:'Art. 333', hot:true, titulo:'Corrupção ativa',
+           texto:'Oferecer ou prometer vantagem indevida a funcionário público, para determiná-lo a praticar, omitir ou retardar ato de ofício. Pena: reclusão, de 2 a 12 anos, e multa.',
+           exp:'Praticada pelo PARTICULAR (oferece/promete a funcionário). Par da corrupção passiva (art. 317). Crime formal: consuma com a oferta/promessa, independe de o funcionário aceitar.'},
+        ]
+      },
+    ]
+  },
+  // Constitucional fica VAZIO por enquanto (será adicionado no futuro)
+  const: {
+    titulo: 'Constituição Federal de 1988',
+    grupos: []
+  }
+};
+
+
+let leiSecaCurrentSubject = null;
+
+// Abre a Lei Seca (tela inicial com seletor)
 function goFlashcards() {
+  snd.click();
+  showScreen('screen-flashcards');
+  backToLeiSecaHome();
+}
+window.goFlashcards = goFlashcards;
+
+// Volta pra home da Lei Seca (seletor de matérias)
+function backToLeiSecaHome() {
+  const home = $('leiseca-home');
+  const reader = $('leiseca-reader');
+  const flash = $('flashcards-mode');
+  if (home) home.classList.remove('hidden');
+  if (reader) reader.classList.add('hidden');
+  if (flash) flash.classList.add('hidden');
+}
+window.backToLeiSecaHome = backToLeiSecaHome;
+
+// Abre o modo leitura de uma matéria
+function openLeiSeca(subject) {
+  snd.click();
+  leiSecaCurrentSubject = subject;
+  const data = CP_LEISECA[subject];
+  if (!data) return;
+  $('leiseca-home').classList.add('hidden');
+  $('flashcards-mode').classList.add('hidden');
+  $('leiseca-reader').classList.remove('hidden');
+  $('leiseca-reader-title').textContent = data.titulo;
+  const search = $('leiseca-search');
+  if (search) search.value = '';
+  renderLeiSeca(data);
+}
+window.openLeiSeca = openLeiSeca;
+
+// Renderiza os grupos e artigos (acordeon)
+function renderLeiSeca(data, filter) {
+  const cont = $('leiseca-content');
+  if (!cont) return;
+  const q = (filter || '').toLowerCase().trim();
+
+  if (!data.grupos || data.grupos.length === 0) {
+    cont.innerHTML = `<div class="card pixel-corners" style="text-align:center;padding:32px;color:rgba(255,255,255,.6);">
+      <div style="font-size:32px;">📭</div>
+      <div style="margin-top:12px;">Conteúdo em breve!</div>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  data.grupos.forEach((grupo, gi) => {
+    // Filtrar artigos do grupo
+    const arts = grupo.artigos.filter(a => {
+      if (!q) return true;
+      return (a.art + ' ' + a.titulo + ' ' + a.texto).toLowerCase().includes(q);
+    });
+    if (arts.length === 0) return;
+
+    // Cabeçalho do grupo (sempre aberto se há busca)
+    const open = q ? true : (gi === 0);
+    html += `<div class="ls-group">
+      <button class="ls-group-head" onclick="toggleLsGroup(${gi})">
+        <span>${esc(grupo.tema)}</span>
+        <span class="ls-group-count">${arts.length}</span>
+        <span class="ls-group-arrow" id="ls-arrow-${gi}">${open ? '▾' : '▸'}</span>
+      </button>
+      <div class="ls-group-body" id="ls-body-${gi}" style="display:${open ? 'block' : 'none'};">`;
+
+    arts.forEach((a, ai) => {
+      const cardId = `ls-${gi}-${ai}`;
+      html += `<div class="ls-article ${a.hot ? 'ls-hot' : ''}">
+        <div class="ls-art-head">
+          <span class="ls-art-num">${esc(a.art)}</span>
+          ${a.hot ? '<span class="ls-fire" title="Muito cobrado em concurso">🔥</span>' : ''}
+          <span class="ls-art-title">${esc(a.titulo)}</span>
+        </div>
+        <div class="ls-art-text">${esc(a.texto)}</div>
+        ${a.exp ? `<button class="ls-exp-btn" onclick="toggleLsExp('${cardId}')">💡 ver explicação</button>
+        <div class="ls-exp" id="exp-${cardId}" style="display:none;">${esc(a.exp)}</div>` : ''}
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  if (!html) {
+    html = `<div style="text-align:center;padding:24px;color:rgba(255,255,255,.5);">Nenhum artigo encontrado para "${esc(q)}"</div>`;
+  }
+  cont.innerHTML = html;
+}
+
+function toggleLsGroup(gi) {
+  const body = $(`ls-body-${gi}`);
+  const arrow = $(`ls-arrow-${gi}`);
+  if (!body) return;
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  if (arrow) arrow.textContent = open ? '▾' : '▸';
+}
+window.toggleLsGroup = toggleLsGroup;
+
+function toggleLsExp(cardId) {
+  const exp = $(`exp-${cardId}`);
+  if (!exp) return;
+  exp.style.display = exp.style.display === 'none' ? 'block' : 'none';
+}
+window.toggleLsExp = toggleLsExp;
+
+function filterLeiSeca() {
+  const q = $('leiseca-search')?.value || '';
+  const data = CP_LEISECA[leiSecaCurrentSubject];
+  if (data) renderLeiSeca(data, q);
+}
+window.filterLeiSeca = filterLeiSeca;
+
+// Modo flashcards (revisão ativa) — só quando o usuário pede
+function goFlashcardsMode() {
+  snd.click();
+  if (!progress.flashcardsSeen) progress.flashcardsSeen = {};
+  const todos = [...FLASHCARDS];
+  todos.sort((a, b) => {
+    const sa = progress.flashcardsSeen[a.id];
+    const sb = progress.flashcardsSeen[b.id];
+    const wa = !sa ? 0 : sa.level === 'hard' ? 1 : sa.level === 'medium' ? 2 : 3;
+    const wb = !sb ? 0 : sb.level === 'hard' ? 1 : sb.level === 'medium' ? 2 : 3;
+    return wa - wb;
+  });
+  flashState = { deck: todos, idx: 0, flipped: false, sessionCount: 0 };
+  $('leiseca-home').classList.add('hidden');
+  $('leiseca-reader').classList.add('hidden');
+  $('flashcards-mode').classList.remove('hidden');
+  renderFlashcard();
+}
+window.goFlashcardsMode = goFlashcardsMode;
+
+
+function __old_goFlashcards() {
   snd.click();
   // Inicializar estado: embaralhar todos os flashcards, priorizar os que a aluna marcou como "hard"
   if (!progress.flashcardsSeen) progress.flashcardsSeen = {};
@@ -8429,11 +9383,13 @@ function renderTodayPanel() {
 
   if (tasks.length === 0) {
     panel.classList.add('hidden');
+    const hubPanel = $('hub-today-panel');
+    if (hubPanel) hubPanel.classList.add('hidden');
     return;
   }
   panel.classList.remove('hidden');
 
-  tasksDiv.innerHTML = tasks.slice(0, 4).map((t, i) => `
+  const tasksHTML = tasks.slice(0, 4).map((t, i) => `
     <button onclick="window.__todayActions[${i}]()" style="display:flex;align-items:center;gap:12px;padding:12px;background:${t.bg};border:1px solid ${t.color};border-left:4px solid ${t.color};cursor:pointer;text-align:left;width:100%;color:inherit;font:inherit;transition:transform .15s;" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform='translateX(0)'">
       <div style="font-size:24px;">${t.icon}</div>
       <div style="flex:1;">
@@ -8444,8 +9400,49 @@ function renderTodayPanel() {
     </button>
   `).join('');
 
+  tasksDiv.innerHTML = tasksHTML;
+
+  // Também renderiza no painel do HUB (dashboard) — versão COMPACTA
+  const hubPanel = $('hub-today-panel');
+  const hubTasks = $('hub-today-tasks');
+  if (hubPanel && hubTasks) {
+    hubPanel.classList.remove('hidden');
+    const shown = tasks.slice(0, 4);
+    const renderTask = (t, i) => `
+      <button onclick="window.__todayActions[${i}]()" style="display:flex;align-items:center;gap:10px;padding:10px;background:${t.bg};border:1px solid ${t.color};border-left:4px solid ${t.color};border-radius:8px;cursor:pointer;text-align:left;width:100%;color:inherit;font:inherit;transition:transform .15s;" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform='translateX(0)'">
+        <div style="font-size:20px;">${t.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;color:${t.color};font-size:13px;">${esc(t.title)}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:1px;">${esc(t.sub)}</div>
+        </div>
+        <div style="color:${t.color};font-size:16px;">▸</div>
+      </button>`;
+    // Primeira tarefa sempre visível
+    let html = renderTask(shown[0], 0);
+    // Resto fica num bloco recolhível
+    if (shown.length > 1) {
+      html += `<div id="hub-today-extra" style="display:none;flex-direction:column;gap:8px;margin-top:8px;">`;
+      html += shown.slice(1).map((t, idx) => renderTask(t, idx + 1)).join('');
+      html += `</div>`;
+      html += `<button id="hub-today-toggle" onclick="toggleHubToday()" style="margin-top:8px;width:100%;padding:6px;background:transparent;border:1px dashed var(--glass-border);border-radius:8px;color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;">▾ ver mais ${shown.length - 1} tarefa${shown.length - 1 > 1 ? 's' : ''}</button>`;
+    }
+    hubTasks.innerHTML = html;
+  }
+
   window.__todayActions = tasks.map(t => t.action);
 }
+
+// Expande/recolhe as tarefas extras do painel HOJE no dashboard
+function toggleHubToday() {
+  const extra = document.getElementById('hub-today-extra');
+  const btn = document.getElementById('hub-today-toggle');
+  if (!extra || !btn) return;
+  const isHidden = extra.style.display === 'none';
+  extra.style.display = isHidden ? 'flex' : 'none';
+  const count = extra.children.length;
+  btn.innerHTML = isHidden ? '▴ ver menos' : `▾ ver mais ${count} tarefa${count > 1 ? 's' : ''}`;
+}
+window.toggleHubToday = toggleHubToday;
 
 /* ============================================================
    FEATURE 4 — HEATMAP POR BANCA
@@ -9036,7 +10033,7 @@ function maybeTriggerMission() {
   // 20% de chance ao abrir o mapa, e nunca durante outra missão
   if (activeMission) return;
   // Só dispara se passaram >= 30 min da última missão (evita spam)
-  const lastEnd = parseInt(localStorage.getItem('jq:last_mission_end') || '0');
+  const lastEnd = parseInt(localStorage.getItem('jq:last_mission_end') || '0', 10);
   if (Date.now() - lastEnd < 30 * 60 * 1000) return;
   if (Math.random() > 0.20) return;
 
@@ -9769,16 +10766,16 @@ function fallbackCopy(text, onSuccess) {
 function goDuelChallenge() {
   snd.click();
   opponentFound = null;
-  $('inp-opponent-code').value = '';
-  $('opponent-preview').classList.add('hidden');
-  $('btn-confirm-duel').classList.add('hidden');
+  if ($('inp-opponent-code')) $('inp-opponent-code').value = '';
+  if ($('opponent-preview')) $('opponent-preview').classList.add('hidden');
+  if ($('btn-confirm-duel')) $('btn-confirm-duel').classList.add('hidden');
   $('btn-search-opp').classList.remove('hidden');
   $('err-duel').style.display = 'none';
   showScreen('screen-duel-challenge');
 }
 
 async function searchOpponent() {
-  const code = $('inp-opponent-code').value.trim().toUpperCase();
+  const code = ($('inp-opponent-code')?.value || '').trim().toUpperCase();
   if (!/^M-\d{4}$/.test(code)) {
     $('err-duel').textContent = '⚠️ ID inválido. Formato esperado: M-0042';
     $('err-duel').style.display = 'block';
