@@ -19,6 +19,9 @@
 <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
 <meta name="HandheldFriendly" content="true">
 <meta name="theme-color" content="#0a0410">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚔️%3C/text%3E%3C/svg%3E">
 <title>JURIS QUEST — A Jornada da Aprovação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11676,6 +11679,49 @@ window.showRouletteModal = showRouletteModal;
 window.dismissMission = dismissMission;
 window.goAdmin = goAdmin;
 window.isAdmin = isAdmin;
+
+// 📱 PWA — registra o service worker (permite instalar e abrir offline)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('[PWA] Service worker registrado:', reg.scope))
+      .catch(err => console.log('[PWA] Falha ao registrar SW:', err));
+  });
+}
+
+// 📲 Banner "instalar app" — aparece quando o navegador permite instalar
+let __deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  __deferredPrompt = e;
+  // Mostra um botão discreto pra instalar (só se ainda não instalou)
+  try { showInstallButton(); } catch(err) {}
+});
+
+function showInstallButton() {
+  if (document.getElementById('pwa-install-btn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'pwa-install-btn';
+  btn.innerHTML = '📲 Instalar app';
+  btn.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:9999;padding:10px 16px;background:linear-gradient(90deg,#ff2e63,#a855f7);color:#fff;border:none;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 20px rgba(255,46,99,.4);font-family:Inter,sans-serif;';
+  btn.onclick = async () => {
+    if (!__deferredPrompt) return;
+    __deferredPrompt.prompt();
+    const { outcome } = await __deferredPrompt.userChoice;
+    if (outcome === 'accepted') btn.remove();
+    __deferredPrompt = null;
+  };
+  document.body.appendChild(btn);
+  // Some sozinho após 12s pra não atrapalhar
+  setTimeout(() => { if (btn.parentNode) btn.style.opacity = '0.5'; }, 12000);
+}
+
+// Esconde o botão se o app já foi instalado
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('pwa-install-btn');
+  if (btn) btn.remove();
+  console.log('[PWA] App instalado!');
+});
 </script>
 
 </body>
