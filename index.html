@@ -3522,6 +3522,106 @@ body::before, body::after,
 }
 body[data-theme="light"] .ls-art-text,
 body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
+
+/* 📅 CRONOGRAMA */
+.hub-card-cronograma {
+  background: linear-gradient(160deg, rgba(8,217,214,.16), rgba(59,130,246,.1), rgba(16,185,129,.06)) !important;
+  border-color: rgba(8,217,214,.35) !important;
+}
+.hub-card-cronograma .hub-card-cta {
+  background: linear-gradient(90deg, #08d9d6, #3b82f6) !important;
+  color: #042f2e !important;
+}
+.cron-week { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 720px) { .cron-week { grid-template-columns: repeat(2, 1fr); } }
+.cron-day {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 12px; padding: 10px; transition: border-color .15s, background .15s;
+}
+.cron-day.cron-dayover { border-color: var(--cyan); background: rgba(8,217,214,.08); }
+.cron-day-head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
+  color: var(--cyan); padding-bottom: 8px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.cron-day-hours { color: var(--amber); font-family: 'Orbitron', sans-serif; font-size: 11px; }
+.cron-day-body { display: flex; flex-direction: column; gap: 6px; min-height: 30px; }
+.cron-empty { font-size: 11px; color: var(--text-muted); text-align: center; padding: 8px; opacity: .5; }
+.cron-block {
+  background: rgba(255,255,255,.04); border-left: 4px solid #94a3b8;
+  border-radius: 8px; padding: 8px 10px; cursor: grab;
+  transition: transform .12s, box-shadow .12s, opacity .12s;
+}
+.cron-block:hover { transform: translateX(2px); box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+.cron-block:active { cursor: grabbing; }
+.cron-block.cron-dragging { opacity: .4; }
+.cron-block.cron-done { opacity: .55; }
+.cron-block.cron-done .cron-block-materia { text-decoration: line-through; }
+.cron-block-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.cron-block-materia { font-weight: 700; font-size: 12px; }
+.cron-check { background: none; border: none; cursor: pointer; font-size: 14px; padding: 0; line-height: 1; }
+.cron-block-assunto { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+.cron-block-meta { display: flex; gap: 10px; margin-top: 5px; font-size: 10px; color: var(--text-muted); }
+.cron-add-day {
+  width: 100%; margin-top: 8px; padding: 6px; font-size: 11px;
+  background: transparent; border: 1px dashed var(--glass-border);
+  border-radius: 8px; color: var(--text-muted); cursor: pointer; font-weight: 600;
+}
+.cron-add-day:hover { border-color: var(--cyan); color: var(--cyan); }
+.cron-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); margin: 10px 0 4px; }
+.cron-input {
+  width: 100%; padding: 9px 12px; background: rgba(255,255,255,.05);
+  border: 1px solid var(--glass-border); border-radius: 8px;
+  color: var(--text-primary); font-size: 13px; font-family: inherit;
+}
+
+/* 📚 EDITAL */
+.hub-card-edital {
+  background: linear-gradient(160deg, rgba(245,158,11,.16), rgba(168,85,247,.1), rgba(255,46,99,.06)) !important;
+  border-color: rgba(245,158,11,.35) !important;
+}
+.hub-card-edital .hub-card-cta {
+  background: linear-gradient(90deg, #f59e0b, #a855f7) !important;
+  color: #fff !important;
+}
+.edital-disc { border: 1px solid var(--glass-border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+.edital-disc-head {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 12px 14px; background: rgba(255,255,255,.04); border: none;
+  cursor: pointer; color: var(--text-primary); text-align: left;
+}
+.edital-disc-head:hover { background: rgba(255,255,255,.07); }
+.edital-disc-icon { font-size: 18px; }
+.edital-disc-nome { flex: 1; font-weight: 700; font-size: 13px; }
+.edital-disc-pct { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 13px; }
+.edital-arrow { font-size: 12px; color: var(--text-secondary); width: 14px; text-align: center; }
+.edital-disc-bar { height: 3px; background: rgba(255,255,255,.08); }
+.edital-disc-bar > div { height: 100%; transition: width .4s; }
+.edital-disc-body { padding: 8px; }
+.edital-topico { margin-bottom: 4px; }
+.edital-topico-head {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 9px 10px; background: rgba(255,255,255,.02); border: none;
+  border-radius: 8px; cursor: pointer; color: var(--text-primary); text-align: left;
+}
+.edital-topico-head:hover { background: rgba(255,255,255,.05); }
+.edital-topico-check { font-size: 13px; }
+.edital-topico-nome { flex: 1; font-size: 12px; font-weight: 600; }
+.edital-topico-count {
+  font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--text-muted);
+  background: rgba(255,255,255,.06); padding: 1px 7px; border-radius: 999px;
+}
+.edital-subs { padding: 4px 0 4px 16px; }
+.edital-sub {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 7px 8px; background: none; border: none; cursor: pointer;
+  color: var(--text-secondary); text-align: left; border-radius: 6px;
+}
+.edital-sub:hover { background: rgba(255,46,99,.06); color: var(--text-primary); }
+.edital-sub-check { font-size: 13px; flex-shrink: 0; }
+.edital-sub-text { font-size: 12px; line-height: 1.4; }
+.edital-sub-done .edital-sub-text { text-decoration: line-through; opacity: .6; }
 </style>
 </head>
 <body>
@@ -3911,7 +4011,135 @@ body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
         <div class="hub-card-sub">Veja quem está dominando • compare seu progresso</div>
         <div class="hub-card-cta">VER RANKING ▶</div>
       </button>
+      <button class="hub-card hub-card-cronograma" onclick="goCronograma()">
+        <div class="hub-card-icon">📅</div>
+        <div class="hub-card-title">CRONOGRAMA</div>
+        <div class="hub-card-sub">Monte sua semana • arraste matérias • controle horas e metas</div>
+        <div class="hub-card-cta">PLANEJAR ▶</div>
+      </button>
+      <button class="hub-card hub-card-edital" onclick="goEdital()">
+        <div class="hub-card-icon">📚</div>
+        <div class="hub-card-title">EDITAL</div>
+        <div class="hub-card-sub">Todos os tópicos e subtópicos • marque o que já estudou</div>
+        <div class="hub-card-cta">VER EDITAL ▶</div>
+      </button>
     </div>
+  </div>
+</div>
+
+<!-- 📅 CRONOGRAMA DE ESTUDOS -->
+<div id="screen-cronograma" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="goHub()">← início</button>
+    <div style="text-align:center;margin:10px 0 14px;">
+      <div class="header-title" style="font-size:22px;">📅 MEU CRONOGRAMA</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Monte sua semana de estudos · arraste os blocos entre os dias</div>
+    </div>
+
+    <!-- Resumo da semana -->
+    <div id="cron-summary" class="card pixel-corners" style="margin-bottom:14px;padding:12px;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;">
+        <div>
+          <div class="font-orbit" id="cron-total-horas" style="font-size:18px;font-weight:900;color:var(--cyan);">0h</div>
+          <div style="font-size:9px;color:var(--text-muted);">HORAS/SEMANA</div>
+        </div>
+        <div>
+          <div class="font-orbit" id="cron-total-blocos" style="font-size:18px;font-weight:900;color:var(--amber);">0</div>
+          <div style="font-size:9px;color:var(--text-muted);">BLOCOS</div>
+        </div>
+        <div>
+          <div class="font-orbit" id="cron-pct-feito" style="font-size:18px;font-weight:900;color:var(--emerald);">0%</div>
+          <div style="font-size:9px;color:var(--text-muted);">CONCLUÍDO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ações -->
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <button class="btn full" onclick="openCronBlockModal()" style="flex:1;min-width:140px;">➕ Adicionar bloco</button>
+      <button class="btn ghost" onclick="cronTemplateMenu()" title="Modelos prontos">✨ Modelos</button>
+      <button class="btn ghost" onclick="cronClearWeek()" title="Limpar semana">🗑️</button>
+    </div>
+
+    <!-- Grade semanal -->
+    <div id="cron-week" class="cron-week"></div>
+
+    <div style="margin-top:16px;padding:12px;background:rgba(8,217,214,.06);border:1px solid rgba(8,217,214,.2);border-radius:10px;font-size:11px;color:var(--text-secondary);line-height:1.5;">
+      💡 <strong>Dica:</strong> toque e segure um bloco pra arrastar entre os dias. Toque no bloco pra editar ou marcar como concluído.
+    </div>
+  </div>
+</div>
+
+<!-- Modal de adicionar/editar bloco -->
+<div id="cron-block-modal" class="modal-overlay hidden" style="z-index:300;">
+  <div class="modal-box" style="max-width:380px;">
+    <div class="font-arcade" id="cron-modal-title" style="color:var(--rose);font-size:13px;margin-bottom:14px;">NOVO BLOCO</div>
+    <label class="cron-label">Matéria</label>
+    <select id="cron-f-materia" class="cron-input" onchange="cronUpdateTopicos()">
+      <option value="">— selecione —</option>
+    </select>
+    <label class="cron-label">Tópico (opcional)</label>
+    <select id="cron-f-topico" class="cron-input" onchange="cronUpdateSubtopicos()">
+      <option value="">— geral —</option>
+    </select>
+    <label class="cron-label">Subtópico (opcional)</label>
+    <select id="cron-f-subtopico" class="cron-input">
+      <option value="">— todos —</option>
+    </select>
+    <label class="cron-label">Assunto livre (opcional)</label>
+    <input type="text" id="cron-f-assunto" class="cron-input" placeholder="Ou escreva um assunto personalizado...">
+    <div style="display:flex;gap:10px;">
+      <div style="flex:1;">
+        <label class="cron-label">Horas</label>
+        <input type="number" id="cron-f-horas" class="cron-input" value="1" min="0.5" max="12" step="0.5">
+      </div>
+      <div style="flex:1;">
+        <label class="cron-label">Meta de questões</label>
+        <input type="number" id="cron-f-meta" class="cron-input" value="0" min="0" max="500" step="5">
+      </div>
+    </div>
+    <label class="cron-label">Dia da semana</label>
+    <select id="cron-f-dia" class="cron-input">
+      <option value="0">Segunda</option>
+      <option value="1">Terça</option>
+      <option value="2">Quarta</option>
+      <option value="3">Quinta</option>
+      <option value="4">Sexta</option>
+      <option value="5">Sábado</option>
+      <option value="6">Domingo</option>
+    </select>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn full" onclick="saveCronBlock()" style="flex:1;">💾 Salvar</button>
+      <button class="btn ghost" id="cron-delete-btn" onclick="deleteCronBlock()" style="display:none;">🗑️ Excluir</button>
+      <button class="btn ghost" onclick="closeCronModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- 📚 EDITAL — árvore de tópicos com progresso -->
+<div id="screen-edital" class="screen">
+  <div class="container-narrow">
+    <button class="back-btn" onclick="goHub()">← início</button>
+    <div style="text-align:center;margin:10px 0 14px;">
+      <div class="header-title" style="font-size:22px;">📚 EDITAL VERTICALIZADO</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Marque cada subtópico conforme estuda · acompanhe seu progresso</div>
+    </div>
+
+    <!-- Progresso geral -->
+    <div class="card pixel-corners" style="margin-bottom:14px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:12px;font-weight:700;color:var(--text-secondary);">📊 PROGRESSO GERAL</span>
+        <span class="font-orbit" id="edital-pct-geral" style="font-size:18px;font-weight:900;color:var(--emerald);">0%</span>
+      </div>
+      <div class="xp-bar"><div id="edital-bar-geral" class="xp-fill" style="width:0%;background:linear-gradient(90deg,var(--emerald),var(--cyan));"></div></div>
+      <div id="edital-resumo" style="font-size:11px;color:var(--text-muted);margin-top:6px;text-align:center;">0 de 0 subtópicos concluídos</div>
+    </div>
+
+    <!-- Busca -->
+    <input type="text" id="edital-search" placeholder="🔍 Buscar tópico ou assunto..." oninput="renderEdital()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);border-radius:10px;color:var(--text-primary);font-size:13px;margin-bottom:14px;">
+
+    <!-- Árvore -->
+    <div id="edital-tree"></div>
   </div>
 </div>
 
@@ -11611,6 +11839,1017 @@ window.retryPhase = retryPhase;
 window.triggerAmbush = triggerAmbush;
 window.toggleSound = toggleSound;
 window.logout = logout;
+
+// ============================================================
+// 📅 CRONOGRAMA DE ESTUDOS — grade semanal com drag-and-drop
+// ============================================================
+
+const CRON_DIAS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+const CRON_DIAS_CURTO = ['SEG','TER','QUA','QUI','SEX','SÁB','DOM'];
+const CRON_MATERIA_COR = {
+  'Constitucional':'#ff2e63','Administrativo':'#08d9d6','Penal':'#a855f7',
+  'Informática':'#10b981','Português':'#f59e0b','Raciocínio Lógico':'#3b82f6',
+  'Direitos Humanos':'#ec4899','Legislação Especial':'#8b5cf6','Atualidades':'#14b8a6',
+  'Redação':'#f97316','Revisão':'#facc15','Simulado':'#ef4444','Outro':'#94a3b8'
+};
+const CRON_MATERIA_ICON = {
+  'Constitucional':'⚖️','Administrativo':'🏛️','Penal':'💀','Informática':'💻',
+  'Português':'📝','Raciocínio Lógico':'🧮','Direitos Humanos':'🕊️',
+  'Legislação Especial':'📜','Atualidades':'🌍','Redação':'✍️','Revisão':'🔁',
+  'Simulado':'🎯','Outro':'📌'
+};
+
+// Estrutura: { blocks: [ {id, materia, assunto, horas, meta, dia(0-6), done} ] }
+let cronData = { blocks: [] };
+let cronEditingId = null;
+let cronDragId = null;
+
+const CRON_LS_KEY = 'jq:cronograma';
+
+// Carrega do localStorage (rápido) e tenta sincronizar com a nuvem
+async function loadCronograma() {
+  // 1) Local primeiro
+  try {
+    const raw = localStorage.getItem(CRON_LS_KEY);
+    if (raw) cronData = JSON.parse(raw);
+  } catch(e) { cronData = { blocks: [] }; }
+  if (!cronData || !Array.isArray(cronData.blocks)) cronData = { blocks: [] };
+
+  // 2) Nuvem (se logada) — sobrescreve se mais recente
+  if (sb && currentSession) {
+    try {
+      const { data, error } = await sb.from('progress')
+        .select('cronograma').eq('user_id', currentSession.user.id).maybeSingle();
+      if (!error && data && data.cronograma && Array.isArray(data.cronograma.blocks)) {
+        // Usa a nuvem como fonte de verdade ao abrir
+        cronData = data.cronograma;
+        localStorage.setItem(CRON_LS_KEY, JSON.stringify(cronData));
+      }
+    } catch(e) { /* offline: segue com o local */ }
+  }
+}
+
+// Salva local + nuvem
+function saveCronograma() {
+  try { localStorage.setItem(CRON_LS_KEY, JSON.stringify(cronData)); } catch(e) {}
+  // Nuvem em background (não trava a UI)
+  if (sb && currentSession) {
+    sb.from('progress').update({ cronograma: cronData })
+      .eq('user_id', currentSession.user.id)
+      .then(()=>{}).catch(()=>{});
+  }
+}
+
+
+// ============================================================
+// 📚 EDITAL — navegação por tópicos com progresso
+// ============================================================
+
+const EDITAL_TREE = {
+  constitucional: {
+    nome: 'Direito Constitucional',
+    icon: '⚖️',
+    cor: '#ff2e63',
+    topicos: [
+      { t: 'Teoria da Constituição', subs: [
+        'Conceito, objeto e elementos da Constituição',
+        'Classificação das constituições',
+        'Poder constituinte (originário, derivado, decorrente)',
+        'Supremacia da Constituição e hierarquia das normas',
+        'Normas constitucionais: eficácia e aplicabilidade'
+      ]},
+      { t: 'Princípios Fundamentais', subs: [
+        'Fundamentos da República (art. 1º)',
+        'Separação dos Poderes (art. 2º)',
+        'Objetivos fundamentais (art. 3º)',
+        'Princípios das relações internacionais (art. 4º)'
+      ]},
+      { t: 'Direitos e Garantias Fundamentais', subs: [
+        'Direitos e deveres individuais e coletivos (art. 5º)',
+        'Remédios constitucionais (HC, MS, MI, HD, ação popular)',
+        'Direitos sociais (art. 6º a 11)',
+        'Nacionalidade (art. 12)',
+        'Direitos políticos (art. 14 a 16)',
+        'Partidos políticos (art. 17)'
+      ]},
+      { t: 'Organização do Estado', subs: [
+        'Organização político-administrativa',
+        'União, Estados, DF e Municípios — competências',
+        'Intervenção federal e estadual',
+        'Administração pública (art. 37 a 41)',
+        'Servidores públicos — regime constitucional'
+      ]},
+      { t: 'Organização dos Poderes', subs: [
+        'Poder Legislativo — estrutura e funções',
+        'Processo legislativo (art. 59 a 69)',
+        'Poder Executivo — Presidente e atribuições',
+        'Poder Judiciário — órgãos e garantias',
+        'Funções essenciais à Justiça (MP, Defensoria, Advocacia)'
+      ]},
+      { t: 'Segurança Pública', subs: [
+        'Segurança pública na CF (art. 144)',
+        'Polícia Federal, PRF, PFF',
+        'Polícias Civis, Militares e Bombeiros',
+        'Polícias Penais (EC 104/2019)',
+        'Competências de cada órgão'
+      ]},
+      { t: 'Controle de Constitucionalidade', subs: [
+        'Controle difuso e concentrado',
+        'ADI, ADC, ADPF, ADO',
+        'Efeitos das decisões',
+        'Súmula vinculante'
+      ]},
+      { t: 'Defesa do Estado e Instituições', subs: [
+        'Estado de defesa e estado de sítio',
+        'Forças Armadas',
+        'Segurança pública (visão geral)'
+      ]}
+    ]
+  },
+
+  administrativo: {
+    nome: 'Direito Administrativo',
+    icon: '🏛️',
+    cor: '#08d9d6',
+    topicos: [
+      { t: 'Conceitos e Princípios', subs: [
+        'Conceito e fontes do Direito Administrativo',
+        'Regime jurídico-administrativo',
+        'Princípios expressos (LIMPE)',
+        'Princípios implícitos (razoabilidade, proporcionalidade, etc)'
+      ]},
+      { t: 'Organização Administrativa', subs: [
+        'Administração direta e indireta',
+        'Autarquias, fundações, empresas públicas e SEM',
+        'Centralização, descentralização e desconcentração',
+        'Entidades paraestatais e terceiro setor'
+      ]},
+      { t: 'Poderes Administrativos', subs: [
+        'Poder vinculado e discricionário',
+        'Poder hierárquico e disciplinar',
+        'Poder regulamentar',
+        'Poder de polícia'
+      ]},
+      { t: 'Atos Administrativos', subs: [
+        'Conceito, requisitos e atributos',
+        'Classificação dos atos',
+        'Discricionariedade e vinculação',
+        'Anulação, revogação e convalidação',
+        'Extinção dos atos administrativos'
+      ]},
+      { t: 'Licitações e Contratos (Lei 14.133/21)', subs: [
+        'Princípios e modalidades',
+        'Dispensa e inexigibilidade',
+        'Fases da licitação',
+        'Contratos administrativos e cláusulas exorbitantes'
+      ]},
+      { t: 'Servidores Públicos', subs: [
+        'Cargo, emprego e função',
+        'Provimento, posse e estabilidade',
+        'Direitos, deveres e proibições',
+        'Responsabilidades (civil, penal, administrativa)',
+        'Processo administrativo disciplinar (PAD)'
+      ]},
+      { t: 'Responsabilidade Civil do Estado', subs: [
+        'Teorias da responsabilidade',
+        'Responsabilidade objetiva (art. 37, §6º)',
+        'Excludentes e atenuantes',
+        'Direito de regresso'
+      ]},
+      { t: 'Controle da Administração', subs: [
+        'Controle interno e externo',
+        'Controle judicial e legislativo',
+        'Tribunais de Contas',
+        'Improbidade administrativa (Lei 8.429/92)'
+      ]},
+      { t: 'Bens e Serviços Públicos', subs: [
+        'Classificação dos bens públicos',
+        'Afetação e desafetação',
+        'Serviços públicos — concessão e permissão',
+        'Intervenção do Estado na propriedade'
+      ]}
+    ]
+  },
+
+  penal: {
+    nome: 'Direito Penal',
+    icon: '💀',
+    cor: '#a855f7',
+    topicos: [
+      { t: 'Parte Geral — Aplicação da Lei Penal', subs: [
+        'Princípios penais (legalidade, anterioridade)',
+        'Lei penal no tempo e no espaço',
+        'Tempo e lugar do crime',
+        'Territorialidade e extraterritorialidade',
+        'Contagem de prazos e interpretação'
+      ]},
+      { t: 'Teoria do Crime', subs: [
+        'Conceito e elementos do crime',
+        'Fato típico (conduta, resultado, nexo, tipicidade)',
+        'Ilicitude e excludentes',
+        'Culpabilidade e excludentes',
+        'Dolo e culpa',
+        'Erro de tipo e erro de proibição',
+        'Consumação, tentativa e desistência',
+        'Crime impossível e arrependimento'
+      ]},
+      { t: 'Concurso de Pessoas', subs: [
+        'Autoria, coautoria e participação',
+        'Teorias do concurso',
+        'Comunicabilidade de circunstâncias'
+      ]},
+      { t: 'Penas', subs: [
+        'Espécies de pena',
+        'Penas privativas de liberdade e regimes',
+        'Penas restritivas de direitos e multa',
+        'Aplicação da pena (dosimetria trifásica)',
+        'Circunstâncias agravantes e atenuantes',
+        'Concurso de crimes',
+        'Suspensão condicional e livramento condicional'
+      ]},
+      { t: 'Extinção da Punibilidade', subs: [
+        'Causas extintivas (art. 107)',
+        'Prescrição (penal e da pretensão executória)',
+        'Decadência e perempção'
+      ]},
+      { t: 'Crimes contra a Pessoa', subs: [
+        'Homicídio e feminicídio (Lei 14.994/24)',
+        'Lesão corporal',
+        'Crimes contra a honra',
+        'Crimes contra a liberdade (ameaça, sequestro)',
+        'Perseguição (stalking) e violência psicológica'
+      ]},
+      { t: 'Crimes contra o Patrimônio', subs: [
+        'Furto e roubo',
+        'Extorsão e extorsão mediante sequestro',
+        'Apropriação indébita',
+        'Estelionato e fraudes',
+        'Receptação'
+      ]},
+      { t: 'Crimes contra a Dignidade Sexual', subs: [
+        'Estupro e estupro de vulnerável',
+        'Importunação sexual',
+        'Crimes sexuais contra vulnerável'
+      ]},
+      { t: 'Crimes contra a Administração Pública', subs: [
+        'Peculato',
+        'Concussão e corrupção (passiva e ativa)',
+        'Prevaricação',
+        'Crimes praticados por particular contra a Adm.'
+      ]},
+      { t: 'Crimes contra a Fé Pública', subs: [
+        'Moeda falsa',
+        'Falsificação de documentos',
+        'Falsidade ideológica'
+      ]}
+    ]
+  },
+
+  processo_penal: {
+    nome: 'Direito Processual Penal',
+    icon: '⚔️',
+    cor: '#ef4444',
+    topicos: [
+      { t: 'Princípios e Aplicação', subs: [
+        'Princípios do processo penal',
+        'Sistemas processuais (acusatório)',
+        'Lei processual no tempo e espaço'
+      ]},
+      { t: 'Inquérito Policial', subs: [
+        'Conceito, características e finalidade',
+        'Instauração e notitia criminis',
+        'Diligências investigatórias',
+        'Indiciamento e conclusão',
+        'Arquivamento'
+      ]},
+      { t: 'Ação Penal', subs: [
+        'Ação penal pública (incondicionada e condicionada)',
+        'Ação penal privada',
+        'Condições da ação',
+        'Denúncia e queixa'
+      ]},
+      { t: 'Prisões e Medidas Cautelares', subs: [
+        'Prisão em flagrante',
+        'Prisão preventiva',
+        'Prisão temporária (Lei 7.960/89)',
+        'Medidas cautelares diversas da prisão',
+        'Liberdade provisória e fiança',
+        'Audiência de custódia'
+      ]},
+      { t: 'Provas', subs: [
+        'Teoria geral da prova',
+        'Meios de prova',
+        'Prova ilícita',
+        'Interceptação telefônica (Lei 9.296/96)',
+        'Cadeia de custódia'
+      ]},
+      { t: 'Competência', subs: [
+        'Critérios de fixação',
+        'Competência por prerrogativa de função',
+        'Conexão e continência'
+      ]},
+      { t: 'Procedimentos e Recursos', subs: [
+        'Procedimento comum e especial',
+        'Tribunal do Júri',
+        'Sentença e coisa julgada',
+        'Recursos em geral',
+        'Habeas corpus e revisão criminal'
+      ]}
+    ]
+  },
+
+  civil: {
+    nome: 'Direito Civil',
+    icon: '📋',
+    cor: '#f59e0b',
+    topicos: [
+      { t: 'Lei de Introdução (LINDB)', subs: [
+        'Vigência e aplicação das normas',
+        'Conflito de leis no tempo',
+        'Interpretação e integração'
+      ]},
+      { t: 'Pessoas', subs: [
+        'Pessoa natural — capacidade',
+        'Personalidade e direitos da personalidade',
+        'Pessoa jurídica',
+        'Domicílio'
+      ]},
+      { t: 'Bens', subs: [
+        'Classificação dos bens',
+        'Bens públicos e particulares'
+      ]},
+      { t: 'Fatos e Negócios Jurídicos', subs: [
+        'Negócio jurídico — elementos e defeitos',
+        'Atos jurídicos lícitos e ilícitos',
+        'Prescrição e decadência',
+        'Prova dos fatos jurídicos'
+      ]},
+      { t: 'Obrigações e Responsabilidade Civil', subs: [
+        'Modalidades de obrigações',
+        'Responsabilidade civil',
+        'Dano material e moral'
+      ]}
+    ]
+  },
+
+  processo_civil: {
+    nome: 'Direito Processual Civil',
+    icon: '📑',
+    cor: '#3b82f6',
+    topicos: [
+      { t: 'Normas e Princípios', subs: [
+        'Normas fundamentais do processo civil',
+        'Jurisdição e ação',
+        'Competência'
+      ]},
+      { t: 'Sujeitos do Processo', subs: [
+        'Partes e procuradores',
+        'Litisconsórcio e intervenção de terceiros',
+        'Juiz e auxiliares'
+      ]},
+      { t: 'Tutela e Procedimentos', subs: [
+        'Tutela provisória',
+        'Processo de conhecimento',
+        'Recursos (visão geral)'
+      ]}
+    ]
+  },
+
+  direitos_humanos: {
+    nome: 'Direitos Humanos',
+    icon: '🕊️',
+    cor: '#ec4899',
+    topicos: [
+      { t: 'Teoria Geral', subs: [
+        'Conceito, características e gerações/dimensões',
+        'Evolução histórica',
+        'Universalismo x relativismo cultural'
+      ]},
+      { t: 'Sistemas de Proteção', subs: [
+        'Sistema global (ONU)',
+        'Declaração Universal dos Direitos Humanos (1948)',
+        'Sistema interamericano (OEA, Pacto de San José)',
+        'Tratados internacionais e incorporação'
+      ]},
+      { t: 'DH na Atividade Policial', subs: [
+        'Uso da força e armas de fogo',
+        'Código de conduta para agentes da lei',
+        'Tortura e tratamentos degradantes',
+        'Direitos da pessoa presa'
+      ]},
+      { t: 'Grupos Vulneráveis', subs: [
+        'Criança e adolescente (ECA)',
+        'Idoso (Estatuto do Idoso)',
+        'Pessoa com deficiência',
+        'Igualdade racial e de gênero'
+      ]}
+    ]
+  },
+
+  legislacao_especial: {
+    nome: 'Legislação Penal Especial',
+    icon: '📜',
+    cor: '#8b5cf6',
+    topicos: [
+      { t: 'Lei Maria da Penha (11.340/06)', subs: [
+        'Formas de violência doméstica',
+        'Medidas protetivas de urgência',
+        'Atendimento e procedimentos',
+        'Crime de descumprimento de medida (art. 24-A)'
+      ]},
+      { t: 'Lei de Drogas (11.343/06)', subs: [
+        'Posse para consumo (art. 28)',
+        'Tráfico de drogas (art. 33)',
+        'Tráfico privilegiado (§4º)',
+        'Causas de aumento (art. 40)',
+        'Procedimento e investigação'
+      ]},
+      { t: 'Crimes Hediondos (8.072/90)', subs: [
+        'Rol de crimes hediondos',
+        'Equiparados (3TH: tortura, tráfico, terrorismo)',
+        'Consequências (progressão, livramento)'
+      ]},
+      { t: 'Lei de Tortura (9.455/97)', subs: [
+        'Tipos de tortura',
+        'Causas de aumento',
+        'Efeitos da condenação'
+      ]},
+      { t: 'Estatuto do Desarmamento (10.826/03)', subs: [
+        'Posse e porte de arma de fogo',
+        'Disparo de arma de fogo',
+        'Comércio e tráfico de armas',
+        'Arma de uso permitido x restrito'
+      ]},
+      { t: 'Abuso de Autoridade (13.869/19)', subs: [
+        'Sujeitos do crime',
+        'Dolo específico exigido',
+        'Principais condutas típicas',
+        'Sanções'
+      ]},
+      { t: 'Organização Criminosa (12.850/13)', subs: [
+        'Conceito de organização criminosa',
+        'Colaboração premiada',
+        'Meios de obtenção de prova',
+        'Infiltração de agentes'
+      ]},
+      { t: 'Crimes de Trânsito (CTB 9.503/97)', subs: [
+        'Homicídio e lesão culposa no trânsito',
+        'Embriaguez ao volante',
+        'Racha e direção perigosa'
+      ]},
+      { t: 'Estatuto da Criança e Adolescente', subs: [
+        'Ato infracional e medidas socioeducativas',
+        'Crimes contra criança e adolescente',
+        'Conselho Tutelar'
+      ]},
+      { t: 'Interceptação Telefônica (9.296/96)', subs: [
+        'Requisitos e autorização judicial',
+        'Prazo e procedimento',
+        'Prova emprestada'
+      ]},
+      { t: 'Lei de Terrorismo (13.260/16)', subs: [
+        'Atos de terrorismo',
+        'Tipos penais'
+      ]}
+    ]
+  }
+};
+
+
+// Progresso: { 'disciplina|topicoIdx|subIdx': true }
+let editalProgress = {};
+let editalOpenState = {}; // quais disciplinas/tópicos estão abertos
+const EDITAL_LS_KEY = 'jq:edital_progress';
+
+async function loadEditalProgress() {
+  try {
+    const raw = localStorage.getItem(EDITAL_LS_KEY);
+    if (raw) editalProgress = JSON.parse(raw);
+  } catch(e) { editalProgress = {}; }
+  if (!editalProgress || typeof editalProgress !== 'object') editalProgress = {};
+
+  if (sb && currentSession) {
+    try {
+      const { data, error } = await sb.from('progress')
+        .select('edital_progress').eq('user_id', currentSession.user.id).maybeSingle();
+      if (!error && data && data.edital_progress && typeof data.edital_progress === 'object') {
+        editalProgress = data.edital_progress;
+        localStorage.setItem(EDITAL_LS_KEY, JSON.stringify(editalProgress));
+      }
+    } catch(e) {}
+  }
+}
+
+function saveEditalProgress() {
+  try { localStorage.setItem(EDITAL_LS_KEY, JSON.stringify(editalProgress)); } catch(e) {}
+  if (sb && currentSession) {
+    sb.from('progress').update({ edital_progress: editalProgress })
+      .eq('user_id', currentSession.user.id).then(()=>{}).catch(()=>{});
+  }
+}
+
+async function goEdital() {
+  snd.click();
+  showScreen('screen-edital');
+  await loadEditalProgress();
+  renderEdital();
+}
+window.goEdital = goEdital;
+
+function editalKey(disc, ti, si) { return `${disc}|${ti}|${si}`; }
+
+// Conta progresso de um tópico
+function topicoProgress(disc, ti, topico) {
+  let done = 0;
+  topico.subs.forEach((_, si) => { if (editalProgress[editalKey(disc, ti, si)]) done++; });
+  return { done, total: topico.subs.length };
+}
+
+// Conta progresso de uma disciplina
+function disciplinaProgress(disc, data) {
+  let done = 0, total = 0;
+  data.topicos.forEach((topico, ti) => {
+    const p = topicoProgress(disc, ti, topico);
+    done += p.done; total += p.total;
+  });
+  return { done, total };
+}
+
+function renderEdital() {
+  const cont = $('edital-tree');
+  if (!cont) return;
+  const q = ($('edital-search')?.value || '').toLowerCase().trim();
+
+  let totalDone = 0, totalAll = 0;
+  let html = '';
+
+  for (const disc in EDITAL_TREE) {
+    const data = EDITAL_TREE[disc];
+    const dp = disciplinaProgress(disc, data);
+    totalDone += dp.done; totalAll += dp.total;
+
+    // Filtrar por busca
+    let topicosFiltrados = data.topicos;
+    if (q) {
+      topicosFiltrados = data.topicos.filter(t =>
+        t.t.toLowerCase().includes(q) ||
+        t.subs.some(s => s.toLowerCase().includes(q)) ||
+        data.nome.toLowerCase().includes(q)
+      );
+      if (topicosFiltrados.length === 0) continue;
+    }
+
+    const discOpen = q ? true : (editalOpenState['d_'+disc] || false);
+    const pct = dp.total > 0 ? Math.round((dp.done/dp.total)*100) : 0;
+
+    html += `<div class="edital-disc" style="border-color:${data.cor}40;">
+      <button class="edital-disc-head" onclick="toggleEditalDisc('${disc}')" style="border-left:4px solid ${data.cor};">
+        <span class="edital-disc-icon">${data.icon}</span>
+        <span class="edital-disc-nome">${esc(data.nome)}</span>
+        <span class="edital-disc-pct" style="color:${data.cor};">${pct}%</span>
+        <span class="edital-arrow">${discOpen ? '▾' : '▸'}</span>
+      </button>
+      <div class="edital-disc-bar"><div style="width:${pct}%;background:${data.cor};"></div></div>
+      <div class="edital-disc-body" style="display:${discOpen ? 'block' : 'none'};">`;
+
+    topicosFiltrados.forEach((topico) => {
+      const ti = data.topicos.indexOf(topico);
+      const tp = topicoProgress(disc, ti, topico);
+      const tOpen = q ? true : (editalOpenState[`t_${disc}_${ti}`] || false);
+      const allDone = tp.done === tp.total && tp.total > 0;
+
+      html += `<div class="edital-topico">
+        <button class="edital-topico-head" onclick="toggleEditalTopico('${disc}',${ti})">
+          <span class="edital-topico-check">${allDone ? '✅' : (tp.done > 0 ? '🟡' : '⬜')}</span>
+          <span class="edital-topico-nome">${esc(topico.t)}</span>
+          <span class="edital-topico-count">${tp.done}/${tp.total}</span>
+          <span class="edital-arrow">${tOpen ? '▾' : '▸'}</span>
+        </button>
+        <div class="edital-subs" style="display:${tOpen ? 'block' : 'none'};">`;
+
+      topico.subs.forEach((sub, si) => {
+        const key = editalKey(disc, ti, si);
+        const done = !!editalProgress[key];
+        html += `<button class="edital-sub ${done?'edital-sub-done':''}" onclick="toggleEditalSub('${disc}',${ti},${si})">
+          <span class="edital-sub-check">${done ? '✅' : '⬜'}</span>
+          <span class="edital-sub-text">${esc(sub)}</span>
+        </button>`;
+      });
+
+      html += `</div></div>`;
+    });
+
+    html += `</div></div>`;
+  }
+
+  if (!html) html = `<div style="text-align:center;padding:24px;color:var(--text-muted);">Nada encontrado para "${esc(q)}"</div>`;
+  cont.innerHTML = html;
+
+  // Progresso geral
+  const pctGeral = totalAll > 0 ? Math.round((totalDone/totalAll)*100) : 0;
+  const setG = (id,v) => { const el = $(id); if (el) el.textContent = v; };
+  setG('edital-pct-geral', pctGeral + '%');
+  setG('edital-resumo', `${totalDone} de ${totalAll} subtópicos concluídos`);
+  const bar = $('edital-bar-geral');
+  if (bar) bar.style.width = pctGeral + '%';
+}
+window.renderEdital = renderEdital;
+
+function toggleEditalDisc(disc) {
+  editalOpenState['d_'+disc] = !editalOpenState['d_'+disc];
+  renderEdital();
+}
+window.toggleEditalDisc = toggleEditalDisc;
+
+function toggleEditalTopico(disc, ti) {
+  const k = `t_${disc}_${ti}`;
+  editalOpenState[k] = !editalOpenState[k];
+  renderEdital();
+}
+window.toggleEditalTopico = toggleEditalTopico;
+
+function toggleEditalSub(disc, ti, si) {
+  const key = editalKey(disc, ti, si);
+  if (editalProgress[key]) delete editalProgress[key];
+  else editalProgress[key] = true;
+  saveEditalProgress();
+  renderEdital();
+  if (editalProgress[key] && snd.correct) snd.correct();
+  else snd.click();
+}
+window.toggleEditalSub = toggleEditalSub;
+
+
+async function goCronograma() {
+  snd.click();
+  showScreen('screen-cronograma');
+  await loadCronograma();
+  renderCronograma();
+}
+window.goCronograma = goCronograma;
+
+function renderCronograma() {
+  const week = $('cron-week');
+  if (!week) return;
+
+  let html = '';
+  for (let d = 0; d < 7; d++) {
+    const blocks = cronData.blocks.filter(b => b.dia === d);
+    const totalH = blocks.reduce((s,b) => s + (parseFloat(b.horas)||0), 0);
+    html += `<div class="cron-day" data-dia="${d}"
+        ondragover="cronAllowDrop(event)" ondrop="cronDrop(event,${d})">
+      <div class="cron-day-head">
+        <span>${CRON_DIAS[d]}</span>
+        <span class="cron-day-hours">${totalH > 0 ? totalH + 'h' : ''}</span>
+      </div>
+      <div class="cron-day-body">`;
+    if (blocks.length === 0) {
+      html += `<div class="cron-empty">— sem blocos —</div>`;
+    } else {
+      blocks.forEach(b => {
+        const cor = b.materiaCor || CRON_MATERIA_COR[b.materia] || '#94a3b8';
+        const icon = b.materiaIcon || CRON_MATERIA_ICON[b.materia] || '📌';
+        html += `<div class="cron-block ${b.done?'cron-done':''}"
+            draggable="true"
+            ondragstart="cronDragStart(event,'${b.id}')"
+            ondragend="cronDragEnd(event)"
+            onclick="editCronBlock('${b.id}')"
+            style="border-left-color:${cor};">
+          <div class="cron-block-top">
+            <span class="cron-block-materia" style="color:${cor};">${icon} ${esc(b.materia)}</span>
+            <button class="cron-check" onclick="event.stopPropagation();toggleCronDone('${b.id}')" title="Concluir">
+              ${b.done ? '✅' : '⬜'}
+            </button>
+          </div>
+          ${b.assunto ? `<div class="cron-block-assunto">${esc(b.assunto)}</div>` : ''}
+          <div class="cron-block-meta">
+            <span>⏱️ ${b.horas}h</span>
+            ${b.meta > 0 ? `<span>🎯 ${b.meta}q</span>` : ''}
+          </div>
+        </div>`;
+      });
+    }
+    html += `</div>
+      <button class="cron-add-day" onclick="openCronBlockModal(${d})">+ adicionar</button>
+    </div>`;
+  }
+  week.innerHTML = html;
+  updateCronSummary();
+}
+
+function updateCronSummary() {
+  const totalH = cronData.blocks.reduce((s,b) => s + (parseFloat(b.horas)||0), 0);
+  const totalB = cronData.blocks.length;
+  const done = cronData.blocks.filter(b => b.done).length;
+  const pct = totalB > 0 ? Math.round((done/totalB)*100) : 0;
+  const set = (id,v) => { const el = $(id); if (el) el.textContent = v; };
+  set('cron-total-horas', totalH + 'h');
+  set('cron-total-blocos', totalB);
+  set('cron-pct-feito', pct + '%');
+}
+
+// ---- Drag and drop ----
+function cronDragStart(ev, id) {
+  cronDragId = id;
+  ev.dataTransfer.effectAllowed = 'move';
+  try { ev.dataTransfer.setData('text/plain', id); } catch(e) {}
+  ev.currentTarget.classList.add('cron-dragging');
+}
+function cronDragEnd(ev) {
+  ev.currentTarget.classList.remove('cron-dragging');
+  document.querySelectorAll('.cron-day').forEach(d => d.classList.remove('cron-dayover'));
+}
+function cronAllowDrop(ev) {
+  ev.preventDefault();
+  ev.dataTransfer.dropEffect = 'move';
+  const day = ev.currentTarget;
+  document.querySelectorAll('.cron-day').forEach(d => d.classList.remove('cron-dayover'));
+  day.classList.add('cron-dayover');
+}
+function cronDrop(ev, dia) {
+  ev.preventDefault();
+  const id = cronDragId || (ev.dataTransfer && ev.dataTransfer.getData('text/plain'));
+  if (!id) return;
+  const block = cronData.blocks.find(b => b.id === id);
+  if (block && block.dia !== dia) {
+    block.dia = dia;
+    saveCronograma();
+    renderCronograma();
+    snd.click();
+  }
+  cronDragId = null;
+  document.querySelectorAll('.cron-day').forEach(d => d.classList.remove('cron-dayover'));
+}
+window.cronDragStart = cronDragStart;
+window.cronDragEnd = cronDragEnd;
+window.cronAllowDrop = cronAllowDrop;
+window.cronDrop = cronDrop;
+
+// ---- CRUD de blocos ----
+function openCronBlockModal(dia) {
+  cronEditingId = null;
+  $('cron-modal-title').textContent = 'NOVO BLOCO';
+  cronPopulateMaterias();
+  $('cron-f-materia').value = '';
+  cronUpdateTopicos();
+  $('cron-f-assunto').value = '';
+  $('cron-f-horas').value = '1';
+  $('cron-f-meta').value = '0';
+  $('cron-f-dia').value = (typeof dia === 'number') ? dia : 0;
+  $('cron-delete-btn').style.display = 'none';
+  $('cron-block-modal').classList.remove('hidden');
+}
+window.openCronBlockModal = openCronBlockModal;
+
+// Matérias: as do edital (jurídicas) + extras (não-jurídicas comuns em concurso)
+const CRON_MATERIAS_EXTRA = ['Português','Raciocínio Lógico','Informática','Atualidades','Redação','Revisão','Simulado','Outro'];
+
+function cronPopulateMaterias() {
+  const sel = $('cron-f-materia');
+  if (!sel) return;
+  let html = '<option value="">— selecione —</option>';
+  // Jurídicas (do edital)
+  html += '<optgroup label="Disciplinas jurídicas">';
+  for (const disc in EDITAL_TREE) {
+    const d = EDITAL_TREE[disc];
+    html += `<option value="edital:${disc}">${d.icon} ${esc(d.nome)}</option>`;
+  }
+  html += '</optgroup>';
+  // Extras
+  html += '<optgroup label="Outras matérias">';
+  CRON_MATERIAS_EXTRA.forEach(m => {
+    const icon = CRON_MATERIA_ICON[m] || '📌';
+    html += `<option value="extra:${m}">${icon} ${esc(m)}</option>`;
+  });
+  html += '</optgroup>';
+  sel.innerHTML = html;
+}
+
+function cronUpdateTopicos() {
+  const matVal = $('cron-f-materia')?.value || '';
+  const topSel = $('cron-f-topico');
+  const subSel = $('cron-f-subtopico');
+  if (!topSel || !subSel) return;
+
+  if (matVal.startsWith('edital:')) {
+    const disc = matVal.slice(7);
+    const data = EDITAL_TREE[disc];
+    let html = '<option value="">— geral —</option>';
+    if (data) data.topicos.forEach((t, ti) => {
+      html += `<option value="${ti}">${esc(t.t)}</option>`;
+    });
+    topSel.innerHTML = html;
+    topSel.parentElement.style.display = '';
+    topSel.style.display = '';
+    document.querySelector('label[for]') ; // noop
+  } else {
+    topSel.innerHTML = '<option value="">— geral —</option>';
+  }
+  cronUpdateSubtopicos();
+}
+window.cronUpdateTopicos = cronUpdateTopicos;
+
+function cronUpdateSubtopicos() {
+  const matVal = $('cron-f-materia')?.value || '';
+  const ti = $('cron-f-topico')?.value;
+  const subSel = $('cron-f-subtopico');
+  if (!subSel) return;
+  let html = '<option value="">— todos —</option>';
+  if (matVal.startsWith('edital:') && ti !== '') {
+    const disc = matVal.slice(7);
+    const data = EDITAL_TREE[disc];
+    const topico = data && data.topicos[parseInt(ti,10)];
+    if (topico) topico.subs.forEach(s => {
+      html += `<option value="${esc(s)}">${esc(s)}</option>`;
+    });
+  }
+  subSel.innerHTML = html;
+}
+window.cronUpdateSubtopicos = cronUpdateSubtopicos;
+
+function editCronBlock(id) {
+  const b = cronData.blocks.find(x => x.id === id);
+  if (!b) return;
+  cronEditingId = id;
+  $('cron-modal-title').textContent = 'EDITAR BLOCO';
+  cronPopulateMaterias();
+  // Reconstituir o value da matéria
+  $('cron-f-materia').value = b.matValue || ('extra:' + (b.materia || 'Outro'));
+  cronUpdateTopicos();
+  if (b.topicoIdx !== undefined && b.topicoIdx !== null && b.topicoIdx !== '') {
+    $('cron-f-topico').value = b.topicoIdx;
+    cronUpdateSubtopicos();
+    if (b.subtopico) $('cron-f-subtopico').value = b.subtopico;
+  }
+  $('cron-f-assunto').value = b.assuntoLivre || '';
+  $('cron-f-horas').value = b.horas;
+  $('cron-f-meta').value = b.meta || 0;
+  $('cron-f-dia').value = b.dia;
+  $('cron-delete-btn').style.display = 'inline-block';
+  $('cron-block-modal').classList.remove('hidden');
+}
+window.editCronBlock = editCronBlock;
+
+function saveCronBlock() {
+  const matVal = $('cron-f-materia')?.value || '';
+  if (!matVal) { snd.wrong && snd.wrong(); return; }
+
+  let materia, materiaCor, materiaIcon;
+  if (matVal.startsWith('edital:')) {
+    const disc = matVal.slice(7);
+    const d = EDITAL_TREE[disc];
+    materia = d ? d.nome : 'Outro';
+    materiaCor = d ? d.cor : '#94a3b8';
+    materiaIcon = d ? d.icon : '📌';
+  } else {
+    materia = matVal.slice(6);
+    materiaCor = CRON_MATERIA_COR[materia] || '#94a3b8';
+    materiaIcon = CRON_MATERIA_ICON[materia] || '📌';
+  }
+
+  const ti = $('cron-f-topico')?.value;
+  const topicoNome = (matVal.startsWith('edital:') && ti !== '' && ti != null)
+    ? (EDITAL_TREE[matVal.slice(7)]?.topicos[parseInt(ti,10)]?.t || '') : '';
+  const subtopico = $('cron-f-subtopico')?.value || '';
+  const assuntoLivre = ($('cron-f-assunto')?.value || '').trim();
+
+  // Monta o texto do "assunto" a exibir: subtópico > tópico > assunto livre
+  const assuntoFinal = subtopico || assuntoLivre || topicoNome || '';
+
+  const horas = parseFloat($('cron-f-horas')?.value) || 1;
+  const meta = parseInt($('cron-f-meta')?.value, 10) || 0;
+  const dia = parseInt($('cron-f-dia')?.value, 10) || 0;
+
+  if (cronEditingId) {
+    const b = cronData.blocks.find(x => x.id === cronEditingId);
+    if (b) Object.assign(b, { materia, matValue: matVal, materiaCor, materiaIcon,
+      topicoIdx: ti, topicoNome, subtopico, assuntoLivre, assunto: assuntoFinal, horas, meta, dia });
+  } else {
+    cronData.blocks.push({
+      id: 'cb_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+      materia, matValue: matVal, materiaCor, materiaIcon,
+      topicoIdx: ti, topicoNome, subtopico, assuntoLivre,
+      assunto: assuntoFinal, horas, meta, dia, done: false
+    });
+  }
+  saveCronograma();
+  closeCronModal();
+  renderCronograma();
+  snd.correct && snd.correct();
+}
+window.saveCronBlock = saveCronBlock;
+
+function deleteCronBlock() {
+  if (!cronEditingId) return;
+  cronData.blocks = cronData.blocks.filter(b => b.id !== cronEditingId);
+  saveCronograma();
+  closeCronModal();
+  renderCronograma();
+}
+window.deleteCronBlock = deleteCronBlock;
+
+function toggleCronDone(id) {
+  const b = cronData.blocks.find(x => x.id === id);
+  if (!b) return;
+  b.done = !b.done;
+  saveCronograma();
+  renderCronograma();
+  if (b.done && snd.correct) snd.correct();
+  else snd.click();
+}
+window.toggleCronDone = toggleCronDone;
+
+function closeCronModal() {
+  $('cron-block-modal').classList.add('hidden');
+  cronEditingId = null;
+}
+window.closeCronModal = closeCronModal;
+
+function cronClearWeek() {
+  if (cronData.blocks.length === 0) return;
+  openModal({
+    title: '🗑️ Limpar semana?',
+    msg: 'Isso vai apagar TODOS os blocos do seu cronograma. Não dá pra desfazer.',
+    onConfirm: () => {
+      cronData.blocks = [];
+      saveCronograma();
+      renderCronograma();
+      closeModal();
+    }
+  });
+}
+window.cronClearWeek = cronClearWeek;
+
+// ---- Modelos prontos ----
+const CRON_TEMPLATES = {
+  equilibrado: {
+    nome: '⚖️ Equilibrado (4h/dia)',
+    blocks: [
+      {dia:0,materia:'Constitucional',horas:2,meta:20},{dia:0,materia:'Português',horas:2,meta:15},
+      {dia:1,materia:'Penal',horas:2,meta:20},{dia:1,materia:'Raciocínio Lógico',horas:2,meta:15},
+      {dia:2,materia:'Administrativo',horas:2,meta:20},{dia:2,materia:'Informática',horas:2,meta:15},
+      {dia:3,materia:'Constitucional',horas:2,meta:20},{dia:3,materia:'Penal',horas:2,meta:20},
+      {dia:4,materia:'Legislação Especial',horas:2,meta:15},{dia:4,materia:'Português',horas:2,meta:15},
+      {dia:5,materia:'Simulado',horas:3,meta:60},{dia:5,materia:'Revisão',horas:1,meta:0},
+      {dia:6,materia:'Revisão',horas:2,meta:30}
+    ]
+  },
+  intensivo: {
+    nome: '🔥 Intensivo (6h/dia)',
+    blocks: [
+      {dia:0,materia:'Constitucional',horas:2,meta:25},{dia:0,materia:'Penal',horas:2,meta:25},{dia:0,materia:'Português',horas:2,meta:20},
+      {dia:1,materia:'Administrativo',horas:2,meta:25},{dia:1,materia:'Informática',horas:2,meta:20},{dia:1,materia:'Raciocínio Lógico',horas:2,meta:20},
+      {dia:2,materia:'Penal',horas:2,meta:25},{dia:2,materia:'Legislação Especial',horas:2,meta:20},{dia:2,materia:'Direitos Humanos',horas:2,meta:15},
+      {dia:3,materia:'Constitucional',horas:2,meta:25},{dia:3,materia:'Administrativo',horas:2,meta:25},{dia:3,materia:'Português',horas:2,meta:20},
+      {dia:4,materia:'Penal',horas:2,meta:25},{dia:4,materia:'Informática',horas:2,meta:20},{dia:4,materia:'Atualidades',horas:2,meta:0},
+      {dia:5,materia:'Simulado',horas:4,meta:80},{dia:5,materia:'Revisão',horas:2,meta:0},
+      {dia:6,materia:'Revisão',horas:3,meta:40},{dia:6,materia:'Redação',horas:1,meta:0}
+    ]
+  },
+  leve: {
+    nome: '🌙 Leve (2h/dia)',
+    blocks: [
+      {dia:0,materia:'Constitucional',horas:2,meta:15},
+      {dia:1,materia:'Penal',horas:2,meta:15},
+      {dia:2,materia:'Português',horas:2,meta:15},
+      {dia:3,materia:'Administrativo',horas:2,meta:15},
+      {dia:4,materia:'Informática',horas:2,meta:15},
+      {dia:5,materia:'Simulado',horas:2,meta:30},
+      {dia:6,materia:'Revisão',horas:2,meta:20}
+    ]
+  }
+};
+
+function cronTemplateMenu() {
+  snd.click();
+  const opts = Object.keys(CRON_TEMPLATES).map(k =>
+    `<button class="btn full" style="margin-bottom:8px;" onclick="applyCronTemplate('${k}')">${CRON_TEMPLATES[k].nome}</button>`
+  ).join('');
+  openModal({
+    title: '✨ Modelos prontos',
+    msg: `<div style="text-align:left;font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Escolha um modelo pra começar. Você pode editar tudo depois!</div>${opts}<div style="font-size:11px;color:var(--text-muted);margin-top:8px;">⚠️ Isso substitui seu cronograma atual.</div>`,
+    hideConfirm: true
+  });
+}
+window.cronTemplateMenu = cronTemplateMenu;
+
+function applyCronTemplate(key) {
+  const tpl = CRON_TEMPLATES[key];
+  if (!tpl) return;
+  cronData.blocks = tpl.blocks.map((b,i) => ({
+    id: 'cb_' + Date.now() + '_' + i,
+    materia: b.materia, assunto: '', horas: b.horas, meta: b.meta, dia: b.dia, done: false,
+    materiaCor: CRON_MATERIA_COR[b.materia] || '#94a3b8',
+    materiaIcon: CRON_MATERIA_ICON[b.materia] || '📌'
+  }));
+  saveCronograma();
+  closeModal();
+  renderCronograma();
+  if (snd.correct) snd.correct();
+}
+window.applyCronTemplate = applyCronTemplate;
+
+
 window.goMap = goMap;
 window.goStats = goStats;
 window.confirmReset = confirmReset;
