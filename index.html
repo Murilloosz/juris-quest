@@ -3571,10 +3571,31 @@ body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
 .cron-add-day:hover { border-color: var(--cyan); color: var(--cyan); }
 .cron-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); margin: 10px 0 4px; }
 .cron-input {
-  width: 100%; padding: 9px 12px; background: rgba(255,255,255,.05);
+  width: 100%; padding: 9px 12px; background: rgba(40,30,60,.95);
   border: 1px solid var(--glass-border); border-radius: 8px;
   color: var(--text-primary); font-size: 13px; font-family: inherit;
 }
+/* Options legíveis no dropdown nativo (fundo escuro + texto claro) */
+.cron-input option,
+.cron-input optgroup {
+  background: #1a1330;
+  color: #f0eaff;
+}
+.cron-input optgroup {
+  font-weight: 700;
+  color: #c4b5fd;
+}
+select.cron-input {
+  -webkit-appearance: none; -moz-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23c4b5fd' d='M2 4l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+/* Tema claro: options escuras sobre claro */
+body[data-theme="light"] .cron-input { background: #fff; color: #1a1330; }
+body[data-theme="light"] .cron-input option,
+body[data-theme="light"] .cron-input optgroup { background: #fff; color: #1a1330; }
 
 /* 📚 EDITAL */
 .hub-card-edital {
@@ -3622,6 +3643,24 @@ body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
 .edital-sub-check { font-size: 13px; flex-shrink: 0; }
 .edital-sub-text { font-size: 12px; line-height: 1.4; }
 .edital-sub-done .edital-sub-text { text-decoration: line-through; opacity: .6; }
+
+/* Cronograma — modais de escolha e gerador */
+.cron-choice-btn {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 14px; background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 12px; cursor: pointer; transition: transform .15s, border-color .15s;
+  color: var(--text-primary);
+}
+.cron-choice-btn:hover { transform: translateY(-2px); border-color: var(--cyan); }
+.cron-day-toggle {
+  padding: 8px 10px; border-radius: 8px; border: 1px solid var(--glass-border);
+  background: rgba(255,255,255,.04); color: var(--text-muted);
+  font-size: 11px; font-weight: 700; cursor: pointer; transition: all .15s;
+  min-width: 42px;
+}
+.cron-day-toggle.on {
+  background: var(--cyan); color: #042f2e; border-color: var(--cyan);
+}
 </style>
 </head>
 <body>
@@ -4056,8 +4095,8 @@ body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
 
     <!-- Ações -->
     <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-      <button class="btn full" onclick="openCronBlockModal()" style="flex:1;min-width:140px;">➕ Adicionar bloco</button>
-      <button class="btn ghost" onclick="cronTemplateMenu()" title="Modelos prontos">✨ Modelos</button>
+      <button class="btn full" onclick="openCronChoiceModal()" style="flex:1;min-width:140px;">✨ Montar cronograma</button>
+      <button class="btn ghost" onclick="openCronBlockModal()" title="Adicionar um bloco avulso">➕ Bloco</button>
       <button class="btn ghost" onclick="cronClearWeek()" title="Limpar semana">🗑️</button>
     </div>
 
@@ -4071,21 +4110,25 @@ body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
 </div>
 
 <!-- Modal de adicionar/editar bloco -->
-<div id="cron-block-modal" class="modal-overlay hidden" style="z-index:300;">
-  <div class="modal-box" style="max-width:380px;">
-    <div class="font-arcade" id="cron-modal-title" style="color:var(--rose);font-size:13px;margin-bottom:14px;">NOVO BLOCO</div>
+<div id="cron-block-modal" class="modal-backdrop hidden" style="z-index:300;">
+  <div class="modal-content" style="max-width:400px;width:100%;max-height:88vh;overflow-y:auto;">
+    <div class="font-arcade" id="cron-modal-title" style="color:var(--rose);font-size:13px;margin-bottom:16px;">NOVO BLOCO</div>
     <label class="cron-label">Matéria</label>
     <select id="cron-f-materia" class="cron-input" onchange="cronUpdateTopicos()">
       <option value="">— selecione —</option>
     </select>
-    <label class="cron-label">Tópico (opcional)</label>
-    <select id="cron-f-topico" class="cron-input" onchange="cronUpdateSubtopicos()">
-      <option value="">— geral —</option>
-    </select>
-    <label class="cron-label">Subtópico (opcional)</label>
-    <select id="cron-f-subtopico" class="cron-input">
-      <option value="">— todos —</option>
-    </select>
+    <div id="cron-topico-wrap">
+      <label class="cron-label">Tópico (opcional)</label>
+      <select id="cron-f-topico" class="cron-input" onchange="cronUpdateSubtopicos()">
+        <option value="">— geral —</option>
+      </select>
+    </div>
+    <div id="cron-subtopico-wrap">
+      <label class="cron-label">Subtópico (opcional)</label>
+      <select id="cron-f-subtopico" class="cron-input">
+        <option value="">— todos —</option>
+      </select>
+    </div>
     <label class="cron-label">Assunto livre (opcional)</label>
     <input type="text" id="cron-f-assunto" class="cron-input" placeholder="Ou escreva um assunto personalizado...">
     <div style="display:flex;gap:10px;">
@@ -4108,11 +4151,66 @@ body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
       <option value="5">Sábado</option>
       <option value="6">Domingo</option>
     </select>
-    <div style="display:flex;gap:8px;margin-top:16px;">
-      <button class="btn full" onclick="saveCronBlock()" style="flex:1;">💾 Salvar</button>
-      <button class="btn ghost" id="cron-delete-btn" onclick="deleteCronBlock()" style="display:none;">🗑️ Excluir</button>
+    <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;">
+      <button class="btn full" onclick="saveCronBlock()" style="flex:1;min-width:120px;">💾 Salvar</button>
+      <button class="btn ghost" id="cron-delete-btn" onclick="deleteCronBlock()" style="display:none;">🗑️</button>
       <button class="btn ghost" onclick="closeCronModal()">Cancelar</button>
     </div>
+  </div>
+</div>
+
+<!-- Modal: escolher COMO montar o cronograma -->
+<div id="cron-choice-modal" class="modal-backdrop hidden" style="z-index:300;">
+  <div class="modal-content" style="max-width:400px;width:100%;">
+    <div class="font-arcade" style="color:var(--cyan);font-size:13px;margin-bottom:6px;">MONTAR CRONOGRAMA</div>
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:18px;">Como você quer começar?</div>
+    <button class="cron-choice-btn" onclick="cronStartEdital()">
+      <div style="font-size:30px;">🤖</div>
+      <div style="flex:1;text-align:left;">
+        <div style="font-weight:700;font-size:14px;color:var(--cyan);">Montar pelo edital</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">Escolha o concurso e suas horas — o app distribui as matérias sozinho</div>
+      </div>
+      <div style="font-size:18px;color:var(--cyan);">▸</div>
+    </button>
+    <button class="cron-choice-btn" onclick="cronStartManual()" style="margin-top:10px;">
+      <div style="font-size:30px;">✍️</div>
+      <div style="flex:1;text-align:left;">
+        <div style="font-weight:700;font-size:14px;color:var(--rose);">Montar manualmente</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">Comece do zero e adicione cada bloco como quiser</div>
+      </div>
+      <div style="font-size:18px;color:var(--rose);">▸</div>
+    </button>
+    <button class="btn ghost full" onclick="closeCronChoice()" style="margin-top:16px;">Cancelar</button>
+  </div>
+</div>
+
+<!-- Modal: gerador pelo edital -->
+<div id="cron-gen-modal" class="modal-backdrop hidden" style="z-index:300;">
+  <div class="modal-content" style="max-width:420px;width:100%;max-height:88vh;overflow-y:auto;">
+    <div class="font-arcade" style="color:var(--cyan);font-size:13px;margin-bottom:16px;">🤖 GERAR PELO EDITAL</div>
+
+    <label class="cron-label">Concurso / Edital</label>
+    <select id="cron-gen-edital" class="cron-input" onchange="cronGenPreview()"></select>
+    <div id="cron-gen-materias" style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.5;"></div>
+
+    <label class="cron-label" style="margin-top:14px;">Quantas horas por dia você estuda?</label>
+    <select id="cron-gen-horas" class="cron-input">
+      <option value="2">2 horas</option>
+      <option value="3">3 horas</option>
+      <option value="4" selected>4 horas</option>
+      <option value="5">5 horas</option>
+      <option value="6">6 horas</option>
+      <option value="8">8 horas</option>
+    </select>
+
+    <label class="cron-label" style="margin-top:14px;">Quais dias você estuda?</label>
+    <div id="cron-gen-dias" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;"></div>
+
+    <div style="display:flex;gap:8px;margin-top:20px;">
+      <button class="btn full" onclick="cronGenerate()" style="flex:1;">✨ Gerar cronograma</button>
+      <button class="btn ghost" onclick="closeCronGen()">Cancelar</button>
+    </div>
+    <div style="font-size:10px;color:var(--text-muted);margin-top:10px;text-align:center;">⚠️ Isso substitui seu cronograma atual. Você pode editar tudo depois.</div>
   </div>
 </div>
 
@@ -12485,6 +12583,10 @@ async function goCronograma() {
   showScreen('screen-cronograma');
   await loadCronograma();
   renderCronograma();
+  // Se ainda não tem nada, oferece montar
+  if (!cronData.blocks || cronData.blocks.length === 0) {
+    setTimeout(() => { try { openCronChoiceModal(); } catch(e){} }, 300);
+  }
 }
 window.goCronograma = goCronograma;
 
@@ -12629,21 +12731,23 @@ function cronUpdateTopicos() {
   const matVal = $('cron-f-materia')?.value || '';
   const topSel = $('cron-f-topico');
   const subSel = $('cron-f-subtopico');
+  const topWrap = $('cron-topico-wrap');
+  const subWrap = $('cron-subtopico-wrap');
   if (!topSel || !subSel) return;
 
   if (matVal.startsWith('edital:')) {
     const disc = matVal.slice(7);
     const data = EDITAL_TREE[disc];
-    let html = '<option value="">— geral —</option>';
+    let html = '<option value="">— todos os tópicos —</option>';
     if (data) data.topicos.forEach((t, ti) => {
       html += `<option value="${ti}">${esc(t.t)}</option>`;
     });
     topSel.innerHTML = html;
-    topSel.parentElement.style.display = '';
-    topSel.style.display = '';
-    document.querySelector('label[for]') ; // noop
+    if (topWrap) topWrap.style.display = '';   // jurídica: mostra tópicos
   } else {
     topSel.innerHTML = '<option value="">— geral —</option>';
+    if (topWrap) topWrap.style.display = 'none'; // extra: esconde (não tem tópicos)
+    if (subWrap) subWrap.style.display = 'none';
   }
   cronUpdateSubtopicos();
 }
@@ -12653,15 +12757,20 @@ function cronUpdateSubtopicos() {
   const matVal = $('cron-f-materia')?.value || '';
   const ti = $('cron-f-topico')?.value;
   const subSel = $('cron-f-subtopico');
+  const subWrap = $('cron-subtopico-wrap');
   if (!subSel) return;
-  let html = '<option value="">— todos —</option>';
-  if (matVal.startsWith('edital:') && ti !== '') {
+  let html = '<option value="">— todos os subtópicos —</option>';
+  if (matVal.startsWith('edital:') && ti !== '' && ti != null) {
     const disc = matVal.slice(7);
     const data = EDITAL_TREE[disc];
     const topico = data && data.topicos[parseInt(ti,10)];
     if (topico) topico.subs.forEach(s => {
       html += `<option value="${esc(s)}">${esc(s)}</option>`;
     });
+    if (subWrap) subWrap.style.display = '';   // tem tópico: mostra subtópicos
+  } else {
+    if (subWrap && matVal.startsWith('edital:')) subWrap.style.display = 'none'; // sem tópico escolhido
+    else if (subWrap) subWrap.style.display = 'none';
   }
   subSel.innerHTML = html;
 }
@@ -12820,6 +12929,275 @@ const CRON_TEMPLATES = {
   }
 };
 
+
+// ============================================================
+// 🤖 EDITAIS REAIS + gerador automático de cronograma
+// ============================================================
+// Cada edital lista as matérias (chave do EDITAL_TREE quando jurídica,
+// ou nome livre quando não-jurídica) com um PESO relativo (quanto mais
+// alto, mais tempo de estudo aquela matéria recebe na distribuição).
+
+// ============================================================
+// 🤖 EDITAIS — Polícias do Nordeste (PM, PC, Polícia Penal)
+//    dos 9 estados + Federais (PRF, PF, PPF)
+// ============================================================
+// Estratégia: perfis de matérias por TIPO de polícia (as grades
+// são muito parecidas entre estados), gerados por estado.
+// ============================================================
+
+// Perfis de matérias por tipo de polícia (key + peso)
+const CRON_PERFIS = {
+  pm: [
+    { key:'edital:constitucional', peso:3 },
+    { key:'edital:penal', peso:3 },
+    { key:'edital:administrativo', peso:2 },
+    { key:'edital:direitos_humanos', peso:2 },
+    { key:'edital:legislacao_especial', peso:2 },
+    { key:'extra:Português', peso:3 },
+    { key:'extra:Raciocínio Lógico', peso:2 },
+    { key:'extra:Atualidades', peso:1 },
+    { key:'extra:Informática', peso:1 }
+  ],
+  pc: [
+    { key:'edital:penal', peso:3 },
+    { key:'edital:processo_penal', peso:3 },
+    { key:'edital:constitucional', peso:2 },
+    { key:'edital:administrativo', peso:2 },
+    { key:'edital:legislacao_especial', peso:2 },
+    { key:'edital:direitos_humanos', peso:1 },
+    { key:'extra:Português', peso:3 },
+    { key:'extra:Informática', peso:1 },
+    { key:'extra:Raciocínio Lógico', peso:1 }
+  ],
+  pp: [ // Polícia Penal
+    { key:'edital:constitucional', peso:3 },
+    { key:'edital:penal', peso:3 },
+    { key:'edital:processo_penal', peso:2 },
+    { key:'edital:administrativo', peso:2 },
+    { key:'edital:direitos_humanos', peso:2 },
+    { key:'edital:legislacao_especial', peso:2 },
+    { key:'extra:Português', peso:3 },
+    { key:'extra:Raciocínio Lógico', peso:2 },
+    { key:'extra:Informática', peso:1 }
+  ]
+};
+
+// Estados do Nordeste
+const NE_ESTADOS = [
+  { uf:'AL', nome:'Alagoas' },
+  { uf:'BA', nome:'Bahia' },
+  { uf:'CE', nome:'Ceará' },
+  { uf:'MA', nome:'Maranhão' },
+  { uf:'PB', nome:'Paraíba' },
+  { uf:'PE', nome:'Pernambuco' },
+  { uf:'PI', nome:'Piauí' },
+  { uf:'RN', nome:'Rio Grande do Norte' },
+  { uf:'SE', nome:'Sergipe' }
+];
+
+// Monta os 27 estaduais + 3 federais
+const CRON_EDITAIS = {};
+
+// Estaduais
+NE_ESTADOS.forEach(e => {
+  CRON_EDITAIS[`pm_${e.uf.toLowerCase()}`] = {
+    nome: `PM${e.uf} — Polícia Militar (${e.nome})`, grupo:'Polícia Militar', materias: CRON_PERFIS.pm
+  };
+  CRON_EDITAIS[`pc_${e.uf.toLowerCase()}`] = {
+    nome: `PC${e.uf} — Polícia Civil (${e.nome})`, grupo:'Polícia Civil', materias: CRON_PERFIS.pc
+  };
+  CRON_EDITAIS[`pp_${e.uf.toLowerCase()}`] = {
+    nome: `PP${e.uf} — Polícia Penal (${e.nome})`, grupo:'Polícia Penal', materias: CRON_PERFIS.pp
+  };
+});
+
+// Federais
+CRON_EDITAIS['prf'] = {
+  nome: 'PRF — Polícia Rodoviária Federal', grupo:'Federais',
+  materias: [
+    { key:'edital:constitucional', peso:2 },
+    { key:'edital:administrativo', peso:2 },
+    { key:'edital:penal', peso:2 },
+    { key:'edital:processo_penal', peso:2 },
+    { key:'edital:direitos_humanos', peso:1 },
+    { key:'edital:legislacao_especial', peso:2 },
+    { key:'extra:Português', peso:3 },
+    { key:'extra:Raciocínio Lógico', peso:2 },
+    { key:'extra:Informática', peso:2 },
+    { key:'extra:Atualidades', peso:1 }
+  ]
+};
+CRON_EDITAIS['pf'] = {
+  nome: 'PF — Polícia Federal (Agente/Escrivão)', grupo:'Federais',
+  materias: [
+    { key:'edital:penal', peso:3 },
+    { key:'edital:processo_penal', peso:3 },
+    { key:'edital:constitucional', peso:2 },
+    { key:'edital:administrativo', peso:2 },
+    { key:'edital:legislacao_especial', peso:2 },
+    { key:'edital:direitos_humanos', peso:1 },
+    { key:'extra:Português', peso:3 },
+    { key:'extra:Informática', peso:2 },
+    { key:'extra:Raciocínio Lógico', peso:2 }
+  ]
+};
+CRON_EDITAIS['ppf'] = {
+  nome: 'PPF — Polícia Penal Federal', grupo:'Federais',
+  materias: [
+    { key:'edital:constitucional', peso:3 },
+    { key:'edital:penal', peso:3 },
+    { key:'edital:processo_penal', peso:2 },
+    { key:'edital:administrativo', peso:2 },
+    { key:'edital:direitos_humanos', peso:2 },
+    { key:'edital:legislacao_especial', peso:2 },
+    { key:'extra:Português', peso:3 },
+    { key:'extra:Raciocínio Lógico', peso:2 },
+    { key:'extra:Informática', peso:1 }
+  ]
+};
+
+// Resolve label/cor/ícone de uma matéria a partir da key (edital:x ou extra:x)
+function cronMateriaInfo(key) {
+  if (key.startsWith('edital:')) {
+    const d = EDITAL_TREE[key.slice(7)];
+    return d ? { nome:d.nome, cor:d.cor, icon:d.icon } : { nome:'Outro', cor:'#94a3b8', icon:'📌' };
+  }
+  const nome = key.slice(6);
+  return { nome, cor: CRON_MATERIA_COR[nome]||'#94a3b8', icon: CRON_MATERIA_ICON[nome]||'📌' };
+}
+
+// ---- Fluxo de escolha ----
+function openCronChoiceModal() {
+  snd.click();
+  $('cron-choice-modal').classList.remove('hidden');
+}
+window.openCronChoiceModal = openCronChoiceModal;
+function closeCronChoice() { $('cron-choice-modal').classList.add('hidden'); }
+window.closeCronChoice = closeCronChoice;
+
+function cronStartManual() {
+  closeCronChoice();
+  openCronBlockModal(0);
+}
+window.cronStartManual = cronStartManual;
+
+function cronStartEdital() {
+  closeCronChoice();
+  // Popular select agrupado por tipo de polícia
+  const selEd = $('cron-gen-edital');
+  if (selEd) {
+    const grupos = {};
+    for (const k in CRON_EDITAIS) {
+      const g = CRON_EDITAIS[k].grupo || 'Outros';
+      (grupos[g] = grupos[g] || []).push(k);
+    }
+    const ordem = ['Polícia Militar','Polícia Civil','Polícia Penal','Federais'];
+    let html = '';
+    ordem.forEach(g => {
+      if (!grupos[g]) return;
+      html += `<optgroup label="${g}">`;
+      grupos[g].forEach(k => { html += `<option value="${k}">${esc(CRON_EDITAIS[k].nome)}</option>`; });
+      html += '</optgroup>';
+    });
+    selEd.innerHTML = html;
+  }
+  // Dias da semana (botões toggle) — começa seg-sáb marcados
+  const diasWrap = $('cron-gen-dias');
+  if (diasWrap) {
+    diasWrap.innerHTML = CRON_DIAS_CURTO.map((d,i) =>
+      `<button type="button" class="cron-day-toggle ${i<6?'on':''}" data-dia="${i}" onclick="cronToggleGenDia(${i})">${d}</button>`
+    ).join('');
+  }
+  cronGenPreview();
+  $('cron-gen-modal').classList.remove('hidden');
+}
+window.cronStartEdital = cronStartEdital;
+function closeCronGen() { $('cron-gen-modal').classList.add('hidden'); }
+window.closeCronGen = closeCronGen;
+
+function cronToggleGenDia(i) {
+  const btn = document.querySelector(`.cron-day-toggle[data-dia="${i}"]`);
+  if (btn) btn.classList.toggle('on');
+  snd.click();
+}
+window.cronToggleGenDia = cronToggleGenDia;
+
+function cronGenPreview() {
+  const k = $('cron-gen-edital')?.value;
+  const ed = CRON_EDITAIS[k];
+  const wrap = $('cron-gen-materias');
+  if (ed && wrap) {
+    const lista = ed.materias.map(m => {
+      const info = cronMateriaInfo(m.key);
+      return `${info.icon} ${info.nome}`;
+    }).join(' · ');
+    wrap.innerHTML = `<strong>${ed.materias.length} matérias:</strong> ${lista}`;
+  }
+}
+window.cronGenPreview = cronGenPreview;
+
+// ---- Gerador inteligente ----
+function cronGenerate() {
+  const k = $('cron-gen-edital')?.value;
+  const ed = CRON_EDITAIS[k];
+  if (!ed) return;
+  const horasDia = parseFloat($('cron-gen-horas')?.value) || 4;
+  const diasSel = Array.from(document.querySelectorAll('.cron-day-toggle.on')).map(b => parseInt(b.dataset.dia,10));
+  if (diasSel.length === 0) { snd.wrong && snd.wrong(); return; }
+
+  const blocoHoras = horasDia >= 5 ? 2 : (horasDia >= 3 ? 2 : 1);
+  const blocosPorDia = Math.max(1, Math.round(horasDia / blocoHoras));
+
+  // Fila ponderada de matérias
+  let fila = [];
+  ed.materias.forEach(m => { for (let i=0;i<m.peso;i++) fila.push(m.key); });
+  fila = fila.sort(() => Math.random() - 0.5);
+
+  const novosBlocos = [];
+  let filaIdx = 0;
+  diasSel.forEach(dia => {
+    const usadasNoDia = new Set();
+    let blocosFeitos = 0, tentativas = 0;
+    while (blocosFeitos < blocosPorDia && tentativas < fila.length * 2) {
+      const key = fila[filaIdx % fila.length];
+      filaIdx++; tentativas++;
+      if (usadasNoDia.has(key) && usadasNoDia.size < ed.materias.length) continue;
+      usadasNoDia.add(key);
+      const info = cronMateriaInfo(key);
+      novosBlocos.push({
+        id: 'cb_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+        materia: info.nome, matValue: key, materiaCor: info.cor, materiaIcon: info.icon,
+        topicoIdx:'', topicoNome:'', subtopico:'', assuntoLivre:'',
+        assunto:'', horas: blocoHoras, meta: blocoHoras * 10, dia, done:false
+      });
+      blocosFeitos++;
+    }
+    const totalDia = blocosFeitos * blocoHoras;
+    if (totalDia > horasDia && novosBlocos.length) {
+      const ultimo = novosBlocos[novosBlocos.length-1];
+      ultimo.horas = Math.max(0.5, blocoHoras - (totalDia - horasDia));
+      ultimo.meta = Math.round(ultimo.horas * 10);
+    }
+  });
+
+  cronData.blocks = novosBlocos;
+  saveCronograma();
+  closeCronGen();
+  renderCronograma();
+  if (snd.correct) snd.correct();
+
+  const totalH = novosBlocos.reduce((s,b)=>s+b.horas,0);
+  openModal({
+    title: '✨ Cronograma criado!',
+    custom: `Montei <strong>${novosBlocos.length} blocos</strong> em <strong>${diasSel.length} dias</strong>, totalizando <strong>${totalH}h/semana</strong>, baseado no edital <strong>${esc(ed.nome)}</strong>.<br><br>Agora é só arrastar e ajustar o que quiser! 💜`,
+    hideCancel: true,
+    onConfirm: () => closeModal()
+  });
+}
+window.cronGenerate = cronGenerate;
+
+
+
 function cronTemplateMenu() {
   snd.click();
   const opts = Object.keys(CRON_TEMPLATES).map(k =>
@@ -12827,8 +13205,8 @@ function cronTemplateMenu() {
   ).join('');
   openModal({
     title: '✨ Modelos prontos',
-    msg: `<div style="text-align:left;font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Escolha um modelo pra começar. Você pode editar tudo depois!</div>${opts}<div style="font-size:11px;color:var(--text-muted);margin-top:8px;">⚠️ Isso substitui seu cronograma atual.</div>`,
-    hideConfirm: true
+    custom: `<div style="text-align:left;font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Escolha um modelo pra começar. Você pode editar tudo depois!</div>${opts}<div style="font-size:11px;color:var(--text-muted);margin-top:8px;">⚠️ Isso substitui seu cronograma atual.</div>`,
+    hideCancel: true
   });
 }
 window.cronTemplateMenu = cronTemplateMenu;
