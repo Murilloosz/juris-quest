@@ -4271,6 +4271,24 @@ body[data-theme="light"] .cron-input optgroup { background: #fff; color: #1a1330
   </div>
 </div>
 
+<!-- 💬 Modal de comentários da questão -->
+<div id="comments-modal" class="modal-backdrop hidden" style="z-index:350;">
+  <div class="modal-content" style="max-width:440px;width:100%;max-height:85vh;display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div class="font-arcade" style="color:var(--cyan);font-size:12px;">💬 COMENTÁRIOS</div>
+      <button onclick="closeQuestionComments()" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;">×</button>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Tire dúvidas e troque dicas sobre esta questão com outras alunas.</div>
+    <div id="comments-list" style="flex:1;overflow-y:auto;min-height:120px;max-height:45vh;margin-bottom:12px;">
+      <div style="text-align:center;color:var(--text-muted);padding:20px;">Carregando...</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-end;">
+      <textarea id="comment-input" placeholder="Escreva um comentário..." rows="2" style="flex:1;padding:9px 12px;background:rgba(40,30,60,.95);border:1px solid var(--glass-border);border-radius:8px;color:var(--text-primary);font-size:13px;font-family:inherit;resize:none;"></textarea>
+      <button class="btn cyan" onclick="postQuestionComment()" style="flex:0 0 auto;padding:9px 14px;">Enviar</button>
+    </div>
+  </div>
+</div>
+
 <!-- 📚 EDITAL — árvore de tópicos com progresso -->
 <div id="screen-edital" class="screen">
   <div class="container-narrow">
@@ -4570,6 +4588,12 @@ body[data-theme="light"] .cron-input optgroup { background: #fff; color: #1a1330
     <div class="card pixel-corners" style="margin-bottom:16px;">
       <div class="font-arcade" style="font-size:11px;color:var(--cyan);margin-bottom:8px;">🔍 BUSCAR ALUNA</div>
       <input type="text" id="admin-search" placeholder="Nome, email ou código (M-XXXX)..." oninput="adminFilter()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);border-radius:8px;color:var(--text-primary);font-size:14px;">
+    </div>
+
+    <!-- INSIGHTS DE QUESTÕES -->
+    <div class="card pixel-corners" style="margin-bottom:16px;">
+      <button class="btn full" onclick="adminLoadQuestionStats()">📋 Ver questões que as alunas mais erram</button>
+      <div id="admin-qstats" style="margin-top:12px;"></div>
     </div>
 
     <div id="admin-loading" style="text-align:center;padding:40px;color:rgba(255,255,255,.5);">
@@ -5748,7 +5772,7 @@ function maybeTriggerAmbush(lastCompletedDayId) {
   if (Math.random() > AMBUSH_CHANCE) return null;
   // Monta um boss-surpresa de 10 questões aleatórias do banco geral
   const allQs = Object.values(QBANK).flat();
-  const shuffled = [...allQs].sort(() => Math.random() - 0.5).slice(0, 10);
+  const shuffled = shuffleArray(dedupeQuestions(allQs)).slice(0, 10);
   return {
     id: 'ambush-' + Date.now(),
     type: 'ambush',
@@ -5761,6 +5785,32 @@ function maybeTriggerAmbush(lastCompletedDayId) {
 }
 
 // Converte questão do banco para formato esperado por renderPhase()
+// 🔀 Embaralhamento correto (Fisher-Yates) — substitui o sort(()=>Math.random()-0.5)
+// que é enviesado e distribui mal as questões.
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// 🧹 Remove questões duplicadas de um pool, comparando pelo enunciado normalizado.
+// Evita que a mesma questão apareça 2x na mesma sessão (ex: vinda do banco + fallback).
+function dedupeQuestions(pool) {
+  const seen = new Set();
+  const out = [];
+  for (const q of pool) {
+    if (!q || !q.s) continue;
+    const key = String(q.s).toLowerCase().replace(/\s+/g, ' ').replace(/[.,;:!?"'()\[\]º°]/g, '').trim();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(q);
+  }
+  return out;
+}
+
 function formatBankQuestion(q) {
   if (q.t === 'cebraspe') {
     return {
@@ -5818,7 +5868,7 @@ function buildDayQuestions(phase) {
   }
 
   // Embaralhar e pegar N — agora padrão é 20 (era 30)
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  const shuffled = shuffleArray(dedupeQuestions(pool));
   const picked = shuffled.slice(0, Math.min(phase.questionCount || 20, shuffled.length));
   return picked.map(formatBankQuestion);
 }
@@ -6654,7 +6704,7 @@ function startPMQuiz(pmId) {
     return;
   }
   // Embaralha e formata as questões (reusa formatBankQuestion)
-  const shuffled = [...bank].sort(() => Math.random()-0.5);
+  const shuffled = shuffleArray(dedupeQuestions(bank));
   activePhase = {
     id:'pm-'+pmId, type:'contest', subject:'mix', isPM:true, pmId:pmId,
     title:`${pm.icon} ${pm.nome}`,
@@ -6714,7 +6764,7 @@ function _pickQs(topicIds, n) {
     if (QBANK[tid]) pool = pool.concat(QBANK[tid]);
   });
   // Embaralha e pega N
-  pool.sort(() => Math.random() - 0.5);
+  pool = shuffleArray(dedupeQuestions(pool));
   return pool.slice(0, n);
 }
 
@@ -6825,7 +6875,7 @@ function startPMDay(pmId, dayKey) {
     return;
   }
   snd.click();
-  const shuffled = [...day.qs].sort(() => Math.random()-0.5);
+  const shuffled = shuffleArray(dedupeQuestions(day.qs));
   activePhase = {
     id:'pmday-'+pmId+'-'+dayKey, type:'contest', subject:'mix',
     isPM:true, pmId:pmId, pmKey:dayKey, mode:day.mode,
@@ -7186,7 +7236,7 @@ const CAMPAIGN_QBANK = {
     {b:'FGV',t:'cebraspe',s:'A lei penal mais GRAVOSA NUNCA retroage para alcançar fatos anteriores.',c:0,e:'CERTO. Princípio da irretroatividade da lex gravior. Art. 5º, XL, CF. Só retroage se favorecer o réu.'},
     {b:'FCC',t:'multiple',s:'A contagem do prazo penal NÃO se confunde com a do processo. No penal:',o:['Exclui o dia do começo','Inclui o dia do começo, exclui o do fim','Sempre conta em horas','Não conta','Conta domingos e feriados separadamente'],c:1,e:'Art. 10, CP. Prazo penal: INCLUI o dia do início, EXCLUI o do fim. Conta dia, mês e ano de forma corrida. Não se prorroga.'},
     {b:'VUNESP',t:'cebraspe',s:'O lugar do crime, no CP, segue a teoria da UBIQUIDADE — tanto onde ocorreu a conduta quanto onde ocorreu o resultado.',c:0,e:'CERTO. Art. 6º, CP. Lugar = onde se realizou conduta OU onde se produziu (ou deveria) o resultado. Útil pra crimes à distância.'},
-    {b:'IBFC',t:'multiple',s:'A territorialidade da lei penal brasileira:',o:['É absoluta','É temperada — admite extraterritorialidade nos casos do art. 7º','Exclui crimes praticados em navios','Não vale em terras indígenas','Só vale na capital'],c:1,e:'Art. 5º, CP. Territorialidade TEMPERADA. Regra: aplicar a lei brasileira ao crime no Brasil. Exceção: extraterritorialidade (art. 7º) — incondicional ou condicionada.'},
+    {b:'IBFC',t:'multiple',s:'Quanto ao LUGAR do crime, o Código Penal adotou a teoria:',o:['Da atividade','Da ubiquidade (lugar da conduta OU do resultado)','Do resultado apenas','Da intenção','Da residência do réu'],c:1,e:'Art. 6º, CP. LUGAR do crime = teoria da UBIQUIDADE (conduta ou resultado). Não confundir com o TEMPO do crime (art. 4º), que adota a teoria da ATIVIDADE. Mnemônico: LUTA (LUgar-Teoria da Ubiquidade).'},
     {b:'CESPE',t:'cebraspe',s:'Os crimes praticados a bordo de aeronaves brasileiras (mesmo no exterior) sujeitam-se à lei penal brasileira.',c:0,e:'CERTO. Art. 5º, §1º, CP. Aeronaves e embarcações brasileiras PÚBLICAS = território nacional, onde estejam. Privadas = só em alto-mar/espaço aéreo internacional.'},
     {b:'FGV',t:'multiple',s:'A culpabilidade é composta por:',o:['Apenas dolo','Imputabilidade, potencial consciência da ilicitude e exigibilidade de conduta diversa','Apenas culpa','Vontade e capacidade','Tipicidade e antijuridicidade'],c:1,e:'Teoria normativa pura. Culpabilidade = juízo de reprovação. 3 elementos: IMPUTABILIDADE (capacidade de entender), POTENCIAL CONSCIÊNCIA DA ILICITUDE, EXIGIBILIDADE DE CONDUTA DIVERSA.'},
     {b:'CESPE',t:'cebraspe',s:'O menor de 18 anos é INIMPUTÁVEL, sujeito às medidas socioeducativas do ECA.',c:0,e:'CERTO. Art. 228, CF + art. 27, CP + Lei 8.069/90 (ECA). Inimputabilidade absoluta = não responde criminalmente. Cumpre medida socioeducativa (até 21 anos).'},
@@ -7202,7 +7252,7 @@ const CAMPAIGN_QBANK = {
     {b:'CESPE',t:'cebraspe',s:'O crime IMPOSSÍVEL ocorre quando, por absoluta ineficácia do meio ou impropriedade do objeto, jamais se chegaria à consumação.',c:0,e:'CERTO. Art. 17, CP. Crime impossível NÃO é punido. Ex: tentar matar cadáver, atirar com arma defeituosa, furtar bolso vazio.'},
     {b:'FGV',t:'multiple',s:'A legítima defesa exige:',o:['Apenas agressão','Agressão injusta, atual ou iminente, com uso de meios moderados','Resposta tardia','Vingança','Ação ofensiva'],c:1,e:'Art. 25, CP. Legítima defesa: AGRESSÃO INJUSTA (não autorizada) + ATUAL ou IMINENTE + uso MODERADO dos meios necessários. Não cabe defesa de defesa.'},
     {b:'CESPE',t:'cebraspe',s:'O estado de necessidade exige que o perigo NÃO tenha sido causado voluntariamente pelo agente.',c:0,e:'CERTO. Art. 24, CP. Estado de necessidade: perigo ATUAL + não causado voluntariamente + bem sacrificado < bem salvo + inexigibilidade de sacrifício do bem ameaçado.'},
-    {b:'FCC',t:'multiple',s:'O homicídio simples tem pena de:',o:['1 a 4 anos','6 a 20 anos','3 a 10 anos','10 a 30 anos','12 a 30 anos'],c:1,e:'Art. 121, CP. Homicídio simples = 6 a 20 anos. Qualificado = 12 a 30 anos. Privilegiado: 1/6 a 1/3 de diminuição.'},
+    {b:'FCC',t:'multiple',s:'No dolo eventual, o agente:',o:['Quer diretamente o resultado','Assume o risco de produzir o resultado, conformando-se com ele','Age sem intenção alguma','Não responde pelo crime','Comete sempre crime culposo'],c:1,e:'Art. 18, I, CP. DOLO EVENTUAL: o agente prevê o resultado e ASSUME O RISCO ("foda-se, se acontecer, aconteceu"). Diferente da culpa consciente, em que ele prevê mas confia que NÃO vai ocorrer.'},
     {b:'VUNESP',t:'cebraspe',s:'O homicídio privilegiado é caracterizado por motivo de relevante valor social ou moral, ou sob domínio de violenta emoção logo após injusta provocação da vítima.',c:0,e:'CERTO. Art. 121, §1º, CP. Privilegiado reduz pena de 1/6 a 1/3. Não é qualificadora — é causa de diminuição.'},
     {b:'CESPE',t:'cebraspe',s:'O feminicídio é qualificadora aplicável quando o homicídio é cometido contra mulher por razões da condição do sexo feminino.',c:0,e:'CERTO. Art. 121, §2º, VI, CP. Inserida pela Lei 13.104/15. Pena: 12 a 30 anos. Hediondo. Razões da condição feminina: violência doméstica/familiar ou menosprezo/discriminação.'},
     {b:'IBFC',t:'multiple',s:'A lesão corporal SEGUIDA DE MORTE difere do homicídio porque:',o:['Há intenção de matar','Não há intenção de matar — morte foi resultado culposo da lesão dolosa','São idênticos','Pena é maior','Pena é menor'],c:1,e:'Art. 129, §3º, CP. Crime preterdoloso: DOLO na lesão + CULPA na morte. Sem intenção de matar. Pena: 4 a 12 anos.'},
@@ -7211,7 +7261,7 @@ const CAMPAIGN_QBANK = {
     {b:'FCC',t:'multiple',s:'A perseguição (stalking), tipificada pela Lei 14.132/21:',o:['Não é crime','É crime, art. 147-A CP, pena 6 meses a 2 anos + multa','Só é contravenção','Só vale entre cônjuges','É só online'],c:1,e:'Art. 147-A, CP (Lei 14.132/21). Perseguir alguém de forma reiterada, ameaçando integridade ou perturbando esfera de liberdade/privacidade. Pena duplica se contra mulher por razão do sexo.'},
     {b:'VUNESP',t:'cebraspe',s:'O furto simples tem pena de 1 a 4 anos de reclusão, além de multa.',c:0,e:'CERTO. Art. 155, CP. Subtrair, para si ou outrem, coisa alheia móvel. Pena: 1 a 4 anos + multa. Qualificado (rompimento de obstáculo, escalada, etc): 2 a 8 anos.'},
     {b:'CESPE',t:'cebraspe',s:'No furto noturno, a pena é aumentada de 1/3 (art. 155, §1º CP).',c:0,e:'CERTO. Furto repouso noturno = aumento de 1/3. Pra furto comum, não pra qualificado (jurisprudência).'},
-    {b:'IBFC',t:'multiple',s:'A diferença essencial entre furto e roubo é:',o:['O valor subtraído','O uso de violência ou grave ameaça à pessoa','O local','A vítima','O momento'],c:1,e:'Furto (art. 155): sem violência/ameaça. Roubo (art. 157): COM violência (real ou própria) ou grave ameaça. Pena do roubo: 4 a 10 anos.'},
+    {b:'IBFC',t:'multiple',s:'O latrocínio (roubo seguido de morte) é classificado como crime:',o:['Contra a pessoa','Hediondo, contra o patrimônio, com pena de 20 a 30 anos','Culposo','De menor potencial ofensivo','Contra a administração'],c:1,e:'Art. 157, §3º, II, CP. LATROCÍNIO = roubo + morte. É crime HEDIONDO, classificado como crime contra o PATRIMÔNIO (não contra a vida), competência do juiz singular (Súmula 603 STF). Pena: 20 a 30 anos.'},
     {b:'FGV',t:'cebraspe',s:'A extorsão mediante sequestro tem pena agravada se o sequestrado é menor de 18 anos ou maior de 60.',c:0,e:'CERTO. Art. 159, §1º, CP. Pena base: 8 a 15 anos. Agravada: 12 a 20 anos (vítima menor/idoso/gestante/PcD). Hediondo. Se resulta lesão grave: 16-24; morte: 24-30.'},
     {b:'CESPE',t:'cebraspe',s:'O latrocínio é julgado pelo Tribunal do Júri por ser crime doloso contra a vida.',c:1,e:'ERRADO. Apesar de envolver morte, latrocínio é crime contra o PATRIMÔNIO. Súmula 603 STF: júri NÃO julga latrocínio.'},
     {b:'FCC',t:'multiple',s:'O estelionato (art. 171 CP):',o:['Usa violência','Usa fraude/ardil para obter vantagem ilícita em prejuízo alheio','É culposo','É hediondo','É inafiançável'],c:1,e:'Estelionato = FRAUDE. Obter vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro. Pena: 1 a 5 anos. Sem violência.'},
@@ -7284,7 +7334,7 @@ const CAMPAIGN_QBANK = {
     {b:'CESPE',t:'cebraspe',s:'O protocolo IMAP mantém os e-mails no servidor, sincronizando entre múltiplos dispositivos.',c:0,e:'CERTO. IMAP (Internet Message Access Protocol) = sincroniza. Útil pra acessar mesmo email no celular, PC, web — tudo sincronizado. Diferente do POP3 (baixa e apaga do servidor).'},
     {b:'FCC',t:'multiple',s:'O protocolo HTTP opera por padrão na porta:',o:['21','22','80','443','3306'],c:2,e:'HTTP = porta 80. HTTPS = 443. FTP = 21. SSH = 22. SMTP = 25. POP3 = 110. IMAP = 143. DNS = 53. Conhecer as principais portas é cobrado.'},
     {b:'VUNESP',t:'cebraspe',s:'Uma URL como https://www.exemplo.com/pagina indica conexão segura via SSL/TLS.',c:0,e:'CERTO. HTTPS = HTTP Secure = HTTP + criptografia SSL/TLS. Cadeado no navegador. Hoje é padrão (Chrome marca HTTP como "inseguro").'},
-    {b:'IBFC',t:'multiple',s:'O DNS (Domain Name System) tem como função:',o:['Bloquear ataques','Traduzir nomes de domínio em endereços IP','Compactar dados','Acelerar downloads','Criar e-mails'],c:1,e:'DNS = "lista telefônica da Internet". Traduz www.google.com → IP (ex: 142.250.x.x). Sem DNS, teríamos que decorar números.'},
+    {b:'IBFC',t:'multiple',s:'Em uma rede de computadores, o protocolo DHCP tem a função de:',o:['Traduzir nomes de domínio','Atribuir endereços IP automaticamente aos dispositivos','Criptografar conexões','Bloquear vírus','Compactar arquivos'],c:1,e:'DHCP (Dynamic Host Configuration Protocol) distribui IPs automaticamente na rede — sem ele, cada dispositivo precisaria de IP configurado à mão. Não confundir com DNS (que traduz nomes em IPs).'},
     {b:'CESPE',t:'cebraspe',s:'A intranet é uma rede privada de uma organização, geralmente acessível apenas por seus membros.',c:0,e:'CERTO. INTRANET = rede privada interna (uma empresa). EXTRANET = parte da intranet aberta a parceiros externos. INTERNET = rede pública mundial.'},
     {b:'FGV',t:'multiple',s:'O navegador web que pertence à Microsoft e substituiu o Internet Explorer é:',o:['Chrome','Firefox','Edge','Safari','Opera'],c:2,e:'Microsoft Edge substituiu o Internet Explorer (descontinuado). Baseado no Chromium desde 2020. Chrome (Google), Firefox (Mozilla), Safari (Apple), Opera (Opera Software).'},
     {b:'CESPE',t:'cebraspe',s:'Cookies são pequenos arquivos de texto que os sites armazenam no navegador do usuário.',c:0,e:'CERTO. Cookies guardam preferências, sessões, dados de carrinho. Podem ser usados pra rastreamento (LGPD exige consentimento). Podem ser apagados.'},
@@ -7331,8 +7381,6 @@ function getCampaignQuestions(phaseConfig) {
   } else {
     pool = [...(CAMPAIGN_QBANK[phaseConfig.subj] || [])];
   }
-  // Embaralha e pega N
-  pool.sort(() => Math.random() - 0.5);
   // Se faltar, completa com banco principal (filtrado por matéria)
   if (pool.length < need && typeof QBANK !== 'undefined') {
     const fallbackTopics = phaseConfig.subj === 'mix' ? phaseConfig.mix : [phaseConfig.subj];
@@ -7341,8 +7389,9 @@ function getCampaignQuestions(phaseConfig) {
         if (tid.startsWith(subj + '-')) pool = pool.concat(QBANK[tid] || []);
       });
     });
-    pool.sort(() => Math.random() - 0.5);
   }
+  // Remove duplicatas (banco + fallback podem ter a mesma questão) e embaralha de verdade
+  pool = shuffleArray(dedupeQuestions(pool));
   return pool.slice(0, need);
 }
 
@@ -8517,7 +8566,7 @@ function startSrsReview() {
 function startTrapHunt() {
   audioInit(); snd.click();
   if (progress.lives <= 0) { openModal({title:'❤️ SEM VIDAS!', msg:'Volte amanhã.', hideCancel:true, onConfirm:()=>closeModal()}); return; }
-  const shuffled = [...TRAPS].sort(() => Math.random()-0.5).slice(0, 10);
+  const shuffled = shuffleArray(TRAPS).slice(0, 10);
   activePhase = {
     id:'trap', type:'trap', subject:'mix',
     title:'🎯 Caçada à Pegadinha',
@@ -8534,7 +8583,7 @@ function startSimulado() {
   audioInit(); snd.click();
   if (progress.lives <= 0) { openModal({title:'❤️ SEM VIDAS!', msg:'Volte amanhã.', hideCancel:true, onConfirm:()=>closeModal()}); return; }
   const all = PHASES.flatMap(p => p.questions);
-  const shuffled = [...all].sort(() => Math.random()-0.5).slice(0, 20);
+  const shuffled = shuffleArray(dedupeQuestions(all)).slice(0, 20);
   activePhase = {
     id:'sim', type:'sim', subject:'mix',
     title:'⏱️ Simulado Cronometrado',
@@ -8680,6 +8729,7 @@ function renderPhase() {
           </div>
           <div style="display:flex;gap:8px;margin-top:16px;">
             <button class="btn ghost" style="flex:0 0 auto;" onclick="toggleMyPile()" id="btn-flag-pile">${isInMyPile(q) ? '🚩 NA PILHA' : '🚩 MARCAR'}</button>
+            <button class="btn ghost" style="flex:0 0 auto;" onclick="openQuestionComments()" id="btn-comments">💬</button>
             <button class="btn cyan" style="flex:1;" onclick="nextQ()">${ps.qIdx + 1 >= ph.questions.length ? '🏆 VER RESULTADO →' : 'PRÓXIMA →'}</button>
           </div>
         ` : ''}
@@ -8727,6 +8777,8 @@ function answerQ(idx) {
   }
   const correct = q.correct === idx;
   if (correct) snd.correct(); else snd.wrong();
+  // 📋 Registra a estatística da questão (em background, pro painel admin)
+  try { bumpQuestionStat(q, correct); } catch(e) {}
   const newAnswers = [...phaseState.answers, {idx, correct, q}];
   const newScore = correct ? phaseState.score + 1 : phaseState.score;
   // Track missão relâmpago
@@ -9715,7 +9767,7 @@ function startMyPilePractice() {
     title: '🚩 Treino: Minha Pilha',
     subtitle: `${progress.myPile.length} questões marcadas`,
     briefing: 'Você marcou essas questões durante os bosses pra rever. Acertar ou errar aqui NÃO afeta vidas nem progresso — é só treino livre. Recompensa: 10 XP por questão certa.',
-    questions: [...progress.myPile].sort(() => Math.random() - 0.5),
+    questions: shuffleArray(progress.myPile),
   };
   phaseState = { stage:'briefing', qIdx:0, answers:[], score:0 };
   renderPhase();
@@ -10627,6 +10679,49 @@ function isAdmin() {
   return user && user.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
 }
 
+// 📋 Carrega as questões que as alunas mais erram
+async function adminLoadQuestionStats() {
+  const box = $('admin-qstats');
+  if (!box) return;
+  if (!sb) { box.innerHTML = '<div style="color:var(--text-muted);font-size:12px;">Sem conexão.</div>'; return; }
+  box.innerHTML = '<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:12px;">Carregando...</div>';
+  try {
+    // Busca as questões com pelo menos 1 resposta, ordenadas por taxa de erro
+    const { data, error } = await sb.from('question_stats')
+      .select('*')
+      .gt('total_answers', 0)
+      .order('total_wrong', { ascending: false })
+      .limit(200);
+    if (error) throw error;
+    const rows = (data || [])
+      .map(r => ({ ...r, pctErro: r.total_answers > 0 ? Math.round((r.total_wrong/r.total_answers)*100) : 0 }))
+      .filter(r => r.total_answers >= 2)   // só com amostra mínima
+      .sort((a,b) => b.pctErro - a.pctErro || b.total_answers - a.total_answers)
+      .slice(0, 25);
+
+    if (rows.length === 0) {
+      box.innerHTML = '<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:12px;">Ainda não há dados suficientes. Conforme as alunas respondem, as questões mais erradas aparecem aqui.</div>';
+      return;
+    }
+
+    box.innerHTML = `
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">As 25 questões com maior taxa de erro (mín. 2 respostas):</div>
+      ${rows.map((r,i) => {
+        const cor = r.pctErro >= 70 ? 'var(--rose)' : r.pctErro >= 50 ? 'var(--amber)' : 'var(--emerald)';
+        return `<div style="padding:10px;background:rgba(255,255,255,.03);border-left:3px solid ${cor};border-radius:8px;margin-bottom:6px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;">
+            <span style="font-size:10px;color:${cor};font-weight:700;">${r.subject||'—'} • ${r.pctErro}% erro</span>
+            <span style="font-size:10px;color:var(--text-muted);">${r.total_wrong}/${r.total_answers}</span>
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,.85);margin-top:3px;">${esc(r.statement||'')}</div>
+        </div>`;
+      }).join('')}`;
+  } catch(e) {
+    box.innerHTML = '<div style="color:var(--text-muted);font-size:12px;">Erro ao carregar (verifique se rodou o SQL de estatísticas).</div>';
+  }
+}
+window.adminLoadQuestionStats = adminLoadQuestionStats;
+
 async function goAdmin() {
   if (!isAdmin()) {
     openModal({title:'ACESSO NEGADO', msg:'Apenas administradores podem acessar este painel.', hideCancel:true, onConfirm:()=>closeModal()});
@@ -11251,7 +11346,7 @@ async function confirmChallenge() {
 
   // Sorteia 10 questões aleatórias do banco inteiro
   const allQs = Object.values(QBANK).flat();
-  const shuffled = [...allQs].sort(() => Math.random() - 0.5);
+  const shuffled = shuffleArray(dedupeQuestions(allQs));
   const duelQuestions = shuffled.slice(0, 10).map(formatBankQuestion);
 
   try {
@@ -11804,7 +11899,7 @@ function startWoundsReview() {
   if (wounds.length === 0) return;
   snd.click();
   // Pega até 10 feridas, embaralhadas
-  const selected = [...wounds].sort(()=>Math.random()-0.5).slice(0, 10);
+  const selected = shuffleArray(dedupeQuestions(wounds)).slice(0, 10);
   activeWoundsReview = {
     items: selected,
     qIdx: 0,
@@ -13249,7 +13344,7 @@ function cronGenerate() {
   // Fila ponderada de matérias
   let fila = [];
   ed.materias.forEach(m => { for (let i=0;i<m.peso;i++) fila.push(m.key); });
-  fila = fila.sort(() => Math.random() - 0.5);
+  fila = shuffleArray(fila);
 
   const novosBlocos = [];
   let filaIdx = 0;
@@ -13394,6 +13489,175 @@ window.showRouletteModal = showRouletteModal;
 window.dismissMission = dismissMission;
 window.goAdmin = goAdmin;
 window.isAdmin = isAdmin;
+
+
+
+// ============================================================
+// 💬 COMENTÁRIOS NAS QUESTÕES
+// ============================================================
+
+// Gera uma chave estável pra identificar a questão (hash do enunciado)
+function questionKey(statement) {
+  const s = String(statement || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  let hash = 0;
+  for (let i = 0; i < s.length; i++) {
+    hash = ((hash << 5) - hash + s.charCodeAt(i)) | 0;
+  }
+  return 'q_' + (hash >>> 0).toString(36);
+}
+
+// Pega a questão atual em exibição (fase, duelo, etc)
+function currentQuestionForComments() {
+  try {
+    if (activePhase && phaseState && activePhase.questions) {
+      return activePhase.questions[phaseState.qIdx];
+    }
+  } catch(e) {}
+  return null;
+}
+
+// 📋 Registra acerto/erro da questão no Supabase (para o painel admin)
+function bumpQuestionStat(q, correct) {
+  if (!sb || !q || !q.statement) return;
+  const subj = (q.banca ? '' : '') || guessSubjectFromExplanation(q) || '';
+  sb.rpc('bump_question_stat', {
+    p_key: questionKey(q.statement),
+    p_statement: String(q.statement).slice(0, 300),
+    p_subject: subj,
+    p_wrong: !correct
+  }).then(()=>{}).catch(()=>{});
+}
+
+// Tenta inferir a matéria pela explicação/tags (best-effort, só pra agrupar no admin)
+function guessSubjectFromExplanation(q) {
+  const t = ((q.explanation||'') + ' ' + (q.statement||'')).toLowerCase();
+  if (/\bart\.?\s*\d+.*c[pf]\b|crime|pena|dolo|culpa|homic|furto|roubo|penal/.test(t)) return 'Penal';
+  if (/constituc|cf\/88|art\.?\s*5º|direitos fundamentais|poder/.test(t)) return 'Constitucional';
+  if (/administrat|licita|servidor|ato administrativo|improbidade/.test(t)) return 'Administrativo';
+  if (/informát|windows|excel|rede|dns|http|vírus|firewall|backup/.test(t)) return 'Informática';
+  return 'Outros';
+}
+
+let __commentsQKey = null;
+
+async function openQuestionComments() {
+  const q = currentQuestionForComments();
+  if (!q) return;
+  __commentsQKey = questionKey(q.statement);
+  snd.click();
+  $('comments-modal').classList.remove('hidden');
+  $('comment-input').value = '';
+  await loadQuestionComments();
+}
+window.openQuestionComments = openQuestionComments;
+
+function closeQuestionComments() {
+  $('comments-modal').classList.add('hidden');
+  __commentsQKey = null;
+}
+window.closeQuestionComments = closeQuestionComments;
+
+async function loadQuestionComments() {
+  const list = $('comments-list');
+  if (!list) return;
+  if (!sb) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">Comentários precisam de conexão.</div>';
+    return;
+  }
+  list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">Carregando...</div>';
+  try {
+    const { data, error } = await sb.from('question_comments')
+      .select('*')
+      .eq('question_key', __commentsQKey)
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    renderComments(data || []);
+  } catch(e) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">Não foi possível carregar. Tente de novo.</div>';
+  }
+}
+
+function renderComments(comments) {
+  const list = $('comments-list');
+  if (!list) return;
+  if (comments.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:24px;">Ainda não há comentários.<br>Seja a primeira a comentar! 💬</div>';
+    return;
+  }
+  const myId = currentSession?.user?.id;
+  list.innerHTML = comments.map(c => {
+    const isMine = c.user_id === myId;
+    const when = formatCommentTime(c.created_at);
+    return `<div style="display:flex;gap:8px;padding:10px;background:rgba(255,255,255,.03);border-radius:10px;margin-bottom:8px;">
+      <div style="font-size:22px;flex-shrink:0;">${esc(c.user_avatar || '👤')}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <span style="font-weight:700;font-size:12px;color:var(--cyan);">${esc(c.user_name || 'Aluna')}</span>
+          <span style="font-size:10px;color:var(--text-muted);">${when}</span>
+          ${isMine ? `<button onclick="deleteQuestionComment(${c.id})" style="margin-left:auto;background:none;border:none;color:var(--rose);font-size:11px;cursor:pointer;">excluir</button>` : ''}
+        </div>
+        <div style="font-size:13px;line-height:1.45;color:rgba(255,255,255,.9);margin-top:3px;word-break:break-word;">${esc(c.body)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  list.scrollTop = list.scrollHeight;
+}
+
+function formatCommentTime(iso) {
+  try {
+    const d = new Date(iso), now = new Date();
+    const diff = Math.floor((now - d) / 60000); // minutos
+    if (diff < 1) return 'agora';
+    if (diff < 60) return `${diff}min`;
+    if (diff < 1440) return `${Math.floor(diff/60)}h`;
+    return `${Math.floor(diff/1440)}d`;
+  } catch(e) { return ''; }
+}
+
+async function postQuestionComment() {
+  const input = $('comment-input');
+  const body = (input?.value || '').trim();
+  if (!body) return;
+  if (body.length > 800) { openModal({title:'Comentário longo', msg:'Máximo de 800 caracteres.', hideCancel:true}); return; }
+  if (!sb || !currentSession) {
+    openModal({title:'Ops', msg:'Você precisa estar conectada pra comentar.', hideCancel:true});
+    return;
+  }
+  // Trava simples anti-spam (não comenta 2x em < 3s)
+  const nowTs = Date.now();
+  if (window.__lastCommentTs && nowTs - window.__lastCommentTs < 3000) return;
+  window.__lastCommentTs = nowTs;
+
+  input.disabled = true;
+  try {
+    const { error } = await sb.from('question_comments').insert({
+      question_key: __commentsQKey,
+      user_id: currentSession.user.id,
+      user_name: user?.name || 'Aluna',
+      user_avatar: user?.avatar || '👤',
+      body: body
+    });
+    if (error) throw error;
+    input.value = '';
+    snd.correct && snd.correct();
+    await loadQuestionComments();
+  } catch(e) {
+    openModal({title:'Ops', msg:'Não consegui enviar o comentário. Tente de novo.', hideCancel:true});
+  } finally {
+    input.disabled = false;
+  }
+}
+window.postQuestionComment = postQuestionComment;
+
+async function deleteQuestionComment(id) {
+  if (!sb || !currentSession) return;
+  try {
+    await sb.from('question_comments').delete().eq('id', id).eq('user_id', currentSession.user.id);
+    await loadQuestionComments();
+    snd.click();
+  } catch(e) {}
+}
+window.deleteQuestionComment = deleteQuestionComment;
 
 
 // ============================================================
