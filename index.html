@@ -4488,13 +4488,13 @@ body[data-theme="light"] .cron-input optgroup { background: #fff; color: #1a1330
           </div>
           <div style="font-size:18px;color:var(--rose);">▸</div>
         </button>
-        <button class="ls-subject-card ls-disabled" disabled>
-          <div style="font-size:32px;opacity:.5;">📜</div>
+        <button class="ls-subject-card" onclick="openLeiSeca('const')">
+          <div style="font-size:32px;">📜</div>
           <div style="flex:1;text-align:left;">
-            <div style="font-weight:700;font-size:15px;color:var(--text-muted);">DIREITO CONSTITUCIONAL</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.4);">Em breve — será adicionado no futuro</div>
+            <div style="font-weight:700;font-size:15px;color:var(--cyan);">DIREITO CONSTITUCIONAL</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);">CF/88 • 30 artigos essenciais • 🔥 foco em segurança pública</div>
           </div>
-          <div style="font-size:11px;color:var(--text-muted);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:6px;">EM BREVE</div>
+          <div style="font-size:18px;color:var(--cyan);">▸</div>
         </button>
       </div>
 
@@ -5219,23 +5219,23 @@ const QBANK = {
   {b:'CESPE',t:'cebraspe',s:'A receptação culposa ocorre quando o agente deveria presumir a origem criminosa da coisa.',c:0,e:'CERTO. Art. 180, § 3º.'},
   {b:'CESPE',t:'cebraspe',s:'O furto qualificado pelo rompimento de obstáculo exige perícia para sua caracterização.',c:0,e:'CERTO. STJ.'},
   {b:'CESPE',t:'cebraspe',s:'A extorsão se diferencia do roubo porque, na extorsão, há cooperação ativa da vítima sob ameaça para a obtenção da vantagem indevida.',c:0,e:'CERTO. A assertiva confirma o que prevê a norma legal/constitucional.'},
-  {b:'CESPE',t:'cebraspe',s:'O furto simples tem pena de reclusão de 1 a 4 anos.',c:0,e:'CERTO. Art. 155.'},
+  {b:'CESPE',t:'cebraspe',s:'Após a Lei 15.397/2026, o furto simples passou a ter pena de reclusão de 1 a 6 anos, e multa.',c:0,e:'CERTO. Art. 155, caput (redação da Lei 15.397/2026, em vigor desde 04/05/2026). A pena máxima subiu de 4 para 6 anos. Para fatos anteriores a essa data, aplica-se a pena antiga (1 a 4 anos), por ser mais benéfica.'},
   {b:'CESPE',t:'cebraspe',s:'A pena do roubo é aumentada quando praticado com emprego de arma de fogo.',c:0,e:'CERTO. Art. 157, § 2º-A.'},
   {b:'CESPE',t:'cebraspe',s:'A extorsão mediante sequestro é crime hediondo.',c:0,e:'CERTO. Lei 8.072/90, art. 1º, III.'},
   {b:'CESPE',t:'cebraspe',s:'A estelionato é crime contra o patrimônio.',c:0,e:'CERTO. Art. 171.'},
   {b:'CESPE',t:'cebraspe',s:'O furto qualificado pelo uso de explosivo tem pena maior que o latrocínio.',c:1,e:'ERRADO. Latrocínio: 20-30 anos. Furto qualificado: 4-10 ou 4-15 anos.'},
   {b:'FGV',t:'multiple',s:'A diferença essencial entre roubo e extorsão é que:',o:['Roubo é com violência e extorsão sem.','No roubo o agente subtrai; na extorsão a vítima coopera sob ameaça entregando a coisa ou fazendo, tolerando ou omitindo algo.','Não há diferença.','A extorsão é culposa.','O roubo é hediondo.'],c:1,e:'Resposta correta: No roubo o agente subtrai; na extorsão a vítima coopera sob ameaça entregando a coisa ou fazendo, tolerando ou omitin....'},
-  {b:'FGV',t:'multiple',s:'O furto qualificado por concurso de duas ou mais pessoas tem pena de:',o:['Reclusão de 1 a 4 anos.','Reclusão de 2 a 8 anos.','Reclusão de 3 a 10 anos.','Detenção de 6 meses a 2 anos.','Reclusão de 4 a 10 anos.'],c:1,e:'Art. 155, § 4º — pena dobra (2 a 8 anos).'},
+  {b:'FGV',t:'multiple',s:'O furto qualificado por concurso de duas ou mais pessoas tem pena de:',o:['Reclusão de 1 a 4 anos.','Reclusão de 2 a 8 anos.','Reclusão de 3 a 10 anos.','Detenção de 6 meses a 2 anos.','Reclusão de 4 a 10 anos.'],c:1,e:'Art. 155, § 4º, IV — furto qualificado: 2 a 8 anos + multa (pena mantida pela Lei 15.397/2026). Cuidado: o furto SIMPLES passou para 1 a 6 anos com a nova lei, mas o qualificado segue 2 a 8.'},
   {b:'FCC',t:'multiple',s:'A apropriação indébita configura-se quando o agente:',o:['Subtrai coisa móvel.','Apropria-se de coisa alheia móvel de que tem posse ou detenção.','Engana a vítima.','Recebe coisa de origem criminosa.','Constrange a vítima.'],c:1,e:'Art. 168.'},
-  {b:'FCC',t:'multiple',s:'A receptação dolosa simples tem pena de:',o:['Detenção de 6 meses a 1 ano.','Reclusão de 1 a 4 anos + multa.','Reclusão de 4 a 8 anos.','Detenção de 1 a 3 anos.','Reclusão de 2 a 8 anos.'],c:1,e:'Art. 180, caput.'},
+  {b:'FCC',t:'multiple',s:'Após a Lei 15.397/2026, a receptação dolosa simples (art. 180, caput) tem pena de:',o:['Detenção de 6 meses a 1 ano.','Reclusão de 1 a 4 anos + multa.','Reclusão de 2 a 6 anos + multa.','Detenção de 1 a 3 anos.','Reclusão de 4 a 8 anos.'],c:2,e:'Art. 180, caput (redação da Lei 15.397/2026). A pena subiu de 1-4 para 2 a 6 anos + multa. Antes da lei, era 1 a 4 anos.'},
   {b:'VUNESP',t:'multiple',s:'No estelionato, o meio executório é:',o:['Violência ou grave ameaça.','Artifício, ardil ou qualquer outro meio fraudulento.','Subtração direta.','Apropriação.','Indução à doação.'],c:1,e:'Art. 171.'},
   {b:'VUNESP',t:'multiple',s:'A causa de aumento de roubo prevista no § 2º-A do art. 157 inclui:',o:['Concurso de duas pessoas.','Emprego de arma de fogo.','Transporte de valores.','Mantém a vítima em seu poder.','Apenas violência.'],c:1,e:'Lei 13.654/18.'},
   {b:'IBFC',t:'multiple',s:'O latrocínio consumado:',o:['Sempre vai ao júri.','É competência do juiz singular (Súm. 603 STF).','É contravenção.','Não tem pena privativa.'],c:1,e:'Resposta correta: É competência do juiz singular (Súm. 603 STF)..'},
   {b:'IBFC',t:'multiple',s:'O dano qualificado pode ocorrer:',o:['Apenas com violência.','Quando cometido contra patrimônio público, com substância inflamável, ou com violência/grave ameaça, ou por motivo egoístico.','Apenas com prejuízo grande.','Apenas em flagrante.'],c:1,e:'Art. 163, p.ú.'},
   {b:'AOCP',t:'multiple',s:'No furto privilegiado (art. 155, § 2º):',o:['O juiz pode substituir a pena de reclusão por detenção, diminuir de 1/3 a 2/3 ou aplicar só multa, se o réu é primário e a coisa de pequeno valor.','Reduz pena à metade.','Aplica-se só a furtos noturnos.','Aplica-se a reincidentes.','Aplica-se ao roubo também.'],c:0,e:'Resposta correta: O juiz pode substituir a pena de reclusão por detenção, diminuir de 1/3 a 2/3 ou aplicar só multa, se o réu é primári....'},
-  {b:'Quadrix',t:'cebraspe',s:'O roubo seguido de morte (latrocínio) tem pena de reclusão de 20 a 30 anos.',c:0,e:'CERTO. Art. 157, § 3º, II.'},
+  {b:'Quadrix',t:'cebraspe',s:'Após a Lei 15.397/2026, o roubo seguido de morte (latrocínio) tem pena de reclusão de 24 a 30 anos.',c:0,e:'CERTO. Art. 157, § 3º, II (redação da Lei 15.397/2026). A pena mínima subiu de 20 para 24 anos. É crime hediondo. Para fatos anteriores a 04/05/2026, aplica-se 20 a 30 anos (lei mais benéfica).'},
   {b:'Quadrix',t:'cebraspe',s:'A receptação culposa exige a comprovação de que o agente sabia da origem criminosa.',c:1,e:'ERRADO. Na receptação CULPOSA o agente deveria presumir, não exige saber.'},
-  {b:'CESPE',t:'cebraspe',s:'O estelionato, em regra, é crime de ação penal pública condicionada à representação do ofendido (após Lei 13.964/19).',c:0,e:'CERTO. Art. 171, § 5º.'},
+  {b:'CESPE',t:'cebraspe',s:'Atualmente, o estelionato, em regra, é crime de ação penal pública condicionada à representação do ofendido.',c:1,e:'ERRADO. A Lei 15.397/2026 REVOGOU o § 5º do art. 171 (que havia sido criado pelo Pacote Anticrime). Desde 04/05/2026, o estelionato voltou a ser, em regra, de ação penal pública INCONDICIONADA — o MP age de ofício, sem precisar de representação.'},
   {b:'CESPE',t:'cebraspe',s:'O roubo majorado pelo emprego de arma branca constitui causa de aumento de 1/3 a 2/3.',c:0,e:'CERTO. Art. 157, § 2º, VII (Lei 13.654/2018 reinserido).'},
   {b:'CESPE',t:'cebraspe',s:'O furto cometido durante o repouso noturno tem pena aumentada.',c:0,e:'CERTO. Art. 155, § 1º.'},
   {b:'FGV',t:'multiple',s:'A extorsão mediante sequestro (art. 159) com resultado morte tem pena:',o:['De 8 a 15 anos.','De 12 a 30 anos.','De 24 a 30 anos.','De 30 a 40 anos.','Reclusão perpétua.'],c:2,e:'Art. 159, § 3º.'},
@@ -5243,7 +5243,19 @@ const QBANK = {
   {b:'VUNESP',t:'multiple',s:'A subtração de coisa alheia móvel mediante destreza configura:',o:['Roubo.','Furto qualificado.','Estelionato.','Apropriação.','Receptação.'],c:1,e:'Art. 155, § 4º, II.'},
   {b:'IBFC',t:'multiple',s:'O crime de dano (art. 163 CP) consiste em:',o:['Apropriar-se de coisa alheia.','Destruir, inutilizar ou deteriorar coisa alheia.','Subtrair coisa móvel.','Furtar com violência.'],c:1,e:'Resposta correta: Destruir, inutilizar ou deteriorar coisa alheia..'},
   {b:'AOCP',t:'multiple',s:'A apropriação indébita (CP, art. 168) caracteriza-se quando:',o:['O agente subtrai coisa alheia.','O agente, tendo a posse legítima da coisa alheia móvel, inverte o título e passa a se comportar como dono.','Há violência contra pessoa.','Há grave ameaça.','É praticada apenas por funcionário público.'],c:1,e:'Resposta: Posse LEGÍTIMA + inversão. Ex: empregada que leva embora joia que ficou aos seus cuidados. Diferente de FURTO (sem posse anterior).',o:['No objeto material.','No meio executório (roubo: violência/grave ameaça; furto: sem).','Na pena apenas.','No sujeito ativo.','Na competência.'],c:1,e:'Resposta correta: No meio executório (roubo: violência/grave ameaça; furto: sem)..'},
-  {b:'CESPE',t:'cebraspe',s:'A invasão de dispositivo informático é crime do art. 154-A CP.',c:0,e:'CERTO. Lei 12.737/12 e atualizações.'},
+  {b:'CESPE',t:'cebraspe',s:'A invasão de dispositivo informático é crime do art. 154-A CP.',c:0,e:'CERTO. Lei 12.737/12 e atualizações.'}
+  ,{b:'CESPE',t:'cebraspe',s:'Com a Lei 15.397/2026, o furto durante o repouso noturno passou a ter a pena aumentada de metade.',c:0,e:'CERTO. Art. 155, §1º (Lei 15.397/2026). O aumento do furto durante o repouso noturno subiu de 1/3 para METADE. Continua incidindo só sobre o furto simples, não sobre o qualificado (STJ, Tema 1.087).'}
+  ,{b:'FGV',t:'multiple',s:'Segundo a Lei 15.397/2026, o furto de aparelho de telefonia celular passou a ser punido como:',o:['Furto simples (1 a 6 anos)','Furto privilegiado','Furto qualificado, com pena de 4 a 10 anos','Contravenção penal','Furto noturno apenas'],c:2,e:'Art. 155, §6º, II (qualificadora nova da Lei 15.397/2026). O furto de celular, computador ou dispositivo eletrônico, que antes era furto simples (1-4 anos), agora é QUALIFICADO: 4 a 10 anos. Para fatos anteriores a 04/05/2026, aplica-se a pena antiga.'}
+  ,{b:'CEBRASPE',t:'cebraspe',s:'A Lei 15.397/2026 criou qualificadora autônoma para o furto de arma de fogo, com pena de reclusão de 4 a 10 anos.',c:0,e:'CERTO. Art. 155, §7º, II (Lei 15.397/2026). O furto de arma de fogo virou qualificadora autônoma (4 a 10 anos). Irretroatividade obrigatória para fatos anteriores a 04/05/2026.'}
+  ,{b:'FCC',t:'multiple',s:'A Lei 15.397/2026 criou novo tipo penal no art. 171, §2º, VII, do CP, consistente em:',o:['Furto mediante fraude','Ceder conta bancária (conta laranja) para trânsito de recursos de origem ou destinação criminosa','Estelionato sentimental','Receptação de animal','Roubo digital'],c:1,e:'Art. 171, §2º, VII (tipo novo da Lei 15.397/2026). A CESSÃO DE CONTA LARANJA — ceder conta bancária, gratuita ou onerosamente, para trânsito de recursos de atividade criminosa — passou a ser crime, com pena de 1 a 5 anos + multa. Exige dolo (saber da origem/destino ilícito).'}
+  ,{b:'VUNESP',t:'cebraspe',s:'Após a Lei 15.397/2026, o estelionato voltou a ser, em regra, crime de ação penal pública incondicionada.',c:0,e:'CERTO. A Lei 15.397/2026 REVOGOU o §5º do art. 171 (criado pelo Pacote Anticrime), que exigia representação. Desde 04/05/2026, o MP age de ofício. A revogação não retroage a fatos anteriores (norma mais gravosa).'}
+  ,{b:'IBFC',t:'multiple',s:'De acordo com a Lei 15.397/2026, a pena do roubo simples (art. 157, caput) passou a ser:',o:['Reclusão de 4 a 10 anos','Reclusão de 6 a 10 anos','Reclusão de 2 a 8 anos','Reclusão de 6 a 12 anos','Reclusão de 1 a 6 anos'],c:1,e:'Art. 157, caput (Lei 15.397/2026). A pena mínima do roubo subiu de 4 para 6 anos (+50%). Com mínima de 6 anos, o regime inicial aberto fica vedado para não reincidentes.'}
+  ,{b:'AOCP',t:'cebraspe',s:'A Lei 15.397/2026 elevou a pena mínima do latrocínio de 20 para 24 anos de reclusão.',c:0,e:'CERTO. Art. 157, §3º, II (Lei 15.397/2026). O latrocínio (roubo seguido de morte) passou de 20-30 para 24-30 anos. Continua sendo crime hediondo e de competência do juiz singular (Súmula 603 STF).'}
+  ,{b:'Quadrix',t:'multiple',s:'Com a Lei 15.397/2026, a receptação simples (art. 180, caput) passou a ter pena de:',o:['Reclusão de 1 a 4 anos','Reclusão de 2 a 6 anos','Detenção de 1 a 3 anos','Reclusão de 3 a 8 anos','Reclusão de 4 a 10 anos'],c:1,e:'Art. 180, caput (Lei 15.397/2026). A receptação simples subiu de 1-4 para 2 a 6 anos + multa. A receptação de animal (art. 180-A) passou para 3 a 8 anos.'}
+  ,{b:'CESPE',t:'cebraspe',s:'A Lei 15.397/2026 elevou a pena máxima do furto simples para 6 anos.',c:0,e:'CERTO. Art. 155, caput. A pena passou de 1-4 para 1 a 6 anos. Quando a pena aplicada fica acima de 4 anos, veda-se a substituição por restritiva de direitos (art. 44, I, CP). O prazo prescricional subiu de 8 para 12 anos.'}
+  ,{b:'FGV',t:'multiple',s:'A elevação para 16 a 24 anos da pena do roubo com lesão corporal grave, prevista no projeto que originou a Lei 15.397/2026, foi:',o:['Sancionada integralmente','Vetada pelo Presidente da República por ofensa à proporcionalidade','Declarada inconstitucional pelo STF','Convertida em medida provisória','Aprovada por emenda constitucional'],c:1,e:'O dispositivo foi VETADO (VEP-365/26). Motivo: a pena mínima de 16 anos superaria a do homicídio qualificado (12 anos), ferindo a proporcionalidade. Permanece vigente a pena anterior: 7 a 18 anos.'}
+  ,{b:'IBFC',t:'cebraspe',s:'Após a Lei 15.397/2026, o roubo de aparelho celular ou de arma de fogo passou a ter causa de aumento de pena de 1/3 até metade.',c:0,e:'CERTO. Art. 157, §2º, IX e X (Lei 15.397/2026). Roubo de celular/dispositivo eletrônico (IX) e de arma de fogo (X) viraram causas de aumento de 1/3 a 1/2.'}
+  ,{b:'CEBRASPE',t:'cebraspe',s:'As novas penas mais severas da Lei 15.397/2026 aplicam-se retroativamente aos fatos praticados antes de sua vigência.',c:1,e:'ERRADO. A Lei 15.397/2026 é mais gravosa (lex gravior) e NÃO retroage (art. 5º, XL, CF; art. 2º, CP). Para fatos anteriores a 04/05/2026, aplica-se a lei antiga, mais benéfica ao réu.'}
 ],
 
 'penal-administracao': [
@@ -7259,14 +7271,14 @@ const CAMPAIGN_QBANK = {
     {b:'FGV',t:'cebraspe',s:'A rixa é crime praticado por três ou mais pessoas, em conflito recíproco.',c:0,e:'CERTO. Art. 137, CP. Rixa = ≥ 3 pessoas em luta corporal mútua. Pena: 15 dias a 2 meses + multa. Qualificada se houver morte ou lesão grave.'},
     {b:'CESPE',t:'cebraspe',s:'A ameaça (art. 147 CP) só se configura quando praticada por escrito ou gesto.',c:1,e:'ERRADO. Art. 147, CP. Ameaça por palavra, ESCRITO, GESTO ou QUALQUER outro meio simbólico. Mal injusto e grave, prometido a alguém.'},
     {b:'FCC',t:'multiple',s:'A perseguição (stalking), tipificada pela Lei 14.132/21:',o:['Não é crime','É crime, art. 147-A CP, pena 6 meses a 2 anos + multa','Só é contravenção','Só vale entre cônjuges','É só online'],c:1,e:'Art. 147-A, CP (Lei 14.132/21). Perseguir alguém de forma reiterada, ameaçando integridade ou perturbando esfera de liberdade/privacidade. Pena duplica se contra mulher por razão do sexo.'},
-    {b:'VUNESP',t:'cebraspe',s:'O furto simples tem pena de 1 a 4 anos de reclusão, além de multa.',c:0,e:'CERTO. Art. 155, CP. Subtrair, para si ou outrem, coisa alheia móvel. Pena: 1 a 4 anos + multa. Qualificado (rompimento de obstáculo, escalada, etc): 2 a 8 anos.'},
-    {b:'CESPE',t:'cebraspe',s:'No furto noturno, a pena é aumentada de 1/3 (art. 155, §1º CP).',c:0,e:'CERTO. Furto repouso noturno = aumento de 1/3. Pra furto comum, não pra qualificado (jurisprudência).'},
-    {b:'IBFC',t:'multiple',s:'O latrocínio (roubo seguido de morte) é classificado como crime:',o:['Contra a pessoa','Hediondo, contra o patrimônio, com pena de 20 a 30 anos','Culposo','De menor potencial ofensivo','Contra a administração'],c:1,e:'Art. 157, §3º, II, CP. LATROCÍNIO = roubo + morte. É crime HEDIONDO, classificado como crime contra o PATRIMÔNIO (não contra a vida), competência do juiz singular (Súmula 603 STF). Pena: 20 a 30 anos.'},
+    {b:'VUNESP',t:'cebraspe',s:'Após a Lei 15.397/2026, o furto simples tem pena de 1 a 6 anos de reclusão, além de multa.',c:0,e:'CERTO. Art. 155, caput (Lei 15.397/2026, vigente desde 04/05/2026). A máxima subiu de 4 para 6 anos. Qualificado: 2 a 8 anos. Furto de celular ou de arma de fogo agora é qualificado (4 a 10 anos).'},
+    {b:'CESPE',t:'cebraspe',s:'No furto durante o repouso noturno, a pena é aumentada de 1/3 (art. 155, §1º CP).',c:1,e:'ERRADO. A Lei 15.397/2026 alterou o §1º: o aumento do furto durante o repouso noturno passou de 1/3 para METADE (1/2). Continua incidindo só sobre o furto simples, não sobre o qualificado (STJ, Tema 1.087).'},
+    {b:'IBFC',t:'multiple',s:'Após a Lei 15.397/2026, o latrocínio (roubo seguido de morte) é classificado como crime:',o:['Contra a pessoa','Hediondo, contra o patrimônio, com pena de 24 a 30 anos','Culposo','De menor potencial ofensivo','Contra a administração'],c:1,e:'Art. 157, §3º, II, CP (Lei 15.397/2026). LATROCÍNIO = roubo + morte. É crime HEDIONDO, contra o PATRIMÔNIO (não contra a vida), competência do juiz singular (Súmula 603 STF). Pena: 24 a 30 anos (a mínima subiu de 20 para 24).'},
     {b:'FGV',t:'cebraspe',s:'A extorsão mediante sequestro tem pena agravada se o sequestrado é menor de 18 anos ou maior de 60.',c:0,e:'CERTO. Art. 159, §1º, CP. Pena base: 8 a 15 anos. Agravada: 12 a 20 anos (vítima menor/idoso/gestante/PcD). Hediondo. Se resulta lesão grave: 16-24; morte: 24-30.'},
     {b:'CESPE',t:'cebraspe',s:'O latrocínio é julgado pelo Tribunal do Júri por ser crime doloso contra a vida.',c:1,e:'ERRADO. Apesar de envolver morte, latrocínio é crime contra o PATRIMÔNIO. Súmula 603 STF: júri NÃO julga latrocínio.'},
     {b:'FCC',t:'multiple',s:'O estelionato (art. 171 CP):',o:['Usa violência','Usa fraude/ardil para obter vantagem ilícita em prejuízo alheio','É culposo','É hediondo','É inafiançável'],c:1,e:'Estelionato = FRAUDE. Obter vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro. Pena: 1 a 5 anos. Sem violência.'},
     {b:'VUNESP',t:'cebraspe',s:'A apropriação indébita exige que o agente já tenha a posse legítima do bem, e dela se apropria indevidamente.',c:0,e:'CERTO. Art. 168, CP. Apropriação indébita = tem a POSSE legítima (ex: babá que cuida da joia) + apropria-se. Diferente do furto (não tem a posse).'},
-    {b:'IBFC',t:'cebraspe',s:'A receptação consiste em adquirir, receber, transportar, conduzir, ocultar ou influir em coisa que sabe ser produto de crime.',c:0,e:'CERTO. Art. 180, CP. Receptação DOLOSA: SABE ser produto de crime. Culposa: deveria saber pela natureza/preço. Pena: 1 a 4 anos.'},
+    {b:'IBFC',t:'cebraspe',s:'A receptação consiste em adquirir, receber, transportar, conduzir, ocultar ou influir em coisa que sabe ser produto de crime.',c:0,e:'CERTO. Art. 180, CP. Receptação DOLOSA: SABE ser produto de crime. Culposa: deveria saber pela natureza/preço. Pena (após Lei 15.397/2026): 2 a 6 anos + multa.'},
     {b:'FGV',t:'multiple',s:'O peculato consiste em:',o:['Funcionário público se apropriar de bem público que tem a posse','Particular subtrair bem público','Furto comum','Apenas corrupção','Apenas concussão'],c:0,e:'Art. 312, CP. Peculato = APROPRIAR-SE de bem público sob sua POSSE. Variante peculato-furto: subtrai (não tem posse). Pena: 2 a 12 anos + multa.'},
     {b:'CESPE',t:'cebraspe',s:'A concussão exige que o agente seja funcionário público e EXIJA vantagem indevida.',c:0,e:'CERTO. Art. 316, CP. Concussão = EXIGIR vantagem (impor, intimidar). Diferente da corrupção passiva (solicita ou recebe, sem exigir). Pena: 2 a 12 anos.'},
     {b:'FCC',t:'multiple',s:'A corrupção PASSIVA é praticada:',o:['Pelo particular que paga','Pelo funcionário público que solicita ou recebe vantagem','Por qualquer pessoa','Apenas em licitações','Apenas em obras'],c:1,e:'Art. 317, CP. PASSIVA = funcionário público SOLICITA, RECEBE ou ACEITA vantagem. ATIVA (art. 333) = particular oferece. Pena: 2 a 12 anos.'},
@@ -9372,11 +9384,11 @@ const CP_LEISECA = {
         tema: '💰 Crimes contra o Patrimônio',
         artigos: [
           {art:'Art. 155', hot:true, titulo:'Furto',
-           texto:'Subtrair, para si ou para outrem, coisa alheia móvel. Pena: reclusão, de 1 a 4 anos, e multa. §1º furto noturno (+1/3); §4º qualificado (rompimento de obstáculo, abuso de confiança, escalada, concurso de pessoas): reclusão de 2 a 8 anos.',
-           exp:'Sem violência/grave ameaça (diferença essencial pro roubo). FURTO NOTURNO aumenta 1/3. Furto PRIVILEGIADO (§2º, réu primário + coisa de pequeno valor). QUALIFICADO (§4º). Furto de energia elétrica = §3º.'},
+           texto:'Subtrair, para si ou para outrem, coisa alheia móvel. Pena: reclusão, de 1 a 6 anos, e multa (Lei 15.397/2026). §1º furto durante o repouso noturno (+metade); §4º qualificado (rompimento de obstáculo, abuso de confiança, escalada, concurso de pessoas): reclusão de 2 a 8 anos. §6º, II: furto de celular/dispositivo eletrônico = 4 a 10 anos. §7º, II: furto de arma de fogo = 4 a 10 anos.',
+           exp:'Sem violência/grave ameaça (diferença essencial pro roubo). ATUALIZAÇÃO Lei 15.397/2026: furto simples passou para 1 a 6 anos; furto durante o REPOUSO NOTURNO aumenta METADE (era 1/3); furto de CELULAR e de ARMA DE FOGO viraram qualificadoras (4 a 10 anos). Furto PRIVILEGIADO (§2º, réu primário + coisa de pequeno valor) mantido. Furto de energia elétrica = §3º.'},
           {art:'Art. 157', hot:true, titulo:'Roubo',
-           texto:'Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de reduzi-la à impossibilidade de resistência. Pena: reclusão, de 4 a 10 anos, e multa.',
-           exp:'Furto + VIOLÊNCIA ou GRAVE AMEAÇA. §2º causas de aumento (concurso de pessoas, arma branca, restrição de liberdade da vítima). §2º-A: aumento de 2/3 se arma de fogo. §3º: lesão grave ou LATROCÍNIO (roubo + morte: 20-30 anos, hediondo).'},
+           texto:'Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de reduzi-la à impossibilidade de resistência. Pena: reclusão, de 6 a 10 anos, e multa (Lei 15.397/2026).',
+           exp:'Furto + VIOLÊNCIA ou GRAVE AMEAÇA. ATUALIZAÇÃO Lei 15.397/2026: pena mínima do roubo subiu de 4 para 6 anos. §2º causas de aumento (concurso de pessoas, arma branca, restrição da vítima; incs. IX-X: roubo de celular ou de arma de fogo = +1/3 a 1/2). §2º-A: aumento de 2/3 se arma de fogo. §3º: lesão grave (7-18 anos, item de elevação VETADO) ou LATROCÍNIO (roubo + morte: 24-30 anos, hediondo).'},
           {art:'Art. 158', hot:true, titulo:'Extorsão',
            texto:'Constranger alguém, mediante violência ou grave ameaça, e com o intuito de obter indevida vantagem econômica, a fazer, tolerar que se faça ou deixar de fazer alguma coisa. Pena: reclusão, de 4 a 10 anos, e multa.',
            exp:'Diferença pro roubo: na extorsão a COLABORAÇÃO da vítima é imprescindível (ela faz/deixa de fazer algo). Súmula 96 STJ: consuma-se independentemente da obtenção da vantagem. §3º "sequestro relâmpago".'},
@@ -9387,11 +9399,11 @@ const CP_LEISECA = {
            texto:'Apropriar-se de coisa alheia móvel, de que tem a posse ou a detenção. Pena: reclusão, de 1 a 4 anos, e multa.',
            exp:'O agente JÁ TEM a posse lícita da coisa (ex: emprestada) e depois se apropria. Diferença pro furto: no furto ele SUBTRAI (não tinha a posse). 168-A: apropriação indébita PREVIDENCIÁRIA.'},
           {art:'Art. 171', hot:true, titulo:'Estelionato',
-           texto:'Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento. Pena: reclusão, de 1 a 5 anos, e multa.',
-           exp:'Crime de FRAUDE (engano da vítima). §2º-A: estelionato com PIX/transferência eletrônica. Após Lei 13.964/19, ação penal pública CONDICIONADA à representação (regra). Diferença pro furto mediante fraude: aqui a vítima ENTREGA o bem iludida.'},
+           texto:'Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento. Pena: reclusão, de 1 a 5 anos, e multa (pena mantida).',
+           exp:'Crime de FRAUDE (engano da vítima). §2º-A: fraude eletrônica (PIX, clonagem de WhatsApp/apps): 4 a 8 anos. §2º, VII: cessão de CONTA LARANJA (tipo novo da Lei 15.397/2026): 1 a 5 anos. ATUALIZAÇÃO Lei 15.397/2026: o §5º foi REVOGADO — o estelionato voltou a ser, em regra, de ação penal pública INCONDICIONADA (não exige mais representação). Diferença pro furto mediante fraude: aqui a vítima ENTREGA o bem iludida.'},
           {art:'Art. 180', hot:true, titulo:'Receptação',
-           texto:'Adquirir, receber, transportar, conduzir ou ocultar, em proveito próprio ou alheio, coisa que sabe ser produto de crime. Pena: reclusão, de 1 a 4 anos, e multa.',
-           exp:'Receptação DOLOSA (sabe que é produto de crime) x CULPOSA (§3º: deve presumir pela natureza/preço). §1º receptação qualificada (no exercício de atividade comercial). Crime acessório (depende de crime anterior).'},
+           texto:'Adquirir, receber, transportar, conduzir ou ocultar, em proveito próprio ou alheio, coisa que sabe ser produto de crime. Pena: reclusão, de 2 a 6 anos, e multa (Lei 15.397/2026).',
+           exp:'Receptação DOLOSA (sabe que é produto de crime) x CULPOSA (§3º: deve presumir pela natureza/preço). ATUALIZAÇÃO Lei 15.397/2026: pena da receptação simples subiu de 1-4 para 2 a 6 anos. §1º receptação qualificada (no exercício de atividade comercial). Art. 180-A receptação de animal (3 a 8 anos). Crime acessório (depende de crime anterior).'},
         ]
       },
       {
@@ -9430,7 +9442,166 @@ const CP_LEISECA = {
   // Constitucional fica VAZIO por enquanto (será adicionado no futuro)
   const: {
     titulo: 'Constituição Federal de 1988',
-    grupos: []
+    grupos: [
+  {
+    tema: '🏛️ Princípios Fundamentais (arts. 1º a 4º)',
+    artigos: [
+      {art:'Art. 1º', hot:true, titulo:'Fundamentos da República',
+       texto:'A República Federativa do Brasil, formada pela união indissolúvel dos Estados e Municípios e do Distrito Federal, constitui-se em Estado Democrático de Direito e tem como fundamentos: I - soberania; II - cidadania; III - dignidade da pessoa humana; IV - valores sociais do trabalho e da livre iniciativa; V - pluralismo político.',
+       exp:'Os 5 FUNDAMENTOS. Mnemônico: "SO-CI-DI-VA-PLU". Cuidado: dignidade da pessoa humana é FUNDAMENTO (não objetivo). Parágrafo único: todo poder emana do povo, exercido por representantes eleitos OU diretamente (democracia semidireta).'},
+      {art:'Art. 2º', hot:true, titulo:'Separação dos Poderes',
+       texto:'São Poderes da União, independentes e harmônicos entre si, o Legislativo, o Executivo e o Judiciário.',
+       exp:'Tripartição de Montesquieu. Os poderes são INDEPENDENTES e HARMÔNICOS (sistema de freios e contrapesos). Cláusula pétrea (art. 60, §4º, III).'},
+      {art:'Art. 3º', hot:true, titulo:'Objetivos Fundamentais',
+       texto:'Constituem objetivos fundamentais: I - construir uma sociedade livre, justa e solidária; II - garantir o desenvolvimento nacional; III - erradicar a pobreza e a marginalização e reduzir as desigualdades; IV - promover o bem de todos, sem preconceitos de origem, raça, sexo, cor, idade.',
+       exp:'Os OBJETIVOS são verbos de AÇÃO (construir, garantir, erradicar, promover) — normas programáticas. Pegadinha clássica: trocar FUNDAMENTO (art. 1º) por OBJETIVO (art. 3º).'},
+      {art:'Art. 4º', hot:false, titulo:'Princípios das Relações Internacionais',
+       texto:'A República rege-se nas relações internacionais pelos princípios: independência nacional; prevalência dos direitos humanos; autodeterminação dos povos; não intervenção; igualdade entre os Estados; defesa da paz; solução pacífica dos conflitos; repúdio ao terrorismo e ao racismo; cooperação; concessão de asilo político.',
+       exp:'10 princípios. Destaques pra prova: PREVALÊNCIA DOS DIREITOS HUMANOS e REPÚDIO AO TERRORISMO E RACISMO. Parágrafo único: busca da integração da América Latina.'}
+    ]
+  },
+  {
+    tema: '🛡️ Direitos e Deveres Individuais e Coletivos (art. 5º)',
+    artigos: [
+      {art:'Art. 5º, caput', hot:true, titulo:'Igualdade e direitos invioláveis',
+       texto:'Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade.',
+       exp:'Princípio da IGUALDADE (formal e material). O STF estende os direitos também a estrangeiros NÃO residentes e pessoas jurídicas. "Vida, liberdade, igualdade, segurança, propriedade" são os 5 bens nucleares.'},
+      {art:'Art. 5º, III', hot:true, titulo:'Vedação à tortura',
+       texto:'Ninguém será submetido a tortura nem a tratamento desumano ou degradante.',
+       exp:'Base constitucional da Lei de Tortura (9.455/97). Direito ABSOLUTO segundo a doutrina majoritária. Conecta com o art. 5º, XLIII (tortura é crime inafiançável e insuscetível de graça/anistia).'},
+      {art:'Art. 5º, X', hot:true, titulo:'Intimidade, vida privada, honra e imagem',
+       texto:'São invioláveis a intimidade, a vida privada, a honra e a imagem das pessoas, assegurado o direito a indenização pelo dano material ou moral decorrente de sua violação.',
+       exp:'Direitos da personalidade. Súmula 403 STJ: uso de imagem com fins econômicos sem autorização gera dano, independe de prova do prejuízo. Relevante pra atuação policial (não expor presos/investigados).'},
+      {art:'Art. 5º, XI', hot:true, titulo:'Inviolabilidade do domicílio',
+       texto:'A casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem consentimento do morador, salvo em caso de flagrante delito ou desastre, ou para prestar socorro, ou, durante o dia, por determinação judicial.',
+       exp:'TEMA QUENTÍSSIMO pra polícia. Entrada SEM mandado: flagrante, desastre, socorro (a qualquer hora) e determinação judicial (só de DIA). STF (RE 603.616): flagrante exige fundadas razões prévias. "Casa" abrange escritório, quarto de hotel, trailer.'},
+      {art:'Art. 5º, XII', hot:true, titulo:'Sigilo de correspondência e comunicações',
+       texto:'É inviolável o sigilo da correspondência e das comunicações telegráficas, de dados e das comunicações telefônicas, salvo, no último caso, por ordem judicial, nas hipóteses e na forma que a lei estabelecer para fins de investigação criminal ou instrução processual penal.',
+       exp:'Base da Lei 9.296/96 (interceptação). A quebra do sigilo TELEFÔNICO exige ordem judicial + investigação criminal/instrução penal. STF: a parte final ("último caso") refere-se às comunicações telefônicas.'},
+      {art:'Art. 5º, XLII', hot:true, titulo:'Racismo — crime inafiançável e imprescritível',
+       texto:'A prática do racismo constitui crime inafiançável e imprescritível, sujeito à pena de reclusão, nos termos da lei.',
+       exp:'Racismo: INAFIANÇÁVEL e IMPRESCRITÍVEL. STF (ADO 26): equiparou homofobia e transfobia ao crime de racismo. Base da Lei 7.716/89 (atualizada pela Lei 14.532/2023, que tornou injúria racial equiparada a racismo, também imprescritível).'},
+      {art:'Art. 5º, XLIII', hot:true, titulo:'Crimes inafiançáveis (3TH)',
+       texto:'A lei considerará crimes inafiançáveis e insuscetíveis de graça ou anistia a prática da tortura, o tráfico ilícito de entorpecentes, o terrorismo e os definidos como crimes hediondos.',
+       exp:'Os "3TH + hediondos": Tortura, Tráfico, Terrorismo e Hediondos. São inafiançáveis e NÃO admitem graça/anistia. Cuidado: a CF não cita "indulto" aqui (discussão doutrinária). Base da Lei 8.072/90.'},
+      {art:'Art. 5º, XLIV', hot:true, titulo:'Ação de grupos armados',
+       texto:'Constitui crime inafiançável e imprescritível a ação de grupos armados, civis ou militares, contra a ordem constitucional e o Estado Democrático.',
+       exp:'Os DOIS crimes IMPRESCRITÍVEIS na CF: racismo (XLII) e ação de grupos armados contra o Estado Democrático (XLIV). Decore esses dois — é pegadinha recorrente.'},
+      {art:'Art. 5º, LIV e LV', hot:true, titulo:'Devido processo, contraditório e ampla defesa',
+       texto:'LIV - ninguém será privado da liberdade ou de seus bens sem o devido processo legal; LV - aos litigantes, em processo judicial ou administrativo, e aos acusados em geral são assegurados o contraditório e ampla defesa, com os meios e recursos a ela inerentes.',
+       exp:'DEVIDO PROCESSO LEGAL (due process) + CONTRADITÓRIO + AMPLA DEFESA. Valem inclusive no processo ADMINISTRATIVO (ex: PAD). Súmula Vinculante 5: falta de defesa técnica por advogado no PAD não ofende a Constituição.'},
+      {art:'Art. 5º, LVII', hot:true, titulo:'Presunção de inocência',
+       texto:'Ninguém será considerado culpado até o trânsito em julgado de sentença penal condenatória.',
+       exp:'PRESUNÇÃO DE INOCÊNCIA (ou não-culpabilidade). STF (2019, ADCs 43/44/54): a execução da pena só após o TRÂNSITO EM JULGADO. Princípio nuclear pra atuação policial e prisional.'},
+      {art:'Art. 5º, LXI a LXVI', hot:true, titulo:'Direitos do preso',
+       texto:'LXI - ninguém será preso senão em flagrante delito ou por ordem escrita e fundamentada de autoridade judiciária competente, salvo transgressão militar; LXII - a prisão será comunicada ao juiz e à família; LXIII - o preso será informado de seus direitos, entre os quais o de permanecer calado; LXV - a prisão ilegal será relaxada pela autoridade judiciária; LXVI - ninguém será levado à prisão quando a lei admitir a liberdade provisória.',
+       exp:'PACOTE DE DIREITOS DO PRESO — essencial pra polícia. Destaques: prisão só em flagrante ou ordem judicial escrita/fundamentada; direito ao SILÊNCIO (LXIII); comunicação ao juiz e à família; prisão ilegal é RELAXADA. Base da audiência de custódia.'},
+      {art:'Art. 5º, LXVIII', hot:true, titulo:'Habeas Corpus',
+       texto:'Conceder-se-á habeas corpus sempre que alguém sofrer ou se achar ameaçado de sofrer violência ou coação em sua liberdade de locomoção, por ilegalidade ou abuso de poder.',
+       exp:'HC protege a LIBERDADE DE LOCOMOÇÃO (ir e vir). Repressivo (já preso) ou preventivo (ameaça — salvo-conduto). Gratuito. Não cabe HC contra punição disciplinar militar (quanto ao mérito).'},
+      {art:'Art. 5º, LXIX', hot:false, titulo:'Mandado de Segurança',
+       texto:'Conceder-se-á mandado de segurança para proteger direito líquido e certo, não amparado por habeas corpus ou habeas data, quando o responsável pela ilegalidade for autoridade pública ou agente de pessoa jurídica no exercício de atribuições do Poder Público.',
+       exp:'MS protege DIREITO LÍQUIDO E CERTO (provado de plano, sem dilação probatória). É residual: cabe quando não é caso de HC nem HD. Prazo decadencial: 120 dias. Pode ser individual ou coletivo (LXX).'},
+      {art:'Art. 5º, §3º', hot:true, titulo:'Tratados de direitos humanos',
+       texto:'Os tratados e convenções internacionais sobre direitos humanos que forem aprovados, em cada Casa do Congresso Nacional, em dois turnos, por três quintos dos votos dos respectivos membros, serão equivalentes às emendas constitucionais.',
+       exp:'Tratados de DH aprovados pelo rito especial (2 turnos, 3/5, nas 2 Casas) = status de EMENDA CONSTITUCIONAL. Ex: Convenção de Nova York (PcD). Os demais tratados de DH têm status SUPRALEGAL (acima da lei, abaixo da CF) — STF.'}
+    ]
+  },
+  {
+    tema: '🌎 Nacionalidade (art. 12)',
+    artigos: [
+      {art:'Art. 12, I', hot:true, titulo:'Brasileiros natos',
+       texto:'São brasileiros NATOS: a) os nascidos no Brasil, ainda que de pais estrangeiros, desde que estes não estejam a serviço de seu país; b) os nascidos no estrangeiro, de pai ou mãe brasileiros, desde que qualquer deles esteja a serviço da República; c) os nascidos no estrangeiro de pai ou mãe brasileiros, desde que sejam registrados em repartição brasileira competente OU venham a residir no Brasil e optem, a qualquer tempo, depois de atingida a maioridade, pela nacionalidade brasileira.',
+       exp:'Critérios: NATO por ius soli (nascido no Brasil — alínea a) ou ius sanguinis + requisitos (alíneas b e c). A alínea "c" tem a "nacionalidade potestativa" (opção após maioridade). Pegadinha: filho de estrangeiro a serviço do país dele NÃO é nato.'},
+      {art:'Art. 12, II', hot:true, titulo:'Brasileiros naturalizados',
+       texto:'São NATURALIZADOS: a) os que, na forma da lei, adquiram a nacionalidade brasileira, exigidas aos originários de países de língua portuguesa apenas residência por um ano ininterrupto e idoneidade moral; b) os estrangeiros de qualquer nacionalidade residentes no Brasil há mais de 15 anos ininterruptos e sem condenação penal, desde que requeiram a nacionalidade.',
+       exp:'Naturalização ORDINÁRIA (originários de país lusófono: 1 ano + idoneidade) e EXTRAORDINÁRIA/quinzenária (15 anos + sem condenação + requerimento). Atenção aos prazos: 1 ano (lusófonos) x 15 anos (demais).'},
+      {art:'Art. 12, §3º', hot:true, titulo:'Cargos privativos de brasileiro nato',
+       texto:'São privativos de brasileiro NATO os cargos: I - de Presidente e Vice-Presidente da República; II - de Presidente da Câmara dos Deputados; III - de Presidente do Senado Federal; IV - de Ministro do STF; V - da carreira diplomática; VI - de oficial das Forças Armadas; VII - de Ministro de Estado da Defesa.',
+       exp:'Mnemônico "MP3.COM": Ministro STF, Presidente/vice da República, Presidente da Câmara, Presidente do Senado, Carreira diplomática, Oficial das Forças Armadas, Ministro da Defesa. SÓ esses 7 são privativos de NATO — rol taxativo.'},
+      {art:'Art. 12, §4º', hot:true, titulo:'Perda da nacionalidade',
+       texto:'Será declarada a perda da nacionalidade do brasileiro que: I - tiver cancelada sua naturalização, por sentença judicial, em virtude de fraude ou de atentado contra a ordem constitucional e o Estado Democrático; II - fizer pedido expresso de perda da nacionalidade (ressalvadas situações que acarretem apatridia).',
+       exp:'Atualizado pela EC 131/2023: a perda da nacionalidade agora exige PEDIDO EXPRESSO (antes era automática pela aquisição de outra). Naturalização só é cancelada por SENTENÇA JUDICIAL (fraude/atentado). Não se admite perda que gere apatridia.'}
+    ]
+  },
+  {
+    tema: '🗳️ Direitos Políticos (arts. 14 a 16)',
+    artigos: [
+      {art:'Art. 14, caput', hot:true, titulo:'Soberania popular e sufrágio',
+       texto:'A soberania popular será exercida pelo sufrágio universal e pelo voto direto e secreto, com valor igual para todos, e, nos termos da lei, mediante plebiscito, referendo e iniciativa popular.',
+       exp:'Sufrágio UNIVERSAL + voto DIRETO, SECRETO e de valor IGUAL. Instrumentos de democracia direta: PLEBISCITO (consulta prévia), REFERENDO (consulta posterior) e INICIATIVA POPULAR. Não confunda plebiscito (antes) com referendo (depois).'},
+      {art:'Art. 14, §1º', hot:true, titulo:'Alistamento e voto — obrigatório x facultativo',
+       texto:'O alistamento eleitoral e o voto são: I - OBRIGATÓRIOS para os maiores de 18 anos; II - FACULTATIVOS para os analfabetos, os maiores de 70 anos e os maiores de 16 e menores de 18 anos.',
+       exp:'OBRIGATÓRIO: 18 a 70 anos. FACULTATIVO: analfabetos, maiores de 70, e de 16-17 anos. Pegadinha clássica: o voto do maior de 70 é FACULTATIVO (não proibido). O analfabeto vota (facultativo) mas é INELEGÍVEL.'},
+      {art:'Art. 14, §2º', hot:true, titulo:'Quem não pode alistar-se',
+       texto:'Não podem alistar-se como eleitores os estrangeiros e, durante o período do serviço militar obrigatório, os conscritos.',
+       exp:'ESTRANGEIROS e CONSCRITOS (durante o serviço militar obrigatório) NÃO se alistam. Conscrito não vota nem é votado durante o serviço. Português equiparado (com reciprocidade) é exceção entre estrangeiros.'},
+      {art:'Art. 14, §3º', hot:true, titulo:'Condições de elegibilidade',
+       texto:'São condições de elegibilidade: nacionalidade brasileira; pleno exercício dos direitos políticos; alistamento eleitoral; domicílio eleitoral na circunscrição; filiação partidária; idade mínima de 35 (Presidente/Senador), 30 (Governador), 21 (Deputado/Prefeito) e 18 anos (Vereador).',
+       exp:'IDADES MÍNIMAS — decore: 35 (Presidente, Vice, Senador), 30 (Governador/vice), 21 (Deputado federal/estadual, Prefeito, juiz de paz), 18 (Vereador). Exige filiação partidária (não há candidatura avulsa no Brasil).'},
+      {art:'Art. 14, §7º', hot:true, titulo:'Inelegibilidade reflexa',
+       texto:'São inelegíveis, no território de jurisdição do titular, o cônjuge e os parentes consanguíneos ou afins, até o segundo grau ou por adoção, do Presidente da República, de Governador, de Prefeito ou de quem os haja substituído dentro dos seis meses anteriores ao pleito, salvo se já titular de mandato eletivo e candidato à reeleição.',
+       exp:'INELEGIBILIDADE REFLEXA (ou por parentesco). Atinge cônjuge e parentes até 2º grau do chefe do Executivo. Súmula Vinculante 18: a dissolução da sociedade conjugal no curso do mandato NÃO afasta a inelegibilidade.'},
+      {art:'Art. 15', hot:true, titulo:'Perda e suspensão dos direitos políticos',
+       texto:'É vedada a cassação de direitos políticos, cuja perda ou suspensão só se dará nos casos de: I - cancelamento da naturalização por sentença transitada em julgado; II - incapacidade civil absoluta; III - condenação criminal transitada em julgado, enquanto durarem seus efeitos; IV - recusa de cumprir obrigação a todos imposta ou prestação alternativa; V - improbidade administrativa.',
+       exp:'É PROIBIDA a CASSAÇÃO de direitos políticos. Só há PERDA ou SUSPENSÃO nos 5 casos. A condenação criminal transitada em julgado SUSPENDE os direitos políticos (inciso III) — relevante pra concurso policial. Mnemônico para os incisos: lembre que não existe "cassação".'},
+      {art:'Art. 16', hot:false, titulo:'Princípio da anterioridade eleitoral',
+       texto:'A lei que alterar o processo eleitoral entrará em vigor na data de sua publicação, não se aplicando à eleição que ocorra até um ano da data de sua vigência.',
+       exp:'ANTERIORIDADE ELEITORAL (anualidade): lei que altera o processo eleitoral não vale pra eleição que ocorra em até 1 ANO. Protege a segurança jurídica e a igualdade no pleito. O STF considera essa regra uma garantia individual (cláusula pétrea).'}
+    ]
+  },
+  {
+    tema: '⚔️ Segurança Pública (art. 144)',
+    artigos: [
+      {art:'Art. 144, caput', hot:true, titulo:'Órgãos da Segurança Pública',
+       texto:'A segurança pública, dever do Estado, direito e responsabilidade de todos, é exercida para a preservação da ordem pública e da incolumidade das pessoas e do patrimônio, através dos seguintes órgãos: I - polícia federal; II - polícia rodoviária federal; III - polícia ferroviária federal; IV - polícias civis; V - polícias militares e corpos de bombeiros militares; VI - polícias penais federal, estaduais e distrital.',
+       exp:'TEMA CENTRAL pra concurso policial. São hoje 6 órgãos (a EC 104/2019 criou as POLÍCIAS PENAIS — inciso VI). Segurança pública: DEVER do Estado, DIREITO e RESPONSABILIDADE de todos. O rol é, segundo o STF, TAXATIVO.'},
+      {art:'Art. 144, §1º', hot:true, titulo:'Polícia Federal',
+       texto:'A polícia federal destina-se a: apurar infrações penais contra a ordem política e social ou em detrimento de bens, serviços e interesses da União; prevenir e reprimir o tráfico ilícito de entorpecentes, o contrabando e o descaminho; exercer as funções de polícia marítima, aeroportuária e de fronteiras; exercer, com exclusividade, as funções de polícia judiciária da União.',
+       exp:'A PF exerce COM EXCLUSIVIDADE a polícia judiciária da UNIÃO. Atua em: tráfico interestadual/internacional, contrabando, descaminho, crimes contra a União, fronteiras. Mnemônico das funções: apurar, prevenir/reprimir, polícia de fronteira, polícia judiciária da União.'},
+      {art:'Art. 144, §2º', hot:true, titulo:'Polícia Rodoviária Federal',
+       texto:'A polícia rodoviária federal, órgão permanente, organizado e mantido pela União, destina-se, na forma da lei, ao patrulhamento ostensivo das rodovias federais.',
+       exp:'PRF: patrulhamento OSTENSIVO das RODOVIAS FEDERAIS. Órgão permanente, estruturado em carreira. Cuidado: é "rodovias federais" (não estaduais).'},
+      {art:'Art. 144, §4º', hot:true, titulo:'Polícias Civis',
+       texto:'Às polícias civis, dirigidas por delegados de polícia de carreira, incumbem, ressalvada a competência da União, as funções de polícia judiciária e a apuração de infrações penais, exceto as militares.',
+       exp:'PC: polícia JUDICIÁRIA estadual + apuração de infrações penais (exceto militares). Dirigidas por DELEGADOS de carreira. É polícia INVESTIGATIVA (atua após o crime).'},
+      {art:'Art. 144, §5º', hot:true, titulo:'Polícias Militares e Bombeiros',
+       texto:'Às polícias militares cabem a polícia ostensiva e a preservação da ordem pública; aos corpos de bombeiros militares, além das atribuições definidas em lei, incumbe a execução de atividades de defesa civil.',
+       exp:'PM: polícia OSTENSIVA + preservação da ordem pública (atua ANTES/durante o crime — prevenção). Bombeiros: além das atribuições legais, DEFESA CIVIL. PMs e Bombeiros são forças AUXILIARES e reserva do Exército (§6º).'},
+      {art:'Art. 144, §5º-A', hot:true, titulo:'Polícias Penais (EC 104/2019)',
+       texto:'Às polícias penais, vinculadas ao órgão administrador do sistema penal da unidade federativa a que pertencem, cabe a segurança dos estabelecimentos penais.',
+       exp:'NOVIDADE da EC 104/2019. As polícias penais (federal, estaduais e distrital) cuidam da SEGURANÇA DOS ESTABELECIMENTOS PENAIS. Preenchimento por concurso público; aproveitamento dos agentes penitenciários (§6º). Tema recente e muito cobrado.'},
+      {art:'Art. 144, §6º', hot:false, titulo:'Subordinação das polícias estaduais',
+       texto:'As polícias militares e civis, bem como as polícias penais estaduais e distrital, subordinam-se aos Governadores dos Estados, do Distrito Federal e dos Territórios.',
+       exp:'As polícias estaduais subordinam-se aos GOVERNADORES. PM e Bombeiros militares são forças auxiliares e reserva do Exército. A PF, PRF e PFF são federais (vinculadas à União).'}
+    ]
+  },
+  {
+    tema: '🗳️ Organização do Estado e dos Poderes',
+    artigos: [
+      {art:'Art. 18', hot:false, titulo:'Organização político-administrativa',
+       texto:'A organização político-administrativa da República compreende a União, os Estados, o Distrito Federal e os Municípios, todos autônomos, nos termos desta Constituição.',
+       exp:'Federação brasileira: União + Estados + DF + Municípios, todos AUTÔNOMOS (não soberanos — soberania é só da República). O Município é ente federativo no Brasil (peculiaridade). Forma federativa = cláusula pétrea.'},
+      {art:'Art. 37', hot:true, titulo:'Princípios da Administração Pública (LIMPE)',
+       texto:'A administração pública direta e indireta de qualquer dos Poderes da União, dos Estados, do DF e dos Municípios obedecerá aos princípios de legalidade, impessoalidade, moralidade, publicidade e eficiência.',
+       exp:'Os 5 princípios EXPRESSOS: LIMPE (Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência). A EFICIÊNCIA foi acrescentada pela EC 19/98. Concurso público (II), prazo de validade (III), improbidade (§4º) estão neste artigo.'},
+      {art:'Art. 60, §4º', hot:true, titulo:'Cláusulas pétreas',
+       texto:'Não será objeto de deliberação a proposta de emenda tendente a abolir: I - a forma federativa de Estado; II - o voto direto, secreto, universal e periódico; III - a separação dos Poderes; IV - os direitos e garantias individuais.',
+       exp:'As CLÁUSULAS PÉTREAS (limites materiais ao poder de reforma). Mnemônico: "FE-VO-SE-DI" (Forma federativa, Voto, Separação dos poderes, Direitos individuais). Não podem ser ABOLIDAS por emenda (mas podem ser ampliadas).'}
+    ]
+  },
+  {
+    tema: '⚖️ Controle de Constitucionalidade e Remédios',
+    artigos: [
+      {art:'Art. 102', hot:false, titulo:'STF — guardião da Constituição',
+       texto:'Compete ao Supremo Tribunal Federal, precipuamente, a guarda da Constituição, cabendo-lhe processar e julgar a ação direta de inconstitucionalidade (ADI), a ação declaratória de constitucionalidade (ADC) e a arguição de descumprimento de preceito fundamental (ADPF).',
+       exp:'O STF é o guardião da CF. Controle CONCENTRADO: ADI, ADC, ADPF, ADO. Efeitos das decisões: erga omnes (contra todos) e vinculante. Diferente do controle DIFUSO (qualquer juiz, no caso concreto).'},
+      {art:'Art. 103-A', hot:false, titulo:'Súmula Vinculante',
+       texto:'O Supremo Tribunal Federal poderá, de ofício ou por provocação, mediante decisão de dois terços dos seus membros, após reiteradas decisões sobre matéria constitucional, aprovar súmula que terá efeito vinculante em relação aos demais órgãos do Poder Judiciário e à administração pública direta e indireta.',
+       exp:'SÚMULA VINCULANTE (EC 45/2004): exige 2/3 dos ministros (8 de 11) + reiteradas decisões. Vincula o Judiciário e a Administração (não o Legislativo na função de legislar). Descumprimento: cabe RECLAMAÇÃO ao STF.'}
+    ]
+  }
+]
   }
 };
 
