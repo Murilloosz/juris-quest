@@ -3508,7 +3508,7 @@ body::before, body::after,
 }
 .ls-fire { font-size: 14px; }
 .ls-art-title { font-weight: 700; font-size: 13px; color: var(--text-primary); }
-.ls-art-text { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.82); }
+.ls-art-text { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.82); white-space: pre-wrap; }
 .ls-exp-btn {
   margin-top: 10px; padding: 5px 12px; font-size: 11px; font-weight: 700;
   background: rgba(255,215,0,.12); border: 1px solid rgba(255,215,0,.3);
@@ -3519,6 +3519,7 @@ body::before, body::after,
   margin-top: 8px; padding: 10px 12px; font-size: 12px; line-height: 1.55;
   color: rgba(255,255,255,.85); background: rgba(255,215,0,.06);
   border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0;
+  white-space: pre-wrap;
 }
 body[data-theme="light"] .ls-art-text,
 body[data-theme="light"] .ls-exp { color: rgba(0,0,0,.78); }
@@ -3699,6 +3700,73 @@ body[data-theme="light"] .cron-input optgroup { background: #fff; color: #1a1330
 #screen-hub #hub-greet { font-size: 13px !important; }
 /* Cards um pouco mais compactos verticalmente */
 #hub-grid-main .hub-card { min-height: 150px !important; padding: 16px 12px !important; }
+
+/* Lei Seca — 2º nível (subtópicos) */
+.ls-sub { margin: 6px 0 6px 4px; border-left: 2px solid rgba(255,46,99,.25); }
+.ls-sub-head {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  background: rgba(255,255,255,.03); border: none; cursor: pointer;
+  padding: 9px 10px; color: var(--text-primary); font-family: inherit;
+  font-size: 13px; font-weight: 600; text-align: left; border-radius: 6px;
+}
+.ls-sub-head:hover { background: rgba(8,217,214,.08); }
+.ls-sub-arrow { font-size: 11px; color: var(--cyan); flex-shrink: 0; }
+.ls-sub-title { flex: 1; color: var(--cyan); }
+.ls-sub-count {
+  font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,.06);
+  padding: 1px 8px; border-radius: 10px; flex-shrink: 0;
+}
+.ls-sub-body { padding: 4px 0 4px 8px; }
+
+/* Integração Edital ↔ Lei Seca */
+.edital-sub-row { display: flex; align-items: stretch; gap: 6px; }
+.edital-sub-row .edital-sub { flex: 1; }
+.edital-sub-ls {
+  flex-shrink: 0; width: 38px; border: 1px solid var(--glass-border);
+  background: rgba(8,217,214,.08); border-radius: 8px; cursor: pointer;
+  font-size: 16px; color: var(--cyan); transition: .15s;
+}
+.edital-sub-ls:hover { background: rgba(8,217,214,.2); transform: scale(1.05); }
+.edital-ls-wrap { margin: 4px 0 10px 8px; }
+.edital-ls-box {
+  border-left: 2px solid var(--cyan); background: rgba(8,217,214,.04);
+  border-radius: 0 10px 10px 0; padding: 10px 12px;
+}
+.edital-ls-title {
+  font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--cyan);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.edital-ls-badge {
+  background: var(--cyan); color: #04222b; border-radius: 10px;
+  padding: 1px 8px; font-size: 9px;
+}
+.edital-ls-empty {
+  margin: 4px 0 10px 8px; padding: 10px 12px; font-size: 12px;
+  color: var(--text-muted); background: rgba(255,255,255,.03);
+  border-radius: 8px; border-left: 2px solid var(--text-muted);
+}
+.edital-ls-art {
+  background: rgba(0,0,0,.18); border: 1px solid var(--glass-border);
+  border-radius: 8px; padding: 9px 11px; margin-bottom: 8px;
+}
+.edital-ls-art.edital-ls-hot { border-color: rgba(255,46,99,.4); }
+.edital-ls-art-head { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap; }
+.edital-ls-art-num { font-weight: 700; color: var(--rose); font-size: 12px; }
+.edital-ls-art-title { font-weight: 600; font-size: 12px; color: var(--text-primary); }
+.edital-ls-art-text { font-size: 12px; line-height: 1.55; color: rgba(255,255,255,.8); white-space: pre-wrap; }
+.edital-ls-open {
+  width: 100%; margin-top: 4px; padding: 8px; border: 1px dashed var(--cyan);
+  background: transparent; color: var(--cyan); border-radius: 8px; cursor: pointer;
+  font-size: 12px; font-weight: 600;
+}
+.edital-ls-open:hover { background: rgba(8,217,214,.1); }
+/* Botão na Lei Seca para marcar no Edital */
+.ls-edital-btn {
+  margin-top: 8px; margin-left: 8px; padding: 5px 12px; border: 1px solid var(--emerald);
+  background: rgba(16,185,129,.1); color: var(--emerald); border-radius: 8px;
+  cursor: pointer; font-size: 11px; font-weight: 600;
+}
+.ls-edital-btn:hover { background: rgba(16,185,129,.22); }
 </style>
 </head>
 <body>
@@ -9252,25 +9320,25 @@ const CP_LEISECA = {
       {
         tema: '⚖️ Parte Geral — Aplicação da Lei Penal',
         artigos: [
-          {art:'Art. 1º', hot:true, titulo:'Anterioridade da lei (legalidade)',
+          {art:'Art. 1º', hot:true, sub:'Princípio da legalidade', titulo:'Anterioridade da lei (legalidade)',
            texto:'Não há crime sem lei anterior que o defina. Não há pena sem prévia cominação legal.',
            exp:'Princípio da LEGALIDADE / RESERVA LEGAL (nullum crimen, nulla poena sine lege). Pilar do Direito Penal: só lei (em sentido estrito) pode criar crime e pena, e ela tem que ser ANTERIOR ao fato. Também na CF, art. 5º, XXXIX.'},
-          {art:'Art. 2º', hot:true, titulo:'Lei penal no tempo',
+          {art:'Art. 2º', hot:true, sub:'Lei penal no tempo', titulo:'Lei penal no tempo',
            texto:'Ninguém pode ser punido por fato que lei posterior deixa de considerar crime (abolitio criminis). A lei posterior mais benéfica retroage, ainda que já tenha havido condenação transitada em julgado.',
            exp:'A lei penal NÃO retroage, SALVO pra beneficiar o réu (retroatividade benéfica). Se a lei nova descriminaliza (abolitio criminis), apaga os efeitos penais. Se só abranda a pena (lex mitior), também retroage. CF, art. 5º, XL.'},
-          {art:'Art. 3º', hot:false, titulo:'Lei excepcional ou temporária',
+          {art:'Art. 3º', hot:false, sub:'Lei penal no tempo', titulo:'Lei excepcional ou temporária',
            texto:'A lei excepcional ou temporária aplica-se ao fato praticado durante sua vigência, mesmo depois de revogada ou esgotado o prazo.',
            exp:'Ultratividade da lei temporária: ela continua valendo pros fatos cometidos na vigência dela, mesmo depois de expirar. Exceção à regra da retroatividade benéfica.'},
-          {art:'Art. 4º', hot:true, titulo:'Tempo do crime',
+          {art:'Art. 4º', hot:true, sub:'Tempo e lugar do crime', titulo:'Tempo do crime',
            texto:'Considera-se praticado o crime no momento da ação ou omissão, ainda que outro seja o momento do resultado.',
            exp:'Teoria da ATIVIDADE. O que importa é QUANDO o agente agiu (ou deixou de agir), não quando o resultado ocorreu. Relevante pra definir imputabilidade (ex: menor que completa 18 entre a ação e o resultado).'},
-          {art:'Art. 5º', hot:true, titulo:'Territorialidade',
+          {art:'Art. 5º', hot:true, sub:'Tempo e lugar do crime', titulo:'Territorialidade',
            texto:'Aplica-se a lei brasileira ao crime cometido no território nacional, sem prejuízo de convenções, tratados e regras de direito internacional.',
            exp:'Territorialidade TEMPERADA/MITIGADA: regra é aplicar a lei brasileira a crimes no Brasil, mas há exceções (extraterritorialidade, imunidades diplomáticas). Embarcações/aeronaves públicas brasileiras = território nacional onde estiverem.'},
-          {art:'Art. 6º', hot:true, titulo:'Lugar do crime',
+          {art:'Art. 6º', hot:true, sub:'Tempo e lugar do crime', titulo:'Lugar do crime',
            texto:'Considera-se praticado o crime no lugar em que ocorreu a ação ou omissão, no todo ou em parte, bem como onde se produziu ou deveria produzir-se o resultado.',
            exp:'Teoria da UBIQUIDADE (ou mista). Lugar do crime = onde houve a CONDUTA ou onde ocorreu o RESULTADO. Mnemônico: LUTA (LUgar = Teoria da ubiquidade) x TEA (TEmpo = Atividade). Importa pra crimes à distância.'},
-          {art:'Art. 7º', hot:true, titulo:'Extraterritorialidade',
+          {art:'Art. 7º', hot:true, sub:'Tempo e lugar do crime', titulo:'Extraterritorialidade',
            texto:'Ficam sujeitos à lei brasileira, embora cometidos no estrangeiro, certos crimes: contra a vida/liberdade do Presidente; contra patrimônio/fé pública da União, Estados, DF, Municípios; contra a administração pública por quem está a seu serviço; genocídio (autor brasileiro ou domiciliado no Brasil); entre outros.',
            exp:'A lei brasileira alcança crimes cometidos FORA do país em hipóteses INCONDICIONADAS (§1º — não dependem de condição) e CONDICIONADAS (§2º — dependem de requisitos como o agente entrar no território). Tema muito cobrado.'},
         ]
@@ -9278,52 +9346,52 @@ const CP_LEISECA = {
       {
         tema: '🧩 Parte Geral — Do Crime',
         artigos: [
-          {art:'Art. 13', hot:true, titulo:'Relação de causalidade (nexo causal)',
+          {art:'Art. 13', hot:true, sub:'Conduta e nexo causal', titulo:'Relação de causalidade (nexo causal)',
            texto:'O resultado de que depende a existência do crime somente é imputável a quem lhe deu causa. Considera-se causa a ação ou omissão sem a qual o resultado não teria ocorrido.',
            exp:'Teoria da equivalência dos antecedentes (conditio sine qua non): tudo que contribui pro resultado é causa. §1º trata da causa superveniente relativamente independente (rompe o nexo). §2º: relevância da omissão (dever de agir).'},
-          {art:'Art. 14', hot:true, titulo:'Crime consumado e tentado',
+          {art:'Art. 14', hot:true, sub:'Consumação e tentativa', titulo:'Crime consumado e tentado',
            texto:'Diz-se o crime: CONSUMADO, quando nele se reúnem todos os elementos de sua definição legal; TENTADO, quando, iniciada a execução, não se consuma por circunstâncias alheias à vontade do agente. Pena da tentativa: a do crime, reduzida de 1/3 a 2/3.',
            exp:'TENTATIVA exige: início da execução + não consumação + por causa ALHEIA à vontade. Reduz a pena de 1/3 a 2/3 (quanto mais perto da consumação, menor a redução). Crimes que não admitem tentativa: culposos, contravenções (em regra), omissivos próprios.'},
-          {art:'Art. 15', hot:true, titulo:'Desistência voluntária e arrependimento eficaz',
+          {art:'Art. 15', hot:true, sub:'Consumação e tentativa', titulo:'Desistência voluntária e arrependimento eficaz',
            texto:'O agente que, voluntariamente, desiste de prosseguir na execução ou impede que o resultado se produza, só responde pelos atos já praticados.',
            exp:'"Ponte de ouro." DESISTÊNCIA VOLUNTÁRIA: para antes de esgotar os atos ("posso prosseguir mas não quero"). ARREPENDIMENTO EFICAZ: já fez tudo, mas impede o resultado. Em ambos, exclui a tentativa — responde só pelo que já praticou.'},
-          {art:'Art. 16', hot:true, titulo:'Arrependimento posterior',
+          {art:'Art. 16', hot:true, sub:'Consumação e tentativa', titulo:'Arrependimento posterior',
            texto:'Nos crimes cometidos sem violência ou grave ameaça à pessoa, reparado o dano ou restituída a coisa, até o recebimento da denúncia ou queixa, por ato voluntário do agente, a pena será reduzida de 1/3 a 2/3.',
            exp:'Diferente do arrependimento eficaz! Aqui o crime JÁ se consumou. Requisitos: crime SEM violência/grave ameaça + reparação ATÉ o recebimento da denúncia + voluntária. É causa de DIMINUIÇÃO de pena (não exclui o crime).'},
-          {art:'Art. 17', hot:true, titulo:'Crime impossível',
+          {art:'Art. 17', hot:true, sub:'Consumação e tentativa', titulo:'Crime impossível',
            texto:'Não se pune a tentativa quando, por ineficácia absoluta do meio ou por absoluta impropriedade do objeto, é impossível consumar-se o crime.',
            exp:'Crime impossível (quase-crime / tentativa inidônea): não há punição. Ex: atirar em alguém já morto (objeto impróprio), tentar matar com arma de brinquedo (meio ineficaz). A ineficácia/impropriedade tem que ser ABSOLUTA.'},
-          {art:'Art. 18', hot:true, titulo:'Crime doloso e culposo',
+          {art:'Art. 18', hot:true, sub:'Dolo e culpa', titulo:'Crime doloso e culposo',
            texto:'Diz-se o crime: DOLOSO, quando o agente quis o resultado ou assumiu o risco de produzi-lo; CULPOSO, quando deu causa ao resultado por imprudência, negligência ou imperícia. Salvo casos expressos, só se pune crime doloso.',
            exp:'DOLO DIRETO (quis) e DOLO EVENTUAL (assumiu o risco). CULPA: imprudência (ação afoita), negligência (falta de cuidado/omissão), imperícia (falta de aptidão técnica). Regra: crime é doloso; culposo só quando a lei prevê EXPRESSAMENTE.'},
-          {art:'Art. 19', hot:false, titulo:'Agravação pelo resultado',
+          {art:'Art. 19', hot:false, sub:'Dolo e culpa', titulo:'Agravação pelo resultado',
            texto:'Pelo resultado que agrava especialmente a pena, só responde o agente que o houver causado ao menos culposamente.',
            exp:'Veda a responsabilidade objetiva. No crime preterdoloso (dolo no antecedente + culpa no consequente), o resultado mais grave só agrava se o agente agiu ao menos com culpa quanto a ele. Ex: lesão seguida de morte.'},
-          {art:'Art. 20', hot:true, titulo:'Erro de tipo',
+          {art:'Art. 20', hot:true, sub:'Erro', titulo:'Erro de tipo',
            texto:'O erro sobre elemento constitutivo do tipo legal de crime exclui o dolo, mas permite a punição por crime culposo, se previsto em lei.',
            exp:'ERRO DE TIPO: o agente não sabe que está cometendo o fato típico (ex: caça e atira achando ser animal, mas era pessoa). Exclui o DOLO. Se evitável e houver previsão culposa, responde por culpa; se inevitável, isenta totalmente.'},
-          {art:'Art. 21', hot:true, titulo:'Erro de proibição (erro sobre a ilicitude)',
+          {art:'Art. 21', hot:true, sub:'Erro', titulo:'Erro de proibição (erro sobre a ilicitude)',
            texto:'O desconhecimento da lei é inescusável. O erro sobre a ilicitude do fato, se inevitável, isenta de pena; se evitável, poderá diminuí-la de 1/6 a 1/3.',
            exp:'Cuidado com a pegadinha: DESCONHECER A LEI não livra ninguém. Mas o ERRO DE PROIBIÇÃO (achar que a conduta era lícita) inevitável ISENTA; evitável DIMINUI. Afeta a CULPABILIDADE (potencial consciência da ilicitude), não o dolo.'},
-          {art:'Art. 22', hot:true, titulo:'Coação irresistível e obediência hierárquica',
+          {art:'Art. 22', hot:true, sub:'Culpabilidade', titulo:'Coação irresistível e obediência hierárquica',
            texto:'Se o fato é cometido sob coação irresistível ou em estrita obediência a ordem, não manifestamente ilegal, de superior hierárquico, só é punível o autor da coação ou da ordem.',
            exp:'Excludentes de CULPABILIDADE (inexigibilidade de conduta diversa). Coação MORAL irresistível: pune-se o coator. Obediência hierárquica de ordem NÃO manifestamente ilegal: pune-se quem deu a ordem. Se a ordem for claramente ilegal, ambos respondem.'},
-          {art:'Art. 23', hot:true, titulo:'Excludentes de ilicitude',
+          {art:'Art. 23', hot:true, sub:'Excludentes de ilicitude', titulo:'Excludentes de ilicitude',
            texto:'Não há crime quando o agente pratica o fato: I - em estado de necessidade; II - em legítima defesa; III - em estrito cumprimento de dever legal ou no exercício regular de direito.',
            exp:'As 4 EXCLUDENTES DE ILICITUDE (causas de justificação): Estado de necessidade, Legítima defesa, Estrito cumprimento do dever legal, Exercício regular de direito. Mnemônico: LEEE. Excesso (doloso ou culposo) é punível.'},
-          {art:'Art. 24', hot:true, titulo:'Estado de necessidade',
+          {art:'Art. 24', hot:true, sub:'Excludentes de ilicitude', titulo:'Estado de necessidade',
            texto:'Considera-se em estado de necessidade quem pratica o fato para salvar de perigo atual, que não provocou por sua vontade, nem podia de outro modo evitar, direito próprio ou alheio, cujo sacrifício não era razoável exigir.',
            exp:'Requisitos: perigo ATUAL + não provocado voluntariamente + inevitável de outro modo + bem protegido ≥ bem sacrificado (razoabilidade). Ex: náufrago que toma a única boia. Diferente da legítima defesa (que pressupõe AGRESSÃO humana).'},
-          {art:'Art. 25', hot:true, titulo:'Legítima defesa',
+          {art:'Art. 25', hot:true, sub:'Excludentes de ilicitude', titulo:'Legítima defesa',
            texto:'Entende-se em legítima defesa quem, usando moderadamente dos meios necessários, repele injusta agressão, atual ou iminente, a direito seu ou de outrem.',
            exp:'Requisitos: agressão INJUSTA + ATUAL ou IMINENTE + uso MODERADO dos meios NECESSÁRIOS + direito próprio ou de terceiro. Cabe contra agressão de inimputável. Não cabe legítima defesa de legítima defesa real. Excesso é punível.'},
-          {art:'Art. 26', hot:true, titulo:'Inimputáveis (doença mental)',
+          {art:'Art. 26', hot:true, sub:'Imputabilidade', titulo:'Inimputáveis (doença mental)',
            texto:'É isento de pena o agente que, por doença mental ou desenvolvimento mental incompleto ou retardado, era, ao tempo da ação ou omissão, inteiramente incapaz de entender o caráter ilícito do fato ou de determinar-se de acordo com esse entendimento.',
            exp:'Critério BIOPSICOLÓGICO. Inimputável: isento de pena, recebe MEDIDA DE SEGURANÇA. Parágrafo único: semi-imputável (entendimento parcial) tem pena reduzida de 1/3 a 2/3. Não confundir com menoridade (art. 27).'},
-          {art:'Art. 27', hot:true, titulo:'Menores de 18 anos',
+          {art:'Art. 27', hot:true, sub:'Imputabilidade', titulo:'Menores de 18 anos',
            texto:'Os menores de 18 anos são penalmente inimputáveis, ficando sujeitos às normas estabelecidas na legislação especial.',
            exp:'Inimputabilidade por MENORIDADE — critério puramente BIOLÓGICO (basta ser < 18 ao tempo do crime, art. 4º). Responde pelo ECA (medidas socioeducativas), não pelo CP. Também na CF, art. 228.'},
-          {art:'Art. 28', hot:true, titulo:'Emoção, paixão e embriaguez',
+          {art:'Art. 28', hot:true, sub:'Imputabilidade', titulo:'Emoção, paixão e embriaguez',
            texto:'Não excluem a imputabilidade penal a emoção ou a paixão, nem a embriaguez voluntária ou culposa. É isento de pena quem, por embriaguez completa proveniente de caso fortuito ou força maior, era inteiramente incapaz de entender o caráter ilícito do fato.',
            exp:'Emoção/paixão NÃO isentam (podem atenuar). Embriaguez VOLUNTÁRIA ou CULPOSA não exclui imputabilidade (teoria da actio libera in causa). Só a embriaguez ACIDENTAL (caso fortuito/força maior) e COMPLETA isenta.'},
         ]
@@ -9331,28 +9399,28 @@ const CP_LEISECA = {
       {
         tema: '🔒 Parte Geral — Das Penas',
         artigos: [
-          {art:'Art. 32', hot:false, titulo:'Espécies de pena',
+          {art:'Art. 32', hot:false, sub:'Espécies e regimes', titulo:'Espécies de pena',
            texto:'As penas são: I - privativas de liberdade; II - restritivas de direitos; III - de multa.',
            exp:'Três espécies. Privativas de liberdade (reclusão, detenção, prisão simples). Restritivas de direitos (prestação de serviços, limitação de fim de semana, etc — substitutivas). Multa.'},
-          {art:'Art. 33', hot:true, titulo:'Reclusão e detenção / regimes',
+          {art:'Art. 33', hot:true, sub:'Espécies e regimes', titulo:'Reclusão e detenção / regimes',
            texto:'A reclusão deve ser cumprida em regime fechado, semiaberto ou aberto. A detenção, em regime semiaberto ou aberto, salvo necessidade de transferência. Regime inicial: fechado (pena > 8 anos), semiaberto (> 4 e ≤ 8), aberto (≤ 4).',
            exp:'RECLUSÃO admite regime fechado; DETENÇÃO não inicia no fechado (só por regressão). Regime inicial pela pena e reincidência. Tema clássico de prova — decore as faixas de pena x regime.'},
-          {art:'Art. 44', hot:true, titulo:'Penas restritivas de direitos',
+          {art:'Art. 44', hot:true, sub:'Espécies e regimes', titulo:'Penas restritivas de direitos',
            texto:'As penas restritivas de direitos são autônomas e substituem as privativas de liberdade quando: pena ≤ 4 anos e crime sem violência/grave ameaça (ou qualquer, se culposo); réu não reincidente em crime doloso; circunstâncias favoráveis.',
            exp:'Substituição da prisão por restritivas. Requisitos OBJETIVOS (pena ≤ 4 anos, sem violência) e SUBJETIVOS (não reincidente específico, circunstâncias favoráveis). Muito cobrada a combinação dos requisitos.'},
-          {art:'Art. 59', hot:true, titulo:'Fixação da pena (circunstâncias judiciais)',
+          {art:'Art. 59', hot:true, sub:'Dosimetria', titulo:'Fixação da pena (circunstâncias judiciais)',
            texto:'O juiz, atendendo à culpabilidade, antecedentes, conduta social, personalidade do agente, motivos, circunstâncias e consequências do crime, bem como ao comportamento da vítima, estabelecerá a pena.',
            exp:'As 8 CIRCUNSTÂNCIAS JUDICIAIS da 1ª fase da dosimetria (sistema trifásico de Nelson Hungria). Mnemônico ajuda: culpabilidade, antecedentes, conduta social, personalidade, motivos, circunstâncias, consequências, comportamento da vítima.'},
-          {art:'Art. 61', hot:true, titulo:'Circunstâncias agravantes',
+          {art:'Art. 61', hot:true, sub:'Dosimetria', titulo:'Circunstâncias agravantes',
            texto:'São circunstâncias que sempre agravam a pena, quando não constituem ou qualificam o crime: a reincidência; ter o agente cometido o crime por motivo fútil ou torpe; para facilitar outro crime; contra ascendente/descendente/cônjuge; com abuso de autoridade; etc.',
            exp:'Agravantes da 2ª fase da dosimetria. A reincidência é a principal. São TAXATIVAS (rol fechado). Diferente das atenuantes (art. 65) que admitem as inominadas (art. 66).'},
-          {art:'Art. 63', hot:true, titulo:'Reincidência',
+          {art:'Art. 63', hot:true, sub:'Dosimetria', titulo:'Reincidência',
            texto:'Verifica-se a reincidência quando o agente comete novo crime depois de transitar em julgado a sentença que, no País ou no estrangeiro, o tenha condenado por crime anterior.',
            exp:'REINCIDÊNCIA: novo crime APÓS trânsito em julgado de condenação anterior. Caduca em 5 anos após o cumprimento/extinção da pena (art. 64). Agrava pena, dificulta regime aberto, impede certos benefícios.'},
-          {art:'Art. 65', hot:true, titulo:'Circunstâncias atenuantes',
+          {art:'Art. 65', hot:true, sub:'Dosimetria', titulo:'Circunstâncias atenuantes',
            texto:'São circunstâncias que sempre atenuam a pena: ser o agente menor de 21 (na data do fato) ou maior de 70 (na sentença); desconhecimento da lei; motivo de relevante valor social/moral; ter procurado evitar/minorar consequências ou reparado o dano; confissão espontânea; etc.',
            exp:'Atenuantes da 2ª fase. A MENORIDADE relativa (< 21 na data do fato) é atenuante preponderante. A CONFISSÃO ESPONTÂNEA é muito cobrada (Súmula 545 STJ: usada na dosimetria atenua).'},
-          {art:'Art. 68', hot:true, titulo:'Cálculo da pena (sistema trifásico)',
+          {art:'Art. 68', hot:true, sub:'Dosimetria', titulo:'Cálculo da pena (sistema trifásico)',
            texto:'A pena-base será fixada atendendo ao art. 59; em seguida serão consideradas as circunstâncias atenuantes e agravantes; por último, as causas de diminuição e de aumento.',
            exp:'SISTEMA TRIFÁSICO (Nelson Hungria): 1ª fase = pena-base (art. 59); 2ª fase = agravantes/atenuantes; 3ª fase = causas de aumento/diminuição (frações). Só na 3ª fase pode ultrapassar os limites legais.'},
         ]
@@ -9360,48 +9428,51 @@ const CP_LEISECA = {
       {
         tema: '💀 Crimes contra a Pessoa',
         artigos: [
-          {art:'Art. 121', hot:true, titulo:'Homicídio',
-           texto:'Matar alguém. Pena: reclusão, de 6 a 20 anos. §1º Privilegiado (relevante valor social/moral ou violenta emoção): diminui 1/6 a 1/3. §2º Qualificado (mediante paga, motivo torpe/fútil, meio cruel, etc): reclusão de 12 a 30 anos.',
-           exp:'Crime mais importante da Parte Especial. SIMPLES (6-20). PRIVILEGIADO (diminuição). QUALIFICADO (12-30, hediondo). FEMINICÍDIO (§2º-A, hoje §6º com a Lei 14.994/24 que o tornou crime autônomo). Competência do Tribunal do Júri.'},
-          {art:'Art. 121-A', hot:true, titulo:'Feminicídio (Lei 14.994/24)',
-           texto:'Matar mulher por razões da condição do sexo feminino. Pena: reclusão, de 20 a 40 anos. Considera-se que há razões da condição do sexo feminino quando o crime envolve violência doméstica/familiar ou menosprezo/discriminação à condição de mulher.',
-           exp:'A Lei 14.994/2024 transformou o feminicídio em CRIME AUTÔNOMO (antes era qualificadora do homicídio) com pena de 20 a 40 anos — a mais alta do CP. Hediondo. Tema quentíssimo em provas recentes.'},
-          {art:'Art. 129', hot:true, titulo:'Lesão corporal',
-           texto:'Ofender a integridade corporal ou a saúde de outrem. Pena: detenção, de 3 meses a 1 ano. §1º lesão grave; §2º gravíssima; §3º seguida de morte; §9º violência doméstica.',
-           exp:'Lesão LEVE (caput), GRAVE (§1º: incapacidade > 30 dias, perigo de vida, etc), GRAVÍSSIMA (§2º: incapacidade permanente, deformidade, aborto, etc), SEGUIDA DE MORTE (§3º, preterdolosa), e VIOLÊNCIA DOMÉSTICA (§9º). Cai muito.'},
-          {art:'Art. 147', hot:true, titulo:'Ameaça',
-           texto:'Ameaçar alguém, por palavra, escrito ou gesto, ou qualquer outro meio simbólico, de causar-lhe mal injusto e grave. Pena: detenção, de 1 a 6 meses, ou multa.',
-           exp:'Crime contra a liberdade pessoal. O mal prometido deve ser INJUSTO, GRAVE e FUTURO (ou iminente). Ação penal pública condicionada à representação. Base pra entender stalking (147-A) e violência psicológica (147-B).'},
-          {art:'Art. 147-A', hot:true, titulo:'Perseguição (stalking)',
-           texto:'Perseguir alguém, reiteradamente e por qualquer meio, ameaçando-lhe a integridade física ou psicológica, restringindo-lhe a liberdade ou perturbando sua esfera de liberdade ou privacidade. Pena: reclusão de 6 meses a 2 anos e multa.',
-           exp:'Lei 14.132/21. Revogou a antiga contravenção de perturbação. Exige conduta REITERADA. Pena aumenta 1/2 se contra criança/adolescente/idoso/mulher por razão do sexo, ou por 2+ pessoas.'},
-          {art:'Art. 147-B', hot:true, titulo:'Violência psicológica contra a mulher',
-           texto:'Causar dano emocional à mulher que a prejudique e perturbe seu pleno desenvolvimento ou que vise degradar/controlar suas ações, mediante ameaça, constrangimento, humilhação, manipulação, isolamento, etc. Pena: reclusão de 6 meses a 2 anos e multa.',
-           exp:'Lei 14.188/21. Crime autônomo de violência psicológica. Conecta-se com a Lei Maria da Penha. Tema recente e muito cobrado em concursos policiais.'},
+          {art:'Art. 121', hot:true, sub:'Crimes contra a vida', titulo:'Homicídio',
+           texto:'HOMICÍDIO SIMPLES — Art. 121. Matar alguém:\nPena — reclusão, de 6 (seis) a 20 (vinte) anos.\n\nCASO DE DIMINUIÇÃO DE PENA (HOMICÍDIO PRIVILEGIADO)\n§ 1º Se o agente comete o crime impelido por motivo de relevante valor social ou moral, ou sob o domínio de violenta emoção, logo em seguida a injusta provocação da vítima, o juiz pode reduzir a pena de 1/6 (um sexto) a 1/3 (um terço).\n\nHOMICÍDIO QUALIFICADO\n§ 2º Se o homicídio é cometido:\nI — mediante paga ou promessa de recompensa, ou por outro motivo torpe;\nII — por motivo fútil;\nIII — com emprego de veneno, fogo, explosivo, asfixia, tortura ou outro meio insidioso ou cruel, ou de que possa resultar perigo comum;\nIV — à traição, de emboscada, ou mediante dissimulação ou outro recurso que dificulte ou torne impossível a defesa do ofendido;\nV — para assegurar a execução, a ocultação, a impunidade ou vantagem de outro crime;\nVI — (vide feminicídio, art. 121-A — deslocado pela Lei 14.994/2024);\nVII — contra autoridade ou agente das forças de segurança (arts. 142 e 144 da CF), integrantes do sistema prisional e da Força Nacional, no exercício da função ou em decorrência dela, ou contra seu cônjuge, companheiro ou parente até 3º grau;\nVIII — com emprego de arma de fogo de uso restrito ou proibido:\nPena — reclusão, de 12 (doze) a 30 (trinta) anos.\n\nHOMICÍDIO CULPOSO\n§ 3º Se o homicídio é culposo: Pena — detenção, de 1 (um) a 3 (três) anos.\n\nAUMENTO DE PENA\n§ 4º No homicídio culposo, a pena é aumentada de 1/3 se o crime resulta de inobservância de regra técnica de profissão, arte ou ofício, ou se o agente deixa de prestar socorro imediato à vítima, não procura diminuir as consequências do seu ato, ou foge para evitar prisão em flagrante. Sendo doloso, a pena é aumentada de 1/3 se praticado contra menor de 14 ou maior de 60 anos.\n\n§ 5º Na hipótese de homicídio culposo, o juiz poderá deixar de aplicar a pena (perdão judicial), se as consequências da infração atingirem o próprio agente de forma tão grave que a sanção penal se torne desnecessária.\n\n§ 6º A pena é aumentada de 1/3 até a metade se o crime for praticado por milícia privada, sob pretexto de prestação de serviço de segurança, ou por grupo de extermínio.\n\n§ 7º A pena do homicídio doloso é aumentada de 1/3 até a metade se o crime for praticado: I — contra menor de 14 anos; II — contra menor de 14 anos sob violência doméstica/familiar; III — em instituição de educação básica (Lei 14.811/2024).',
+           exp:'PONTOS-CHAVE. Homicídio é crime contra a VIDA, julgado pelo TRIBUNAL DO JÚRI (art. 5º, XXXVIII, CF). HOMICÍDIO PRIVILEGIADO (§1º): motivo de relevante valor social/moral OU violenta emoção logo após injusta provocação — é causa de DIMINUIÇÃO (não qualificadora). QUALIFICADO (§2º, I a VIII): pena de 12 a 30 anos — é crime HEDIONDO. As qualificadoras dos incisos I, II e V são SUBJETIVAS (ligadas ao motivo); III, IV, VII e VIII são OBJETIVAS (ligadas ao meio/modo). ATUALIZAÇÃO: a Lei 14.994/2024 RETIROU o feminicídio do art. 121 (era o inciso VI) e o transformou em crime AUTÔNOMO no art. 121-A. O homicídio simples NÃO é hediondo, salvo quando praticado em atividade típica de grupo de extermínio. Súmula vinculante: a participação de menor não descaracteriza o concurso.'},
+          {art:'Art. 121-A', hot:true, sub:'Crimes contra a vida', titulo:'Feminicídio (Lei 14.994/24)',
+           texto:'FEMINICÍDIO — Art. 121-A. Matar mulher por razões da condição do sexo feminino:\nPena — reclusão, de 20 (vinte) a 40 (quarenta) anos. (Incluído pela Lei 14.994/2024)\n\n§ 1º Considera-se que há razões da condição do sexo feminino quando o crime envolve:\nI — violência doméstica e familiar;\nII — menosprezo ou discriminação à condição de mulher.\n\nAUMENTO DE PENA\n§ 2º A pena do feminicídio é aumentada de 1/3 (um terço) até a metade se o crime é praticado:\nI — durante a gestação, nos 3 meses posteriores ao parto, ou se a vítima é mãe ou responsável por criança, adolescente ou pessoa com deficiência de qualquer idade;\nII — contra menor de 14 anos, maior de 60 anos, mulher com deficiência, com doença degenerativa que acarrete vulnerabilidade ou enfermidade grave;\nIII — na presença física ou virtual de descendente ou ascendente da vítima;\nIV — em descumprimento de medidas protetivas de urgência (Lei Maria da Penha);\nV — nas circunstâncias previstas nos incisos III, IV e VIII do § 2º do art. 121 (meio cruel; traição/emboscada/dissimulação; arma de fogo de uso restrito).\n\n§ 3º Comunicam-se ao coautor ou partícipe as circunstâncias pessoais elementares do crime previstas no § 1º.',
+           exp:'PONTOS-CHAVE. Desde a Lei 14.994/2024 (vigente desde 09/10/2024), o feminicídio é CRIME AUTÔNOMO (art. 121-A), não mais qualificadora do homicídio. Pena: 20 a 40 anos (antes era 12-30). É crime HEDIONDO (art. 1º, I-B, Lei 8.072/90) e julgado pelo JÚRI. A vítima deve ser MULHER (a condição de sexo feminino é elementar). As \'razões da condição do sexo feminino\' (§1º) são: violência doméstica/familiar OU menosprezo/discriminação à condição de mulher — natureza OBJETIVA, segundo a doutrina majoritária. NÃO se aplica ao feminicídio a causa de diminuição do homicídio privilegiado (art. 121, §1º), pois não há previsão correspondente no art. 121-A (jurisprudência). Só se aplica a fatos consumados a partir de 09/10/2024 (irretroatividade da lei mais gravosa).'},
+          {art:'Art. 121-B', hot:true, sub:'Crimes contra a vida', titulo:'Vicaricídio (Lei 15.384/2026)',
+           texto:'VICARICÍDIO — Art. 121-B. Matar descendente, ascendente, dependente, enteado ou pessoa sob guarda ou responsabilidade direta da mulher, com o fim específico de causar-lhe sofrimento, punição ou controle, no contexto de violência doméstica e familiar:\nPena — reclusão, de 20 (vinte) a 40 (quarenta) anos. (Incluído pela Lei 15.384/2026)\n\nCAUSAS DE AUMENTO DE PENA\nParágrafo único. A pena é aumentada de 1/3 (um terço) até a metade se o crime é praticado:\nI — na presença (física ou virtual, em tempo real) da mulher;\nII — contra vítima em situação de vulnerabilidade;\nIII — em descumprimento de medida protetiva de urgência.',
+           exp:'PONTOS-CHAVE. Crime NOVO, criado pela Lei 15.384/2026 (sancionada em 09/04/2026). É TIPO PENAL AUTÔNOMO (não é qualificadora do homicídio), com pena de 20 a 40 anos — mais grave que o homicídio qualificado. É crime HEDIONDO (art. 1º, I-C, Lei 8.072/90), julgado pelo TRIBUNAL DO JÚRI. LÓGICA: o agressor \'mata a mãe sem tocá-la\' — mata uma pessoa ligada à mulher para puni-la/controlá-la/fazê-la sofrer. A vítima DIRETA (quem morre) é descendente, ascendente, dependente, enteado ou pessoa sob guarda/responsabilidade direta da mulher (ROL TAXATIVO — não cabe analogia). A vítima MEDIATA (alvo final) é sempre a MULHER em situação de violência doméstica. ELEMENTO SUBJETIVO ESPECIAL: exige dolo + fim específico de causar sofrimento, punição OU controle à mulher (finalidades alternativas). Sem esse fim, é homicídio (em regra qualificado por motivo torpe). DISTINÇÕES: difere do FEMINICÍDIO (art. 121-A), em que a mulher é a vítima direta — podem ocorrer em CONCURSO MATERIAL (matar o filho + matar a mulher). Se o fim é atingir um HOMEM, não há vicaricídio. Progressão de regime: 75% (primário) / 85% (reincidente em hediondo). A \'violência vicária\' também virou a 6ª forma de violência doméstica no art. 7º, VI, da Lei Maria da Penha.'},
+          {art:'Art. 129', hot:true, sub:'Lesão e periclitação', titulo:'Lesão corporal',
+           texto:'LESÃO CORPORAL — Art. 129. Ofender a integridade corporal ou a saúde de outrem:\nPena — detenção, de 3 (três) meses a 1 (um) ano. (lesão leve)\n\nLESÃO CORPORAL DE NATUREZA GRAVE\n§ 1º Se resulta: I — incapacidade para as ocupações habituais por mais de 30 dias; II — perigo de vida; III — debilidade permanente de membro, sentido ou função; IV — aceleração de parto:\nPena — reclusão, de 1 (um) a 5 (cinco) anos.\n\nLESÃO CORPORAL GRAVÍSSIMA\n§ 2º Se resulta: I — incapacidade permanente para o trabalho; II — enfermidade incurável; III — perda ou inutilização de membro, sentido ou função; IV — deformidade permanente; V — aborto:\nPena — reclusão, de 2 (dois) a 8 (oito) anos.\n\nLESÃO CORPORAL SEGUIDA DE MORTE\n§ 3º Se resulta morte e as circunstâncias evidenciam que o agente não quis o resultado, nem assumiu o risco de produzi-lo:\nPena — reclusão, de 4 (quatro) a 12 (doze) anos.\n\n§ 4º Se o agente comete o crime impelido por motivo de relevante valor social ou moral, ou sob domínio de violenta emoção logo após injusta provocação, o juiz pode reduzir a pena (lesão privilegiada).\n\n§ 6º Se a lesão é culposa: Pena — detenção, de 2 (dois) meses a 1 (um) ano.\n\nVIOLÊNCIA DOMÉSTICA\n§ 9º Se a lesão for praticada contra ascendente, descendente, irmão, cônjuge ou companheiro, ou com quem conviva ou tenha convivido, ou prevalecendo-se de relações domésticas, de coabitação ou de hospitalidade:\nPena — detenção, de 3 (três) meses a 3 (três) anos.\n\n§ 11. Na hipótese do § 9º, a pena é aumentada de 1/3 se o crime for cometido contra pessoa com deficiência.\n\n§ 12. Se a lesão do § 9º é praticada contra autoridade ou agente de segurança (arts. 142 e 144 da CF), no exercício da função: pena aumentada de 1/3 a 2/3.\n\nLESÃO CONTRA A MULHER POR RAZÕES DA CONDIÇÃO DO SEXO FEMININO\n§ 13. Se a lesão é praticada contra a mulher, por razões da condição do sexo feminino (art. 121-A, § 1º):\nPena — reclusão, de 2 (dois) a 5 (cinco) anos. (Lei 14.994/2024)',
+           exp:'PONTOS-CHAVE. A gravidade da lesão é definida pelo RESULTADO: leve (caput), grave (§1º), gravíssima (§2º), seguida de morte (§3º — preterdolosa: dolo na lesão + culpa na morte). VIOLÊNCIA DOMÉSTICA (§9º): ação penal pública INCONDICIONADA, segundo o STF (ADI 4424) — não depende de representação da vítima. ATUALIZAÇÃO: a Lei 14.994/2024 criou o §13 — lesão contra mulher por razões da condição do sexo feminino, com pena de 2 a 5 anos (mais grave que a lesão doméstica comum). A lesão leve e a culposa, em regra, dependem de representação (ação pública condicionada), salvo violência doméstica.'},
+          {art:'Art. 147', hot:true, sub:'Crimes contra a liberdade', titulo:'Ameaça',
+           texto:'AMEAÇA — Art. 147. Ameaçar alguém, por palavra, escrito ou gesto, ou qualquer outro meio simbólico, de causar-lhe mal injusto e grave:\nPena — detenção, de 1 (um) a 6 (seis) meses, ou multa.\n\nParágrafo único. Somente se procede mediante representação.',
+           exp:'PONTOS-CHAVE. A ameaça precisa ser de mal INJUSTO e GRAVE, sério e verossímil. Ameaça de mal justo (ex.: \'vou te processar\') não configura o crime. Crime FORMAL: consuma-se com a ciência da vítima, independentemente de o agente cumprir a ameaça. Ameaça feita em estado de embriaguez completa ou de cólera — a jurisprudência diverge, mas o STJ entende que a embriaguez NÃO afasta o crime. Ação penal pública CONDICIONADA à representação (parágrafo único). É infração de menor potencial ofensivo (JECrim). Atenção: se a ameaça ocorre em contexto de violência doméstica contra a mulher, aplica-se a Lei Maria da Penha (procedimento mais rigoroso).'},
+          {art:'Art. 147-A', hot:true, sub:'Crimes contra a liberdade', titulo:'Perseguição (stalking)',
+           texto:'PERSEGUIÇÃO (STALKING) — Art. 147-A. Perseguir alguém, reiteradamente e por qualquer meio, ameaçando-lhe a integridade física ou psicológica, restringindo-lhe a capacidade de locomoção ou, de qualquer forma, invadindo ou perturbando sua esfera de liberdade ou privacidade:\nPena — reclusão, de 6 (seis) meses a 2 (dois) anos, e multa. (Incluído pela Lei 14.132/2021)\n\nAUMENTO DE PENA\n§ 1º A pena é aumentada de metade se o crime é cometido:\nI — contra criança, adolescente ou idoso;\nII — contra mulher por razões da condição de sexo feminino (art. 121-A, § 1º);\nIII — mediante concurso de 2 ou mais pessoas ou com emprego de arma.\n\n§ 2º As penas deste artigo são aplicáveis sem prejuízo das correspondentes à violência.\n\n§ 3º Somente se procede mediante representação.',
+           exp:'PONTOS-CHAVE. Crime criado pela Lei 14.132/2021 (revogou a antiga contravenção de \'perturbação da tranquilidade\'). Elemento essencial: a conduta deve ser REITERADA (não basta um ato isolado). Pode ser por qualquer meio, inclusive virtual (cyberstalking). As três formas de execução: ameaçar integridade física/psicológica, restringir locomoção, ou perturbar a esfera de liberdade/privacidade. Aumento de METADE (§1º) se contra criança/adolescente/idoso, contra mulher por razão de gênero, ou em concurso/com arma. Ação penal pública CONDICIONADA à representação (§3º).'},
+          {art:'Art. 147-B', hot:true, sub:'Crimes contra a liberdade', titulo:'Violência psicológica contra a mulher',
+           texto:'VIOLÊNCIA PSICOLÓGICA CONTRA A MULHER — Art. 147-B. Causar dano emocional à mulher que a prejudique e perturbe seu pleno desenvolvimento ou que vise a degradar ou a controlar suas ações, comportamentos, crenças e decisões, mediante ameaça, constrangimento, humilhação, manipulação, isolamento, chantagem, ridicularização, limitação do direito de ir e vir ou qualquer outro meio que cause prejuízo à sua saúde psicológica e autodeterminação:\nPena — reclusão, de 6 (seis) meses a 2 (dois) anos, e multa, se a conduta não constitui crime mais grave. (Incluído pela Lei 14.188/2021)',
+           exp:'PONTOS-CHAVE. Crime criado pela Lei 14.188/2021 (\'Lei Maria da Penha penal\'). Tutela a saúde PSICOLÓGICA da mulher. A vítima deve ser MULHER. As condutas típicas incluem ameaça, humilhação, manipulação, isolamento, chantagem, ridicularização e limitação do direito de ir e vir. É crime SUBSIDIÁRIO: aplica-se \'se a conduta não constitui crime mais grave\' (princípio da subsidiariedade expressa). Diferença para a Lei Maria da Penha (Lei 11.340/06): aquela define a violência psicológica para fins protetivos; este artigo CRIMINALIZA a conduta. Ação penal pública INCONDICIONADA (não exige representação).'},
         ]
       },
       {
         tema: '💰 Crimes contra o Patrimônio',
         artigos: [
-          {art:'Art. 155', hot:true, titulo:'Furto',
-           texto:'Subtrair, para si ou para outrem, coisa alheia móvel. Pena: reclusão, de 1 a 6 anos, e multa (Lei 15.397/2026). §1º furto durante o repouso noturno (+metade); §4º qualificado (rompimento de obstáculo, abuso de confiança, escalada, concurso de pessoas): reclusão de 2 a 8 anos. §6º, II: furto de celular/dispositivo eletrônico = 4 a 10 anos. §7º, II: furto de arma de fogo = 4 a 10 anos.',
-           exp:'Sem violência/grave ameaça (diferença essencial pro roubo). ATUALIZAÇÃO Lei 15.397/2026: furto simples passou para 1 a 6 anos; furto durante o REPOUSO NOTURNO aumenta METADE (era 1/3); furto de CELULAR e de ARMA DE FOGO viraram qualificadoras (4 a 10 anos). Furto PRIVILEGIADO (§2º, réu primário + coisa de pequeno valor) mantido. Furto de energia elétrica = §3º.'},
-          {art:'Art. 157', hot:true, titulo:'Roubo',
-           texto:'Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de reduzi-la à impossibilidade de resistência. Pena: reclusão, de 6 a 10 anos, e multa (Lei 15.397/2026).',
-           exp:'Furto + VIOLÊNCIA ou GRAVE AMEAÇA. ATUALIZAÇÃO Lei 15.397/2026: pena mínima do roubo subiu de 4 para 6 anos. §2º causas de aumento (concurso de pessoas, arma branca, restrição da vítima; incs. IX-X: roubo de celular ou de arma de fogo = +1/3 a 1/2). §2º-A: aumento de 2/3 se arma de fogo. §3º: lesão grave (7-18 anos, item de elevação VETADO) ou LATROCÍNIO (roubo + morte: 24-30 anos, hediondo).'},
-          {art:'Art. 158', hot:true, titulo:'Extorsão',
+          {art:'Art. 155', hot:true, sub:'Furto', titulo:'Furto',
+           texto:'FURTO — Art. 155. Subtrair, para si ou para outrem, coisa alheia móvel:\nPena — reclusão, de 1 (um) a 6 (seis) anos, e multa. (redação da Lei 15.397/2026)\n\n§ 1º A pena aumenta-se de metade, se o crime é praticado durante o repouso noturno. (Lei 15.397/2026)\n\n§ 2º Se o criminoso é primário, e é de pequeno valor a coisa furtada, o juiz pode substituir a pena de reclusão pela de detenção, diminuí-la de 1 a 2/3, ou aplicar somente a pena de multa. (furto privilegiado)\n\n§ 3º Equipara-se à coisa móvel a energia elétrica ou qualquer outra que tenha valor econômico.\n\nFURTO QUALIFICADO\n§ 4º A pena é de reclusão de 2 (dois) a 8 (oito) anos, e multa, se o crime é cometido:\nI — com destruição ou rompimento de obstáculo à subtração da coisa;\nII — com abuso de confiança, ou mediante fraude, escalada ou destreza;\nIII — com emprego de chave falsa;\nIV — mediante concurso de duas ou mais pessoas;\nV — contra bens que comprometam o funcionamento de órgãos da União, Estado, DF ou Município, ou de estabelecimentos que prestem serviços essenciais. (Lei 15.181/2025)\n\n§ 4º-A A pena é de reclusão de 4 a 10 anos e multa, se houver emprego de explosivo ou de artefato análogo que cause perigo comum. (Lei 13.654/2018)\n\n§ 4º-B Reclusão de 4 (quatro) a 10 (dez) anos e multa, se o furto mediante fraude é cometido por meio de dispositivo eletrônico ou informático, conectado ou não à rede, com ou sem violação de segurança ou uso de programa malicioso. (teto elevado pela Lei 15.397/2026)\n\n§ 4º-C A pena do § 4º-B aumenta-se: I — de 1/3 a 2/3, se praticado com servidor mantido fora do país; II — de 1/3 ao dobro, se contra idoso ou vulnerável.\n\n§ 5º Reclusão de 4 (quatro) a 10 (dez) anos e multa, se a subtração for de veículo automotor que venha a ser transportado para outro Estado ou para o exterior. (pena elevada pela Lei 15.397/2026)\n\n§ 6º Reclusão de 4 (quatro) a 10 (dez) anos e multa, se a subtração for: I — de semovente domesticável de produção ou de animal doméstico; II — de aparelho de telefonia celular, de computador (inclusive portátil/tablet) ou de dispositivo eletrônico semelhante. (Lei 15.397/2026)\n\n§ 7º Reclusão de 4 (quatro) a 10 (dez) anos e multa, se a subtração for: I — de substâncias explosivas ou acessórios para sua fabricação/montagem/emprego; II — de arma de fogo. (inciso II incluído pela Lei 15.397/2026)\n\n§ 8º Reclusão de 2 (dois) a 8 (oito) anos e multa, se a subtração for de fios, cabos ou equipamentos de energia elétrica, telefonia ou transmissão de dados, ou de materiais ferroviários/metroviários. (Lei 15.181/2025)',
+           exp:'PONTOS-CHAVE. Furto = subtrair coisa alheia móvel SEM violência ou grave ameaça (essa é a diferença essencial para o ROUBO). ATUALIZAÇÃO Lei 15.397/2026 (vigente desde 04/05/2026): (1) furto simples subiu para 1 a 6 anos; (2) repouso noturno aumenta METADE (antes 1/3) — só incide sobre o furto SIMPLES, não o qualificado (STJ, Tema 1.087); (3) furto de CELULAR/dispositivo (§6º, II) e de ARMA DE FOGO (§7º, II) viraram qualificadoras de 4 a 10 anos. As novas penas NÃO retroagem (lei mais gravosa): para fatos anteriores a 04/05/2026, aplica-se a redação antiga, mais benéfica (art. 5º, XL, CF; art. 2º, CP). Furto PRIVILEGIADO (§2º): réu primário + coisa de pequeno valor (até 1 salário mínimo, segundo o STJ). Energia elétrica equipara-se a coisa móvel (§3º).'},
+          {art:'Art. 157', hot:true, sub:'Roubo', titulo:'Roubo',
+           texto:'ROUBO — Art. 157. Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de havê-la, por qualquer meio, reduzido à impossibilidade de resistência:\nPena — reclusão, de 6 (seis) a 10 (dez) anos, e multa. (redação da Lei 15.397/2026)\n\n§ 1º Na mesma pena incorre quem, logo depois de subtraída a coisa, emprega violência contra pessoa ou grave ameaça, a fim de assegurar a impunidade do crime ou a detenção da coisa para si ou para terceiro. (roubo impróprio)\n\n§ 1º-A A pena é de reclusão, de 6 (seis) a 12 (doze) anos, e multa, se a subtração for cometida contra bens que comprometam o funcionamento de órgãos da União, Estado, DF ou Município, ou de estabelecimentos que prestem serviços públicos essenciais. (Lei 15.181/2025)\n\n§ 2º A pena aumenta-se de 1/3 (um terço) até metade:\nI — (revogado);\nII — se há o concurso de duas ou mais pessoas;\nIII — se a vítima está em serviço de transporte de valores e o agente conhece tal circunstância;\nIV — se a subtração for de veículo automotor que venha a ser transportado para outro Estado ou para o exterior;\nV — se o agente mantém a vítima em seu poder, restringindo sua liberdade;\nVI — se a subtração for de substâncias explosivas ou de acessórios que possibilitem sua fabricação, montagem ou emprego;\nVII — se a violência ou grave ameaça é exercida com emprego de arma branca;\nIX — se a subtração for de aparelho de telefonia celular, de computador (inclusive portátil/tablet) ou de dispositivo eletrônico semelhante; (Lei 15.397/2026)\nX — se a subtração for de arma de fogo. (Lei 15.397/2026)\n\n§ 2º-A A pena aumenta-se de 2/3 (dois terços):\nI — se a violência ou ameaça é exercida com emprego de arma de fogo;\nII — se há destruição ou rompimento de obstáculo mediante o emprego de explosivo ou de artefato análogo que cause perigo comum.\n\n§ 2º-B Se a violência ou grave ameaça é exercida com emprego de arma de fogo de uso restrito ou proibido, aplica-se em dobro a pena prevista no caput.\n\n§ 3º Se da violência resulta:\nI — (VETADO) — permanece vigente a redação anterior: lesão corporal grave, pena de reclusão de 7 (sete) a 18 (dezoito) anos, e multa;\nII — morte, a pena é de reclusão de 24 (vinte e quatro) a 30 (trinta) anos, e multa. (LATROCÍNIO — Lei 15.397/2026)\n\n§ 5º Se o latrocínio (§3º, II) é cometido por integrante de organização criminosa ultraviolenta, grupo paramilitar ou milícia privada, a pena é de reclusão de 20 (vinte) a 40 (quarenta) anos, e multa. (Lei 15.358/2026)',
+           exp:'PONTOS-CHAVE. Roubo = furto + VIOLÊNCIA ou GRAVE AMEAÇA à pessoa (é a diferença essencial em relação ao furto). Roubo PRÓPRIO: violência ANTES/DURANTE a subtração. Roubo IMPRÓPRIO (§1º): violência DEPOIS, para assegurar a posse ou a impunidade. ATUALIZAÇÃO 2026: (1) Lei 15.397/2026 elevou a pena mínima do caput de 4 para 6 anos; criou as majorantes de roubo de CELULAR (IX) e de ARMA DE FOGO (X), de 1/3 a 1/2; e elevou o LATROCÍNIO para 24 a 30 anos. (2) A elevação da pena do roubo com LESÃO GRAVE (que iria a 16-24 anos) foi VETADA, então permanece 7 a 18 anos. (3) Lei 15.358/2026 criou o §5º: latrocínio por org. criminosa/milícia = 20 a 40 anos. As penas mais graves NÃO retroagem (lei mais gravosa): para fatos anteriores a 04/05/2026, aplica-se a redação antiga. JURISPRUDÊNCIA: LATROCÍNIO é crime contra o PATRIMÔNIO, hediondo, julgado por JUIZ SINGULAR (não pelo júri — Súmula 603 STF). Há latrocínio consumado quando a MORTE se consuma, ainda que não ocorra a subtração (Súmula 610 STF). O roubo consuma-se com a inversão da posse, ainda que por breve tempo (Súmula 582 STJ).'},
+          {art:'Art. 158', hot:true, sub:'Extorsão', titulo:'Extorsão',
            texto:'Constranger alguém, mediante violência ou grave ameaça, e com o intuito de obter indevida vantagem econômica, a fazer, tolerar que se faça ou deixar de fazer alguma coisa. Pena: reclusão, de 4 a 10 anos, e multa.',
            exp:'Diferença pro roubo: na extorsão a COLABORAÇÃO da vítima é imprescindível (ela faz/deixa de fazer algo). Súmula 96 STJ: consuma-se independentemente da obtenção da vantagem. §3º "sequestro relâmpago".'},
-          {art:'Art. 159', hot:true, titulo:'Extorsão mediante sequestro',
+          {art:'Art. 159', hot:true, sub:'Extorsão', titulo:'Extorsão mediante sequestro',
            texto:'Sequestrar pessoa com o fim de obter, para si ou para outrem, qualquer vantagem, como condição ou preço do resgate. Pena: reclusão, de 8 a 15 anos.',
            exp:'Crime HEDIONDO. Aumenta se vítima < 18 ou > 60, ou se o sequestro dura mais de 24h (§1º: 12-20 anos). Resulta lesão grave: 16-24. Resulta morte: 24-30. Delação premiada do §4º (concurso desfeito por um dos coautores).'},
-          {art:'Art. 168', hot:true, titulo:'Apropriação indébita',
+          {art:'Art. 168', hot:true, sub:'Apropriação e estelionato', titulo:'Apropriação indébita',
            texto:'Apropriar-se de coisa alheia móvel, de que tem a posse ou a detenção. Pena: reclusão, de 1 a 4 anos, e multa.',
            exp:'O agente JÁ TEM a posse lícita da coisa (ex: emprestada) e depois se apropria. Diferença pro furto: no furto ele SUBTRAI (não tinha a posse). 168-A: apropriação indébita PREVIDENCIÁRIA.'},
-          {art:'Art. 171', hot:true, titulo:'Estelionato',
+          {art:'Art. 171', hot:true, sub:'Apropriação e estelionato', titulo:'Estelionato',
            texto:'Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento. Pena: reclusão, de 1 a 5 anos, e multa (pena mantida).',
            exp:'Crime de FRAUDE (engano da vítima). §2º-A: fraude eletrônica (PIX, clonagem de WhatsApp/apps): 4 a 8 anos. §2º, VII: cessão de CONTA LARANJA (tipo novo da Lei 15.397/2026): 1 a 5 anos. ATUALIZAÇÃO Lei 15.397/2026: o §5º foi REVOGADO — o estelionato voltou a ser, em regra, de ação penal pública INCONDICIONADA (não exige mais representação). Diferença pro furto mediante fraude: aqui a vítima ENTREGA o bem iludida.'},
-          {art:'Art. 180', hot:true, titulo:'Receptação',
+          {art:'Art. 180', hot:true, sub:'Receptação', titulo:'Receptação',
            texto:'Adquirir, receber, transportar, conduzir ou ocultar, em proveito próprio ou alheio, coisa que sabe ser produto de crime. Pena: reclusão, de 2 a 6 anos, e multa (Lei 15.397/2026).',
            exp:'Receptação DOLOSA (sabe que é produto de crime) x CULPOSA (§3º: deve presumir pela natureza/preço). ATUALIZAÇÃO Lei 15.397/2026: pena da receptação simples subiu de 1-4 para 2 a 6 anos. §1º receptação qualificada (no exercício de atividade comercial). Art. 180-A receptação de animal (3 a 8 anos). Crime acessório (depende de crime anterior).'},
         ]
@@ -9409,10 +9480,10 @@ const CP_LEISECA = {
       {
         tema: '🔞 Crimes contra a Dignidade Sexual',
         artigos: [
-          {art:'Art. 213', hot:true, titulo:'Estupro',
+          {art:'Art. 213', hot:true, sub:'Crimes sexuais', titulo:'Estupro',
            texto:'Constranger alguém, mediante violência ou grave ameaça, a ter conjunção carnal ou a praticar ou permitir que com ele se pratique outro ato libidinoso. Pena: reclusão, de 6 a 10 anos.',
            exp:'Crime HEDIONDO. Após Lei 12.015/09, é crime único (uniu estupro + atentado violento ao pudor). Vítima pode ser homem ou mulher. Aumenta se resulta lesão grave (8-12) ou morte (12-30).'},
-          {art:'Art. 217-A', hot:true, titulo:'Estupro de vulnerável',
+          {art:'Art. 217-A', hot:true, sub:'Crimes sexuais', titulo:'Estupro de vulnerável',
            texto:'Ter conjunção carnal ou praticar outro ato libidinoso com menor de 14 anos. Pena: reclusão, de 8 a 15 anos.',
            exp:'HEDIONDO. Vulnerabilidade ABSOLUTA do menor de 14 (Súmula 593 STJ: irrelevante consentimento, experiência sexual ou relacionamento). Também protege quem não pode oferecer resistência (enfermidade, deficiência).'},
         ]
@@ -9420,19 +9491,19 @@ const CP_LEISECA = {
       {
         tema: '🏛️ Crimes contra a Administração Pública',
         artigos: [
-          {art:'Art. 312', hot:true, titulo:'Peculato',
+          {art:'Art. 312', hot:true, sub:'Crimes de servidor', titulo:'Peculato',
            texto:'Apropriar-se o funcionário público de dinheiro, valor ou qualquer bem móvel, público ou particular, de que tem a posse em razão do cargo, ou desviá-lo, em proveito próprio ou alheio. Pena: reclusão, de 2 a 12 anos, e multa.',
            exp:'Peculato-APROPRIAÇÃO e peculato-DESVIO (caput). §1º peculato-FURTO (não tem a posse, mas subtrai valendo-se do cargo). §2º peculato CULPOSO. §3º: reparação do dano antes da sentença extingue punibilidade (culposo) ou reduz (doloso).'},
-          {art:'Art. 316', hot:true, titulo:'Concussão',
+          {art:'Art. 316', hot:true, sub:'Crimes de servidor', titulo:'Concussão',
            texto:'Exigir, para si ou para outrem, direta ou indiretamente, ainda que fora da função ou antes de assumi-la, mas em razão dela, vantagem indevida. Pena: reclusão, de 2 a 12 anos, e multa.',
            exp:'O funcionário EXIGE (impõe) a vantagem. Diferença pra corrupção passiva (que SOLICITA/RECEBE). §1º excesso de exação (cobrança indevida de tributo). Verbo-chave: EXIGIR.'},
-          {art:'Art. 317', hot:true, titulo:'Corrupção passiva',
+          {art:'Art. 317', hot:true, sub:'Crimes de servidor', titulo:'Corrupção passiva',
            texto:'Solicitar ou receber, para si ou para outrem, direta ou indiretamente, ainda que fora da função ou antes de assumi-la, mas em razão dela, vantagem indevida, ou aceitar promessa de tal vantagem. Pena: reclusão, de 2 a 12 anos, e multa.',
            exp:'Praticada pelo FUNCIONÁRIO PÚBLICO (solicita/recebe/aceita). É o par da corrupção ATIVA (art. 333, praticada pelo particular). Bilateralidade não é exigida — pode haver passiva sem ativa.'},
-          {art:'Art. 319', hot:true, titulo:'Prevaricação',
+          {art:'Art. 319', hot:true, sub:'Crimes de servidor', titulo:'Prevaricação',
            texto:'Retardar ou deixar de praticar, indevidamente, ato de ofício, ou praticá-lo contra disposição expressa de lei, para satisfazer interesse ou sentimento pessoal. Pena: detenção, de 3 meses a 1 ano, e multa.',
            exp:'O funcionário age (ou se omite) por INTERESSE OU SENTIMENTO PESSOAL. Elemento subjetivo é essencial. 319-A: prevaricação do diretor de presídio que deixa entrar celular.'},
-          {art:'Art. 333', hot:true, titulo:'Corrupção ativa',
+          {art:'Art. 333', hot:true, sub:'Crimes de particular', titulo:'Corrupção ativa',
            texto:'Oferecer ou prometer vantagem indevida a funcionário público, para determiná-lo a praticar, omitir ou retardar ato de ofício. Pena: reclusão, de 2 a 12 anos, e multa.',
            exp:'Praticada pelo PARTICULAR (oferece/promete a funcionário). Par da corrupção passiva (art. 317). Crime formal: consuma com a oferta/promessa, independe de o funcionário aceitar.'},
         ]
@@ -9446,16 +9517,16 @@ const CP_LEISECA = {
   {
     tema: '🏛️ Princípios Fundamentais (arts. 1º a 4º)',
     artigos: [
-      {art:'Art. 1º', hot:true, titulo:'Fundamentos da República',
+      {art:'Art. 1º', hot:true, sub:'Fundamentos e objetivos', titulo:'Fundamentos da República',
        texto:'A República Federativa do Brasil, formada pela união indissolúvel dos Estados e Municípios e do Distrito Federal, constitui-se em Estado Democrático de Direito e tem como fundamentos: I - soberania; II - cidadania; III - dignidade da pessoa humana; IV - valores sociais do trabalho e da livre iniciativa; V - pluralismo político.',
        exp:'Os 5 FUNDAMENTOS. Mnemônico: "SO-CI-DI-VA-PLU". Cuidado: dignidade da pessoa humana é FUNDAMENTO (não objetivo). Parágrafo único: todo poder emana do povo, exercido por representantes eleitos OU diretamente (democracia semidireta).'},
-      {art:'Art. 2º', hot:true, titulo:'Separação dos Poderes',
+      {art:'Art. 2º', hot:true, sub:'Fundamentos e objetivos', titulo:'Separação dos Poderes',
        texto:'São Poderes da União, independentes e harmônicos entre si, o Legislativo, o Executivo e o Judiciário.',
        exp:'Tripartição de Montesquieu. Os poderes são INDEPENDENTES e HARMÔNICOS (sistema de freios e contrapesos). Cláusula pétrea (art. 60, §4º, III).'},
-      {art:'Art. 3º', hot:true, titulo:'Objetivos Fundamentais',
+      {art:'Art. 3º', hot:true, sub:'Fundamentos e objetivos', titulo:'Objetivos Fundamentais',
        texto:'Constituem objetivos fundamentais: I - construir uma sociedade livre, justa e solidária; II - garantir o desenvolvimento nacional; III - erradicar a pobreza e a marginalização e reduzir as desigualdades; IV - promover o bem de todos, sem preconceitos de origem, raça, sexo, cor, idade.',
        exp:'Os OBJETIVOS são verbos de AÇÃO (construir, garantir, erradicar, promover) — normas programáticas. Pegadinha clássica: trocar FUNDAMENTO (art. 1º) por OBJETIVO (art. 3º).'},
-      {art:'Art. 4º', hot:false, titulo:'Princípios das Relações Internacionais',
+      {art:'Art. 4º', hot:false, sub:'Relações internacionais', titulo:'Princípios das Relações Internacionais',
        texto:'A República rege-se nas relações internacionais pelos princípios: independência nacional; prevalência dos direitos humanos; autodeterminação dos povos; não intervenção; igualdade entre os Estados; defesa da paz; solução pacífica dos conflitos; repúdio ao terrorismo e ao racismo; cooperação; concessão de asilo político.',
        exp:'10 princípios. Destaques pra prova: PREVALÊNCIA DOS DIREITOS HUMANOS e REPÚDIO AO TERRORISMO E RACISMO. Parágrafo único: busca da integração da América Latina.'}
     ]
@@ -9463,46 +9534,46 @@ const CP_LEISECA = {
   {
     tema: '🛡️ Direitos e Deveres Individuais e Coletivos (art. 5º)',
     artigos: [
-      {art:'Art. 5º, caput', hot:true, titulo:'Igualdade e direitos invioláveis',
+      {art:'Art. 5º, caput', hot:true, sub:'Direitos individuais (caput)', titulo:'Igualdade e direitos invioláveis',
        texto:'Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade.',
        exp:'Princípio da IGUALDADE (formal e material). O STF estende os direitos também a estrangeiros NÃO residentes e pessoas jurídicas. "Vida, liberdade, igualdade, segurança, propriedade" são os 5 bens nucleares.'},
-      {art:'Art. 5º, III', hot:true, titulo:'Vedação à tortura',
+      {art:'Art. 5º, III', hot:true, sub:'Direitos individuais (caput)', titulo:'Vedação à tortura',
        texto:'Ninguém será submetido a tortura nem a tratamento desumano ou degradante.',
        exp:'Base constitucional da Lei de Tortura (9.455/97). Direito ABSOLUTO segundo a doutrina majoritária. Conecta com o art. 5º, XLIII (tortura é crime inafiançável e insuscetível de graça/anistia).'},
-      {art:'Art. 5º, X', hot:true, titulo:'Intimidade, vida privada, honra e imagem',
+      {art:'Art. 5º, X', hot:true, sub:'Privacidade e comunicações', titulo:'Intimidade, vida privada, honra e imagem',
        texto:'São invioláveis a intimidade, a vida privada, a honra e a imagem das pessoas, assegurado o direito a indenização pelo dano material ou moral decorrente de sua violação.',
        exp:'Direitos da personalidade. Súmula 403 STJ: uso de imagem com fins econômicos sem autorização gera dano, independe de prova do prejuízo. Relevante pra atuação policial (não expor presos/investigados).'},
-      {art:'Art. 5º, XI', hot:true, titulo:'Inviolabilidade do domicílio',
+      {art:'Art. 5º, XI', hot:true, sub:'Privacidade e comunicações', titulo:'Inviolabilidade do domicílio',
        texto:'A casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem consentimento do morador, salvo em caso de flagrante delito ou desastre, ou para prestar socorro, ou, durante o dia, por determinação judicial.',
        exp:'TEMA QUENTÍSSIMO pra polícia. Entrada SEM mandado: flagrante, desastre, socorro (a qualquer hora) e determinação judicial (só de DIA). STF (RE 603.616): flagrante exige fundadas razões prévias. "Casa" abrange escritório, quarto de hotel, trailer.'},
-      {art:'Art. 5º, XII', hot:true, titulo:'Sigilo de correspondência e comunicações',
+      {art:'Art. 5º, XII', hot:true, sub:'Privacidade e comunicações', titulo:'Sigilo de correspondência e comunicações',
        texto:'É inviolável o sigilo da correspondência e das comunicações telegráficas, de dados e das comunicações telefônicas, salvo, no último caso, por ordem judicial, nas hipóteses e na forma que a lei estabelecer para fins de investigação criminal ou instrução processual penal.',
        exp:'Base da Lei 9.296/96 (interceptação). A quebra do sigilo TELEFÔNICO exige ordem judicial + investigação criminal/instrução penal. STF: a parte final ("último caso") refere-se às comunicações telefônicas.'},
-      {art:'Art. 5º, XLII', hot:true, titulo:'Racismo — crime inafiançável e imprescritível',
+      {art:'Art. 5º, XLII', hot:true, sub:'Garantias penais e processuais', titulo:'Racismo — crime inafiançável e imprescritível',
        texto:'A prática do racismo constitui crime inafiançável e imprescritível, sujeito à pena de reclusão, nos termos da lei.',
        exp:'Racismo: INAFIANÇÁVEL e IMPRESCRITÍVEL. STF (ADO 26): equiparou homofobia e transfobia ao crime de racismo. Base da Lei 7.716/89 (atualizada pela Lei 14.532/2023, que tornou injúria racial equiparada a racismo, também imprescritível).'},
-      {art:'Art. 5º, XLIII', hot:true, titulo:'Crimes inafiançáveis (3TH)',
+      {art:'Art. 5º, XLIII', hot:true, sub:'Garantias penais e processuais', titulo:'Crimes inafiançáveis (3TH)',
        texto:'A lei considerará crimes inafiançáveis e insuscetíveis de graça ou anistia a prática da tortura, o tráfico ilícito de entorpecentes, o terrorismo e os definidos como crimes hediondos.',
        exp:'Os "3TH + hediondos": Tortura, Tráfico, Terrorismo e Hediondos. São inafiançáveis e NÃO admitem graça/anistia. Cuidado: a CF não cita "indulto" aqui (discussão doutrinária). Base da Lei 8.072/90.'},
-      {art:'Art. 5º, XLIV', hot:true, titulo:'Ação de grupos armados',
+      {art:'Art. 5º, XLIV', hot:true, sub:'Garantias penais e processuais', titulo:'Ação de grupos armados',
        texto:'Constitui crime inafiançável e imprescritível a ação de grupos armados, civis ou militares, contra a ordem constitucional e o Estado Democrático.',
        exp:'Os DOIS crimes IMPRESCRITÍVEIS na CF: racismo (XLII) e ação de grupos armados contra o Estado Democrático (XLIV). Decore esses dois — é pegadinha recorrente.'},
-      {art:'Art. 5º, LIV e LV', hot:true, titulo:'Devido processo, contraditório e ampla defesa',
+      {art:'Art. 5º, LIV e LV', hot:true, sub:'Garantias penais e processuais', titulo:'Devido processo, contraditório e ampla defesa',
        texto:'LIV - ninguém será privado da liberdade ou de seus bens sem o devido processo legal; LV - aos litigantes, em processo judicial ou administrativo, e aos acusados em geral são assegurados o contraditório e ampla defesa, com os meios e recursos a ela inerentes.',
        exp:'DEVIDO PROCESSO LEGAL (due process) + CONTRADITÓRIO + AMPLA DEFESA. Valem inclusive no processo ADMINISTRATIVO (ex: PAD). Súmula Vinculante 5: falta de defesa técnica por advogado no PAD não ofende a Constituição.'},
-      {art:'Art. 5º, LVII', hot:true, titulo:'Presunção de inocência',
+      {art:'Art. 5º, LVII', hot:true, sub:'Garantias penais e processuais', titulo:'Presunção de inocência',
        texto:'Ninguém será considerado culpado até o trânsito em julgado de sentença penal condenatória.',
        exp:'PRESUNÇÃO DE INOCÊNCIA (ou não-culpabilidade). STF (2019, ADCs 43/44/54): a execução da pena só após o TRÂNSITO EM JULGADO. Princípio nuclear pra atuação policial e prisional.'},
-      {art:'Art. 5º, LXI a LXVI', hot:true, titulo:'Direitos do preso',
+      {art:'Art. 5º, LXI a LXVI', hot:true, sub:'Garantias penais e processuais', titulo:'Direitos do preso',
        texto:'LXI - ninguém será preso senão em flagrante delito ou por ordem escrita e fundamentada de autoridade judiciária competente, salvo transgressão militar; LXII - a prisão será comunicada ao juiz e à família; LXIII - o preso será informado de seus direitos, entre os quais o de permanecer calado; LXV - a prisão ilegal será relaxada pela autoridade judiciária; LXVI - ninguém será levado à prisão quando a lei admitir a liberdade provisória.',
        exp:'PACOTE DE DIREITOS DO PRESO — essencial pra polícia. Destaques: prisão só em flagrante ou ordem judicial escrita/fundamentada; direito ao SILÊNCIO (LXIII); comunicação ao juiz e à família; prisão ilegal é RELAXADA. Base da audiência de custódia.'},
-      {art:'Art. 5º, LXVIII', hot:true, titulo:'Habeas Corpus',
+      {art:'Art. 5º, LXVIII', hot:true, sub:'Remédios constitucionais', titulo:'Habeas Corpus',
        texto:'Conceder-se-á habeas corpus sempre que alguém sofrer ou se achar ameaçado de sofrer violência ou coação em sua liberdade de locomoção, por ilegalidade ou abuso de poder.',
        exp:'HC protege a LIBERDADE DE LOCOMOÇÃO (ir e vir). Repressivo (já preso) ou preventivo (ameaça — salvo-conduto). Gratuito. Não cabe HC contra punição disciplinar militar (quanto ao mérito).'},
-      {art:'Art. 5º, LXIX', hot:false, titulo:'Mandado de Segurança',
+      {art:'Art. 5º, LXIX', hot:false, sub:'Remédios constitucionais', titulo:'Mandado de Segurança',
        texto:'Conceder-se-á mandado de segurança para proteger direito líquido e certo, não amparado por habeas corpus ou habeas data, quando o responsável pela ilegalidade for autoridade pública ou agente de pessoa jurídica no exercício de atribuições do Poder Público.',
        exp:'MS protege DIREITO LÍQUIDO E CERTO (provado de plano, sem dilação probatória). É residual: cabe quando não é caso de HC nem HD. Prazo decadencial: 120 dias. Pode ser individual ou coletivo (LXX).'},
-      {art:'Art. 5º, §3º', hot:true, titulo:'Tratados de direitos humanos',
+      {art:'Art. 5º, §3º', hot:true, sub:'Tratados internacionais', titulo:'Tratados de direitos humanos',
        texto:'Os tratados e convenções internacionais sobre direitos humanos que forem aprovados, em cada Casa do Congresso Nacional, em dois turnos, por três quintos dos votos dos respectivos membros, serão equivalentes às emendas constitucionais.',
        exp:'Tratados de DH aprovados pelo rito especial (2 turnos, 3/5, nas 2 Casas) = status de EMENDA CONSTITUCIONAL. Ex: Convenção de Nova York (PcD). Os demais tratados de DH têm status SUPRALEGAL (acima da lei, abaixo da CF) — STF.'}
     ]
@@ -9510,16 +9581,16 @@ const CP_LEISECA = {
   {
     tema: '🌎 Nacionalidade (art. 12)',
     artigos: [
-      {art:'Art. 12, I', hot:true, titulo:'Brasileiros natos',
+      {art:'Art. 12, I', hot:true, sub:'Aquisição da nacionalidade', titulo:'Brasileiros natos',
        texto:'São brasileiros NATOS: a) os nascidos no Brasil, ainda que de pais estrangeiros, desde que estes não estejam a serviço de seu país; b) os nascidos no estrangeiro, de pai ou mãe brasileiros, desde que qualquer deles esteja a serviço da República; c) os nascidos no estrangeiro de pai ou mãe brasileiros, desde que sejam registrados em repartição brasileira competente OU venham a residir no Brasil e optem, a qualquer tempo, depois de atingida a maioridade, pela nacionalidade brasileira.',
        exp:'Critérios: NATO por ius soli (nascido no Brasil — alínea a) ou ius sanguinis + requisitos (alíneas b e c). A alínea "c" tem a "nacionalidade potestativa" (opção após maioridade). Pegadinha: filho de estrangeiro a serviço do país dele NÃO é nato.'},
-      {art:'Art. 12, II', hot:true, titulo:'Brasileiros naturalizados',
+      {art:'Art. 12, II', hot:true, sub:'Aquisição da nacionalidade', titulo:'Brasileiros naturalizados',
        texto:'São NATURALIZADOS: a) os que, na forma da lei, adquiram a nacionalidade brasileira, exigidas aos originários de países de língua portuguesa apenas residência por um ano ininterrupto e idoneidade moral; b) os estrangeiros de qualquer nacionalidade residentes no Brasil há mais de 15 anos ininterruptos e sem condenação penal, desde que requeiram a nacionalidade.',
        exp:'Naturalização ORDINÁRIA (originários de país lusófono: 1 ano + idoneidade) e EXTRAORDINÁRIA/quinzenária (15 anos + sem condenação + requerimento). Atenção aos prazos: 1 ano (lusófonos) x 15 anos (demais).'},
-      {art:'Art. 12, §3º', hot:true, titulo:'Cargos privativos de brasileiro nato',
+      {art:'Art. 12, §3º', hot:true, sub:'Efeitos e perda', titulo:'Cargos privativos de brasileiro nato',
        texto:'São privativos de brasileiro NATO os cargos: I - de Presidente e Vice-Presidente da República; II - de Presidente da Câmara dos Deputados; III - de Presidente do Senado Federal; IV - de Ministro do STF; V - da carreira diplomática; VI - de oficial das Forças Armadas; VII - de Ministro de Estado da Defesa.',
        exp:'Mnemônico "MP3.COM": Ministro STF, Presidente/vice da República, Presidente da Câmara, Presidente do Senado, Carreira diplomática, Oficial das Forças Armadas, Ministro da Defesa. SÓ esses 7 são privativos de NATO — rol taxativo.'},
-      {art:'Art. 12, §4º', hot:true, titulo:'Perda da nacionalidade',
+      {art:'Art. 12, §4º', hot:true, sub:'Efeitos e perda', titulo:'Perda da nacionalidade',
        texto:'Será declarada a perda da nacionalidade do brasileiro que: I - tiver cancelada sua naturalização, por sentença judicial, em virtude de fraude ou de atentado contra a ordem constitucional e o Estado Democrático; II - fizer pedido expresso de perda da nacionalidade (ressalvadas situações que acarretem apatridia).',
        exp:'Atualizado pela EC 131/2023: a perda da nacionalidade agora exige PEDIDO EXPRESSO (antes era automática pela aquisição de outra). Naturalização só é cancelada por SENTENÇA JUDICIAL (fraude/atentado). Não se admite perda que gere apatridia.'}
     ]
@@ -9527,25 +9598,25 @@ const CP_LEISECA = {
   {
     tema: '🗳️ Direitos Políticos (arts. 14 a 16)',
     artigos: [
-      {art:'Art. 14, caput', hot:true, titulo:'Soberania popular e sufrágio',
+      {art:'Art. 14, caput', hot:true, sub:'Direito de votar', titulo:'Soberania popular e sufrágio',
        texto:'A soberania popular será exercida pelo sufrágio universal e pelo voto direto e secreto, com valor igual para todos, e, nos termos da lei, mediante plebiscito, referendo e iniciativa popular.',
        exp:'Sufrágio UNIVERSAL + voto DIRETO, SECRETO e de valor IGUAL. Instrumentos de democracia direta: PLEBISCITO (consulta prévia), REFERENDO (consulta posterior) e INICIATIVA POPULAR. Não confunda plebiscito (antes) com referendo (depois).'},
-      {art:'Art. 14, §1º', hot:true, titulo:'Alistamento e voto — obrigatório x facultativo',
+      {art:'Art. 14, §1º', hot:true, sub:'Direito de votar', titulo:'Alistamento e voto — obrigatório x facultativo',
        texto:'O alistamento eleitoral e o voto são: I - OBRIGATÓRIOS para os maiores de 18 anos; II - FACULTATIVOS para os analfabetos, os maiores de 70 anos e os maiores de 16 e menores de 18 anos.',
        exp:'OBRIGATÓRIO: 18 a 70 anos. FACULTATIVO: analfabetos, maiores de 70, e de 16-17 anos. Pegadinha clássica: o voto do maior de 70 é FACULTATIVO (não proibido). O analfabeto vota (facultativo) mas é INELEGÍVEL.'},
-      {art:'Art. 14, §2º', hot:true, titulo:'Quem não pode alistar-se',
+      {art:'Art. 14, §2º', hot:true, sub:'Direito de votar', titulo:'Quem não pode alistar-se',
        texto:'Não podem alistar-se como eleitores os estrangeiros e, durante o período do serviço militar obrigatório, os conscritos.',
        exp:'ESTRANGEIROS e CONSCRITOS (durante o serviço militar obrigatório) NÃO se alistam. Conscrito não vota nem é votado durante o serviço. Português equiparado (com reciprocidade) é exceção entre estrangeiros.'},
-      {art:'Art. 14, §3º', hot:true, titulo:'Condições de elegibilidade',
+      {art:'Art. 14, §3º', hot:true, sub:'Direito de ser votado', titulo:'Condições de elegibilidade',
        texto:'São condições de elegibilidade: nacionalidade brasileira; pleno exercício dos direitos políticos; alistamento eleitoral; domicílio eleitoral na circunscrição; filiação partidária; idade mínima de 35 (Presidente/Senador), 30 (Governador), 21 (Deputado/Prefeito) e 18 anos (Vereador).',
        exp:'IDADES MÍNIMAS — decore: 35 (Presidente, Vice, Senador), 30 (Governador/vice), 21 (Deputado federal/estadual, Prefeito, juiz de paz), 18 (Vereador). Exige filiação partidária (não há candidatura avulsa no Brasil).'},
-      {art:'Art. 14, §7º', hot:true, titulo:'Inelegibilidade reflexa',
+      {art:'Art. 14, §7º', hot:true, sub:'Direito de ser votado', titulo:'Inelegibilidade reflexa',
        texto:'São inelegíveis, no território de jurisdição do titular, o cônjuge e os parentes consanguíneos ou afins, até o segundo grau ou por adoção, do Presidente da República, de Governador, de Prefeito ou de quem os haja substituído dentro dos seis meses anteriores ao pleito, salvo se já titular de mandato eletivo e candidato à reeleição.',
        exp:'INELEGIBILIDADE REFLEXA (ou por parentesco). Atinge cônjuge e parentes até 2º grau do chefe do Executivo. Súmula Vinculante 18: a dissolução da sociedade conjugal no curso do mandato NÃO afasta a inelegibilidade.'},
-      {art:'Art. 15', hot:true, titulo:'Perda e suspensão dos direitos políticos',
+      {art:'Art. 15', hot:true, sub:'Perda e anterioridade', titulo:'Perda e suspensão dos direitos políticos',
        texto:'É vedada a cassação de direitos políticos, cuja perda ou suspensão só se dará nos casos de: I - cancelamento da naturalização por sentença transitada em julgado; II - incapacidade civil absoluta; III - condenação criminal transitada em julgado, enquanto durarem seus efeitos; IV - recusa de cumprir obrigação a todos imposta ou prestação alternativa; V - improbidade administrativa.',
        exp:'É PROIBIDA a CASSAÇÃO de direitos políticos. Só há PERDA ou SUSPENSÃO nos 5 casos. A condenação criminal transitada em julgado SUSPENDE os direitos políticos (inciso III) — relevante pra concurso policial. Mnemônico para os incisos: lembre que não existe "cassação".'},
-      {art:'Art. 16', hot:false, titulo:'Princípio da anterioridade eleitoral',
+      {art:'Art. 16', hot:false, sub:'Perda e anterioridade', titulo:'Princípio da anterioridade eleitoral',
        texto:'A lei que alterar o processo eleitoral entrará em vigor na data de sua publicação, não se aplicando à eleição que ocorra até um ano da data de sua vigência.',
        exp:'ANTERIORIDADE ELEITORAL (anualidade): lei que altera o processo eleitoral não vale pra eleição que ocorra em até 1 ANO. Protege a segurança jurídica e a igualdade no pleito. O STF considera essa regra uma garantia individual (cláusula pétrea).'}
     ]
@@ -9553,25 +9624,25 @@ const CP_LEISECA = {
   {
     tema: '⚔️ Segurança Pública (art. 144)',
     artigos: [
-      {art:'Art. 144, caput', hot:true, titulo:'Órgãos da Segurança Pública',
+      {art:'Art. 144, caput', hot:true, sub:'Disposições gerais', titulo:'Órgãos da Segurança Pública',
        texto:'A segurança pública, dever do Estado, direito e responsabilidade de todos, é exercida para a preservação da ordem pública e da incolumidade das pessoas e do patrimônio, através dos seguintes órgãos: I - polícia federal; II - polícia rodoviária federal; III - polícia ferroviária federal; IV - polícias civis; V - polícias militares e corpos de bombeiros militares; VI - polícias penais federal, estaduais e distrital.',
        exp:'TEMA CENTRAL pra concurso policial. São hoje 6 órgãos (a EC 104/2019 criou as POLÍCIAS PENAIS — inciso VI). Segurança pública: DEVER do Estado, DIREITO e RESPONSABILIDADE de todos. O rol é, segundo o STF, TAXATIVO.'},
-      {art:'Art. 144, §1º', hot:true, titulo:'Polícia Federal',
+      {art:'Art. 144, §1º', hot:true, sub:'Órgãos federais', titulo:'Polícia Federal',
        texto:'A polícia federal destina-se a: apurar infrações penais contra a ordem política e social ou em detrimento de bens, serviços e interesses da União; prevenir e reprimir o tráfico ilícito de entorpecentes, o contrabando e o descaminho; exercer as funções de polícia marítima, aeroportuária e de fronteiras; exercer, com exclusividade, as funções de polícia judiciária da União.',
        exp:'A PF exerce COM EXCLUSIVIDADE a polícia judiciária da UNIÃO. Atua em: tráfico interestadual/internacional, contrabando, descaminho, crimes contra a União, fronteiras. Mnemônico das funções: apurar, prevenir/reprimir, polícia de fronteira, polícia judiciária da União.'},
-      {art:'Art. 144, §2º', hot:true, titulo:'Polícia Rodoviária Federal',
+      {art:'Art. 144, §2º', hot:true, sub:'Órgãos federais', titulo:'Polícia Rodoviária Federal',
        texto:'A polícia rodoviária federal, órgão permanente, organizado e mantido pela União, destina-se, na forma da lei, ao patrulhamento ostensivo das rodovias federais.',
        exp:'PRF: patrulhamento OSTENSIVO das RODOVIAS FEDERAIS. Órgão permanente, estruturado em carreira. Cuidado: é "rodovias federais" (não estaduais).'},
-      {art:'Art. 144, §4º', hot:true, titulo:'Polícias Civis',
+      {art:'Art. 144, §4º', hot:true, sub:'Órgãos estaduais', titulo:'Polícias Civis',
        texto:'Às polícias civis, dirigidas por delegados de polícia de carreira, incumbem, ressalvada a competência da União, as funções de polícia judiciária e a apuração de infrações penais, exceto as militares.',
        exp:'PC: polícia JUDICIÁRIA estadual + apuração de infrações penais (exceto militares). Dirigidas por DELEGADOS de carreira. É polícia INVESTIGATIVA (atua após o crime).'},
-      {art:'Art. 144, §5º', hot:true, titulo:'Polícias Militares e Bombeiros',
+      {art:'Art. 144, §5º', hot:true, sub:'Órgãos estaduais', titulo:'Polícias Militares e Bombeiros',
        texto:'Às polícias militares cabem a polícia ostensiva e a preservação da ordem pública; aos corpos de bombeiros militares, além das atribuições definidas em lei, incumbe a execução de atividades de defesa civil.',
        exp:'PM: polícia OSTENSIVA + preservação da ordem pública (atua ANTES/durante o crime — prevenção). Bombeiros: além das atribuições legais, DEFESA CIVIL. PMs e Bombeiros são forças AUXILIARES e reserva do Exército (§6º).'},
-      {art:'Art. 144, §5º-A', hot:true, titulo:'Polícias Penais (EC 104/2019)',
+      {art:'Art. 144, §5º-A', hot:true, sub:'Órgãos estaduais', titulo:'Polícias Penais (EC 104/2019)',
        texto:'Às polícias penais, vinculadas ao órgão administrador do sistema penal da unidade federativa a que pertencem, cabe a segurança dos estabelecimentos penais.',
        exp:'NOVIDADE da EC 104/2019. As polícias penais (federal, estaduais e distrital) cuidam da SEGURANÇA DOS ESTABELECIMENTOS PENAIS. Preenchimento por concurso público; aproveitamento dos agentes penitenciários (§6º). Tema recente e muito cobrado.'},
-      {art:'Art. 144, §6º', hot:false, titulo:'Subordinação das polícias estaduais',
+      {art:'Art. 144, §6º', hot:false, sub:'Órgãos estaduais', titulo:'Subordinação das polícias estaduais',
        texto:'As polícias militares e civis, bem como as polícias penais estaduais e distrital, subordinam-se aos Governadores dos Estados, do Distrito Federal e dos Territórios.',
        exp:'As polícias estaduais subordinam-se aos GOVERNADORES. PM e Bombeiros militares são forças auxiliares e reserva do Exército. A PF, PRF e PFF são federais (vinculadas à União).'}
     ]
@@ -9643,7 +9714,7 @@ function openLeiSeca(subject) {
 }
 window.openLeiSeca = openLeiSeca;
 
-// Renderiza os grupos e artigos (acordeon)
+// Renderiza os grupos e artigos (acordeon de 2 níveis: tópico → subtópico → artigos)
 function renderLeiSeca(data, filter) {
   const cont = $('leiseca-content');
   if (!cont) return;
@@ -9657,16 +9728,27 @@ function renderLeiSeca(data, filter) {
     return;
   }
 
+  // Agrupa os artigos de um grupo por subtópico (campo a.sub).
+  // Artigos sem 'sub' vão para um subtópico "Geral" implícito.
+  function subgruposDe(grupo, artsFiltrados) {
+    const ordem = [];
+    const mapa = {};
+    artsFiltrados.forEach(a => {
+      const key = a.sub || '__geral__';
+      if (!mapa[key]) { mapa[key] = []; ordem.push(key); }
+      mapa[key].push(a);
+    });
+    return ordem.map(k => ({ nome: k === '__geral__' ? null : k, artigos: mapa[k] }));
+  }
+
   let html = '';
   data.grupos.forEach((grupo, gi) => {
-    // Filtrar artigos do grupo
     const arts = grupo.artigos.filter(a => {
       if (!q) return true;
-      return (a.art + ' ' + a.titulo + ' ' + a.texto).toLowerCase().includes(q);
+      return (a.art + ' ' + a.titulo + ' ' + a.texto + ' ' + (a.sub || '')).toLowerCase().includes(q);
     });
     if (arts.length === 0) return;
 
-    // Cabeçalho do grupo (sempre aberto se há busca)
     const open = q ? true : (gi === 0);
     html += `<div class="ls-group">
       <button class="ls-group-head" onclick="toggleLsGroup(${gi})">
@@ -9676,18 +9758,41 @@ function renderLeiSeca(data, filter) {
       </button>
       <div class="ls-group-body" id="ls-body-${gi}" style="display:${open ? 'block' : 'none'};">`;
 
-    arts.forEach((a, ai) => {
-      const cardId = `ls-${gi}-${ai}`;
-      html += `<div class="ls-article ${a.hot ? 'ls-hot' : ''}">
-        <div class="ls-art-head">
-          <span class="ls-art-num">${esc(a.art)}</span>
-          ${a.hot ? '<span class="ls-fire" title="Muito cobrado em concurso">🔥</span>' : ''}
-          <span class="ls-art-title">${esc(a.titulo)}</span>
-        </div>
-        <div class="ls-art-text">${esc(a.texto)}</div>
-        ${a.exp ? `<button class="ls-exp-btn" onclick="toggleLsExp('${cardId}')">💡 ver explicação</button>
-        <div class="ls-exp" id="exp-${cardId}" style="display:none;">${esc(a.exp)}</div>` : ''}
-      </div>`;
+    const subs = subgruposDe(grupo, arts);
+    const temSubtopicos = subs.some(s => s.nome !== null);
+
+    subs.forEach((sub, si) => {
+      const subId = `${gi}-${si}`;
+      // Se há subtópicos nomeados, renderiza o cabeçalho do subtópico (2º nível)
+      if (temSubtopicos && sub.nome) {
+        const subOpen = q ? true : false;
+        html += `<div class="ls-sub">
+          <button class="ls-sub-head" onclick="toggleLsSub('${subId}')">
+            <span class="ls-sub-arrow" id="ls-sub-arrow-${subId}">${subOpen ? '▾' : '▸'}</span>
+            <span class="ls-sub-title">${esc(sub.nome)}</span>
+            <span class="ls-sub-count">${sub.artigos.length}</span>
+          </button>
+          <div class="ls-sub-body" id="ls-sub-body-${subId}" style="display:${subOpen ? 'block' : 'none'};">`;
+      }
+
+      sub.artigos.forEach((a, ai) => {
+        const cardId = `ls-${gi}-${si}-${ai}`;
+        const subjectKey = leiSecaCurrentSubject;
+        const temEdital = !!(EDITAL_LS_SUBJECT && EDITAL_LS_SUBJECT[Object.keys(EDITAL_LS_SUBJECT).find(d=>EDITAL_LS_SUBJECT[d]===subjectKey)]) && subtopicoDoArtigo(subjectKey, a.art);
+        html += `<div class="ls-article ${a.hot ? 'ls-hot' : ''}">
+          <div class="ls-art-head">
+            <span class="ls-art-num">${esc(a.art)}</span>
+            ${a.hot ? '<span class="ls-fire" title="Muito cobrado em concurso">🔥</span>' : ''}
+            <span class="ls-art-title">${esc(a.titulo)}</span>
+          </div>
+          <div class="ls-art-text">${esc(a.texto)}</div>
+          ${a.exp ? `<button class="ls-exp-btn" onclick="toggleLsExp('${cardId}')">💡 ver explicação</button>
+          <div class="ls-exp" id="exp-${cardId}" style="display:none;">${esc(a.exp)}</div>` : ''}
+          ${temEdital ? `<button class="ls-edital-btn" onclick="marcarEditalPorArtigo('${subjectKey}','${esc(a.art).replace(/'/g,"\\'")}')">✓ marcar no Edital</button>` : ''}
+        </div>`;
+      });
+
+      if (temSubtopicos && sub.nome) html += `</div></div>`;
     });
 
     html += `</div></div>`;
@@ -9698,6 +9803,16 @@ function renderLeiSeca(data, filter) {
   }
   cont.innerHTML = html;
 }
+
+function toggleLsSub(subId) {
+  const body = $(`ls-sub-body-${subId}`);
+  const arrow = $(`ls-sub-arrow-${subId}`);
+  if (!body) return;
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  if (arrow) arrow.textContent = open ? '▾' : '▸';
+}
+window.toggleLsSub = toggleLsSub;
 
 function toggleLsGroup(gi) {
   const body = $(`ls-body-${gi}`);
@@ -12885,10 +13000,15 @@ function renderEdital() {
       topico.subs.forEach((sub, si) => {
         const key = editalKey(disc, ti, si);
         const done = !!editalProgress[key];
-        html += `<button class="edital-sub ${done?'edital-sub-done':''}" onclick="toggleEditalSub('${disc}',${ti},${si})">
-          <span class="edital-sub-check">${done ? '✅' : '⬜'}</span>
-          <span class="edital-sub-text">${esc(sub)}</span>
-        </button>`;
+        const temLS = !!EDITAL_LS_SUBJECT[disc];
+        html += `<div class="edital-sub-row">
+          <button class="edital-sub ${done?'edital-sub-done':''}" onclick="toggleEditalSub('${disc}',${ti},${si})">
+            <span class="edital-sub-check">${done ? '✅' : '⬜'}</span>
+            <span class="edital-sub-text">${esc(sub)}</span>
+          </button>
+          ${temLS ? `<button class="edital-sub-ls" title="Ver Lei Seca relacionada" onclick="toggleEditalLeiSeca('${disc}',${ti},${si},'${encodeURIComponent(sub)}')">🃏</button>` : ''}
+        </div>
+        ${temLS ? `<div class="edital-ls-wrap" id="edital-ls-wrap-${disc}-${ti}-${si}" style="display:none;"></div>` : ''}`;
       });
 
       html += `</div></div>`;
@@ -12933,6 +13053,164 @@ function toggleEditalSub(disc, ti, si) {
   else snd.click();
 }
 window.toggleEditalSub = toggleEditalSub;
+
+// ============================================================
+// 🔗 INTEGRAÇÃO EDITAL ↔ LEI SECA
+// Liga os subtópicos do Edital aos artigos da Lei Seca, nos dois sentidos.
+// ============================================================
+
+// Mapeia a disciplina do Edital para o "subject" da Lei Seca.
+const EDITAL_LS_SUBJECT = { penal: 'penal', constitucional: 'const' };
+
+// Extrai os números de artigo citados num texto (ex.: "art. 5º", "art. 6º a 11", "arts. 14 a 16").
+function extrairNumerosArtigo(texto) {
+  const nums = new Set();
+  const re = /arts?\.?\s*(\d+)(?:\s*[ºo°]?)(?:\s*(?:a|ao|e|à|,)\s*(\d+))?/gi;
+  let m;
+  while ((m = re.exec(texto)) !== null) {
+    const ini = parseInt(m[1], 10);
+    const fim = m[2] ? parseInt(m[2], 10) : ini;
+    if (!isNaN(ini)) {
+      if (!isNaN(fim) && fim >= ini && fim - ini <= 40) {
+        for (let n = ini; n <= fim; n++) nums.add(n);
+      } else nums.add(ini);
+    }
+  }
+  return nums;
+}
+
+// Pega o número base de um artigo da Lei Seca (ex.: "Art. 5º, XI" -> 5; "Art. 121-A" -> 121).
+function numeroDoArtigo(artStr) {
+  const m = String(artStr).match(/Art\.?\s*(\d+)/i);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+// Palavras-chave para casar subtópicos que NÃO citam número de artigo.
+// chave = trecho do subtópico (lowercase) ; valor = termos que devem aparecer no artigo (titulo/sub).
+function tokensRelevantes(texto) {
+  const stop = new Set(['e','de','da','do','das','dos','a','o','as','os','no','na','nos','nas','contra','que','com','para','ou','por','em','art','arts','lei','—','-','(',')']);
+  return texto.toLowerCase()
+    .replace(/\([^)]*\)/g, ' ')        // remove parênteses
+    .replace(/[.,;:]/g, ' ')
+    .split(/\s+/)
+    .map(w => w.replace(/[ºo°]$/,''))
+    .filter(w => w.length >= 4 && !stop.has(w));
+}
+
+// Dado (disc, subtopicoTexto), retorna os artigos da Lei Seca correspondentes.
+function leiSecaParaSubtopico(disc, subTexto) {
+  const subjectKey = EDITAL_LS_SUBJECT[disc];
+  if (!subjectKey || typeof CP_LEISECA === 'undefined' || !CP_LEISECA[subjectKey]) return [];
+  const todos = (CP_LEISECA[subjectKey].grupos || []).flatMap(g => g.artigos || []);
+
+  // 1) Por número de artigo citado no subtópico (alta precisão)
+  const nums = extrairNumerosArtigo(subTexto);
+  if (nums.size > 0) {
+    const porNum = todos.filter(a => { const n = numeroDoArtigo(a.art); return n !== null && nums.has(n); });
+    if (porNum.length > 0) return porNum;
+  }
+
+  // 2) Por palavras-chave (titulo/sub do artigo) quando não há número
+  const toks = tokensRelevantes(subTexto);
+  if (toks.length === 0) return [];
+  const scored = todos.map(a => {
+    const alvo = ((a.titulo || '') + ' ' + (a.sub || '')).toLowerCase();
+    let score = 0;
+    toks.forEach(t => { if (alvo.includes(t)) score++; });
+    return { a, score };
+  }).filter(x => x.score > 0)
+    .sort((x, y) => y.score - x.score);
+  return scored.map(x => x.a);
+}
+
+// Renderiza os artigos da Lei Seca dentro de um subtópico do Edital.
+function renderLeiSecaInline(disc, ti, si, subTexto) {
+  const arts = leiSecaParaSubtopico(disc, subTexto);
+  if (arts.length === 0) {
+    return `<div class="edital-ls-empty">📭 Lei Seca ainda não disponível para este subtópico</div>`;
+  }
+  let h = `<div class="edital-ls-box">
+    <div class="edital-ls-title">🃏 LEI SECA RELACIONADA <span class="edital-ls-badge">${arts.length}</span></div>`;
+  arts.forEach((a, idx) => {
+    const cardId = `els-${disc}-${ti}-${si}-${idx}`;
+    h += `<div class="edital-ls-art ${a.hot ? 'edital-ls-hot' : ''}">
+      <div class="edital-ls-art-head">
+        <span class="edital-ls-art-num">${esc(a.art)}</span>
+        ${a.hot ? '<span title="Muito cobrado">🔥</span>' : ''}
+        <span class="edital-ls-art-title">${esc(a.titulo || '')}</span>
+      </div>
+      <div class="edital-ls-art-text">${esc(a.texto || '')}</div>
+      ${a.exp ? `<button class="ls-exp-btn" onclick="toggleLsExp('${cardId}')">💡 ver explicação</button>
+      <div class="ls-exp" id="exp-${cardId}" style="display:none;">${esc(a.exp)}</div>` : ''}
+    </div>`;
+  });
+  h += `<button class="edital-ls-open" onclick="abrirLeiSecaDoEdital('${disc}')">📖 Abrir Lei Seca completa</button>`;
+  h += `</div>`;
+  return h;
+}
+
+// Abre a Lei Seca na disciplina certa (atalho a partir do Edital).
+function abrirLeiSecaDoEdital(disc) {
+  const subjectKey = EDITAL_LS_SUBJECT[disc];
+  if (!subjectKey) return;
+  goFlashcards();
+  setTimeout(() => { try { openLeiSeca(subjectKey); } catch(e){} }, 60);
+}
+window.abrirLeiSecaDoEdital = abrirLeiSecaDoEdital;
+
+// Expande/recolhe a Lei Seca inline de um subtópico do Edital.
+function toggleEditalLeiSeca(disc, ti, si, subTexto) {
+  snd.click();
+  const box = $(`edital-ls-wrap-${disc}-${ti}-${si}`);
+  if (!box) return;
+  if (box.dataset.loaded === '1') {
+    const vis = box.style.display !== 'none';
+    box.style.display = vis ? 'none' : 'block';
+  } else {
+    box.innerHTML = renderLeiSecaInline(disc, ti, si, decodeURIComponent(subTexto));
+    box.dataset.loaded = '1';
+    box.style.display = 'block';
+  }
+}
+window.toggleEditalLeiSeca = toggleEditalLeiSeca;
+
+// Reverso: dado um artigo da Lei Seca, acha o subtópico do Edital correspondente.
+function subtopicoDoArtigo(subjectKey, artStr) {
+  const disc = Object.keys(EDITAL_LS_SUBJECT).find(d => EDITAL_LS_SUBJECT[d] === subjectKey);
+  if (!disc || typeof EDITAL_TREE === 'undefined' || !EDITAL_TREE[disc]) return null;
+  const num = numeroDoArtigo(artStr);
+  const tops = EDITAL_TREE[disc].topicos;
+  // 1) por número de artigo citado no subtópico
+  if (num !== null) {
+    for (let ti = 0; ti < tops.length; ti++) {
+      for (let si = 0; si < tops[ti].subs.length; si++) {
+        const nums = extrairNumerosArtigo(tops[ti].subs[si]);
+        if (nums.has(num)) return { disc, ti, si, texto: tops[ti].subs[si] };
+      }
+    }
+  }
+  return null;
+}
+
+// Marca (ou desmarca) no Edital o subtópico correspondente a um artigo da Lei Seca.
+function marcarEditalPorArtigo(subjectKey, artStr) {
+  const alvo = subtopicoDoArtigo(subjectKey, artStr);
+  if (!alvo) {
+    openModal({ title:'🔗 Sem correspondência direta', msg:'Este artigo não tem um subtópico único no Edital para marcar automaticamente. Você pode marcá-lo manualmente na aba Edital.', hideCancel:true, onConfirm:()=>closeModal() });
+    return;
+  }
+  const key = editalKey(alvo.disc, alvo.ti, alvo.si);
+  editalProgress[key] = true;
+  saveEditalProgress();
+  if (snd.correct) snd.correct();
+  openModal({
+    title:'✅ Marcado no Edital!',
+    custom:`<div style="text-align:center;line-height:1.6;">Subtópico marcado como estudado:<br><b>${esc(EDITAL_TREE[alvo.disc].nome)}</b><br>› ${esc(alvo.texto)}</div>`,
+    hideCancel:true, onConfirm:()=>closeModal()
+  });
+}
+window.marcarEditalPorArtigo = marcarEditalPorArtigo;
+
 
 
 async function goCronograma() {
