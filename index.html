@@ -3767,6 +3767,13 @@ body[data-theme="light"] .cron-input optgroup { background: #fff; color: #1a1330
   cursor: pointer; font-size: 11px; font-weight: 600;
 }
 .ls-edital-btn:hover { background: rgba(16,185,129,.22); }
+
+.ls-srs-btn {
+  margin-top: 8px; margin-left: 8px; padding: 5px 12px; border: 1px solid var(--cyan);
+  background: rgba(8,217,214,.1); color: var(--cyan); border-radius: 8px;
+  cursor: pointer; font-size: 11px; font-weight: 600;
+}
+.ls-srs-btn:hover { background: rgba(8,217,214,.22); }
 </style>
 </head>
 <body>
@@ -4578,6 +4585,7 @@ body[data-theme="light"] .cron-input optgroup { background: #fff; color: #1a1330
       <button class="back-btn" onclick="backToLeiSecaHome()" style="margin-bottom:12px;">← matérias</button>
       <div id="leiseca-reader-title" style="font-family:'Press Start 2P',monospace;font-size:11px;color:var(--rose);margin-bottom:6px;"></div>
       <input type="text" id="leiseca-search" placeholder="🔍 Buscar artigo (ex: 121, roubo, legítima defesa)" oninput="filterLeiSeca()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);border-radius:10px;color:var(--text-primary);font-size:13px;margin-bottom:14px;">
+      <div id="leiseca-srs-bar"></div>
       <div id="leiseca-content"></div>
     </div>
 
@@ -5639,6 +5647,45 @@ const QBANK = {
   {b:'FCC',t:'multiple',s:'O Android e o iOS são exemplos de:',o:['Sistemas operacionais para celulares e tablets.','Antivírus.','Navegadores.','Editores de texto.','Tipos de bateria.'],c:0,e:'Resposta: SOs móveis. Android (Google, baseado em Linux, open source). iOS (Apple, fechado, exclusivo iPhone/iPad).'},
   {b:'CESPE',t:'cebraspe',s:'Inteligência Artificial generativa (como ChatGPT) pode criar textos, imagens e código a partir de prompts, mas pode também produzir conteúdo incorreto (alucinações).',c:0,e:'CERTO. IA generativa (GPT, Claude, Gemini) gera conteúdo. Pode "alucinar" (inventar fatos). Sempre verificar informações críticas.'},
 ],
+'procpen-inquerito': [
+  {b:'CESPE',t:'cebraspe',s:'O inquérito policial é dispensável, podendo o Ministério Público oferecer denúncia com base em outros elementos de informação.',c:0,e:'CERTO. O IP é peça DISPENSÁVEL (art. 39, §5º, CPP): se o MP já tem elementos suficientes (ex: documentos, PIC), pode denunciar sem inquérito.'},
+  {b:'FGV',t:'multiple',s:'São características do inquérito policial:',o:['Contraditório, público e oral','Inquisitivo, sigiloso e escrito','Acusatório, público e escrito','Dispositivo, oral e sigiloso','Jurisdicional, escrito e público'],c:1,e:'O IP é INQUISITIVO (sem contraditório pleno), SIGILOSO (art. 20) e ESCRITO (art. 9º). Também é discricionário, oficial, oficioso e indisponível.'},
+  {b:'CESPE',t:'cebraspe',s:'O delegado de polícia pode determinar o arquivamento do inquérito policial quando verificar a atipicidade do fato.',c:1,e:'ERRADO. A autoridade policial NÃO PODE mandar arquivar autos de inquérito (art. 17, CPP). O arquivamento é ato do MP (art. 28, com redação do Pacote Anticrime).'},
+  {b:'AOCP',t:'cebraspe',s:'Pelo CPP, o prazo para conclusão do inquérito policial é de 10 dias se o indiciado estiver preso e de 30 dias se estiver solto.',c:0,e:'CERTO. Art. 10, CPP: preso = 10 dias (improrrogável, na regra geral); solto = 30 dias (prorrogável pelo juiz). Atenção aos prazos especiais: PF 15+15 (preso); drogas 30+30 (preso) e 90+90 (solto).'},
+  {b:'FCC',t:'multiple',s:'Na Lei de Drogas (Lei 11.343/06), o prazo para conclusão do inquérito, estando o indiciado preso, é de:',o:['10 dias improrrogáveis','15 dias prorrogáveis por mais 15','30 dias, duplicável','60 dias improrrogáveis','90 dias, duplicável'],c:2,e:'Art. 51 da Lei 11.343/06: 30 dias (preso) e 90 dias (solto), AMBOS duplicáveis pelo juiz. Pegadinha clássica de prova.'},
+  {b:'CESPE',t:'cebraspe',s:'O sigilo do inquérito policial é oponível ao advogado do investigado, inclusive quanto aos elementos de prova já documentados.',c:1,e:'ERRADO. Súmula Vinculante 14: é direito do defensor acessar os elementos de prova JÁ DOCUMENTADOS nos autos. O sigilo não alcança o advogado quanto ao que já está documentado (apenas diligências em andamento).'},
+  {b:'VUNESP',t:'cebraspe',s:'A autoridade policial poderá mandar arquivar autos de inquérito quando não houver indícios de autoria.',c:1,e:'ERRADO. Art. 17, CPP: a autoridade policial NÃO poderá mandar arquivar autos de inquérito, em NENHUMA hipótese.'},
+  {b:'IBFC',t:'cebraspe',s:'A notitia criminis de cognição coercitiva é aquela que ocorre por meio da prisão em flagrante.',c:0,e:'CERTO. Cognição IMEDIATA (direta): atividades de rotina da polícia. MEDIATA (indireta): requerimento, requisição, delação. COERCITIVA: prisão em flagrante (o fato chega com a apresentação do preso).'},
+  {b:'Quadrix',t:'cebraspe',s:'O indiciamento é ato privativo do delegado de polícia e deve ser fundamentado.',c:0,e:'CERTO. Art. 2º, §6º, da Lei 12.830/2013: o indiciamento é PRIVATIVO do delegado, por ato fundamentado, mediante análise técnico-jurídica do fato.'},
+  {b:'CEBRASPE',t:'cebraspe',s:'Os vícios ocorridos no inquérito policial contaminam a futura ação penal, gerando sua nulidade.',c:1,e:'ERRADO. O IP é peça meramente INFORMATIVA: vícios do inquérito NÃO contaminam a ação penal (jurisprudência pacífica). Exceção prática: provas ilícitas colhidas no IP não podem ser usadas.'},
+  {b:'FGV',t:'multiple',s:'O inquérito policial pode ser instaurado:',o:['Apenas por requisição judicial','De ofício pela autoridade policial, mediante requisição do MP ou requerimento do ofendido','Somente após autorização do Ministério Público','Apenas mediante representação da vítima','Exclusivamente por determinação do juiz'],c:1,e:'Art. 5º, CPP: nos crimes de ação pública, o IP é instaurado de OFÍCIO ou mediante REQUISIÇÃO (MP/juiz) ou REQUERIMENTO do ofendido. Em ação pública condicionada, depende de representação.'},
+],
+'procpen-prisoes': [
+  {b:'CESPE',t:'cebraspe',s:'Qualquer do povo poderá e as autoridades policiais e seus agentes deverão prender quem quer que seja encontrado em flagrante delito.',c:0,e:'CERTO. Art. 301, CPP: flagrante FACULTATIVO (qualquer do povo PODE) x flagrante OBRIGATÓRIO (autoridade policial DEVE).'},
+  {b:'FGV',t:'multiple',s:'Considera-se em flagrante delito quem é perseguido, logo após o crime, em situação que faça presumir ser autor da infração. Trata-se do flagrante:',o:['Próprio','Impróprio (quase-flagrante)','Presumido (ferrado)','Esperado','Preparado'],c:1,e:'Art. 302: I-II = flagrante PRÓPRIO (está cometendo/acabou de cometer); III = IMPRÓPRIO (perseguido logo após); IV = PRESUMIDO/ferrado (encontrado logo depois com instrumentos/objetos).'},
+  {b:'CESPE',t:'cebraspe',s:'O flagrante esperado é ilegal, por configurar hipótese de crime impossível.',c:1,e:'ERRADO. Flagrante ESPERADO (polícia aguarda o crime acontecer, sem induzir) é VÁLIDO. Ilegal é o flagrante PREPARADO/provocado (Súmula 145 STF: não há crime quando a preparação do flagrante torna impossível a consumação).'},
+  {b:'VUNESP',t:'cebraspe',s:'Após o Pacote Anticrime, o juiz pode decretar a prisão preventiva de ofício durante a fase de investigação.',c:1,e:'ERRADO. A Lei 13.964/19 ELIMINOU a preventiva de ofício: o juiz só decreta a requerimento do MP, do querelante/assistente, ou por representação da autoridade policial (art. 311, CPP) — em qualquer fase.'},
+  {b:'FCC',t:'multiple',s:'NÃO é fundamento para a decretação da prisão preventiva (art. 312, CPP):',o:['Garantia da ordem pública','Garantia da ordem econômica','Conveniência da instrução criminal','Assegurar a aplicação da lei penal','Clamor social provocado pelo crime'],c:4,e:'Os fundamentos do art. 312 são: ordem pública, ordem econômica, conveniência da instrução e aplicação da lei penal (+ perigo gerado pelo estado de liberdade). CLAMOR SOCIAL, por si só, NÃO autoriza preventiva (jurisprudência pacífica).'},
+  {b:'AOCP',t:'cebraspe',s:'A prisão temporária é cabível apenas durante a fase do inquérito policial.',c:0,e:'CERTO. A temporária (Lei 7.960/89) é exclusiva da INVESTIGAÇÃO (nunca na ação penal), cabível para rol taxativo de crimes, quando imprescindível para as investigações.'},
+  {b:'IBFC',t:'multiple',s:'O prazo da prisão temporária para crimes hediondos é de:',o:['5 dias, prorrogáveis por mais 5','10 dias improrrogáveis','30 dias, prorrogáveis por mais 30','15 dias, prorrogáveis por mais 15','24 horas'],c:2,e:'Regra geral: 5+5 dias. Crimes HEDIONDOS e equiparados: 30+30 dias (art. 2º, §4º, Lei 8.072/90).'},
+  {b:'CESPE',t:'cebraspe',s:'A audiência de custódia deve ser realizada no prazo de até 24 horas após a realização da prisão.',c:0,e:'CERTO. Art. 310, CPP: em até 24h após a prisão, o juiz deve realizar audiência de custódia com a presença do preso, seu advogado/defensor e o MP.'},
+  {b:'Quadrix',t:'cebraspe',s:'Ao receber o auto de prisão em flagrante, o juiz deve relaxar a prisão ilegal, converter o flagrante em preventiva (mediante requerimento) ou conceder liberdade provisória.',c:0,e:'CERTO. Art. 310, CPP: as 3 opções do juiz na audiência de custódia. A conversão em preventiva exige REQUERIMENTO (não pode de ofício).'},
+  {b:'CEBRASPE',t:'cebraspe',s:'Admite-se prisão preventiva para crimes culposos, desde que o réu seja reincidente.',c:1,e:'ERRADO. Art. 313, CPP: a preventiva cabe em crimes DOLOSOS com pena máxima superior a 4 anos; reincidente em crime DOLOSO; violência doméstica (para garantir medidas protetivas). Crime CULPOSO não admite preventiva.'},
+  {b:'FGV',t:'cebraspe',s:'O descumprimento de medida cautelar diversa da prisão autoriza a decretação da prisão preventiva, como última hipótese.',c:0,e:'CERTO. Art. 282, §4º, CPP: descumprida a cautelar, o juiz pode substituí-la, cumular ou, em ÚLTIMO CASO, decretar a preventiva (ultima ratio).'},
+],
+'procpen-provas': [
+  {b:'CESPE',t:'cebraspe',s:'São inadmissíveis as provas ilícitas e as delas derivadas, salvo quando não evidenciado o nexo de causalidade ou quando puderem ser obtidas por fonte independente.',c:0,e:'CERTO. Art. 157, CPP: provas ilícitas e derivadas (teoria dos frutos da árvore envenenada) são inadmissíveis — EXCEÇÕES: fonte independente e descoberta inevitável.'},
+  {b:'FGV',t:'multiple',s:'A cadeia de custódia da prova (art. 158-A, CPP) consiste em:',o:['Procedimento de interrogatório do réu','Conjunto de procedimentos para manter e documentar a história cronológica do vestígio','Sistema de proteção a testemunhas','Registro de antecedentes criminais','Procedimento de reconhecimento fotográfico'],c:1,e:'Art. 158-A (Pacote Anticrime): cadeia de custódia = conjunto de procedimentos para MANTER E DOCUMENTAR a história cronológica do vestígio, da coleta ao descarte. Quebra da cadeia compromete a confiabilidade da prova.'},
+  {b:'CESPE',t:'cebraspe',s:'Nas infrações que deixam vestígios, a confissão do acusado supre a falta do exame de corpo de delito.',c:1,e:'ERRADO. Art. 158, CPP: quando a infração deixar vestígios, o exame de corpo de delito é INDISPENSÁVEL, e a confissão NÃO PODE supri-lo.'},
+  {b:'VUNESP',t:'cebraspe',s:'Desaparecidos os vestígios, a prova testemunhal poderá suprir a falta do exame de corpo de delito.',c:0,e:'CERTO. Art. 167, CPP: não sendo possível o exame direto (vestígios desapareceram), a prova TESTEMUNHAL pode suprir-lhe a falta.'},
+  {b:'FCC',t:'multiple',s:'A interceptação telefônica (Lei 9.296/96) NÃO será admitida quando:',o:['Houver indícios razoáveis de autoria','O fato investigado constituir infração punida com detenção','A prova não puder ser feita por outros meios','Houver ordem judicial fundamentada','For decretada em segredo de justiça'],c:1,e:'Art. 2º, Lei 9.296/96: NÃO se admite interceptação se (I) não houver indícios razoáveis de autoria, (II) a prova puder ser feita por outros meios, ou (III) o fato for punido, no máximo, com DETENÇÃO. Prazo: 15 dias, renovável.'},
+  {b:'AOCP',t:'cebraspe',s:'O juiz pode fundamentar a condenação exclusivamente nos elementos colhidos no inquérito policial.',c:1,e:'ERRADO. Art. 155, CPP: o juiz NÃO pode condenar com base EXCLUSIVA nos elementos do inquérito — ressalvadas as provas cautelares, não repetíveis e antecipadas.'},
+  {b:'IBFC',t:'cebraspe',s:'Segundo o STJ, a inobservância do procedimento de reconhecimento de pessoas previsto no art. 226 do CPP invalida o ato.',c:0,e:'CERTO. STJ, HC 598.886/SC (leading case): o art. 226 é de observância OBRIGATÓRIA — reconhecimento que não segue o procedimento (ex: foto única pelo WhatsApp) é inválido como prova.'},
+  {b:'Quadrix',t:'cebraspe',s:'A busca domiciliar exige mandado judicial, salvo em caso de flagrante delito, desastre, prestação de socorro ou consentimento do morador.',c:0,e:'CERTO. Art. 5º, XI, CF + art. 245, CPP. As exceções constitucionais dispensam o mandado; a entrada por determinação judicial só pode ocorrer durante o DIA.'},
+  {b:'CEBRASPE',t:'cebraspe',s:'A busca pessoal independe de mandado quando houver fundada suspeita de que a pessoa oculte arma proibida ou objetos relacionados a crime.',c:0,e:'CERTO. Art. 244, CPP: busca pessoal sem mandado em caso de prisão, FUNDADA SUSPEITA de posse de arma proibida/objetos do crime, ou durante busca domiciliar. STJ exige elementos concretos (não basta "atitude suspeita" genérica).'},
+  {b:'CESPE',t:'cebraspe',s:'As provas derivadas das ilícitas são sempre inadmissíveis, sem qualquer exceção.',c:1,e:'ERRADO. Art. 157, §1º, CPP: as derivadas são admitidas quando NÃO evidenciado o nexo de causalidade, ou quando puderem ser obtidas por FONTE INDEPENDENTE (ou descoberta inevitável, §2º).'},
+  {b:'FGV',t:'multiple',s:'A serendipidade, no processo penal, consiste em:',o:['Nulidade absoluta da prova','Encontro fortuito de provas de outro crime durante diligência legal, admitido pela jurisprudência','Proibição de provas emprestadas','Anulação do flagrante preparado','Quebra da cadeia de custódia'],c:1,e:'SERENDIPIDADE = encontro FORTUITO de provas/crimes diversos durante diligência regular (ex: interceptação que revela outro crime). STF e STJ ADMITEM a prova, especialmente quando há conexão com o fato investigado.'},
+],
 };
 
 // ============================================================
@@ -5693,6 +5740,13 @@ const TOPICS = [
     briefing:'🛡️ Vírus, worm (replica sozinho), trojan, ransomware (sequestra), spyware, keylogger, backdoor. Phishing, engenharia social. Firewall, antivírus, VPN, MFA, criptografia, certificado digital, LGPD.'},
   {id:'info-hardware', subject:'info', title:'Hardware e Software', subtitle:'CPU, RAM, HD/SSD, BIOS, SO',
     briefing:'💾 CPU (cérebro), RAM (volátil), HD/SSD (permanente), BIOS/UEFI, placa-mãe, GPU, fonte. Software: SO (Windows, Linux, macOS, Android, iOS), aplicativos, freeware/shareware/open source.'},
+  // Processo Penal (novo)
+  {id:'procpen-inquerito', subject:'penal', title:'⚖️ Inquérito Policial', subtitle:'CPP arts. 4º a 23 — características, prazos, arquivamento',
+    briefing:'O IP é INQUISITIVO, SIGILOSO, ESCRITO e DISPENSÁVEL. Prazos: 10 dias preso / 30 solto (CPP); drogas 30+30 / 90+90. Delegado NÃO arquiva (art. 17). Súmula Vinculante 14: advogado acessa o que já está documentado.'},
+  {id:'procpen-prisoes', subject:'penal', title:'⚖️ Prisões e Cautelares', subtitle:'Flagrante, preventiva, temporária, audiência de custódia',
+    briefing:'Flagrante: próprio, impróprio, presumido. Esperado VALE, preparado NÃO (Súmula 145 STF). Preventiva: NUNCA de ofício (Pacote Anticrime). Temporária: só no IP, 5+5 (30+30 hediondos). Custódia em 24h.'},
+  {id:'procpen-provas', subject:'penal', title:'⚖️ Provas no Processo Penal', subtitle:'Ilícitas, cadeia de custódia, busca, interceptação',
+    briefing:'Provas ilícitas e derivadas: inadmissíveis (frutos da árvore envenenada), salvo fonte independente/descoberta inevitável. Cadeia de custódia (158-A). Reconhecimento: art. 226 é obrigatório (STJ). Busca pessoal: fundada suspeita.'},
 ];
 
 // ============================================================
@@ -5750,6 +5804,12 @@ const JOURNEYS = {
       subtitle:'A matéria mais pesada. Hora do confronto.',
       briefing:'Boss final de Direito Penal — a matéria mais cobrada na PMPE. 20 questões cobrindo os 9 tópicos: princípios, aplicação da lei, crimes contra pessoa/patrimônio/administração, leis especiais (drogas, Maria da Penha, armas, tortura, hediondos, ECA, DH). Acerte 80%+ pra ganhar a CARTA DE APROVAÇÃO em Penal.',
       pool:['penal-principios','penal-aplicacao-tempo-lugar','penal-crimes-pessoa','penal-patrimonio','penal-administracao','penal-lei-drogas','penal-maria-da-penha','penal-armas-tortura-hediondos','penal-eca-dh']},
+    {type:'topic', topicId:'procpen-inquerito'},
+    {type:'deepening', topicId:'procpen-inquerito'},
+    {type:'topic', topicId:'procpen-prisoes'},
+    {type:'deepening', topicId:'procpen-prisoes'},
+    {type:'topic', topicId:'procpen-provas'},
+    {type:'deepening', topicId:'procpen-provas'},
   ],
   info: [
     {type:'topic', topicId:'info-windows'},
@@ -9461,19 +9521,19 @@ const CP_LEISECA = {
            texto:'ROUBO — Art. 157. Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de havê-la, por qualquer meio, reduzido à impossibilidade de resistência:\nPena — reclusão, de 6 (seis) a 10 (dez) anos, e multa. (redação da Lei 15.397/2026)\n\n§ 1º Na mesma pena incorre quem, logo depois de subtraída a coisa, emprega violência contra pessoa ou grave ameaça, a fim de assegurar a impunidade do crime ou a detenção da coisa para si ou para terceiro. (roubo impróprio)\n\n§ 1º-A A pena é de reclusão, de 6 (seis) a 12 (doze) anos, e multa, se a subtração for cometida contra bens que comprometam o funcionamento de órgãos da União, Estado, DF ou Município, ou de estabelecimentos que prestem serviços públicos essenciais. (Lei 15.181/2025)\n\n§ 2º A pena aumenta-se de 1/3 (um terço) até metade:\nI — (revogado);\nII — se há o concurso de duas ou mais pessoas;\nIII — se a vítima está em serviço de transporte de valores e o agente conhece tal circunstância;\nIV — se a subtração for de veículo automotor que venha a ser transportado para outro Estado ou para o exterior;\nV — se o agente mantém a vítima em seu poder, restringindo sua liberdade;\nVI — se a subtração for de substâncias explosivas ou de acessórios que possibilitem sua fabricação, montagem ou emprego;\nVII — se a violência ou grave ameaça é exercida com emprego de arma branca;\nIX — se a subtração for de aparelho de telefonia celular, de computador (inclusive portátil/tablet) ou de dispositivo eletrônico semelhante; (Lei 15.397/2026)\nX — se a subtração for de arma de fogo. (Lei 15.397/2026)\n\n§ 2º-A A pena aumenta-se de 2/3 (dois terços):\nI — se a violência ou ameaça é exercida com emprego de arma de fogo;\nII — se há destruição ou rompimento de obstáculo mediante o emprego de explosivo ou de artefato análogo que cause perigo comum.\n\n§ 2º-B Se a violência ou grave ameaça é exercida com emprego de arma de fogo de uso restrito ou proibido, aplica-se em dobro a pena prevista no caput.\n\n§ 3º Se da violência resulta:\nI — (VETADO) — permanece vigente a redação anterior: lesão corporal grave, pena de reclusão de 7 (sete) a 18 (dezoito) anos, e multa;\nII — morte, a pena é de reclusão de 24 (vinte e quatro) a 30 (trinta) anos, e multa. (LATROCÍNIO — Lei 15.397/2026)\n\n§ 5º Se o latrocínio (§3º, II) é cometido por integrante de organização criminosa ultraviolenta, grupo paramilitar ou milícia privada, a pena é de reclusão de 20 (vinte) a 40 (quarenta) anos, e multa. (Lei 15.358/2026)',
            exp:'PONTOS-CHAVE. Roubo = furto + VIOLÊNCIA ou GRAVE AMEAÇA à pessoa (é a diferença essencial em relação ao furto). Roubo PRÓPRIO: violência ANTES/DURANTE a subtração. Roubo IMPRÓPRIO (§1º): violência DEPOIS, para assegurar a posse ou a impunidade. ATUALIZAÇÃO 2026: (1) Lei 15.397/2026 elevou a pena mínima do caput de 4 para 6 anos; criou as majorantes de roubo de CELULAR (IX) e de ARMA DE FOGO (X), de 1/3 a 1/2; e elevou o LATROCÍNIO para 24 a 30 anos. (2) A elevação da pena do roubo com LESÃO GRAVE (que iria a 16-24 anos) foi VETADA, então permanece 7 a 18 anos. (3) Lei 15.358/2026 criou o §5º: latrocínio por org. criminosa/milícia = 20 a 40 anos. As penas mais graves NÃO retroagem (lei mais gravosa): para fatos anteriores a 04/05/2026, aplica-se a redação antiga. JURISPRUDÊNCIA: LATROCÍNIO é crime contra o PATRIMÔNIO, hediondo, julgado por JUIZ SINGULAR (não pelo júri — Súmula 603 STF). Há latrocínio consumado quando a MORTE se consuma, ainda que não ocorra a subtração (Súmula 610 STF). O roubo consuma-se com a inversão da posse, ainda que por breve tempo (Súmula 582 STJ).'},
           {art:'Art. 158', hot:true, sub:'Extorsão', titulo:'Extorsão',
-           texto:'Constranger alguém, mediante violência ou grave ameaça, e com o intuito de obter indevida vantagem econômica, a fazer, tolerar que se faça ou deixar de fazer alguma coisa. Pena: reclusão, de 4 a 10 anos, e multa.',
-           exp:'Diferença pro roubo: na extorsão a COLABORAÇÃO da vítima é imprescindível (ela faz/deixa de fazer algo). Súmula 96 STJ: consuma-se independentemente da obtenção da vantagem. §3º "sequestro relâmpago".'},
+           texto:'EXTORSÃO — Art. 158. Constranger alguém, mediante violência ou grave ameaça, e com o intuito de obter para si ou para outrem indevida vantagem econômica, a fazer, tolerar que se faça ou deixar de fazer alguma coisa:\nPena — reclusão, de 4 (quatro) a 10 (dez) anos, e multa.\n\n§ 1º Se o crime é cometido por duas ou mais pessoas, ou com emprego de arma, aumenta-se a pena de 1/3 (um terço) até metade.\n\n§ 2º Aplica-se à extorsão praticada mediante violência o disposto no § 3º do artigo anterior (resultado lesão grave ou morte — latrocínio por extorsão).\n\nSEQUESTRO RELÂMPAGO\n§ 3º Se o crime é cometido mediante a restrição da liberdade da vítima, e essa condição é necessária para a obtenção da vantagem econômica, a pena é de reclusão, de 6 (seis) a 12 (doze) anos, além da multa; se resulta lesão corporal grave ou morte, aplicam-se as penas previstas no art. 159, §§ 2º e 3º, respectivamente. (Incluído pela Lei 11.923/2009)',
+           exp:'PONTOS-CHAVE. Diferença essencial para o ROUBO: na extorsão a COLABORAÇÃO da vítima é imprescindível (ela faz, tolera ou deixa de fazer algo); no roubo, o agente subtrai diretamente. Crime FORMAL: Súmula 96 STJ — consuma-se independentemente da obtenção da vantagem indevida. §3º = SEQUESTRO RELÂMPAGO (Lei 11.923/2009): restrição da liberdade da vítima como condição para obter a vantagem (ex: levar a vítima ao caixa eletrônico) — pena 6 a 12 anos. Com lesão grave ou morte, aplicam-se as penas do art. 159 (§§2º e 3º). A extorsão simples NÃO é crime hediondo; a extorsão qualificada pela morte SIM. A pena do caput (4-10) NÃO foi alterada pela Lei 15.397/2026 (que mudou furto, roubo, estelionato e receptação).'},
           {art:'Art. 159', hot:true, sub:'Extorsão', titulo:'Extorsão mediante sequestro',
-           texto:'Sequestrar pessoa com o fim de obter, para si ou para outrem, qualquer vantagem, como condição ou preço do resgate. Pena: reclusão, de 8 a 15 anos.',
-           exp:'Crime HEDIONDO. Aumenta se vítima < 18 ou > 60, ou se o sequestro dura mais de 24h (§1º: 12-20 anos). Resulta lesão grave: 16-24. Resulta morte: 24-30. Delação premiada do §4º (concurso desfeito por um dos coautores).'},
+           texto:'EXTORSÃO MEDIANTE SEQUESTRO — Art. 159. Sequestrar pessoa com o fim de obter, para si ou para outrem, qualquer vantagem, como condição ou preço do resgate:\nPena — reclusão, de 8 (oito) a 15 (quinze) anos.\n\n§ 1º Se o sequestro dura mais de 24 horas, se o sequestrado é menor de 18 ou maior de 60 anos, ou se o crime é cometido por bando ou quadrilha:\nPena — reclusão, de 12 (doze) a 20 (vinte) anos.\n\n§ 2º Se do fato resulta lesão corporal de natureza grave:\nPena — reclusão, de 16 (dezesseis) a 24 (vinte e quatro) anos.\n\n§ 3º Se resulta a morte:\nPena — reclusão, de 24 (vinte e quatro) a 30 (trinta) anos.\n\nDELAÇÃO PREMIADA\n§ 4º Se o crime é cometido em concurso, o concorrente que o denunciar à autoridade, facilitando a libertação do sequestrado, terá sua pena reduzida de 1 (um) a 2/3 (dois terços).\n\n§ 5º Se os crimes previstos neste artigo são cometidos por integrante de organização criminosa ultraviolenta, grupo paramilitar ou milícia privada, no contexto da atuação dessas organizações, aumenta-se a respectiva pena em 2/3 (dois terços). (Incluído pela Lei 15.358/2026)',
+           exp:'PONTOS-CHAVE. Crime HEDIONDO em TODAS as formas (caput e qualificadas). Crime PERMANENTE: consuma-se com a privação da liberdade e se prolonga no tempo (flagrante possível a qualquer momento). O fim de obter VANTAGEM como condição/preço do resgate é a elementar que o distingue do sequestro comum (art. 148). QUALIFICADORAS: +24h, menor de 18, maior de 60 ou bando/quadrilha (12-20); lesão grave (16-24); morte (24-30 — a forma mais grave de crime contra o patrimônio). DELAÇÃO PREMIADA (§4º): redução de 1 a 2/3 para o coautor que denunciar, FACILITANDO A LIBERTAÇÃO (requisito de eficácia). ATUALIZAÇÃO Lei 15.358/2026: novo §5º — praticado por org. criminosa ultraviolenta, grupo paramilitar ou milícia privada: pena aumentada em 2/3.'},
           {art:'Art. 168', hot:true, sub:'Apropriação e estelionato', titulo:'Apropriação indébita',
-           texto:'Apropriar-se de coisa alheia móvel, de que tem a posse ou a detenção. Pena: reclusão, de 1 a 4 anos, e multa.',
-           exp:'O agente JÁ TEM a posse lícita da coisa (ex: emprestada) e depois se apropria. Diferença pro furto: no furto ele SUBTRAI (não tinha a posse). 168-A: apropriação indébita PREVIDENCIÁRIA.'},
+           texto:'APROPRIAÇÃO INDÉBITA — Art. 168. Apropriar-se de coisa alheia móvel, de que tem a posse ou a detenção:\nPena — reclusão, de 1 (um) a 4 (quatro) anos, e multa.\n\nAUMENTO DE PENA\n§ 1º A pena é aumentada de 1/3 (um terço), quando o agente recebeu a coisa:\nI — em depósito necessário;\nII — na qualidade de tutor, curador, síndico, liquidatário, inventariante, testamenteiro ou depositário judicial;\nIII — em razão de ofício, emprego ou profissão.',
+           exp:'PONTOS-CHAVE. O agente JÁ TEM a posse ou detenção LÍCITA da coisa (recebida por empréstimo, depósito, trabalho) e DEPOIS inverte o ânimo, passando a agir como dono. Diferença pro FURTO: no furto o agente SUBTRAI (nunca teve a posse); na apropriação, a posse foi entregue voluntariamente. Diferença pro ESTELIONATO: no estelionato a entrega é obtida POR FRAUDE (dolo antecedente); na apropriação o dolo é SUBSEQUENTE (surge depois da posse lícita). Aumento de 1/3 (§1º): depósito necessário; tutor/curador/síndico/depositário judicial; ou em razão de ofício, emprego ou profissão. Art. 168-A: APROPRIAÇÃO INDÉBITA PREVIDENCIÁRIA (deixar de repassar contribuições ao INSS) — pena 2 a 5 anos.'},
           {art:'Art. 171', hot:true, sub:'Apropriação e estelionato', titulo:'Estelionato',
-           texto:'Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento. Pena: reclusão, de 1 a 5 anos, e multa (pena mantida).',
+           texto:'ESTELIONATO — Art. 171. Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento:\nPena — reclusão, de 1 (um) a 5 (cinco) anos, e multa.\n\n§ 1º Se o criminoso é primário, e é de pequeno valor o prejuízo, o juiz pode aplicar a regra do art. 155, § 2º (privilégio).\n\n§ 2º Nas mesmas penas incorre quem: I — vende, permuta, dá em pagamento ou garantia coisa alheia como própria (disposição de coisa alheia); II — vende/onera coisa própria inalienável ou gravada; III — defraudação de penhor; IV — fraude na entrega de coisa; V — fraude para recebimento de indenização ou valor de seguro; VI — fraude no pagamento por meio de cheque (cheque sem fundos);\nVII — cede, gratuita ou onerosamente, conta bancária ou de instituição de pagamento para o trânsito de recursos provenientes de atividade criminosa ou destinados a ela (CONTA LARANJA — Incluído pela Lei 15.397/2026).\n\nFRAUDE ELETRÔNICA\n§ 2º-A Se a fraude é cometida com a utilização de informações fornecidas pela vítima ou por terceiro induzido a erro por meio de redes sociais, contatos telefônicos, e-mail fraudulento ou qualquer outro meio fraudulento análogo:\nPena — reclusão, de 4 (quatro) a 8 (oito) anos, e multa. (Lei 14.155/2021)\n\n§ 2º-B A pena do § 2º-A aumenta-se de 1/3 a 2/3, se utilizado servidor mantido fora do território nacional.\n\n§ 3º A pena aumenta-se de 1/3, se o crime é cometido em detrimento de entidade de direito público ou de instituto de economia popular, assistência social ou beneficência.\n\n§ 4º A pena aplica-se em DOBRO se o crime é cometido contra idoso ou vulnerável.\n\n§ 5º (REVOGADO pela Lei 15.397/2026 — a ação penal voltou a ser pública INCONDICIONADA, em regra)',
            exp:'Crime de FRAUDE (engano da vítima). §2º-A: fraude eletrônica (PIX, clonagem de WhatsApp/apps): 4 a 8 anos. §2º, VII: cessão de CONTA LARANJA (tipo novo da Lei 15.397/2026): 1 a 5 anos. ATUALIZAÇÃO Lei 15.397/2026: o §5º foi REVOGADO — o estelionato voltou a ser, em regra, de ação penal pública INCONDICIONADA (não exige mais representação). Diferença pro furto mediante fraude: aqui a vítima ENTREGA o bem iludida.'},
           {art:'Art. 180', hot:true, sub:'Receptação', titulo:'Receptação',
-           texto:'Adquirir, receber, transportar, conduzir ou ocultar, em proveito próprio ou alheio, coisa que sabe ser produto de crime. Pena: reclusão, de 2 a 6 anos, e multa (Lei 15.397/2026).',
+           texto:'RECEPTAÇÃO — Art. 180. Adquirir, receber, transportar, conduzir ou ocultar, em proveito próprio ou alheio, coisa que sabe ser produto de crime, ou influir para que terceiro, de boa-fé, a adquira, receba ou oculte:\nPena — reclusão, de 2 (dois) a 6 (seis) anos, e multa. (redação da Lei 15.397/2026)\n\nRECEPTAÇÃO QUALIFICADA\n§ 1º Adquirir, receber, transportar, conduzir, ocultar, ter em depósito, desmontar, montar, remontar, vender, expor à venda, ou de qualquer forma utilizar, em proveito próprio ou alheio, no exercício de atividade comercial ou industrial, coisa que deve saber ser produto de crime:\nPena — reclusão, de 3 (três) a 8 (oito) anos, e multa.\n\n§ 2º Equipara-se à atividade comercial qualquer forma de comércio irregular ou clandestino, inclusive o exercido em residência.\n\nRECEPTAÇÃO CULPOSA\n§ 3º Adquirir ou receber coisa que, por sua natureza ou pela desproporção entre o valor e o preço, ou pela condição de quem a oferece, deve presumir-se obtida por meio criminoso:\nPena — detenção, de 1 (um) mês a 1 (um) ano, ou multa, ou ambas as penas.\n\n§ 4º A receptação é punível, ainda que desconhecido ou isento de pena o autor do crime de que proveio a coisa.\n\n§ 6º Tratando-se de bens do patrimônio da União, Estado, Município, empresa concessionária de serviços públicos ou sociedade de economia mista, a pena aplica-se em DOBRO.\n\nArt. 180-A. RECEPTAÇÃO DE ANIMAL — Adquirir, receber, transportar, conduzir, ocultar, ter em depósito ou vender semovente domesticável de produção, ainda que abatido ou dividido em partes, que deve saber ser produto de crime:\nPena — reclusão, de 3 (três) a 8 (oito) anos. (pena elevada pela Lei 15.397/2026)',
            exp:'Receptação DOLOSA (sabe que é produto de crime) x CULPOSA (§3º: deve presumir pela natureza/preço). ATUALIZAÇÃO Lei 15.397/2026: pena da receptação simples subiu de 1-4 para 2 a 6 anos. §1º receptação qualificada (no exercício de atividade comercial). Art. 180-A receptação de animal (3 a 8 anos). Crime acessório (depende de crime anterior).'},
         ]
       },
@@ -9702,6 +9762,7 @@ window.backToLeiSecaHome = backToLeiSecaHome;
 function openLeiSeca(subject) {
   snd.click();
   leiSecaCurrentSubject = subject;
+  try { srsOnlyDue = false; setTimeout(() => renderLeiSecaSrsBar(), 50); } catch(e) {}
   const data = CP_LEISECA[subject];
   if (!data) return;
   $('leiseca-home').classList.add('hidden');
@@ -9743,13 +9804,15 @@ function renderLeiSeca(data, filter) {
 
   let html = '';
   data.grupos.forEach((grupo, gi) => {
+    const __due = (typeof srsOnlyDue !== 'undefined' && srsOnlyDue && typeof srsDueSet === 'function') ? srsDueSet(leiSecaCurrentSubject) : null;
     const arts = grupo.artigos.filter(a => {
+      if (__due && !__due.has(a.art)) return false;
       if (!q) return true;
       return (a.art + ' ' + a.titulo + ' ' + a.texto + ' ' + (a.sub || '')).toLowerCase().includes(q);
     });
     if (arts.length === 0) return;
 
-    const open = q ? true : (gi === 0);
+    const open = (q || __due) ? true : (gi === 0);
     html += `<div class="ls-group">
       <button class="ls-group-head" onclick="toggleLsGroup(${gi})">
         <span>${esc(grupo.tema)}</span>
@@ -9765,7 +9828,7 @@ function renderLeiSeca(data, filter) {
       const subId = `${gi}-${si}`;
       // Se há subtópicos nomeados, renderiza o cabeçalho do subtópico (2º nível)
       if (temSubtopicos && sub.nome) {
-        const subOpen = q ? true : false;
+        const subOpen = (q || (typeof srsOnlyDue !== 'undefined' && srsOnlyDue)) ? true : false;
         html += `<div class="ls-sub">
           <button class="ls-sub-head" onclick="toggleLsSub('${subId}')">
             <span class="ls-sub-arrow" id="ls-sub-arrow-${subId}">${subOpen ? '▾' : '▸'}</span>
@@ -9789,6 +9852,7 @@ function renderLeiSeca(data, filter) {
           ${a.exp ? `<button class="ls-exp-btn" onclick="toggleLsExp('${cardId}')">💡 ver explicação</button>
           <div class="ls-exp" id="exp-${cardId}" style="display:none;">${esc(a.exp)}</div>` : ''}
           ${temEdital ? `<button class="ls-edital-btn" onclick="marcarEditalPorArtigo('${subjectKey}','${esc(a.art).replace(/'/g,"\\'")}')">✓ marcar no Edital</button>` : ''}
+          <button class="ls-srs-btn" onclick="srsMarkStudied('${subjectKey}','${esc(a.art).replace(/'/g,"\\'")}')">🧠 estudei — agendar revisão</button>
         </div>`;
       });
 
@@ -12034,6 +12098,26 @@ function registerQuestionResult(q, correct, source) {
   return event;
 }
 
+
+// 📕 CADERNO DE ERROS — todos os erros pendentes (inclusive 1º erro)
+function getAllPendingErrors() {
+  if (!progress.woundsRegistry) return [];
+  return Object.entries(progress.woundsRegistry)
+    .filter(([_, e]) => e.wrongCount >= 1 && e.correctStreak < 2)
+    .map(([hash, e]) => ({ hash, ...e }))
+    .sort((a, b) => ((b.isWound?1:0) - (a.isWound?1:0)) || (b.wrongCount - a.wrongCount));
+}
+function startAllErrorsReview() {
+  const all = getAllPendingErrors();
+  if (all.length === 0) return;
+  snd.click();
+  const selected = shuffleArray(dedupeQuestions(all)).slice(0, 15);
+  activeWoundsReview = { items: selected, qIdx: 0, results: [] };
+  renderWoundsReview();
+  showScreen('screen-wounds-review');
+}
+window.startAllErrorsReview = startAllErrorsReview;
+
 // Pega todas as feridas ativas
 function getActiveWounds() {
   if (!progress.woundsRegistry) return [];
@@ -12113,6 +12197,14 @@ function renderWounds() {
     content += `
         <button class="btn full" style="margin-top:14px;background:linear-gradient(135deg,var(--rose),var(--amber));" onclick="startWoundsReview()">
           🩹 REVISAR FERIDAS (${Math.min(10, stats.activeCount)} questões)
+        </button>`;
+  }
+
+  const __pendentes = getAllPendingErrors().length;
+  if (__pendentes > 0) {
+    content += `
+        <button class="btn full" style="margin-top:10px;background:rgba(255,46,99,.12);border:1px solid var(--rose);color:var(--rose);" onclick="startAllErrorsReview()">
+          📕 CADERNO DE ERROS — treinar todos os erros pendentes (${Math.min(15, __pendentes)})
         </button>`;
   }
 
@@ -13210,6 +13302,51 @@ function marcarEditalPorArtigo(subjectKey, artStr) {
   });
 }
 window.marcarEditalPorArtigo = marcarEditalPorArtigo;
+
+// ============================================================
+// 🧠 SRS LEI SECA — revisão espaçada (1, 3, 7, 15, 30 dias)
+// ============================================================
+const SRS_LS_KEY = 'jq:srs-leiseca';
+const SRS_LS_INTERVALS = [1, 3, 7, 15, 30];
+let srsOnlyDue = false;
+function srsLsLoad() { try { return JSON.parse(localStorage.getItem(SRS_LS_KEY) || '{}'); } catch(e) { return {}; } }
+function srsLsSave(d) { try { localStorage.setItem(SRS_LS_KEY, JSON.stringify(d)); } catch(e) {} }
+function srsMarkStudied(subjectKey, art) {
+  const d = srsLsLoad();
+  const k = subjectKey + '|' + art;
+  const cur = d[k] || { lvl: -1 };
+  const lvl = Math.min(cur.lvl + 1, SRS_LS_INTERVALS.length - 1);
+  d[k] = { lvl: lvl, due: Date.now() + SRS_LS_INTERVALS[lvl] * 86400000, art: art, subject: subjectKey };
+  srsLsSave(d);
+  if (snd.correct) snd.correct();
+  if (srsOnlyDue) { srsOnlyDue = srsDueSet(subjectKey).size > 0; filterLeiSeca(); }
+  renderLeiSecaSrsBar();
+  openModal({ title:'🧠 Revisão agendada!', msg:'"' + art + '" voltará para revisão em ' + SRS_LS_INTERVALS[lvl] + ' dia(s). Ciclo: 1 → 3 → 7 → 15 → 30 dias. Estude um pouco por dia e a memorização vem!', hideCancel:true, onConfirm:()=>closeModal() });
+}
+window.srsMarkStudied = srsMarkStudied;
+function srsDueSet(subjectKey) {
+  const d = srsLsLoad(); const now = Date.now(); const s = new Set();
+  Object.keys(d).forEach(k => { if (k.indexOf(subjectKey + '|') === 0 && d[k].due <= now) s.add(d[k].art); });
+  return s;
+}
+function srsToggleDue() {
+  snd.click();
+  srsOnlyDue = !srsOnlyDue;
+  filterLeiSeca();
+  renderLeiSecaSrsBar();
+}
+window.srsToggleDue = srsToggleDue;
+function renderLeiSecaSrsBar() {
+  const bar = $('leiseca-srs-bar');
+  if (!bar || !leiSecaCurrentSubject) return;
+  const due = srsDueSet(leiSecaCurrentSubject).size;
+  if (due === 0 && !srsOnlyDue) { bar.innerHTML = ''; return; }
+  bar.innerHTML = '<button class="btn full" style="margin-bottom:12px;border:1px solid var(--cyan);' +
+    (srsOnlyDue ? 'background:linear-gradient(135deg,var(--cyan),var(--emerald));color:#04222b;' : 'background:rgba(8,217,214,.12);color:var(--cyan);') +
+    '" onclick="srsToggleDue()">' +
+    (srsOnlyDue ? '✖ SAIR DA REVISÃO — mostrar todos os artigos' : '🧠 REVISÃO DE HOJE: ' + due + ' artigo(s) — toque pra revisar') +
+    '</button>';
+}
 
 
 
