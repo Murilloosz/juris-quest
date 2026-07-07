@@ -2813,6 +2813,251 @@ QBANK['penal-leis-2026'].push(
 );
 
 // ============================================================
+// CONSTITUCIONAL COMPLETO — cobertura do programa PF/Cebraspe
+// (CF/88 — texto oficial consolidado, domínio público)
+// ============================================================
+(function(){
+const G = CP_LEISECA.const.grupos;
+
+const gLib = {
+  tema: '🗽 Art. 5º — Liberdades Públicas',
+  artigos: [
+    {art:'Art. 5º, I e II', hot:true, sub:'Igualdade e legalidade', titulo:'Igualdade H/M e princípio da legalidade',
+     texto:'I — homens e mulheres são iguais em direitos e obrigações, nos termos desta Constituição; II — ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão em virtude de lei.',
+     exp:'O inciso I fala "nos termos DESTA CONSTITUIÇÃO" (a própria CF pode diferenciar: licença-maternidade, aposentadoria). O II é a legalidade do PARTICULAR (pode tudo que a lei não proíbe) — não confundir com a legalidade da Administração (só faz o que a lei autoriza).'},
+    {art:'Art. 5º, IV e V', hot:true, sub:'Pensamento e resposta', titulo:'Livre pensamento — vedado o anonimato',
+     texto:'IV — é livre a manifestação do pensamento, sendo vedado o anonimato; V — é assegurado o direito de resposta, proporcional ao agravo, além da indenização por dano material, moral ou à imagem.',
+     exp:'A dupla mais cobrada: liberdade de manifestação TEM limite expresso (anonimato vedado). A resposta é PROPORCIONAL ao agravo e CUMULA com indenização (material + moral + imagem — os três).'},
+    {art:'Art. 5º, VI a VIII', hot:false, sub:'Liberdade religiosa', titulo:'Crença, culto e escusa de consciência',
+     texto:'VI — é inviolável a liberdade de consciência e de crença, assegurado o livre exercício dos cultos religiosos; VII — assistência religiosa nas entidades civis e militares de internação coletiva; VIII — ninguém será privado de direitos por motivo de crença religiosa ou convicção filosófica ou política, salvo se as invocar para eximir-se de obrigação legal a todos imposta e recusar-se a cumprir prestação alternativa, fixada em lei.',
+     exp:'A escusa de consciência só gera privação de direitos com DUPLA recusa: invocar a crença E recusar a prestação alternativa. Se não houver lei fixando a alternativa, não pode haver privação.'},
+    {art:'Art. 5º, IX e XIII', hot:true, sub:'Expressão e profissão', titulo:'Expressão livre e liberdade profissional',
+     texto:'IX — é livre a expressão da atividade intelectual, artística, científica e de comunicação, independentemente de censura ou licença; XIII — é livre o exercício de qualquer trabalho, ofício ou profissão, atendidas as qualificações profissionais que a lei estabelecer.',
+     exp:'O XIII é O exemplo clássico de norma de eficácia CONTIDA: a liberdade é plena até a lei exigir qualificação (OAB, CRM). Enquanto não há lei, o exercício é livre.'},
+    {art:'Art. 5º, XV', hot:false, sub:'Locomoção', titulo:'Liberdade de locomoção',
+     texto:'É livre a locomoção no território nacional em tempo de paz, podendo qualquer pessoa, nos termos da lei, nele entrar, permanecer ou dele sair com seus bens.',
+     exp:'"EM TEMPO DE PAZ" — na guerra, a locomoção pode ser restringida. É o direito tutelado pelo habeas corpus.'},
+    {art:'Art. 5º, XVI', hot:true, sub:'Reunião', titulo:'Direito de reunião — aviso, não autorização',
+     texto:'Todos podem reunir-se pacificamente, sem armas, em locais abertos ao público, independentemente de autorização, desde que não frustrem outra reunião anteriormente convocada para o mesmo local, sendo apenas exigido prévio AVISO à autoridade competente.',
+     exp:'A pegadinha número 1 de prova policial: exige-se AVISO prévio, jamais AUTORIZAÇÃO. Requisitos: pacífica + sem armas + não frustrar reunião anterior no mesmo local.'},
+    {art:'Art. 5º, XVII a XXI', hot:true, sub:'Associação', titulo:'Liberdade de associação',
+     texto:'XVII — plena liberdade de associação para fins lícitos, vedada a de caráter paramilitar; XVIII — a criação de associações e de cooperativas independe de autorização, vedada a interferência estatal; XIX — as associações só poderão ser compulsoriamente dissolvidas ou ter atividades suspensas por decisão judicial, exigindo-se, no primeiro caso, o trânsito em julgado; XX — ninguém poderá ser compelido a associar-se ou a permanecer associado; XXI — as entidades associativas, quando expressamente autorizadas, têm legitimidade para representar seus filiados judicial ou extrajudicialmente.',
+     exp:'Detalhe cirúrgico do XIX: SUSPENSÃO de atividades = decisão judicial (qualquer); DISSOLUÇÃO compulsória = decisão judicial TRANSITADA EM JULGADO. A banca troca os dois. Associação paramilitar: vedada — conecta com a Lei Antifacção.'},
+    {art:'Art. 5º, XXII a XXV', hot:false, sub:'Propriedade', titulo:'Propriedade, função social e requisição',
+     texto:'XXII — é garantido o direito de propriedade; XXIII — a propriedade atenderá a sua função social; XXIV — desapropriação por necessidade ou utilidade pública, ou por interesse social, mediante justa e prévia indenização em dinheiro, ressalvados os casos previstos nesta Constituição; XXV — no caso de iminente perigo público, a autoridade competente poderá usar de propriedade particular, assegurada ao proprietário indenização ulterior, se houver dano.',
+     exp:'Desapropriação: indenização JUSTA, PRÉVIA e EM DINHEIRO (regra). Requisição administrativa (XXV): usa primeiro, indeniza DEPOIS e SÓ SE houver dano. A banca inverte os regimes.'},
+    {art:'Art. 5º, XXVI', hot:true, sub:'Propriedade', titulo:'Pequena propriedade rural — impenhorável',
+     texto:'A pequena propriedade rural, assim definida em lei, desde que trabalhada pela família, não será objeto de penhora para pagamento de débitos decorrentes de sua atividade produtiva, dispondo a lei sobre os meios de financiar o seu desenvolvimento.',
+     exp:'Três requisitos cumulativos: (1) pequena propriedade rural definida em lei; (2) trabalhada PELA FAMÍLIA; (3) dívida decorrente da ATIVIDADE PRODUTIVA. Pegadinha: a impenhorabilidade não vale para dívidas de outra natureza. O STF entende a proteção aplicável mesmo se o imóvel foi dado em garantia (hipoteca) da dívida produtiva.'},
+    {art:'Art. 5º, XXVII a XXIX', hot:false, sub:'Propriedade intelectual', titulo:'Direitos autorais, marcas e patentes',
+     texto:'XXVII — aos autores pertence o direito exclusivo de utilização, publicação ou reprodução de suas obras, transmissível aos herdeiros pelo tempo que a lei fixar; XXVIII — são assegurados a proteção às participações individuais em obras coletivas e à reprodução da imagem e voz humanas, e o direito de fiscalização do aproveitamento econômico das obras aos criadores, intérpretes e associações; XXIX — a lei assegurará aos autores de inventos industriais privilégio TEMPORÁRIO para sua utilização, e proteção às criações industriais, à propriedade das marcas, aos nomes de empresas e a outros signos distintivos, tendo em vista o interesse social e o desenvolvimento tecnológico e econômico do País.',
+     exp:'Contraste que a banca ama: direito AUTORAL é exclusivo e transmissível aos herdeiros "pelo tempo que a lei fixar"; a patente (invento industrial) é privilégio expressamente TEMPORÁRIO. E o inciso XXIX tem finalidade expressa: interesse social + desenvolvimento tecnológico e econômico do País.'},
+    {art:'Art. 5º, XXX a XXXII', hot:false, sub:'Herança e consumidor', titulo:'Herança, sucessão do estrangeiro e consumidor',
+     texto:'XXX — é garantido o direito de herança; XXXI — a sucessão de bens de estrangeiros situados no País será regulada pela lei brasileira em benefício do cônjuge ou dos filhos brasileiros, sempre que não lhes seja mais favorável a lei pessoal do de cujus; XXXII — o Estado promoverá, na forma da lei, a defesa do consumidor.',
+     exp:'No XXXI aplica-se a lei MAIS FAVORÁVEL ao cônjuge/filhos brasileiros (brasileira ou a estrangeira do falecido) — princípio da norma mais benéfica na sucessão internacional. A defesa do consumidor também é princípio da ordem econômica (art. 170, V) — e gerou o CDC por mandamento constitucional (ADCT, art. 48).'},
+    {art:'Art. 5º, XXXIII e XXXIV', hot:false, sub:'Informação e petição', titulo:'Informação, petição e certidões',
+     texto:'XXXIII — todos têm direito a receber dos órgãos públicos informações de seu interesse particular, ou de interesse coletivo ou geral, prestadas no prazo da lei, sob pena de responsabilidade, ressalvadas aquelas cujo sigilo seja imprescindível à segurança da sociedade e do Estado; XXXIV — são a todos assegurados, independentemente do pagamento de taxas: a) o direito de petição em defesa de direitos ou contra ilegalidade ou abuso de poder; b) a obtenção de certidões em repartições públicas.',
+     exp:'Petição e certidão: GRATUITAS (independem de taxa). Informação negada por sigilo de Estado → o remédio é o MS (não habeas data, que serve para dados SOBRE a própria pessoa).'},
+    {art:'Art. 5º, XXXV a XXXVII', hot:true, sub:'Jurisdição', titulo:'Inafastabilidade, coisa julgada e juiz natural',
+     texto:'XXXV — a lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito; XXXVI — a lei não prejudicará o direito adquirido, o ato jurídico perfeito e a coisa julgada; XXXVII — não haverá juízo ou tribunal de exceção.',
+     exp:'Inafastabilidade alcança LESÃO e AMEAÇA. Não se exige esgotamento da via administrativa (exceção clássica: justiça desportiva, art. 217, §1º). Tribunal de exceção ≠ justiça especializada (Militar, Eleitoral e Trabalho são constitucionais).'},
+  ]
+};
+
+const gPen = {
+  tema: '⚖️ Art. 5º — Garantias Penais e Processuais',
+  artigos: [
+    {art:'Art. 5º, XXXVIII', hot:true, sub:'Tribunal do Júri', titulo:'Júri — os 4 princípios',
+     texto:'É reconhecida a instituição do júri, com a organização que lhe der a lei, assegurados: a) a plenitude de defesa; b) o sigilo das votações; c) a soberania dos veredictos; d) a competência para o julgamento dos crimes dolosos contra a vida.',
+     exp:'Decore o PSSC: Plenitude de defesa (mais que ampla defesa!), Sigilo das votações (não "do julgamento"), Soberania dos veredictos, Competência para dolosos contra a vida (homicídio, feminicídio, vicaricídio, infanticídio, aborto, induzimento ao suicídio). Latrocínio NÃO vai a júri (Súmula 603 STF).'},
+    {art:'Art. 5º, XLV e XLVI', hot:true, sub:'Pena', titulo:'Intranscendência e individualização',
+     texto:'XLV — nenhuma pena passará da pessoa do condenado, podendo a obrigação de reparar o dano e a decretação do perdimento de bens ser, nos termos da lei, estendidas aos sucessores e contra eles executadas, até o limite do valor do patrimônio transferido; XLVI — a lei regulará a individualização da pena e adotará, entre outras: privação ou restrição da liberdade, perda de bens, multa, prestação social alternativa, suspensão ou interdição de direitos.',
+     exp:'A PENA não passa do condenado; a REPARAÇÃO do dano e o PERDIMENTO de bens passam aos sucessores — mas só até o limite do patrimônio transferido (herança). O rol de penas do XLVI é exemplificativo ("entre outras").'},
+    {art:'Art. 5º, XLVII', hot:true, sub:'Penas vedadas', titulo:'As 5 penas proibidas',
+     texto:'Não haverá penas: a) de morte, salvo em caso de guerra declarada, nos termos do art. 84, XIX; b) de caráter perpétuo; c) de trabalhos forçados; d) de banimento; e) cruéis.',
+     exp:'Única exceção: pena de MORTE em guerra declarada (fuzilamento, CPM). As outras quatro não têm exceção. "Prisão perpétua" jamais — por isso o limite de cumprimento do art. 75 do CP. Banimento (expulsar BRASILEIRO) é vedado; expulsão de estrangeiro é possível.'},
+    {art:'Art. 5º, XLVIII a L', hot:false, sub:'Direitos do preso', titulo:'Execução: local, integridade e amamentação',
+     texto:'XLVIII — a pena será cumprida em estabelecimentos distintos, de acordo com a natureza do delito, a idade e o sexo do apenado; XLIX — é assegurado aos presos o respeito à integridade física e moral; L — às presidiárias serão asseguradas condições para que possam permanecer com seus filhos durante o período de amamentação.',
+     exp:'Trio humanizador da execução. O XLIX fundamenta a responsabilidade do Estado por morte/lesão de preso sob custódia (responsabilidade objetiva — jurisprudência pacífica).'},
+    {art:'Art. 5º, LI e LII', hot:true, sub:'Extradição', titulo:'Extradição — a tabela que a PF adora',
+     texto:'LI — nenhum brasileiro será extraditado, salvo o naturalizado, em caso de crime comum, praticado antes da naturalização, ou de comprovado envolvimento em tráfico ilícito de entorpecentes e drogas afins, na forma da lei; LII — não será concedida extradição de estrangeiro por crime político ou de opinião.',
+     exp:'NATO: NUNCA é extraditado (sem exceção). NATURALIZADO: crime comum ANTES da naturalização OU tráfico de drogas (a qualquer tempo). ESTRANGEIRO: extraditável, salvo crime político/de opinião. Não confundir extradição (pedido de outro país) com expulsão e deportação (atos do Brasil).'},
+    {art:'Art. 5º, LVI', hot:true, sub:'Provas', titulo:'Provas ilícitas — inadmissíveis',
+     texto:'São inadmissíveis, no processo, as provas obtidas por meios ilícitos.',
+     exp:'Conecta com o CPP (art. 157): desentranhamento + teoria dos frutos da árvore envenenada (derivadas também caem, salvo fonte independente e descoberta inevitável). E com o art. 25 da Lei de Abuso de Autoridade (crime de obter prova manifestamente ilícita).'},
+    {art:'Art. 5º, LVIII e LIX', hot:true, sub:'Identificação e ação privada', titulo:'Identificação criminal e ação subsidiária',
+     texto:'LVIII — o civilmente identificado não será submetido a identificação criminal, salvo nas hipóteses previstas em lei; LIX — será admitida ação privada nos crimes de ação pública, se esta não for intentada no prazo legal.',
+     exp:'O LVIII é regulamentado pela Lei 12.037/09 (hipóteses: documento rasurado, identificações conflitantes, essencial à investigação etc.) — tema de prova da PF. O LIX é a ação privada SUBSIDIÁRIA da pública: só cabe na INÉRCIA do MP (se o MP pediu arquivamento, não cabe).'},
+    {art:'Art. 5º, LXVII', hot:false, sub:'Prisão civil', titulo:'Prisão civil por dívida',
+     texto:'Não haverá prisão civil por dívida, salvo a do responsável pelo inadimplemento voluntário e inescusável de obrigação alimentícia e a do depositário infiel.',
+     exp:'O texto da CF prevê DUAS exceções, mas a do depositário infiel está NEUTRALIZADA pela SV 25 e pelo Pacto de São José (status supralegal). Na prática: só alimentos. A banca cobra as duas leituras — "segundo o texto constitucional" × "segundo o STF".'},
+    {art:'Art. 5º, LXX a LXXIII', hot:true, sub:'Remédios', titulo:'MS coletivo, MI, Habeas Data e Ação Popular',
+     texto:'LXX — MS coletivo: pode ser impetrado por partido político com representação no Congresso Nacional e por organização sindical, entidade de classe ou associação legalmente constituída e em funcionamento há pelo menos 1 ano, em defesa dos interesses de seus membros ou associados; LXXI — mandado de injunção: falta de norma regulamentadora que torne inviável o exercício dos direitos e liberdades constitucionais e das prerrogativas inerentes à nacionalidade, à soberania e à cidadania; LXXII — habeas data: para conhecer ou retificar informações relativas à pessoa do impetrante em registros ou bancos de dados de entidades governamentais ou de caráter público; LXXIII — ação popular: qualquer CIDADÃO é parte legítima para anular ato lesivo ao patrimônio público, à moralidade administrativa, ao meio ambiente e ao patrimônio histórico e cultural, ficando o autor, salvo comprovada má-fé, isento de custas judiciais e do ônus da sucumbência.',
+     exp:'Tabela de ouro: MS coletivo — partido precisa de representação no CN; associação precisa de 1 ano (o partido NÃO precisa de 1 ano). Habeas data = dados DA PRÓPRIA pessoa. Ação popular = só CIDADÃO (eleitor) — pessoa jurídica não propõe (Súmula 365 STF).'},
+    {art:'Art. 5º, LXXIV a LXXVIII', hot:false, sub:'Gratuidades e duração', titulo:'Assistência, gratuidades e duração razoável',
+     texto:'LXXIV — o Estado prestará assistência jurídica integral e gratuita aos que comprovarem insuficiência de recursos; LXXVI — são gratuitos para os reconhecidamente pobres o registro civil de nascimento e a certidão de óbito; LXXVII — são gratuitas as ações de habeas corpus e habeas data e, na forma da lei, os atos necessários ao exercício da cidadania; LXXVIII — a todos, no âmbito judicial e administrativo, são assegurados a razoável duração do processo e os meios que garantam a celeridade de sua tramitação.',
+     exp:'HC e HD: sempre gratuitos (para qualquer pessoa). Registro de nascimento e certidão de óbito: gratuitos para os pobres. A razoável duração (LXXVIII) veio com a EC 45/2004 e vale também no processo ADMINISTRATIVO.'},
+    {art:'Art. 5º, LXXIX e §4º', hot:true, sub:'Novidades', titulo:'Proteção de dados (EC 115/22) e TPI',
+     texto:'LXXIX — é assegurado, nos termos da lei, o direito à proteção dos dados pessoais, inclusive nos meios digitais. (Incluído pela EC 115/2022) § 4º O Brasil se submete à jurisdição de Tribunal Penal Internacional a cuja criação tenha manifestado adesão.',
+     exp:'A proteção de DADOS PESSOAIS virou direito fundamental autônomo em 2022 — e a EC 115 também deu à União competência privativa para legislar sobre o tema. O §4º (TPI/Estatuto de Roma) convive com a vedação ao banimento: entrega ao TPI ≠ extradição.'},
+  ]
+};
+
+const gSoc = {
+  tema: '💪 Direitos Sociais (arts. 6º a 11)',
+  artigos: [
+    {art:'Art. 6º', hot:true, sub:'Rol dos direitos sociais', titulo:'Os direitos sociais em espécie',
+     texto:'São direitos sociais a educação, a saúde, a alimentação, o trabalho, a moradia, o transporte, o lazer, a segurança, a previdência social, a proteção à maternidade e à infância e a assistência aos desamparados, na forma desta Constituição.',
+     exp:'Decore o rol e as datas de entrada: MORADIA (EC 26/2000), ALIMENTAÇÃO (EC 64/2010) e TRANSPORTE (EC 90/2015) foram acrescentados — a banca pergunta qual é o "mais novo" (transporte). São normas tipicamente programáticas/de eficácia limitada, ligadas ao mínimo existencial e à vedação ao retrocesso.'},
+    {art:'Arts. 8º e 9º', hot:false, sub:'Sindicato e greve', titulo:'Sindicalização e direito de greve',
+     texto:'Art. 8º É livre a associação profissional ou sindical, vedadas a exigência de autorização do Estado para fundação de sindicato e a criação de mais de uma organização sindical da mesma categoria na mesma base territorial (unicidade), não inferior à área de um Município; ninguém será obrigado a filiar-se ou a manter-se filiado. Art. 9º É assegurado o direito de greve, competindo aos trabalhadores decidir sobre a oportunidade de exercê-lo e sobre os interesses que devam por meio dele defender.',
+     exp:'Greve do trabalhador privado: eficácia PLENA (autoaplicável). Greve do SERVIDOR público: eficácia LIMITADA (art. 37, VII — o STF mandou aplicar a lei da greve privada por analogia). MILITAR: greve e sindicalização VEDADAS (art. 142, §3º, IV) — sem exceção, inclusive PM.'},
+  ]
+};
+
+const gDef = {
+  tema: '🚨 Defesa do Estado (arts. 136 a 142)',
+  artigos: [
+    {art:'Art. 136', hot:true, sub:'Estado de defesa', titulo:'Estado de DEFESA — decreta e depois submete',
+     texto:'O Presidente da República pode, ouvidos o Conselho da República e o Conselho de Defesa Nacional, DECRETAR estado de defesa para preservar ou prontamente restabelecer, em locais restritos e determinados, a ordem pública ou a paz social ameaçadas por grave e iminente instabilidade institucional ou atingidas por calamidades de grandes proporções na natureza. Prazo: não superior a 30 dias, prorrogável UMA vez por igual período. O decreto será submetido ao Congresso Nacional em 24 horas, que decidirá por maioria absoluta em 10 dias. Na vigência: a prisão por crime contra o Estado, determinada pelo executor, será comunicada imediatamente ao juiz; nenhuma prisão poderá ser superior a 10 dias, salvo autorização judicial; é vedada a incomunicabilidade do preso.',
+     exp:'DEFESA: decreta PRIMEIRO, Congresso aprecia DEPOIS (controle posterior). Locais RESTRITOS e determinados. 30 + 30 (uma prorrogação só). Os Conselhos são OUVIDOS (parecer não vinculante). Vedada a incomunicabilidade — sempre.'},
+    {art:'Arts. 137 a 139', hot:true, sub:'Estado de sítio', titulo:'Estado de SÍTIO — autorização PRÉVIA',
+     texto:'O Presidente da República pode, ouvidos o Conselho da República e o Conselho de Defesa Nacional, SOLICITAR AO CONGRESSO NACIONAL AUTORIZAÇÃO (maioria absoluta) para decretar o estado de sítio nos casos de: I — comoção grave de repercussão nacional ou ineficácia do estado de defesa (prazo: 30 dias, prorrogável por iguais períodos, sem limite de prorrogações); II — declaração de estado de guerra ou resposta a agressão armada estrangeira (por todo o tempo que perdurar).',
+     exp:'O contraste que decide questão: DEFESA = decreta e submete; SÍTIO = pede autorização ANTES. Sítio por comoção: 30+30+30... (prorrogações sucessivas); sítio de guerra: sem limite temporal. Todo o território nacional pode ser abrangido no sítio (na defesa, só locais restritos).'},
+    {art:'Art. 142', hot:true, sub:'Forças Armadas', titulo:'Forças Armadas e os militares',
+     texto:'As Forças Armadas, constituídas pela Marinha, pelo Exército e pela Aeronáutica, são instituições nacionais permanentes e regulares, organizadas com base na hierarquia e na disciplina, sob a autoridade suprema do Presidente da República, e destinam-se à defesa da Pátria, à garantia dos poderes constitucionais e, por iniciativa de qualquer destes, da lei e da ordem. § 2º Não caberá habeas corpus em relação a punições disciplinares militares. § 3º, IV — ao militar são proibidas a sindicalização e a greve.',
+     exp:'GLO (garantia da lei e da ordem): por iniciativa de qualquer dos PODERES constitucionais. O §2º tem leitura jurisprudencial: não cabe HC quanto ao MÉRITO da punição disciplinar, mas CABE para controle de legalidade (competência, forma). Militar: sem greve, sem sindicato, sem filiação partidária na ativa.'},
+  ]
+};
+
+const gExe = {
+  tema: '🏛️ Poder Executivo (arts. 76 a 86)',
+  artigos: [
+    {art:'Arts. 76 a 80', hot:true, sub:'Presidente e sucessão', titulo:'Mandato, substituição e a linha sucessória',
+     texto:'O Poder Executivo é exercido pelo Presidente da República, auxiliado pelos Ministros de Estado. Mandato de 4 anos. Substituem/sucedem o Presidente: o VICE-Presidente; e, sucessivamente, serão chamados ao exercício o Presidente da CÂMARA dos Deputados, o do SENADO Federal e o do STF. Vagando os cargos de Presidente e Vice: eleição 90 dias após aberta a última vaga (direta) ou, se a vacância ocorrer nos últimos 2 anos, eleição em 30 dias pelo Congresso Nacional (indireta) — em ambos os casos, os eleitos apenas completam o mandato ("mandato-tampão").',
+     exp:'Linha: Vice → Câmara → Senado → STF (o VICE SUCEDE; os demais apenas SUBSTITUEM — não assumem em definitivo). Dupla vacância nos 2 primeiros anos = eleição DIRETA em 90 dias; nos 2 últimos = INDIRETA pelo Congresso em 30 dias.'},
+    {art:'Art. 85', hot:false, sub:'Crimes de responsabilidade', titulo:'Crimes de responsabilidade do Presidente',
+     texto:'São crimes de responsabilidade os atos do Presidente da República que atentem contra a Constituição Federal e, especialmente, contra: I — a existência da União; II — o livre exercício dos Poderes e instituições; III — o exercício dos direitos políticos, individuais e sociais; IV — a segurança interna do País; V — a probidade na administração; VI — a lei orçamentária; VII — o cumprimento das leis e das decisões judiciais.',
+     exp:'Crime de responsabilidade = infração POLÍTICO-administrativa (impeachment), julgada pelo SENADO (presidido pelo Presidente do STF), após autorização de 2/3 da CÂMARA. Crime COMUM: julgado pelo STF, também após autorização de 2/3 da Câmara.'},
+    {art:'Art. 86', hot:true, sub:'Imunidades', titulo:'As imunidades presidenciais',
+     texto:'Admitida a acusação por 2/3 da Câmara dos Deputados, o Presidente será submetido a julgamento perante o STF, nas infrações penais comuns, ou perante o Senado Federal, nos crimes de responsabilidade. § 3º Enquanto não sobrevier sentença condenatória, nas infrações comuns, o Presidente não estará sujeito a prisão. § 4º O Presidente, na vigência de seu mandato, não pode ser responsabilizado por atos estranhos ao exercício de suas funções.',
+     exp:'Duas imunidades cobradas à exaustão: (1) prisão só APÓS sentença condenatória (nem flagrante segura); (2) irresponsabilidade penal RELATIVA: durante o mandato, não responde por atos ESTRANHOS à função (a persecução fica suspensa; retoma depois). Não alcança responsabilidade civil nem se estende a governadores por simetria (STF).'},
+  ]
+};
+
+const gApl = {
+  tema: '📐 Aplicabilidade das Normas Constitucionais',
+  artigos: [
+    {art:'Eficácia: plena, contida e limitada', hot:true, sub:'Classificação de José Afonso da Silva', titulo:'A classificação que o Cebraspe cobra em TODA prova',
+     texto:'Normas de eficácia PLENA: aplicabilidade direta, imediata e integral — não dependem de lei nem admitem restrição (ex.: art. 2º, separação dos poderes; remédios constitucionais). Normas de eficácia CONTIDA: aplicabilidade direta e imediata, mas o legislador pode RESTRINGIR seu alcance (ex.: art. 5º, XIII — liberdade profissional; art. 5º, LVIII — identificação criminal). Normas de eficácia LIMITADA: aplicabilidade indireta e mediata — DEPENDEM de lei regulamentadora (ex.: art. 37, VII — greve do servidor; normas programáticas dos direitos sociais).',
+     exp:'Macete: CONTIDA = nasce valendo 100% e a lei pode DIMINUIR; LIMITADA = nasce precisando de lei para valer plenamente. A limitada não é inútil: tem eficácia negativa (revoga o contrário e vincula o legislador). Norma programática é espécie de limitada. O remédio contra a omissão da limitada: mandado de injunção e ADO.'},
+  ]
+};
+
+// Reorganiza os grupos na ordem lógica da CF
+CP_LEISECA.const.grupos = [
+  G[0],        // Princípios Fundamentais
+  G[1],        // Art. 5º (parte 1 — já existente)
+  gLib,        // Art. 5º — Liberdades Públicas
+  gPen,        // Art. 5º — Garantias Penais
+  gSoc,        // Direitos Sociais
+  G[2],        // Nacionalidade
+  G[3],        // Direitos Políticos
+  G[4],        // Segurança Pública
+  gDef,        // Defesa do Estado
+  gExe,        // Poder Executivo
+  G[5],        // Organização do Estado
+  gApl,        // Aplicabilidade
+  G[6],        // Controle/Remédios
+];
+
+// Jurisprudência dos novos pontos (enunciados consolidados)
+Object.assign(JURIS, {
+'const|Art. 5º, XVI': [
+  {t:'STF', n:'Tema 855 (RE 806.339)', u:'https://jurisprudencia.stf.jus.br/pages/search?queryString=RE%20806339', e:'A exigência constitucional de aviso prévio relativamente ao direito de reunião é satisfeita com a veiculação de informação que permita ao poder público zelar para que seu exercício se dê de forma pacífica ou para que não frustre outra reunião no mesmo local.', o:'Aviso prévio não é formalidade sacramental: divulgação nas redes que permita ao Estado se organizar já basta.'},
+],
+'const|Art. 5º, LI e LII': [
+  {t:'STF', n:'Súmula 421', e:'Não impede a extradição a circunstância de ser o extraditando casado com brasileira ou ter filho brasileiro.', o:'Família brasileira NÃO blinda o estrangeiro contra a extradição (diferente da expulsão, que pode ser obstada).'},
+],
+'const|Art. 5º, LXX a LXXIII': [
+  {t:'STF', n:'Súmula 365', e:'Pessoa jurídica não tem legitimidade para propor ação popular.', o:'Ação popular é de CIDADÃO (pessoa física no gozo dos direitos políticos). Empresa e MP não propõem.'},
+],
+});
+(function(){
+  CP_LEISECA.const.grupos.forEach(g=>g.artigos.forEach(a=>{
+    const j = JURIS['const|'+a.art];
+    if (j) a.jur = j;
+  }));
+})();
+})();
+
+// ============================================================
+// REMÉDIOS CONSTITUCIONAIS — grupo dedicado, um card por remédio
+// ============================================================
+(function(){
+const G = CP_LEISECA.const.grupos;
+
+// remove as versões compactas antigas (evita duplicidade)
+G.forEach(g=>{
+  g.artigos = g.artigos.filter(a=>!['Art. 5º, LXVIII','Art. 5º, LXIX','Art. 5º, LXX a LXXIII'].includes(a.art));
+});
+
+const gRem = {
+  tema: '🩺 Remédios Constitucionais (art. 5º)',
+  artigos: [
+    {art:'Art. 5º, LXVIII', hot:true, sub:'Habeas Corpus', titulo:'HC — liberdade de locomoção',
+     texto:'Conceder-se-á habeas corpus sempre que alguém sofrer ou se achar ameaçado de sofrer violência ou coação em sua liberdade de locomoção, por ilegalidade ou abuso de poder.',
+     exp:'O remédio mais amplo: pode ser impetrado por QUALQUER pessoa (sem advogado, sem forma, até analfabeto ou estrangeiro) e é GRATUITO (LXXVII). Liberatório (repressivo) × PREVENTIVO (salvo-conduto, para ameaça). Pessoa jurídica pode IMPETRAR em favor de pessoa física, mas nunca ser PACIENTE. Não cabe: pena de multa, punição disciplinar militar (quanto ao mérito) e pena já extinta.'},
+    {art:'Art. 5º, LXIX', hot:true, sub:'Mandado de Segurança', titulo:'MS — direito líquido e certo',
+     texto:'Conceder-se-á mandado de segurança para proteger direito líquido e certo, não amparado por habeas corpus ou habeas data, quando o responsável pela ilegalidade ou abuso de poder for autoridade pública ou agente de pessoa jurídica no exercício de atribuições do Poder Público.',
+     exp:'Caráter RESIDUAL (subsidiário): só quando não couber HC nem HD. Direito líquido e certo = provado de plano, por documentos (dilação probatória não cabe). Prazo DECADENCIAL de 120 dias (Lei 12.016/09) — o direito material não morre, morre a via do MS. Não é gratuito e não gera honorários de sucumbência.'},
+    {art:'Art. 5º, LXX', hot:true, sub:'MS Coletivo', titulo:'MS coletivo — quem pode impetrar',
+     texto:'O mandado de segurança coletivo pode ser impetrado por: a) partido político com representação no Congresso Nacional; b) organização sindical, entidade de classe ou associação legalmente constituída e em funcionamento há pelo menos 1 (um) ano, em defesa dos interesses de seus membros ou associados.',
+     exp:'A tabela decisiva: PARTIDO precisa de representação no CN (1 parlamentar basta) e NÃO precisa de 1 ano; ASSOCIAÇÃO precisa de 1 ano de funcionamento. E não precisa de autorização dos filiados (Súmula 629), nem que o interesse alcance toda a categoria (Súmula 630).'},
+    {art:'Art. 5º, LXXI', hot:true, sub:'Mandado de Injunção', titulo:'MI — a falta de norma que trava direito',
+     texto:'Conceder-se-á mandado de injunção sempre que a falta de norma regulamentadora torne inviável o exercício dos direitos e liberdades constitucionais e das prerrogativas inerentes à nacionalidade, à soberania e à cidadania.',
+     exp:'Remédio contra a "síndrome da inefetividade" das normas de eficácia LIMITADA. Exemplo clássico: greve do servidor público (art. 37, VII) — o STF aplicou por analogia a lei de greve do setor privado (posição CONCRETISTA, hoje positivada na Lei 13.300/2016). Não confundir com ADO: o MI é controle difuso/concreto, por qualquer prejudicado; a ADO é abstrata, pelos legitimados do art. 103.'},
+    {art:'Art. 5º, LXXII', hot:false, sub:'Habeas Data', titulo:'HD — dados sobre a própria pessoa',
+     texto:'Conceder-se-á habeas data: a) para assegurar o conhecimento de informações relativas à pessoa do impetrante, constantes de registros ou bancos de dados de entidades governamentais ou de caráter público; b) para a retificação de dados, quando não se prefira fazê-lo por processo sigiloso, judicial ou administrativo.',
+     exp:'PERSONALÍSSIMO: só para dados DA PRÓPRIA pessoa (informação de interesse geral negada = MS, não HD). GRATUITO (LXXVII). Exige recusa administrativa prévia — sem negativa, falta interesse de agir (Súmula 2 do STJ). Conecta com o novo inciso LXXIX (proteção de dados, EC 115/22).'},
+    {art:'Art. 5º, LXXIII', hot:true, sub:'Ação Popular', titulo:'Ação popular — o remédio do cidadão',
+     texto:'Qualquer cidadão é parte legítima para propor ação popular que vise a anular ato lesivo ao patrimônio público ou de entidade de que o Estado participe, à moralidade administrativa, ao meio ambiente e ao patrimônio histórico e cultural, ficando o autor, salvo comprovada má-fé, isento de custas judiciais e do ônus da sucumbência.',
+     exp:'Legitimado: SÓ o CIDADÃO (pessoa física no gozo dos direitos políticos — prova-se com o título de eleitor). PJ, MP e estrangeiro não propõem (Súmula 365). Objetivos: anular ato lesivo a patrimônio público, MORALIDADE, meio ambiente e patrimônio histórico-cultural. Isenção de custas/sucumbência, SALVO má-fé. É ação de controle popular preventivo e repressivo.'},
+  ]
+};
+
+// insere antes do grupo de Controle de Constitucionalidade
+const idx = G.findIndex(g=>g.tema.indexOf('Controle')>=0);
+G.splice(idx < 0 ? G.length : idx, 0, gRem);
+
+// jurisprudência dos remédios (mantém as já verificadas + consolidadas)
+JURIS['const|Art. 5º, LXVIII'] = [
+  {t:'STF', n:'Súmula 695', e:'Não cabe habeas corpus quando já extinta a pena privativa de liberdade.', o:'Sem risco atual à locomoção, não há HC.'},
+  {t:'STF', n:'Súmula 693', e:'Não cabe habeas corpus contra decisão condenatória a pena de multa, ou relativo a processo em curso por infração penal a que a pena pecuniária seja a única cominada.', o:'Multa não prende ninguém — logo, não há HC.'},
+];
+JURIS['const|Art. 5º, LXIX'] = [
+  {t:'STF', n:'Súmula 266', e:'Não cabe mandado de segurança contra lei em tese.', o:'MS ataca ATO concreto, não a lei abstratamente.'},
+  {t:'STF', n:'Súmula 269', e:'O mandado de segurança não é substitutivo de ação de cobrança.', o:'Efeitos patrimoniais pretéritos se buscam por via própria (Súmula 271 complementa).'},
+];
+JURIS['const|Art. 5º, LXX'] = [
+  {t:'STF', n:'Súmula 629', e:'A impetração de mandado de segurança coletivo por entidade de classe em favor dos associados independe da autorização destes.', o:'MS coletivo dispensa autorização expressa — diferente da representação do art. 5º, XXI.'},
+  {t:'STF', n:'Súmula 630', e:'A entidade de classe tem legitimação para o mandado de segurança ainda quando a pretensão veiculada interesse apenas a uma parte da respectiva categoria.', o:'Interesse de parte da categoria já legitima a entidade.'},
+];
+JURIS['const|Art. 5º, LXXII'] = [
+  {t:'STJ', n:'Súmula 2', e:'Não cabe o habeas data (CF, art. 5º, LXXII, letra "a") se não houve recusa de informações por parte da autoridade administrativa.', o:'Primeiro pede na via administrativa; negou, aí cabe HD.'},
+];
+JURIS['const|Art. 5º, LXXIII'] = [
+  {t:'STF', n:'Súmula 365', e:'Pessoa jurídica não tem legitimidade para propor ação popular.', o:'Ação popular é de CIDADÃO — empresa e MP ficam de fora.'},
+];
+
+// reinjeta a jurisprudência nos cards de constitucional
+G.forEach(g=>g.artigos.forEach(a=>{
+  const j = JURIS['const|'+a.art];
+  if (j) a.jur = j;
+}));
+})();
+
+// ============================================================
 // ESTUDA QUEST — Cronograma de estudos com ciclos de revisão
 // ============================================================
 
