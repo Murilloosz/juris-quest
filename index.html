@@ -196,6 +196,20 @@ label.fld{display:block;font-size:13px;font-weight:600;color:var(--dim);margin:1
 .adm-row:last-child{border-bottom:none;}
 .avatar-circ{width:36px;height:36px;border-radius:50%;background:var(--accent-soft);color:var(--accent-dark);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;}
 
+/* Subtópicos nos blocos */
+.blk-subs{margin-top:7px;border-top:1px dashed var(--line);padding-top:7px;}
+.blk-subs-t{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
+.blk-sub{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--dim);padding:3px 0;cursor:pointer;}
+.blk-sub .cb{width:15px;height:15px;border-radius:4px;border:2px solid var(--line);flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:transparent;margin-top:1px;}
+.blk-sub.done{color:var(--ok);}
+.blk-sub.done .cb{background:var(--ok);border-color:var(--ok);color:#fff;}
+.blk-sub.done span:last-child{text-decoration:line-through;opacity:.75;}
+.be-subs{max-height:210px;overflow-y:auto;border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--card);}
+.be-subs-h{font-size:11px;font-weight:800;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin:8px 0 3px;}
+.be-subs-h:first-child{margin-top:0;}
+.be-sub-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;padding:4px 0;cursor:pointer;}
+.be-sub-item input{width:auto;margin-top:2px;}
+.be-sub-item.done span{color:var(--ok);}
 /* Lei Seca 2.0 */
 .hx-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--dim);align-items:center;}
 .hx-legend mark{font-size:11.5px;}
@@ -212,6 +226,13 @@ mark.hx-find{background:#fde047;color:#111827;border-radius:3px;}
 .lei-label{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:5px;}
 .lei-texto{font-family:Georgia,'Times New Roman',serif;line-height:1.8;background:var(--card2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 15px;white-space:pre-line;}
 .lei-exp{line-height:1.65;background:var(--accent-soft);border-radius:10px;padding:11px 14px;}
+.jur-item{display:flex;gap:9px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;margin-top:6px;font-size:13px;line-height:1.6;background:var(--card);}
+.jur-badge{flex:none;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;height:fit-content;letter-spacing:.04em;color:#fff;}
+.jur-badge.stf{background:#1e3a8a;}
+.jur-badge.stj{background:#6d28d9;}
+.jur-obs{color:var(--dim);font-size:12px;margin-top:4px;}
+.jur-link{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;color:var(--accent-dark);text-decoration:none;background:var(--accent-soft);border-radius:6px;padding:3px 9px;}
+.jur-link:active{filter:brightness(.92);}
 #ls-tools{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
 #ls-tools .iconbtn{font-size:13px;font-weight:800;}
 #ls-tools .iconbtn.on-hot{background:var(--warn-soft);color:var(--warn);box-shadow:0 0 0 2px var(--warn-soft);}
@@ -226,6 +247,7 @@ mark.hx-find{background:#fde047;color:#111827;border-radius:3px;}
 
 <header id="topbar" class="hidden">
   <div class="inner">
+    <button class="iconbtn hidden" id="back-btn" onclick="goBack()" title="Voltar">←</button>
     <div class="brand"><span class="logo">📅</span> Estuda&nbsp;Quest</div>
     <div class="spacer"></div>
     <button class="iconbtn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">🌙</button>
@@ -270,6 +292,7 @@ mark.hx-find{background:#fde047;color:#111827;border-radius:3px;}
     <span class="tag plain" id="hoje-countdown"></span>
   </div>
   <div id="hoje-resumo" class="card tight"></div>
+  <div id="hoje-artigo"></div>
   <h2 class="mb8 mt16">📌 Revisões de hoje</h2>
   <div id="hoje-revisoes"></div>
   <h2 class="mb8 mt16">📖 Blocos de estudo</h2>
@@ -341,7 +364,8 @@ mark.hx-find{background:#fde047;color:#111827;border-radius:3px;}
   <h1 class="mb12">Lei Seca</h1>
   <div class="tabs">
     <button id="lst-penal" class="on" onclick="setLeiSeca('penal')">⚔️ Penal</button>
-    <button id="lst-const" onclick="setLeiSeca('const')">⚖️ Constitucional</button>
+    <button id="lst-const" onclick="setLeiSeca('const')">⚖️ Const.</button>
+    <button id="lst-lesp" onclick="setLeiSeca('lesp')">📕 Especiais</button>
     <button id="lst-flash" onclick="setLeiSeca('flash')">🃏 Flashcards</button>
   </div>
   <input id="ls-search" placeholder="🔍 Buscar artigo, tema ou palavra..." class="mb8" oninput="renderLeiSeca()">
@@ -407,6 +431,7 @@ mark.hx-find{background:#fde047;color:#111827;border-radius:3px;}
     <button data-nav="cronograma" onclick="go('cronograma')"><span class="ic">📅</span>Cronograma</button>
     <button data-nav="revisoes" onclick="go('revisoes')"><span class="ic">🔁</span>Revisões<span id="nav-rev-dot" class="dot hidden"></span></button>
     <button data-nav="questoes" onclick="go('questoes')"><span class="ic">✍️</span>Questões</button>
+    <button data-nav="leiseca" onclick="go('leiseca')"><span class="ic">📜</span>Lei Seca</button>
     <button data-nav="mais" onclick="go('mais')"><span class="ic">☰</span>Mais</button>
   </div>
 </nav>
@@ -2434,12 +2459,357 @@ Object.assign(QBANK, {
 });
 
 TOPICS.push(
-  {id:'penal-leis-2026', subject:'penal', title:'Leis Penais 2025/2026', subtitle:'15.397, 15.384, 15.358 e 15.181 — o que mudou', briefing:'As novidades que as bancas vão cobrar: furto 1–6 anos e repouso noturno +metade, celular/arma como qualificadoras (4–10), roubo 6–10, latrocínio 24–30, VETO na lesão grave (segue 7–18), vicaricídio (121-B, hediondo I-C) e progressão 75%/85%.'},
+  {id:'penal-leis-2026', subject:'penal', title:'Leis Penais 2025/2026', subtitle:'15.397, 15.384, 15.358 e 15.181 — o que mudou', briefing:'As novidades que as bancas vão cobrar: furto 1–6 e repouso noturno +metade, celular/arma qualificadoras, roubo 6–10, latrocínio 24–30, veto na lesão grave, vicaricídio (121-B), LEI ANTIFACÇÃO (facção = 3+, domínio social estruturado 20–40, tráfico em dobro, progressão 70/75/80/85%), decadência de 12 meses na VD (15.438) e Lei da Dosimetria suspensa pelo STF.'},
   {id:'dh-fundamentos', subject:'dh', title:'Teoria Geral dos Direitos Humanos', subtitle:'Características, dimensões e status dos tratados', briefing:'Universalidade e irrenunciabilidade, as 3 dimensões (liberdade/igualdade/fraternidade), art. 5º §§2º e 3º da CF e o status supralegal (RE 466.343). DH cai em quase toda prova policial.'},
   {id:'dh-sistema', subject:'dh', title:'DUDH, Pacto de São José e Súmulas', subtitle:'Sistema global e interamericano na prática', briefing:'DUDH é resolução (não tratado!), CADH/Decreto 678/92, SV 25 (depositário infiel) e SV 11 (algemas), os crimes imprescritíveis da CF (racismo + grupos armados) e o 3TH do art. 5º, XLIII.'},
   {id:'port-morfossintaxe', subject:'port', title:'Morfossintaxe e Vozes Verbais', subtitle:'Funções sintáticas, "se", classes de palavras', briefing:'Passiva sintética × sujeito indeterminado, agente da passiva, objeto direto/indireto, "que" integrante × relativo e o famoso "meio" advérbio.'},
   {id:'port-semantica-ortografia', subject:'port', title:'Semântica e Ortografia', subtitle:'mau/mal, senão, onde, sessão/seção, hífen', briefing:'Os pares que reprovam: mau×mal, a fim×afim, há×a, ratificar×retificar, sessão/seção/cessão, os porquês e o hífen pós-Acordo.'},
   {id:'rlm-verdades-associacao', subject:'rlm', title:'Verdades, Mentiras e Problemas Clássicos', subtitle:'Quem mente?, calendário, MMC, probabilidade', briefing:'Puzzles de verdade/mentira (teste as hipóteses!), dias da semana com resto da divisão, anagramas, MMC de ciclos e probabilidade básica.'}
+);
+
+// ============================================================
+// JURISPRUDÊNCIA POR ARTIGO — enunciados conferidos (STF/STJ)
+// t: tribunal · n: identificação · e: enunciado · o: como cai na prova
+// ============================================================
+const JURIS = {
+
+'penal|Art. 2º': [
+  {t:'STF', n:'Súmula 611', e:'Transitada em julgado a sentença condenatória, compete ao juízo das execuções a aplicação de lei mais benigna.', o:'Quem aplica a lex mitior depois do trânsito em julgado é o JUIZ DA EXECUÇÃO, não o tribunal da condenação.'},
+],
+'penal|Art. 27': [
+  {t:'STJ', n:'Súmula 500', e:'A configuração do crime do art. 244-B do ECA independe da prova da efetiva corrupção do menor, por se tratar de delito formal.', o:'Praticar crime junto com menor = corrupção de menores AUTOMÁTICA, mesmo que o menor já tivesse antecedentes.'},
+],
+'penal|Art. 33': [
+  {t:'STJ', n:'Súmula 440', e:'Fixada a pena-base no mínimo legal, é vedado o estabelecimento de regime prisional mais gravoso do que o cabível em razão da sanção imposta, com base apenas na gravidade abstrata do delito.', o:'Pena no mínimo + regime mais severo só "porque o crime é grave" = ilegal.'},
+  {t:'STF', n:'Súmula 719', e:'A imposição do regime de cumprimento mais severo do que a pena aplicada permitir exige motivação idônea.', o:'Casada com a Súmula 718: opinião sobre a gravidade em abstrato NÃO é motivação idônea.'},
+],
+'penal|Art. 63': [
+  {t:'STJ', n:'Súmula 241', e:'A reincidência penal não pode ser considerada como circunstância agravante e, simultaneamente, como circunstância judicial.', o:'Vedação ao bis in idem na dosimetria: reincidência conta UMA vez só.'},
+],
+'penal|Art. 121': [
+  {t:'STF', n:'Súmula Vinculante 45', e:'A competência constitucional do Tribunal do Júri prevalece sobre o foro por prerrogativa de função estabelecido exclusivamente pela Constituição estadual.', o:'Vereador que mata vai a JÚRI (foro só na Constituição estadual não segura).'},
+],
+'penal|Art. 129': [
+  {t:'STJ', n:'Súmula 542', e:'A ação penal relativa ao crime de lesão corporal resultante de violência doméstica contra a mulher é pública incondicionada.', o:'A vítima NÃO pode "retirar a queixa" na lesão doméstica — nem na leve.'},
+  {t:'STJ', n:'Súmula 588', e:'A prática de crime ou contravenção penal contra a mulher com violência ou grave ameaça no ambiente doméstico impossibilita a substituição da pena privativa de liberdade por restritiva de direitos.', o:'Violência doméstica: sem conversão em pena alternativa (cesta básica jamais).'},
+],
+'penal|Art. 155': [
+  {t:'STJ', n:'Súmula 511', e:'É possível o reconhecimento do privilégio previsto no § 2º do art. 155 do CP nas hipóteses de crime de furto qualificado, se estiverem presentes a primariedade do agente, o pequeno valor da coisa e a qualificadora for de ordem objetiva.', o:'Furto QUALIFICADO-PRIVILEGIADO existe — desde que a qualificadora seja objetiva.'},
+  {t:'STJ', n:'Tema 1.087 (repetitivo)', e:'A causa de aumento prevista no § 1º do art. 155 do CP (repouso noturno) não incide no crime de furto na sua forma qualificada (§ 4º).', o:'Repouso noturno só majora o furto SIMPLES. Atenção: há divergência no STF, e a tese foi firmada antes da Lei 15.397/2026 — acompanhe.'},
+  {t:'STJ', n:'Súmula 567', e:'Sistema de vigilância realizado por monitoramento eletrônico ou por existência de segurança no interior de estabelecimento comercial, por si só, não torna impossível a configuração do crime de furto.', o:'Câmera/segurança no mercado NÃO gera crime impossível.'},
+],
+'penal|Art. 157': [
+  {t:'STJ', n:'Súmula 582', e:'Consuma-se o crime de roubo com a inversão da posse do bem mediante emprego de violência ou grave ameaça, ainda que por breve tempo e em seguida à perseguição imediata ao agente e recuperação da coisa roubada, sendo prescindível a posse mansa e pacífica ou desvigiada.', o:'Roubo consumado mesmo se o ladrão foi preso logo depois com a coisa (teoria da amotio).'},
+  {t:'STF', n:'Súmula 610', e:'Há crime de latrocínio, quando o homicídio se consuma, ainda que não realize o agente a subtração de bens da vítima.', o:'Matou para roubar e não levou nada = latrocínio CONSUMADO.'},
+  {t:'STF', n:'Súmula 603', e:'A competência para o processo e julgamento de latrocínio é do juiz singular e não do Tribunal do Júri.', o:'Latrocínio é crime contra o PATRIMÔNIO → juiz singular, não júri.'},
+],
+'penal|Art. 158': [
+  {t:'STJ', n:'Súmula 96', e:'O crime de extorsão consuma-se independentemente da obtenção da vantagem indevida.', o:'Extorsão é crime FORMAL: ameaçou exigindo dinheiro, consumou — mesmo sem receber.'},
+],
+'penal|Art. 171': [
+  {t:'STF', n:'Súmula 554', e:'O pagamento de cheque emitido sem provisão de fundos, após o recebimento da denúncia, não obsta ao prosseguimento da ação penal.', o:'A contrario sensu: pago ANTES da denúncia, extingue a punibilidade. Vale SÓ para o cheque sem fundos (§2º, VI), não para o estelionato comum.'},
+],
+'penal|Art. 217-A': [
+  {t:'STJ', n:'Súmula 593', e:'O crime de estupro de vulnerável se configura com a conjunção carnal ou prática de ato libidinoso com menor de 14 anos, sendo irrelevante eventual consentimento da vítima para a prática do ato, sua experiência sexual anterior ou existência de relacionamento amoroso com o agente.', o:'Menor de 14: consentimento, "namoro" e experiência anterior são IRRELEVANTES.'},
+],
+'penal|Art. 312': [
+  {t:'STJ', n:'Súmula 599', e:'O princípio da insignificância é inaplicável aos crimes contra a administração pública.', o:'Peculato de "pequeno valor" continua sendo crime — sem bagatela contra a Administração.'},
+],
+
+'const|Art. 5º, XI': [
+  {t:'STF', n:'Tema 280 (RE 603.616)', e:'A entrada forçada em domicílio sem mandado judicial só é lícita, mesmo em período noturno, quando amparada em fundadas razões, devidamente justificadas a posteriori, que indiquem que dentro da casa ocorre situação de flagrante delito, sob pena de responsabilidade disciplinar, civil e penal do agente ou da autoridade, e de nulidade dos atos praticados.', o:'A tese mais cobrada em prova policial: exige FUNDADAS RAZÕES (justa causa), não mera denúncia anônima.'},
+],
+'const|Art. 5º, LVII': [
+  {t:'STF', n:'ADCs 43, 44 e 54', e:'É constitucional o art. 283 do CPP: o cumprimento da pena exige o trânsito em julgado da condenação, vedada a execução provisória da pena.', o:'Desde 2019: prisão-pena só após o trânsito em julgado (cautelares continuam possíveis).'},
+],
+'const|Art. 5º, LXI a LXVI': [
+  {t:'STF', n:'Súmula Vinculante 11', e:'Só é lícito o uso de algemas em casos de resistência e de fundado receio de fuga ou de perigo à integridade física própria ou alheia, por parte do preso ou de terceiros, justificada a excepcionalidade por escrito, sob pena de responsabilidade disciplinar, civil e penal do agente ou da autoridade e de nulidade da prisão ou do ato processual a que se refere, sem prejuízo da responsabilidade civil do Estado.', o:'Algema é EXCEÇÃO justificada por escrito — decorar as 3 hipóteses.'},
+  {t:'STF', n:'Súmula Vinculante 25', e:'É ilícita a prisão civil de depositário infiel, qualquer que seja a modalidade do depósito.', o:'Única prisão civil que sobrou: devedor de alimentos.'},
+],
+'const|Art. 5º, LXVIII': [
+  {t:'STF', n:'Súmula 695', e:'Não cabe habeas corpus quando já extinta a pena privativa de liberdade.', o:'Sem risco à liberdade de locomoção, não há HC (também não cabe para punição de multa).'},
+],
+'const|Art. 5º, LXIX': [
+  {t:'STF', n:'Súmula 266', e:'Não cabe mandado de segurança contra lei em tese.', o:'MS ataca ATO concreto de autoridade, não a lei abstratamente.'},
+],
+'const|Art. 37': [
+  {t:'STF', n:'Súmula Vinculante 13', e:'A nomeação de cônjuge, companheiro ou parente em linha reta, colateral ou por afinidade, até o terceiro grau, inclusive, da autoridade nomeante ou de servidor da mesma pessoa jurídica investido em cargo de direção, chefia ou assessoramento, para o exercício de cargo em comissão ou de confiança ou, ainda, de função gratificada na administração pública direta e indireta em qualquer dos Poderes da União, dos Estados, do Distrito Federal e dos Municípios, compreendido o ajuste mediante designações recíprocas, viola a Constituição Federal.', o:'Nepotismo até o 3º grau. Em regra, NÃO alcança cargos políticos (secretário, ministro), salvo nepotismo cruzado ou falta de qualificação.'},
+],
+'const|Art. 144, caput': [
+  {t:'STF', n:'ADI 2.827', e:'O rol de órgãos de segurança pública do art. 144 da Constituição é taxativo: os Estados-membros não podem criar órgãos de segurança pública diversos dos ali previstos.', o:'Estado não pode inventar "polícia nova". (A Polícia Penal entrou por EMENDA — EC 104/2019.)'},
+],
+};
+
+// injeta a jurisprudência nos artigos da lei seca
+(function(){
+  for (const subj in CP_LEISECA){
+    CP_LEISECA[subj].grupos.forEach(g=>g.artigos.forEach(a=>{
+      const j = JURIS[subj+'|'+a.art];
+      if (j) a.jur = j;
+    }));
+  }
+})();
+
+// ============================================================
+// LEGISLAÇÃO PENAL ESPECIAL — lei seca + jurisprudência + questões
+// Fontes conferidas: Planalto/Câmara + Buscador Dizer o Direito + STF/STJ
+// ============================================================
+CP_LEISECA.lesp = {
+  titulo: 'Legislação Penal Especial — as 6 leis que decidem a prova policial',
+  grupos: [
+    {
+      tema: '🌿 Lei de Drogas (11.343/2006)',
+      artigos: [
+        {art:'Art. 28, LD', hot:true, sub:'Porte para consumo pessoal', titulo:'Porte de droga para consumo',
+         texto:'Quem adquirir, guardar, tiver em depósito, transportar ou trouxer consigo, para consumo pessoal, drogas sem autorização será submetido às penas de: I — advertência sobre os efeitos das drogas; II — prestação de serviços à comunidade; III — medida educativa de comparecimento a programa ou curso educativo. Prazo máximo: 5 meses (primário) ou 10 meses (reincidente). Para determinar se a droga é para consumo pessoal, o juiz atende à natureza e quantidade, ao local e às condições da ação, às circunstâncias sociais e pessoais e à conduta e antecedentes do agente.',
+         exp:'NÃO há pena de prisão para o usuário — houve DESPENALIZAÇÃO (não descriminalização geral). Pegadinha clássica: dizer que o art. 28 prevê detenção. ATENÇÃO ao Tema 506 do STF (2024): porte de MACONHA até 40g ou 6 plantas fêmeas para uso pessoal virou ilícito administrativo, sem consequências penais — presunção RELATIVA (pode ser afastada por indícios de tráfico: balança, embalagens, anotações). Para as demais drogas, o art. 28 segue aplicável.'},
+        {art:'Art. 33, LD', hot:true, sub:'Tráfico de drogas', titulo:'Tráfico — o tipo de 18 verbos',
+         texto:'Importar, exportar, remeter, preparar, produzir, fabricar, adquirir, vender, expor à venda, oferecer, ter em depósito, transportar, trazer consigo, guardar, prescrever, ministrar, entregar a consumo ou fornecer drogas, ainda que gratuitamente, sem autorização: Pena — reclusão de 5 (cinco) a 15 (quinze) anos e multa.',
+         exp:'18 verbos — crime de AÇÃO MÚLTIPLA: praticar vários verbos no mesmo contexto = crime ÚNICO. "Ainda que GRATUITAMENTE": dividir droga com amigo é tráfico, não precisa vender. Equiparado a hediondo (CF art. 5º, XLIII). Oferecer eventualmente, sem lucro, a pessoa do convívio para consumo conjunto = §3º (pena menor: 6 meses a 1 ano).'},
+        {art:'Art. 33, §4º, LD', hot:true, sub:'Tráfico privilegiado', titulo:'Tráfico privilegiado',
+         texto:'Nos delitos do caput e do § 1º, as penas poderão ser reduzidas de 1/6 (um sexto) a 2/3 (dois terços), desde que o agente seja primário, de bons antecedentes, não se dedique às atividades criminosas nem integre organização criminosa.',
+         exp:'Os 4 requisitos são CUMULATIVOS. O tráfico privilegiado NÃO é equiparado a hediondo — o STF decidiu no HC 118.533 e a Lei 13.964/19 positivou (art. 112, §5º, LEP). A Súmula 512 do STJ, que dizia o contrário, foi CANCELADA em 2016 — quem estuda por material velho cai nessa.'},
+        {art:'Art. 35, LD', hot:true, sub:'Associação para o tráfico', titulo:'Associação para o tráfico',
+         texto:'Associarem-se duas ou mais pessoas para o fim de praticar, reiteradamente ou não, qualquer dos crimes previstos nos arts. 33, caput e § 1º, e 34: Pena — reclusão de 3 (três) a 10 (dez) anos e multa.',
+         exp:'Bastam 2 pessoas (organização criminosa exige 4). Exige estabilidade/permanência do vínculo — parceria em um único tráfico é concurso de pessoas, não associação. NÃO é equiparado a hediondo (jurisprudência consolidada).'},
+        {art:'Art. 40, LD', hot:false, sub:'Causas de aumento', titulo:'Majorantes do tráfico (1/6 a 2/3)',
+         texto:'As penas dos arts. 33 a 37 são aumentadas de 1/6 a 2/3 se: I — transnacionalidade; II — agente exerce função pública ou missão de educação/guarda; III — cometido nas dependências ou imediações de estabelecimentos de ensino, hospitalares, esportivos, unidades prisionais, transportes públicos etc.; IV — violência ou grave ameaça; V — tráfico interestadual; VI — envolver criança/adolescente ou incapaz; VII — financiar ou custear o crime.',
+         exp:'Transnacionalidade e interestadualidade NÃO exigem efetiva transposição da fronteira (basta a prova do destino). Escola/presídio/transporte público: basta a venda nas IMEDIAÇÕES.'},
+      ]
+    },
+    {
+      tema: '🛡️ Lei Maria da Penha (11.340/2006)',
+      artigos: [
+        {art:'Art. 5º, LMP', hot:true, sub:'Âmbito de aplicação', titulo:'O que é violência doméstica e familiar',
+         texto:'Configura violência doméstica e familiar contra a mulher qualquer ação ou omissão baseada no gênero que lhe cause morte, lesão, sofrimento físico, sexual ou psicológico e dano moral ou patrimonial: I — na unidade doméstica; II — no âmbito da família; III — em qualquer relação íntima de afeto, na qual o agressor conviva ou tenha convivido com a ofendida, independentemente de coabitação. As relações independem de orientação sexual.',
+         exp:'Vítima: MULHER (inclusive trans, segundo o STJ). Agressor: pode ser homem OU mulher. Namoro sem morar junto ENTRA (relação íntima de afeto, independe de coabitação — Súmula 600 STJ). Não exige motivação de gênero? CUIDADO: exige que a violência seja "baseada no gênero".'},
+        {art:'Art. 7º, LMP', hot:true, sub:'Formas de violência', titulo:'As 6 formas de violência',
+         texto:'São formas de violência doméstica e familiar contra a mulher, entre outras: I — física; II — psicológica; III — sexual; IV — patrimonial; V — moral; VI — vicária: qualquer forma de violência praticada contra descendente, ascendente, dependente, enteado, parente, pessoa sob guarda ou responsabilidade direta da mulher ou pessoa de sua rede de apoio, com vistas a atingi-la. (Incluído pela Lei 15.384/2026)',
+         exp:'Eram 5, agora são 6 — a VICÁRIA entrou em 2026 (Lei 15.384). O rol é EXEMPLIFICATIVO ("entre outras"). Decore os pares-pegadinha: quebrar o celular = PATRIMONIAL; xingar em público = MORAL; humilhar/controlar = PSICOLÓGICA (que também é crime autônomo do art. 147-B do CP).'},
+        {art:'Art. 22, LMP', hot:true, sub:'Medidas protetivas', titulo:'Medidas que obrigam o agressor',
+         texto:'Constatada a prática de violência doméstica, o juiz poderá aplicar, de imediato, ao agressor, em conjunto ou separadamente: I — suspensão da posse ou restrição do porte de armas; II — afastamento do lar; III — proibição de aproximação da ofendida, familiares e testemunhas (com limite mínimo de distância), de contato por qualquer meio e de frequentar determinados lugares; IV — restrição ou suspensão de visitas aos dependentes menores; V — prestação de alimentos provisionais; VI — comparecimento a programas de recuperação e reeducação; VII — acompanhamento psicossocial.',
+         exp:'Rol EXEMPLIFICATIVO. A autoridade policial (delegado) pode afastar o agressor do lar quando o Município não for sede de comarca (art. 12-C) — e o policial, quando não houver delegado disponível. As medidas independem de tipificação penal, inquérito ou ação em curso (art. 19, §5º).'},
+        {art:'Art. 24-A, LMP', hot:true, sub:'Crime de descumprimento', titulo:'Descumprir medida protetiva é crime',
+         texto:'Descumprir decisão judicial que defere medidas protetivas de urgência previstas nesta Lei: Pena — reclusão, de 2 (dois) a 5 (cinco) anos, e multa. (Redação da Lei 14.994/2024) § 1º A configuração do crime independe da competência civil ou criminal do juiz que deferiu as medidas. § 2º Na hipótese de prisão em flagrante, apenas a autoridade judicial poderá conceder fiança. A pena aumenta de 1/3 até 1/2 se o descumprimento envolve violação de monitoramento eletrônico.',
+         exp:'ATUALIZAÇÃO que derruba material antigo: a pena era detenção de 3 meses a 2 anos e virou RECLUSÃO DE 2 A 5 ANOS (Lei 14.994/2024). Delegado NÃO pode arbitrar fiança nesse crime — só o juiz. O descumprimento não exclui outras sanções cabíveis nem a decretação da preventiva.'},
+        {art:'Art. 41, LMP', hot:true, sub:'Vedação aos Juizados', titulo:'Lei 9.099 não se aplica',
+         texto:'Aos crimes praticados com violência doméstica e familiar contra a mulher, independentemente da pena prevista, não se aplica a Lei nº 9.099/1995 (Juizados Especiais).',
+         exp:'Consequências em cascata: SEM transação penal, SEM suspensão condicional do processo, SEM composição civil (Súmula 536 STJ) — e a lesão leve doméstica é de ação INCONDICIONADA (Súmula 542 STJ + ADI 4424). Também não cabe insignificância (Súmula 589 STJ) nem pena de cesta básica (art. 17).'},
+      ]
+    },
+    {
+      tema: '🚨 Lei de Abuso de Autoridade (13.869/2019)',
+      artigos: [
+        {art:'Art. 1º, LAA', hot:true, sub:'Elemento subjetivo', titulo:'Quando há (e quando NÃO há) abuso',
+         texto:'§ 1º As condutas descritas nesta Lei constituem crime de abuso de autoridade quando praticadas pelo agente com a finalidade específica de prejudicar outrem ou beneficiar a si mesmo ou a terceiro, ou, ainda, por mero capricho ou satisfação pessoal. § 2º A divergência na interpretação de lei ou na avaliação de fatos e provas não configura abuso de autoridade.',
+         exp:'O coração da lei: exige DOLO + FINALIDADE ESPECÍFICA (prejudicar/beneficiar/capricho). Não existe abuso CULPOSO. O §2º é o escudo do policial de boa-fé: interpretação razoável da lei não é crime ("crime de hermenêutica" não existe). Sujeito ativo: QUALQUER agente público — inclusive militares, magistrados e membros do MP. Ação penal: pública INCONDICIONADA.'},
+        {art:'Art. 13, LAA', hot:true, sub:'Exposição do preso', titulo:'Constranger preso a exibir-se',
+         texto:'Constranger o preso ou o detento, mediante violência, grave ameaça ou redução de sua capacidade de resistência, a: I — exibir-se ou ter seu corpo exibido à curiosidade pública; II — submeter-se a situação vexatória ou a constrangimento não autorizado em lei: Pena — detenção, de 1 (um) a 4 (quatro) anos, e multa.',
+         exp:'O crime do "desfile do preso para a imprensa". Exige violência, grave ameaça ou redução da capacidade de resistência. Fotografar/filmar o preso contra a vontade dele para expor à curiosidade pública entra aqui.'},
+        {art:'Art. 22, LAA', hot:true, sub:'Invasão de domicílio', titulo:'Invadir imóvel alheio (agente público)',
+         texto:'Invadir ou adentrar, clandestina ou astuciosamente, ou à revelia da vontade do ocupante, imóvel alheio ou suas dependências, ou nele permanecer nas mesmas condições, sem determinação judicial ou fora das condições estabelecidas em lei: Pena — detenção, de 1 (um) a 4 (quatro) anos, e multa. § 1º Incorre na mesma pena quem coage alguém a franquear acesso, executa mandado após as 21h ou antes das 5h, ou cumpre busca sem ordem judicial nos casos que a exigem.',
+         exp:'Espelho do Tema 280 do STF: entrada sem mandado exige FUNDADAS RAZÕES de flagrante — sem elas, além da nulidade da prova, o agente responde por este crime. Horário do mandado: das 5h às 21h (o CPP fala em "dia"; a LAA fixou o parâmetro).'},
+        {art:'Art. 25, LAA', hot:false, sub:'Prova ilícita', titulo:'Obter ou usar prova ilícita',
+         texto:'Proceder à obtenção de prova, em procedimento de investigação ou fiscalização, por meio manifestamente ilícito: Pena — detenção, de 1 (um) a 4 (quatro) anos, e multa. Parágrafo único. Incorre na mesma pena quem faz uso, em desfavor do investigado ou fiscalizado, de prova, em relação à qual tinha conhecimento prévio de sua ilicitude, com o objetivo de prejudicá-lo.',
+         exp:'"MANIFESTAMENTE ilícito" — a ilicitude tem que ser gritante; dúvida razoável sobre a licitude não configura o crime (§2º do art. 1º). O parágrafo único pune também quem USA a prova que sabe ser ilícita.'},
+        {art:'Art. 38, LAA', hot:false, sub:'Antecipação de culpa', titulo:'Atribuir culpa antes da hora',
+         texto:'Antecipar o responsável pelas investigações, por meio de comunicação, inclusive rede social, atribuição de culpa, antes de concluídas as apurações e formalizada a acusação: Pena — detenção, de 6 (seis) meses a 2 (dois) anos, e multa.',
+         exp:'A "coletiva de imprensa condenatória" virou crime. Sujeito ativo: o RESPONSÁVEL pelas investigações. Vale inclusive para post em rede social. Divulgar a prisão é lícito; ATRIBUIR CULPA antes da acusação formalizada, não.'},
+      ]
+    },
+    {
+      tema: '🔫 Estatuto do Desarmamento (10.826/2003)',
+      artigos: [
+        {art:'Art. 12, ED', hot:true, sub:'Posse irregular', titulo:'Posse irregular de arma de uso permitido',
+         texto:'Possuir ou manter sob sua guarda arma de fogo, acessório ou munição, de uso permitido, em desacordo com determinação legal ou regulamentar, no interior de sua residência ou dependência desta, ou, ainda, no seu local de trabalho, desde que seja o titular ou o responsável legal do estabelecimento: Pena — detenção, de 1 (um) a 3 (três) anos, e multa.',
+         exp:'POSSE = dentro de casa ou do trabalho (sendo o dono/responsável). Fora daí, vira PORTE (art. 14, pena maior). Detenção — o único dos crimes principais com detenção. Crime de perigo abstrato: não precisa de lesão concreta.'},
+        {art:'Art. 14, ED', hot:true, sub:'Porte ilegal', titulo:'Porte ilegal de arma de uso permitido',
+         texto:'Portar, deter, adquirir, fornecer, receber, ter em depósito, transportar, ceder, ainda que gratuitamente, emprestar, remeter, empregar, manter sob guarda ou ocultar arma de fogo, acessório ou munição, de uso permitido, sem autorização e em desacordo com determinação legal ou regulamentar: Pena — reclusão, de 2 (dois) a 4 (quatro) anos, e multa.',
+         exp:'PORTE = arma fora de casa/trabalho. Reclusão 2 a 4 anos. O parágrafo único dizia que o crime é INAFIANÇÁVEL — o STF declarou essa vedação INCONSTITUCIONAL (ADI 3.112): cabe fiança. Arma desmuniciada ou munição sozinha: CONFIGURA o crime (perigo abstrato — tribunais superiores). Registro ≠ porte: ter o registro autoriza a POSSE, não o porte.'},
+        {art:'Art. 15, ED', hot:false, sub:'Disparo', titulo:'Disparo de arma de fogo',
+         texto:'Disparar arma de fogo ou acionar munição em lugar habitado ou em suas adjacências, em via pública ou em direção a ela, desde que essa conduta não tenha como finalidade a prática de outro crime: Pena — reclusão, de 2 (dois) a 4 (quatro) anos, e multa.',
+         exp:'Crime SUBSIDIÁRIO expresso: se o disparo visava outro crime (ex.: homicídio), responde só pelo crime-fim. "Tiro pra cima" na festa = art. 15.'},
+        {art:'Art. 16, ED', hot:true, sub:'Uso restrito', titulo:'Posse/porte de arma de uso restrito',
+         texto:'Possuir, deter, portar, adquirir, fornecer, receber, ter em depósito, transportar, ceder, ainda que gratuitamente, emprestar, remeter, empregar, manter sob sua guarda ou ocultar arma de fogo, acessório ou munição de uso restrito, sem autorização e em desacordo com determinação legal ou regulamentar: Pena — reclusão, de 3 (três) a 6 (seis) anos, e multa. § 1º Nas mesmas penas incorre quem: suprimir/alterar numeração; modificar arma para torná-la equivalente a uso restrito; possuir artefato explosivo; portar arma com numeração raspada; vender ou entregar arma a criança/adolescente; produzir munição ou explosivo sem autorização.',
+         exp:'Aqui NÃO há distinção posse × porte — tudo no mesmo tipo (3 a 6). PEGADINHA-MESTRA: arma de uso PERMITIDO com numeração RASPADA cai no art. 16, §1º, IV (não no 12/14). Arma de uso PROIBIDO: §2º, pena de reclusão de 4 a 12 anos (Pacote Anticrime).'},
+        {art:'Arts. 17 e 18, ED', hot:false, sub:'Comércio e tráfico', titulo:'Comércio ilegal e tráfico internacional',
+         texto:'Art. 17. Adquirir, alugar, receber, transportar, conduzir, ocultar, ter em depósito, desmontar, montar, remontar, adulterar, vender, expor à venda, ou de qualquer forma utilizar, em proveito próprio ou alheio, no exercício de atividade comercial ou industrial, arma de fogo, acessório ou munição, sem autorização ou em desacordo com determinação legal: Pena — reclusão, de 6 (seis) a 12 (doze) anos, e multa. Art. 18. Importar, exportar, favorecer a entrada ou saída do território nacional, a qualquer título, de arma de fogo, acessório ou munição, sem autorização da autoridade competente: Pena — reclusão, de 8 (oito) a 16 (dezesseis) anos, e multa.',
+         exp:'Penas ELEVADAS pelo Pacote Anticrime (13.964/19): comércio ilegal saltou de 4–8 para 6 a 12; tráfico internacional, de 4–8 para 8 a 16. Ambos aumentam de METADE se a arma for de uso restrito/proibido (art. 19) — e ambos são HEDIONDOS quando de uso restrito/proibido (art. 1º, parágrafo único, Lei 8.072).'},
+      ]
+    },
+    {
+      tema: '💀 Crimes Hediondos (8.072/1990)',
+      artigos: [
+        {art:'Art. 1º, LCH', hot:true, sub:'Rol taxativo', titulo:'Quais crimes são hediondos',
+         texto:'São considerados hediondos (consumados ou TENTADOS): homicídio em atividade típica de grupo de extermínio e homicídio qualificado; lesão gravíssima/seguida de morte contra agentes de segurança e seus familiares; lesão gravíssima e seguida de morte contra menor de 14 anos (I-A); FEMINICÍDIO (I-B); VICARICÍDIO (I-C); latrocínio; extorsão qualificada pela morte; extorsão mediante sequestro; estupro; estupro de vulnerável; epidemia com morte; falsificação de remédios; favorecimento de prostituição de criança/adolescente/vulnerável; furto com explosivo; roubo com arma de uso restrito, com explosivo ou com lesão grave/morte; genocídio; posse/porte de arma de uso PROIBIDO; comércio ilegal e tráfico internacional de armas; organização criminosa para crime hediondo.',
+         exp:'Rol TAXATIVO (não admite ampliação por analogia) e o Brasil adota o sistema LEGAL (é hediondo o que a lei diz, sem juízo do magistrado). Novidades: I-B feminicídio (Lei 14.994/24) e I-C vicaricídio (Lei 15.384/26). O homicídio SIMPLES só é hediondo em grupo de extermínio. Tráfico de drogas, tortura e terrorismo NÃO são hediondos — são EQUIPARADOS (3TH).'},
+        {art:'Art. 2º, LCH', hot:true, sub:'Vedações', titulo:'O que o hediondo NÃO tem direito',
+         texto:'Os crimes hediondos, a prática da tortura, o tráfico ilícito de entorpecentes e o terrorismo são insuscetíveis de: I — anistia, graça e indulto; II — fiança. § 1º A pena será cumprida inicialmente em regime fechado. § 2º (progressão — ver LEP). § 3º Em caso de sentença condenatória, o juiz decidirá fundamentadamente se o réu poderá apelar em liberdade.',
+         exp:'INAFIANÇÁVEIS e sem anistia/graça/indulto — mas NÃO são imprescritíveis (só racismo e ação de grupos armados prescrevem nunca, e estão na CF). O §1º (regime INICIAL fechado obrigatório) foi declarado INCONSTITUCIONAL pelo STF (HC 111.840): o juiz fixa o regime conforme o art. 33 do CP. Liberdade provisória SEM fiança é possível.'},
+        {art:'Art. 112, LEP', hot:true, sub:'Progressão de regime', titulo:'Percentuais de progressão (atualizados)',
+         texto:'Progressão para hediondos/equiparados: 40% — primário; 50% — primário, com resultado morte (Lei antiga)... REDAÇÃO ATUAL (Leis 13.964/19 e 15.358/26): 40% se primário em hediondo; 50% nas hipóteses legais específicas; 60% se reincidente em hediondo; 70% se reincidente em hediondo; 75% — condenado por crime hediondo com resultado morte, se primário, VEDADO o livramento condicional, e comando de organização criminosa ultraviolenta; 85% — reincidente em crime hediondo ou equiparado com resultado morte, vedado o livramento condicional.',
+         exp:'A Lei 15.358/2026 (marco antifacção) endureceu os percentuais do hediondo com MORTE: 75% (primário) e 85% (reincidente), ambos SEM livramento condicional — na prática, o "regime quase perpétuo" comentado pela doutrina. Tráfico PRIVILEGIADO segue fora do regime hediondo (art. 112, §5º). Números = alvo certo de prova em 2026/27.'},
+      ]
+    },
+    {
+      tema: '🔥 Lei de Tortura (9.455/1997)',
+      artigos: [
+        {art:'Art. 1º, LT', hot:true, sub:'Modalidades', titulo:'Tortura-prova, tortura-crime e tortura-castigo',
+         texto:'Constitui crime de tortura: I — constranger alguém com emprego de violência ou grave ameaça, causando-lhe sofrimento físico ou mental: a) para obter informação, declaração ou confissão (tortura-prova); b) para provocar ação ou omissão de natureza criminosa (tortura-crime); c) em razão de discriminação racial ou religiosa (tortura-discriminação); II — submeter alguém, sob sua guarda, poder ou autoridade, com emprego de violência ou grave ameaça, a intenso sofrimento físico ou mental, como forma de aplicar castigo pessoal ou medida de caráter preventivo (tortura-castigo). Pena — reclusão, de 2 (dois) a 8 (oito) anos.',
+         exp:'Tortura é crime COMUM no Brasil (qualquer pessoa pode praticar — não exige agente público; ser agente público é MAJORANTE de 1/6 a 1/3). Diferença fina: inciso I fala em "sofrimento"; inciso II (castigo) exige sofrimento INTENSO. Pai que espanca o filho como castigo intenso = tortura-castigo.'},
+        {art:'Art. 1º, §2º, LT', hot:true, sub:'Tortura-omissão', titulo:'Quem se omite diante da tortura',
+         texto:'Aquele que se omite em face dessas condutas, quando tinha o dever de evitá-las ou apurá-las, incorre na pena de detenção de 1 (um) a 4 (quatro) anos.',
+         exp:'A EXCEÇÃO da lei: a tortura-omissão tem pena de DETENÇÃO (todas as outras, reclusão) e, segundo a doutrina majoritária, NÃO é equiparada a hediondo nem sofre as vedações (fiança etc.). O carcereiro que "finge que não vê" responde por ela.'},
+        {art:'Art. 2º, LT', hot:false, sub:'Extraterritorialidade', titulo:'Tortura fora do Brasil',
+         texto:'O disposto nesta Lei aplica-se ainda quando o crime não tenha sido cometido em território nacional, sendo a vítima brasileira ou encontrando-se o agente em local sob jurisdição brasileira.',
+         exp:'Extraterritorialidade INCONDICIONADA da lei de tortura: vítima brasileira torturada no exterior → lei brasileira alcança. Também vale se o torturador estiver em local sob jurisdição do Brasil. O condenado inicia em regime fechado (§7º do art. 1º) — mas o STF estendeu à tortura o entendimento do HC 111.840 (regime inicial fechado obrigatório é inconstitucional).'},
+      ]
+    },
+  ]
+};
+
+// Jurisprudência da legislação especial (enunciados conferidos)
+Object.assign(JURIS, {
+'lesp|Art. 28, LD': [
+  {t:'STF', n:'Tema 506 (RE 635.659)', u:'https://jurisprudencia.stf.jus.br/pages/search?queryString=RE%20635659', e:'Presume-se usuário quem adquire, guarda, tem em depósito, transporta ou traz consigo até 40g de cannabis sativa ou 6 plantas fêmeas, para consumo pessoal — conduta que deixa de ter consequências penais (ilícito administrativo). Presunção relativa: pode ser afastada por indícios de traficância.', o:'Vale SÓ para maconha. Balança, embalagens e anotações de venda derrubam a presunção — o flagrante por tráfico continua possível abaixo de 40g.'},
+],
+'lesp|Art. 33, LD': [
+  {t:'STJ', n:'Súmula 630', e:'A incidência da atenuante da confissão espontânea no crime de tráfico ilícito de entorpecentes exige que o réu admita a mercancia.', o:'Confessar que a droga era "para uso próprio" NÃO atenua a pena do tráfico.'},
+],
+'lesp|Art. 33, §4º, LD': [
+  {t:'STJ', n:'Súmula 512 (CANCELADA)', e:'Enunciado cancelado em 2016: afirmava que a aplicação da causa de diminuição do §4º não afastava a hediondez do tráfico. Após o HC 118.533 do STF, prevaleceu o oposto — e a Lei 13.964/19 positivou no art. 112, §5º, da LEP.', o:'PEGADINHA DE OURO: tráfico privilegiado NÃO é equiparado a hediondo. Material antigo ainda cita a 512 como vigente.'},
+],
+'lesp|Art. 5º, LMP': [
+  {t:'STJ', n:'Súmula 600', e:'Para a configuração da violência doméstica e familiar prevista no artigo 5º da Lei 11.340/2006 (Lei Maria da Penha) não se exige a coabitação entre autor e vítima.', o:'Ex-namorado que nunca morou com a vítima ENTRA na Maria da Penha.'},
+],
+'lesp|Art. 41, LMP': [
+  {t:'STJ', n:'Súmula 536', e:'A suspensão condicional do processo e a transação penal não se aplicam na hipótese de delitos sujeitos ao rito da Lei Maria da Penha.', o:'Nada de benefícios da 9.099 em violência doméstica.'},
+  {t:'STJ', n:'Súmula 589', e:'É inaplicável o princípio da insignificância nos crimes ou contravenções penais praticados contra a mulher no âmbito das relações domésticas.', o:'Não existe "lesão insignificante" em contexto doméstico.'},
+],
+'lesp|Art. 14, ED': [
+  {t:'STF', n:'ADI 3.112', u:'https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADI&numeroProcesso=3112', e:'O STF declarou inconstitucionais os dispositivos do Estatuto do Desarmamento que vedavam a fiança e a liberdade provisória nos crimes de porte ilegal (arts. 14 e 15, parágrafos únicos, e 21).', o:'Porte ilegal ADMITE fiança — o texto da lei ficou superado.'},
+],
+'lesp|Art. 2º, LCH': [
+  {t:'STF', n:'HC 111.840', u:'https://jurisprudencia.stf.jus.br/pages/search?queryString=HC%20111840', e:'É inconstitucional a obrigatoriedade do regime inicial fechado para condenados por crimes hediondos ou equiparados (art. 2º, §1º, da Lei 8.072/90): o juiz deve fixar o regime conforme os critérios do art. 33 do Código Penal.', o:'Hediondo PODE começar no semiaberto se a pena e as circunstâncias permitirem.'},
+],
+});
+
+// injeta a jurisprudência nos artigos da lei seca especial
+(function(){
+  CP_LEISECA.lesp.grupos.forEach(g=>g.artigos.forEach(a=>{
+    const j = JURIS['lesp|'+a.art];
+    if (j) a.jur = j;
+  }));
+})();
+
+// ============================================================
+// QUESTÕES — Abuso de Autoridade e Desarmamento (lacunas do banco)
+// ============================================================
+Object.assign(QBANK, {
+
+'lesp-abuso-autoridade': [
+  {b:'CESPE',t:'cebraspe',s:'Os crimes de abuso de autoridade exigem, além do dolo, a finalidade específica de prejudicar outrem, beneficiar a si mesmo ou a terceiro, ou agir por mero capricho ou satisfação pessoal.',c:0,e:'CERTO. Art. 1º, §1º, da Lei 13.869/2019 — o elemento subjetivo especial é o filtro central da lei.'},
+  {b:'CESPE',t:'cebraspe',s:'A divergência na interpretação de lei ou na avaliação de fatos e provas configura abuso de autoridade quando o entendimento do agente é posteriormente reformado pelo Judiciário.',c:1,e:'ERRADO. Art. 1º, §2º: divergência hermenêutica NÃO configura abuso — ainda que a decisão seja depois reformada. Não existe "crime de hermenêutica".'},
+  {b:'FGV',t:'multiple',s:'Podem ser sujeitos ativos dos crimes da Lei de Abuso de Autoridade:',o:['apenas policiais civis e militares','apenas servidores públicos efetivos','qualquer agente público, servidor ou não, incluindo militares, magistrados e membros do Ministério Público','apenas autoridades com poder de decisão','somente agentes da segurança pública e do sistema prisional'],c:2,e:'Art. 2º: conceito amplíssimo de agente público — servidor ou não, da administração direta/indireta, de qualquer dos Poderes, incluindo magistrados, MP e militares.'},
+  {b:'CESPE',t:'cebraspe',s:'A ação penal nos crimes de abuso de autoridade é pública condicionada à representação do ofendido.',c:1,e:'ERRADO. É pública INCONDICIONADA (art. 3º). Admite-se ação privada SUBSIDIÁRIA se o MP não agir no prazo legal.'},
+  {b:'CESPE',t:'cebraspe',s:'Constranger o preso, mediante violência ou grave ameaça, a exibir-se à curiosidade pública configura crime de abuso de autoridade.',c:0,e:'CERTO. Art. 13, I — o "desfile" do preso para a imprensa, mediante constrangimento, é crime (detenção de 1 a 4 anos).'},
+  {b:'CESPE',t:'cebraspe',s:'O agente público que executa mandado de busca e apreensão domiciliar às 22h, fora das hipóteses legais, pratica o crime do art. 22 da Lei de Abuso de Autoridade.',c:0,e:'CERTO. Art. 22, §1º, III — cumprimento de mandado após as 21h ou antes das 5h é criminalizado.'},
+  {b:'FCC',t:'multiple',s:'Na Lei 13.869/2019, a perda do cargo, mandato ou função pública, como efeito da condenação, depende de:',o:['sentença condenatória, sendo efeito automático','reincidência em crime de abuso de autoridade, não sendo efeito automático','pena superior a 4 anos','decisão administrativa prévia','trânsito em julgado em qualquer crime doloso'],c:1,e:'Art. 4º, parágrafo único: perda do cargo e inabilitação são condicionadas à REINCIDÊNCIA em abuso de autoridade e não são automáticas (exigem motivação).'},
+  {b:'CESPE',t:'cebraspe',s:'Os efeitos da condenação por abuso de autoridade, como a perda do cargo, são automáticos e dispensam motivação na sentença.',c:1,e:'ERRADO. Não são automáticos: devem ser declarados motivadamente, e a perda do cargo exige reincidência específica (art. 4º).'},
+  {b:'IBFC',t:'multiple',s:'As penas privativas de liberdade previstas para os crimes da Lei de Abuso de Autoridade são, em regra:',o:['reclusão de 2 a 8 anos','detenção de 6 meses a 2 anos ou de 1 a 4 anos','reclusão de 4 a 12 anos','prisão simples de 15 dias a 3 meses','detenção de 3 meses a 1 ano apenas'],c:1,e:'A lei trabalha com dois patamares: detenção de 6 meses a 2 anos e detenção/reclusão de 1 a 4 anos — todos de menor potencial ou médio potencial ofensivo.'},
+  {b:'CESPE',t:'cebraspe',s:'As sanções penais da Lei de Abuso de Autoridade são aplicáveis independentemente das sanções civis e administrativas cabíveis pelo mesmo fato.',c:0,e:'CERTO. Arts. 6º a 8º: as esferas penal, civil e administrativa são independentes (com os efeitos de comunicação previstos no art. 8º quanto à negativa de autoria/inexistência do fato).'},
+  {b:'CESPE',t:'cebraspe',s:'Obter prova, em investigação, por meio manifestamente ilícito configura crime; e também responde quem usa, contra o investigado, prova cuja ilicitude conhecia previamente, com o objetivo de prejudicá-lo.',c:0,e:'CERTO. Art. 25, caput e parágrafo único. A palavra-chave é MANIFESTAMENTE ilícito.'},
+  {b:'VUNESP',t:'multiple',s:'Responsável por investigação que, em entrevista coletiva, atribui culpa a investigado antes de concluídas as apurações e formalizada a acusação pratica:',o:['fato atípico, por liberdade de expressão','o crime do art. 38 da Lei 13.869/2019','apenas infração administrativa','denunciação caluniosa','prevaricação'],c:1,e:'Art. 38 — antecipação de culpa por comunicação, inclusive rede social: detenção de 6 meses a 2 anos e multa.'},
+],
+
+'lesp-desarmamento': [
+  {b:'CESPE',t:'cebraspe',s:'A posse irregular de arma de fogo de uso permitido caracteriza-se pela manutenção da arma no interior da residência ou do local de trabalho do agente, enquanto o porte ilegal pressupõe a arma fora desses locais.',c:0,e:'CERTO. Posse = art. 12 (detenção 1 a 3 anos); porte = art. 14 (reclusão 2 a 4 anos). No trabalho, só é posse se o agente for o titular/responsável pelo estabelecimento.'},
+  {b:'FCC',t:'multiple',s:'A pena do porte ilegal de arma de fogo de uso permitido (art. 14 da Lei 10.826/2003) é de:',o:['detenção de 1 a 3 anos e multa','reclusão de 2 a 4 anos e multa','reclusão de 3 a 6 anos e multa','reclusão de 4 a 12 anos e multa','detenção de 6 meses a 2 anos'],c:1,e:'Reclusão de 2 a 4 anos e multa. Detenção de 1 a 3 é a POSSE (art. 12); 3 a 6 é o uso RESTRITO (art. 16).'},
+  {b:'CESPE',t:'cebraspe',s:'O disparo de arma de fogo em via pública constitui crime autônomo, salvo se a conduta tiver como finalidade a prática de outro crime.',c:0,e:'CERTO. Art. 15 — crime expressamente SUBSIDIÁRIO: se o disparo era meio para outro crime, responde apenas pelo crime-fim.'},
+  {b:'CESPE',t:'cebraspe',s:'Segundo os tribunais superiores, o porte de arma de fogo desmuniciada não configura o crime do art. 14 da Lei 10.826/2003, por ausência de lesividade.',c:1,e:'ERRADO. Os crimes do Estatuto são de PERIGO ABSTRATO: arma desmuniciada e até munição isolada configuram o delito (jurisprudência consolidada do STJ e do STF).'},
+  {b:'FGV',t:'multiple',s:'A posse ou porte de arma de fogo de uso restrito (art. 16, caput) é punida com:',o:['reclusão de 2 a 4 anos','reclusão de 3 a 6 anos e multa','reclusão de 4 a 8 anos','detenção de 1 a 3 anos','reclusão de 5 a 15 anos'],c:1,e:'Reclusão de 3 a 6 anos e multa. Para arma de uso PROIBIDO, o §2º prevê reclusão de 4 a 12 anos (Pacote Anticrime) — e o crime é hediondo.'},
+  {b:'CESPE',t:'cebraspe',s:'No julgamento da ADI 3.112, o STF declarou inconstitucionais os dispositivos do Estatuto do Desarmamento que vedavam a concessão de fiança e de liberdade provisória.',c:0,e:'CERTO. A vedação apriorística de fiança/liberdade provisória viola a presunção de inocência e a individualização — porte ilegal admite fiança.'},
+  {b:'CESPE',t:'cebraspe',s:'O porte de simulacro (réplica) de arma de fogo configura o crime de porte ilegal previsto no art. 14 do Estatuto do Desarmamento.',c:1,e:'ERRADO. Simulacro não é arma de fogo — não há crime de porte (a conduta pode ter relevância em outros contextos, como majorar o constrangimento no roubo, mas não tipifica o art. 14).'},
+  {b:'IBFC',t:'multiple',s:'Portar arma de fogo de uso PERMITIDO, porém com a numeração de série raspada, configura:',o:['porte ilegal de arma de uso permitido (art. 14)','posse irregular (art. 12)','o crime do art. 16, §1º, IV, com pena de 3 a 6 anos','fato atípico','mera infração administrativa'],c:2,e:'Numeração suprimida/adulterada joga a conduta para o art. 16, §1º, IV — mesmo sendo arma de uso permitido. Pegadinha número 1 do Estatuto.'},
+  {b:'CESPE',t:'cebraspe',s:'A posse de munição de uso permitido, ainda que desacompanhada de arma de fogo, pode configurar crime previsto no Estatuto do Desarmamento.',c:0,e:'CERTO. Os tipos dos arts. 12, 14 e 16 incluem "munição" — crime de perigo abstrato. (Casos de quantidade ínfima já foram excepcionados pontualmente, mas a REGRA é a tipicidade.)'},
+  {b:'FCC',t:'multiple',s:'Após o Pacote Anticrime (Lei 13.964/2019), as penas do comércio ilegal (art. 17) e do tráfico internacional de arma de fogo (art. 18) são, respectivamente:',o:['4 a 8 anos e 4 a 8 anos','2 a 4 anos e 4 a 8 anos','6 a 12 anos e 8 a 16 anos','8 a 16 anos e 6 a 12 anos','3 a 6 anos e 4 a 12 anos'],c:2,e:'Art. 17: reclusão de 6 a 12 anos; art. 18: reclusão de 8 a 16 anos. Ambos aumentam de metade se a arma for de uso restrito/proibido (art. 19) e são hediondos nessa hipótese.'},
+  {b:'CESPE',t:'cebraspe',s:'O registro de arma de fogo autoriza o proprietário a portá-la fora de sua residência.',c:1,e:'ERRADO. Registro autoriza a POSSE (manter em casa/trabalho). O PORTE exige autorização própria, distinta e excepcional.'},
+  {b:'VUNESP',t:'multiple',s:'Quanto à natureza jurídica, os crimes de posse e porte ilegal de arma de fogo classificam-se como crimes:',o:['de dano e materiais','de perigo abstrato e de mera conduta','culposos por equiparação','de perigo concreto','habituais'],c:1,e:'Perigo ABSTRATO (presumido pelo legislador) e mera conduta — consumam-se com a simples ação, sem exigir resultado naturalístico ou perigo demonstrado.'},
+],
+});
+
+TOPICS.push(
+  {id:'lesp-abuso-autoridade', subject:'lesp', title:'Abuso de Autoridade (Lei 13.869/19)', subtitle:'A lei que todo policial precisa dominar', briefing:'Dolo específico (prejudicar/beneficiar/capricho), §2º do art. 1º (divergência não é crime), ação incondicionada, efeitos não automáticos e os tipos dos arts. 13, 22, 25 e 38.'},
+  {id:'lesp-desarmamento', subject:'lesp', title:'Estatuto do Desarmamento (Lei 10.826/03)', subtitle:'Posse × porte × uso restrito', briefing:'Posse 1–3 (detenção) × porte 2–4 × restrito 3–6 × proibido 4–12; numeração raspada = art. 16; ADI 3.112 (cabe fiança); perigo abstrato (munição sozinha é crime); comércio 6–12 e tráfico internacional 8–16.'}
+);
+
+// ============================================================
+// LEI ANTIFACÇÃO (15.358/2026) + LEIS DE 2026 — texto oficial (Câmara)
+// ============================================================
+CP_LEISECA.lesp.grupos.unshift(
+{
+  tema: '⚔️ Lei Antifacção — Marco do Crime Organizado (15.358/2026)',
+  artigos: [
+    {art:'Art. 2º, §2º, LAF', hot:true, sub:'Definição de facção', titulo:'O que é organização criminosa ultraviolenta',
+     texto:'Considera-se organização criminosa ultraviolenta, denominada facção criminosa, o agrupamento de 3 (três) ou mais pessoas que emprega violência, grave ameaça ou coação para impor controle territorial ou social, intimidar populações ou autoridades ou atacar serviços, infraestrutura ou equipamentos essenciais, ou que pratica atos destinados à execução dos crimes tipificados nesta Lei.',
+     exp:'PEGADINHA CENTRAL da lei: a facção exige apenas 3 pessoas — a organização criminosa "comum" da Lei 12.850/13 exige 4. Elementos: violência/grave ameaça/coação + controle territorial OU social. Grupos paramilitares e milícias privadas também entram no regime da lei.'},
+    {art:'Art. 2º, LAF', hot:true, sub:'Crime novo', titulo:'Domínio social estruturado',
+     texto:'Constitui crime, independentemente de suas razões ou motivações, a prática, por integrante de facção, grupo paramilitar ou milícia privada, de condutas como: intimidar população ou agentes públicos para impor domínio territorial; empregar armas de fogo, explosivos ou agentes químicos/biológicos expondo a perigo a paz pública; criar barricadas ou obstáculos contra a atuação policial; impor controle social sobre atividade econômica ou serviços; atacar instituições financeiras, carros-fortes ou transportes; promover ataques a presídios; sabotar portos, aeroportos, hospitais, escolas, energia; atacar bancos de dados e serviços públicos digitais. Pena — reclusão, de 20 (vinte) a 40 (quarenta) anos, sem prejuízo das penas da violência e de outros crimes. § 1º Aumenta-se a pena de 2/3 até o dobro se o agente exercer comando ou liderança, mesmo sem praticar pessoalmente os atos de execução; se houver conexão com outras facções; ou concurso de funcionário público.',
+     exp:'Pena-base já nasce em 20 a 40 anos — patamar de latrocínio. O LÍDER responde com aumento de 2/3 ao dobro mesmo sem executar nada ("dolo de comando"). §7º: líder cumpre pena obrigatoriamente em presídio FEDERAL de segurança máxima. §8º: homicídios conexos vão para as VARAS CRIMINAIS COLEGIADAS (não é júri comum).'},
+    {art:'Art. 3º, LAF', hot:true, sub:'Crime novo', titulo:'Favorecimento ao domínio social estruturado',
+     texto:'Constitui crime: I — promover, fundar ou aderir a facção, grupo paramilitar ou milícia privada, ou apoiá-los de qualquer forma; II — distribuir material que incite a prática dos atos do art. 2º; III — adquirir, produzir ou manter em depósito explosivo ou arma de fogo para esses atos; IV — ceder local ou bem para o cometimento; V — fornecer informações em apoio à facção; VI — alegar falsamente pertencer a facção, com o fim de obter vantagem ou intimidar terceiros. Pena — reclusão, de 12 (doze) a 20 (vinte) anos, e multa.',
+     exp:'O inciso VI é a pegadinha de prova: FINGIR ser de facção para intimidar ("sou do comando...") virou crime autônomo com pena de 12 a 20 anos. Aderir ou apoiar "de qualquer forma" também consuma o crime — não precisa praticar ato violento.'},
+    {art:'Arts. 4º e 5º, LAF', hot:true, sub:'Hediondez e investigação', titulo:'Hediondos + prazos especiais de inquérito',
+     texto:'Art. 4º Os crimes do caput e §§ 1º e 3º do art. 2º e do art. 3º são considerados HEDIONDOS para todos os fins (incluídos no art. 1º, parágrafo único, VIII, da Lei 8.072/90). Art. 5º O inquérito policial será concluído em 90 (noventa) dias, se o indiciado estiver preso, e 270 (duzentos e setenta) dias, se solto, prorrogáveis por igual período.',
+     exp:'Compare os prazos: CPP comum = 10 dias (preso) / 30 dias (solto); Lei de Drogas = 30/90 (duplicáveis); ANTIFACÇÃO = 90/270 (prorrogáveis). É o maior prazo de inquérito da legislação — número certo em prova de banca.'},
+    {art:'CP alterado, LAF', hot:true, sub:'Reflexos no Código Penal', titulo:'O "pacote faccional" dentro do CP',
+     texto:'A Lei 15.358/2026 inseriu figuras específicas para crimes cometidos por integrante de facção, no contexto do art. 2º: homicídio doloso (art. 121, §2º-D): reclusão de 20 a 40 anos; lesão seguida de morte (art. 129, §3º-A): 20 a 40 anos; demais lesões (§8º-A): aumento de 2/3; ameaça faccional (art. 147-C, novo): reclusão de 1 a 3 anos; sequestro (art. 148, §3º): 12 a 20 anos; furto (art. 155, §9º): 4 a 10 anos; latrocínio (art. 157, §5º): 20 a 40 anos; extorsão (art. 158, §4º): pena aplicada EM TRIPLO; extorsão mediante sequestro (art. 159, §5º): aumento de 2/3; receptação (art. 180, §8º): aumento de 2/3.',
+     exp:'Padrão da lei: o mesmo crime, praticado "no contexto da atuação da facção", ganha pena qualificada ou majorada. Destaques de prova: a ameaça faccional virou crime de RECLUSÃO (a ameaça comum do art. 147 é detenção de 1 a 6 meses!) e a extorsão por facção é punida em TRIPLO.'},
+    {art:'Drogas e Armas, LAF', hot:true, sub:'Reflexos nas leis especiais', titulo:'Tráfico em dobro e armas +2/3',
+     texto:'Lei de Drogas, art. 40-A (novo): as penas dos arts. 33 a 37 serão aplicadas EM DOBRO se o crime for praticado por integrante de facção, grupo paramilitar ou milícia privada. Parágrafo único: aplica-se o concurso material (art. 69, CP) se o crime foi praticado com emprego de arma de fogo, independentemente de o uso estar ligado à mercancia. Estatuto do Desarmamento, art. 21-A (novo): nos crimes dos arts. 12, 14 e 16, a pena aumenta-se de 2/3 se o crime for praticado em concurso com crime da Lei de Drogas ou estiver ligado ao comércio de entorpecentes.',
+     exp:'Tráfico de facção: 5–15 vira 10 a 30 anos (dobro). E o porte de arma "do tráfico" deixa de ser absorvido: soma-se em concurso material + majorante de 2/3. Fim da discussão sobre absorção arma×tráfico nesses contextos.'},
+    {art:'LEP e CPP, LAF', hot:false, sub:'Execução e processo', titulo:'Parlatório monitorado e custódia por vídeo',
+     texto:'LEP, art. 41-A (novo): os encontros no parlatório ou virtuais entre presos vinculados a facções e seus visitantes poderão ser monitorados por captação audiovisual e gravação. Art. 41-B: a comunicação advogado-cliente só pode ser monitorada com autorização judicial por razões fundadas de conluio criminoso, e o conteúdo é analisado por JUÍZO DISTINTO do da instrução. CPP, art. 310 (nova redação): a audiência de custódia será realizada em até 24 horas POR VIDEOCONFERÊNCIA em tempo real, como regra; a forma presencial passou a ser excepcional, por decisão justificada.',
+     exp:'Inversão histórica: a custódia por videoconferência virou REGRA para todos os presos em flagrante (não só faccionados) — a presencial é exceção. No monitoramento advogado-cliente, o filtro é duplo: autorização judicial fundada + juízo separado (blindagem da defesa).'},
+  ]
+},
+{
+  tema: '🆕 Outras leis penais de 2026',
+  artigos: [
+    {art:'Lei 15.438/26', hot:true, sub:'Violência doméstica', titulo:'Decadência de 12 meses na violência doméstica',
+     texto:'Nos crimes praticados no âmbito de violência doméstica e familiar contra a mulher, a vítima decairá do direito de queixa ou de representação se não o exercer no prazo de 12 (doze) meses, contado do dia em que veio a saber quem é o autor do crime. (Lei 15.438, de 18 de junho de 2026)',
+     exp:'A regra geral continua sendo 6 MESES (art. 103 do CP e art. 38 do CPP) — a Lei 15.438/26 DOBROU o prazo só para a violência doméstica contra a mulher. Fundamento: o ciclo da violência, o medo e a dependência dificultam a decisão rápida da vítima. Pegadinha certa: cobrar "6 meses" em contexto de VD (errado desde 18/06/2026).'},
+    {art:'Lei 15.402/26', hot:true, sub:'⚠️ Eficácia suspensa', titulo:'"Lei da Dosimetria" — suspensa pelo STF',
+     texto:'Promulgada pelo Congresso em 08/05/2026 após a derrubada do veto total, a lei alterou o CP e a LEP para os crimes contra o Estado Democrático de Direito: (1) concurso FORMAL próprio para crimes praticados no mesmo contexto fático (vedado o cúmulo material); (2) causa de diminuição de 1/3 a 2/3 para quem agiu em contexto de multidão, sem liderança nem financiamento; (3) progressão de regime com 1/6 da pena; (4) remição de pena também no regime domiciliar.',
+     exp:'ATENÇÃO MÁXIMA AO STATUS: em 09/05/2026 o STF SUSPENDEU a eficácia da lei (decisão monocrática, referendo pendente) até o julgamento das ações sobre sua constitucionalidade. Em prova: a lei existe, foi promulgada, mas está com EFICÁCIA SUSPENSA — não aplique seus benefícios como se vigentes. Acompanhe o desfecho no STF.'},
+  ]
+}
+);
+
+// Correção autenticada do art. 112 da LEP (texto oficial da Lei 15.358/2026)
+(function(){
+  CP_LEISECA.lesp.grupos.forEach(g=>g.artigos.forEach(a=>{
+    if (a.art === 'Art. 112, LEP'){
+      a.titulo = 'Progressão nos hediondos (redação 2026)';
+      a.texto = 'Progressão de regime para crimes hediondos ou equiparados (art. 112 da LEP, com a redação da Lei 15.358/2026): V — 70% (setenta por cento) da pena, se o apenado for condenado pela prática de crime hediondo ou equiparado, se for primário; VI — 75% (setenta e cinco por cento) da pena, se o apenado for: a) condenado por crime hediondo ou equiparado com resultado morte, se primário, vedado o livramento condicional; b) condenado por exercer o comando, individual ou coletivo, de organização criminosa ultraviolenta estruturada para a prática de crime hediondo ou equiparado, vedado o livramento condicional; d) condenado pela prática de feminicídio, se for primário, vedado o livramento condicional; VII — 80% (oitenta por cento) da pena, se reincidente na prática de crime hediondo ou equiparado; VIII — 85% (oitenta e cinco por cento) da pena, se reincidente em crime hediondo ou equiparado com resultado morte, vedado o livramento condicional.';
+      a.exp = 'A Lei 15.358/2026 EXPLODIU os percentuais dos hediondos: primário simples saltou de 40% para 70%; reincidente, de 60% para 80%; com morte: 75% (primário) e 85% (reincidente), sempre VEDADO o livramento condicional — o "regime quase perpétuo" da doutrina. Feminicida primário: 75% sem livramento. Tráfico PRIVILEGIADO segue fora do regime hediondo (art. 112, §5º). Material anterior a 2026 está DESATUALIZADO nesses números.';
+    }
+  }));
+})();
+
+// Questões novas sobre a Lei Antifacção e leis de 2026
+QBANK['penal-leis-2026'].push(
+  {b:'CESPE',t:'cebraspe',s:'Para a Lei 15.358/2026, considera-se organização criminosa ultraviolenta (facção criminosa) o agrupamento de 3 ou mais pessoas que emprega violência, grave ameaça ou coação para impor controle territorial ou social.',c:0,e:'CERTO. Art. 2º, §2º. Atenção ao contraste: a organização criminosa da Lei 12.850/13 exige 4 ou mais pessoas.'},
+  {b:'CESPE',t:'cebraspe',s:'A organização criminosa ultraviolenta, nos termos da Lei Antifacção, exige o mínimo de 4 integrantes, tal como a organização criminosa da Lei 12.850/2013.',c:1,e:'ERRADO. A facção exige apenas 3 OU MAIS pessoas (art. 2º, §2º, da Lei 15.358/2026) — pegadinha de comparação com a 12.850 (que exige 4).'},
+  {b:'FGV',t:'multiple',s:'A pena do crime de domínio social estruturado (art. 2º da Lei 15.358/2026) é de reclusão de:',o:['8 a 20 anos','12 a 20 anos','12 a 30 anos','20 a 40 anos','24 a 30 anos'],c:3,e:'Reclusão de 20 a 40 anos, sem prejuízo das penas da violência e de outros crimes — com aumento de 2/3 até o dobro para quem exerce comando ou liderança.'},
+  {b:'CESPE',t:'cebraspe',s:'Alegar falsamente pertencer a organização criminosa ultraviolenta, com o fim de obter vantagem ou intimidar terceiros, configura crime previsto na Lei Antifacção.',c:0,e:'CERTO. Art. 3º, VI, da Lei 15.358/2026 — favorecimento ao domínio social estruturado, com pena de reclusão de 12 a 20 anos.'},
+  {b:'CESPE',t:'cebraspe',s:'Os crimes de domínio social estruturado e de favorecimento ao domínio social estruturado são considerados hediondos.',c:0,e:'CERTO. Art. 4º da Lei 15.358/2026, que também os incluiu no art. 1º, parágrafo único, VIII, da Lei 8.072/90.'},
+  {b:'FCC',t:'multiple',s:'Nos crimes da Lei Antifacção (15.358/2026), o inquérito policial deve ser concluído, estando o indiciado preso, em:',o:['10 dias','30 dias','60 dias','90 dias, prorrogáveis por igual período','270 dias, improrrogáveis'],c:3,e:'Art. 5º: 90 dias (preso) e 270 dias (solto), ambos prorrogáveis por igual período — o maior prazo de inquérito da legislação brasileira.'},
+  {b:'CESPE',t:'cebraspe',s:'Pela Lei 15.358/2026, as penas do tráfico de drogas são aplicadas em dobro quando o crime é praticado por integrante de organização criminosa ultraviolenta.',c:0,e:'CERTO. Novo art. 40-A da Lei 11.343/2006. E, se houver emprego de arma de fogo, aplica-se ainda o concurso material com o crime do Estatuto do Desarmamento.'},
+  {b:'CESPE',t:'cebraspe',s:'Segundo o Código Penal, com as alterações da Lei Antifacção, a extorsão praticada por integrante de facção, no contexto de sua atuação, tem a pena aplicada em dobro.',c:1,e:'ERRADO. A pena é aplicada em TRIPLO (art. 158, §4º, CP). Em dobro é o TRÁFICO (art. 40-A da Lei de Drogas).'},
+  {b:'CESPE',t:'cebraspe',s:'Após a Lei 15.358/2026, o condenado primário pela prática de crime hediondo sem resultado morte progride de regime após cumprir 40% da pena.',c:1,e:'ERRADO. O percentual do primário em hediondo subiu de 40% para 70% (art. 112, V, da LEP, redação da Lei 15.358/2026).'},
+  {b:'CESPE',t:'cebraspe',s:'Com a Lei 15.438/2026, nos crimes praticados em contexto de violência doméstica e familiar contra a mulher, o prazo decadencial para queixa ou representação passou a ser de 12 meses.',c:0,e:'CERTO. Dobrou em relação à regra geral (6 meses — art. 103 do CP), contado do dia em que a vítima soube quem é o autor. Vigente desde 18/06/2026.'},
+  {b:'CESPE',t:'cebraspe',s:'A Lei 15.402/2026 (Lei da Dosimetria), promulgada após derrubada de veto, encontra-se com a eficácia suspensa por decisão do STF.',c:0,e:'CERTO. Promulgada em 08/05/2026, teve a eficácia suspensa em 09/05/2026 por decisão monocrática no STF, até o julgamento sobre sua constitucionalidade. Em prova, não aplique seus institutos como vigentes sem ressalva.'}
 );
 
 // ============================================================
@@ -2456,7 +2826,7 @@ const MATERIAS = {
   'Administrativo':      {icon:'🏛️', cor:'#d97706', subj:'adm'},
   'Penal':               {icon:'⚔️', cor:'#dc2626', subj:'penal'},
   'Processo Penal':      {icon:'📜', cor:'#7c3aed', subj:'procpen'},
-  'Legislação Especial': {icon:'📕', cor:'#be185d', subj:null},
+  'Legislação Especial': {icon:'📕', cor:'#be185d', subj:'lesp'},
   'Direitos Humanos':    {icon:'🕊️', cor:'#0d9488', subj:'dh'},
   'Informática':         {icon:'💻', cor:'#059669', subj:'info'},
   'Legislação de Trânsito':{icon:'🚗', cor:'#0891b2', subj:null},
@@ -2467,6 +2837,10 @@ const MATERIAS = {
   'Revisão':             {icon:'🔁', cor:'#16a34a', subj:null},
   'Simulado':            {icon:'🎯', cor:'#111827', subj:null},
   'Outro':               {icon:'📚', cor:'#6b7280', subj:null},
+};
+const MAT_EDITAL = {
+  'Constitucional':'constitucional', 'Administrativo':'administrativo', 'Penal':'penal',
+  'Processo Penal':'processo_penal', 'Direitos Humanos':'direitos_humanos', 'Legislação Especial':'legislacao_especial',
 };
 const DIAS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
 const DIAS_CURTO = ['SEG','TER','QUA','QUI','SEX','SÁB','DOM'];
@@ -2521,7 +2895,11 @@ function topicById(id){ return TOPICS.find(t=>t.id===id); }
 function isAdmin(){ return S.user.email && ADMIN_EMAILS.includes(S.user.email.toLowerCase()); }
 function firstName(){ return (S.user.name||'Estudante').split(' ')[0]; }
 
-function openModal(html){ $('modal').innerHTML = html; $('modal-wrap').classList.add('open'); }
+function openModal(html){
+  $('modal').innerHTML = html;
+  $('modal-wrap').classList.add('open');
+  if (navCurrent){ try { history.pushState({screen: navCurrent, modal: 1}, ''); } catch(e){} }
+}
 function closeModal(){ $('modal-wrap').classList.remove('open'); }
 
 // ===== Persistência =====
@@ -2667,17 +3045,37 @@ async function logout(){
 
 // ===== Navegação =====
 const RENDERS = {};
-function go(screen){
+var navCurrent = null;
+function go(screen, isPop){
+  if (!isPop && navCurrent && navCurrent !== screen){
+    try { history.pushState({screen: screen}, '', '#'+screen); } catch(e){}
+  }
+  navCurrent = screen;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   const el = $('screen-'+screen);
   if (el) el.classList.add('active');
   document.querySelectorAll('#bottomnav button').forEach(b=>{
-    b.classList.toggle('on', b.dataset.nav===screen || (screen==='leiseca'||screen==='edital'||screen==='stats'||screen==='perfil'||screen==='admin'||screen==='admin-aluno') && b.dataset.nav==='mais');
+    b.classList.toggle('on', b.dataset.nav===screen || (screen==='edital'||screen==='stats'||screen==='perfil'||screen==='admin'||screen==='admin-aluno') && b.dataset.nav==='mais');
   });
+  const bk = $('back-btn');
+  if (bk) bk.classList.toggle('hidden', screen === 'hoje');
   if (RENDERS[screen]) RENDERS[screen]();
   window.scrollTo(0,0);
 }
+function goBack(){
+  const antes = navCurrent;
+  try { history.back(); } catch(e){}
+  // se não havia histórico (app recém-aberto), volta pra Hoje
+  setTimeout(function(){ if (navCurrent === antes && antes !== 'hoje') go('hoje', true); }, 160);
+}
+window.addEventListener('popstate', function(e){
+  const wrap = $('modal-wrap');
+  if (wrap && wrap.classList.contains('open')) closeModal();
+  const sc = (e.state && e.state.screen) || 'hoje';
+  if ($('screen-'+sc)) go(sc, true);
+});
 function enterApp(){
+  try { history.replaceState({screen:'hoje'}, '', '#hoje'); } catch(e){}
   applyTheme();
   $('topbar').classList.remove('hidden');
   $('bottomnav').classList.remove('hidden');
@@ -2779,6 +3177,22 @@ function renderHoje(){
     </div>
     <div class="pbar mt8 ${doneCnt===blocks.length&&blocks.length>0?'ok':''}"><div style="width:${blocks.length?Math.round(doneCnt/blocks.length*100):0}%"></div></div>`;
 
+  // Artigo do dia (lei seca sempre à vista)
+  const ad = artigoDoDia();
+  if (ad){
+    const adLido = lsIsLido(ad.subj, ad.a.art);
+    $('hoje-artigo').innerHTML = `<div class="card tight" style="cursor:pointer;border-left:4px solid var(--accent)" onclick="abrirArtigoDoDia()">
+      <div class="row">
+        <span style="font-size:22px">📜</span>
+        <div class="grow" style="min-width:0">
+          <div class="small" style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)">Artigo do dia ${ad.a.hot?'· 🔥 ponto quente':''}</div>
+          <b>${esc(ad.a.art)} — ${esc(ad.a.titulo)}</b>
+          <div class="muted" style="font-size:12.5px">${esc(ad.a.sub||'')}</div>
+        </div>
+        ${adLido?'<span class="tag ok">✓ lido</span>':'<span class="tag">ler agora →</span>'}
+      </div>
+    </div>`;
+  }
   $('hoje-revisoes').innerHTML = revs.length
     ? revs.map(r=>reviewRow(r,true)).join('')
     : '<div class="card tight muted">Nenhuma revisão pendente. 🎉</div>';
@@ -2794,6 +3208,7 @@ function renderHoje(){
           <div class="bi-main">
             <div class="bi-title">${esc(blockLabel(b))}</div>
             <div class="bi-sub">${b.horas}h${b.meta?' · meta '+b.meta+' questões':''}${b.obs?' · '+esc(b.obs):''}</div>
+            ${blockSubsHTML(b)}
           </div>
           ${tp?`<button class="btn btn-soft btn-sm" onclick="practiceTopic('${b.topicId}')">Questões</button>`:''}
         </div>`;
@@ -2854,7 +3269,7 @@ function weekGridHTML(par){
         const quinzTag = (!par && b.quinz) ? ' <span class="small">('+b.quinz+')</span>' : '';
         return `<div class="mini-block" style="border-color:${mi.cor}" draggable="true" ondragstart="dndStart(event,'${b.id}')" ondragend="dndEnd(event)" ontouchstart="tStart(event,'${b.id}')" onclick="mbClick('${b.id}')">
           ${mi.icon} ${esc(b.materia)}${quinzTag}
-          <div class="mb-sub">${b.topicId&&topicById(b.topicId)?esc(topicById(b.topicId).title)+' · ':''}${b.horas}h${b.meta?' · '+b.meta+'q':''}</div>
+          <div class="mb-sub">${b.topicId&&topicById(b.topicId)?esc(topicById(b.topicId).title)+' · ':''}${b.horas}h${b.meta?' · '+b.meta+'q':''}${b.subs&&b.subs.length?' · 📋'+b.subs.length:''}</div>
         </div>`;
       }).join('')}
       <button class="addmini" onclick="openBlockEditor(null,${d}${par?`,'${par}'`:''})">＋ adicionar</button>
@@ -2921,6 +3336,72 @@ function toggleBlockDoneAt(ds, blockId){
   save(); openDayModal(ds); renderCron();
 }
 
+// ===== Artigo do dia =====
+function artigoDoDia(){
+  if (typeof CP_LEISECA === 'undefined') return null;
+  const all = [];
+  for (const subj in CP_LEISECA){
+    CP_LEISECA[subj].grupos.forEach((g,gi)=>g.artigos.forEach((a,ai)=>all.push({subj,gi,ai,a})));
+  }
+  if (!all.length) return null;
+  const hot = all.filter(x=>x.a.hot);
+  const pool = hot.length ? hot : all;
+  const d = new Date();
+  const seed = d.getFullYear()*372 + (d.getMonth()+1)*31 + d.getDate();
+  return pool[seed % pool.length];
+}
+function abrirArtigoDoDia(){
+  const x = artigoDoDia();
+  if (!x) return;
+  lsHotOnly = false;
+  $('ls-search').value = '';
+  lsOpen[x.subj + x.gi] = true;
+  lsOpen[x.subj + x.gi + '-' + x.ai] = true;
+  go('leiseca');
+  setLeiSeca(x.subj);
+}
+
+// ===== Subtópicos do edital nos blocos =====
+function editalSubText(key){
+  const p = key.split('|');
+  const t = EDITAL_TREE[p[0]] && EDITAL_TREE[p[0]].topicos[+p[1]];
+  return t ? t.subs[+p[2]] : null;
+}
+function pendingSubsFor(mat, limit, st){
+  st = st || S;
+  const d = MAT_EDITAL[mat];
+  if (!d || !EDITAL_TREE[d]) return [];
+  const out = [];
+  EDITAL_TREE[d].topicos.forEach((t,ti)=>t.subs.forEach((sub,si)=>{
+    const k = d+'|'+ti+'|'+si;
+    if (!st.edital[k]) out.push({k, s:sub, t:t.t});
+  }));
+  return limit ? out.slice(0, limit) : out;
+}
+function blockSubsHTML(b){
+  if (typeof EDITAL_TREE === 'undefined') return '';
+  let items = [], titulo = '';
+  if (b.subs && b.subs.length){
+    titulo = '📋 Subtópicos deste bloco';
+    items = b.subs.map(k=>({k, s: editalSubText(k)})).filter(x=>x.s);
+  } else if (MAT_EDITAL[b.materia]){
+    items = pendingSubsFor(b.materia, 3);
+    titulo = '📋 Próximos do edital (sugestão)';
+  }
+  if (!items.length) return '';
+  return `<div class="blk-subs"><div class="blk-subs-t">${titulo}</div>` + items.map(x=>{
+    const done = !!S.edital[x.k];
+    return `<div class="blk-sub ${done?'done':''}" onclick="edToggleFromBlock('${x.k}')"><span class="cb">✓</span><span>${esc(x.s)}</span></div>`;
+  }).join('') + '</div>';
+}
+function edToggleFromBlock(key){
+  if (S.edital[key]) delete S.edital[key]; else S.edital[key] = true;
+  save();
+  const scr = document.querySelector('.screen.active');
+  if (scr && scr.id === 'screen-hoje') renderHoje();
+  if (scr && scr.id === 'screen-edital') renderEdital();
+}
+
 // ===== Editor de bloco =====
 function blockEditorHTML(b, presetDia, presetQuinz, forAdmin){
   const materias = Object.keys(MATERIAS);
@@ -2938,6 +3419,8 @@ function blockEditorHTML(b, presetDia, presetQuinz, forAdmin){
     <select id="be-materia" onchange="beFillTopics(${forAdmin?'true':'false'})">${materias.map(m=>`<option ${m===mi?'selected':''}>${m}</option>`).join('')}</select>
     <label class="fld">Tópico (opcional — liga às questões)</label>
     <select id="be-topic"></select>
+    <label class="fld">Subtópicos do edital para estudar neste bloco (opcional)</label>
+    <div id="be-subs" class="be-subs"><p class="small">—</p></div>
     <div class="grid2">
       <div><label class="fld">Horas</label><input id="be-horas" type="number" min="0.5" step="0.5" value="${b?b.horas:2}"></div>
       <div><label class="fld">Meta de questões</label><input id="be-meta" type="number" min="0" step="5" value="${b?b.meta:20}"></div>
@@ -2951,16 +3434,41 @@ function blockEditorHTML(b, presetDia, presetQuinz, forAdmin){
       <button class="btn btn-primary btn-sm" onclick="saveBlock('${b?b.id:''}',${forAdmin?'true':'false'})">Salvar</button>
     </div>`;
 }
+var beSubsInit = [];
 function beFillTopics(forAdmin, selected){
   const mat = $('be-materia').value;
   const subj = matInfo(mat).subj;
   const opts = subj ? TOPICS.filter(t=>t.id.startsWith(subj+'-')) : [];
   $('be-topic').innerHTML = `<option value="">— nenhum —</option>` + opts.map(t=>`<option value="${t.id}" ${t.id===selected?'selected':''}>${esc(t.title)}</option>`).join('');
   $('be-topic').disabled = opts.length===0;
+  beFillSubs(mat, beSubsInit, forAdmin);
+  beSubsInit = [];
+}
+function beFillSubs(mat, selecionados, forAdmin){
+  const el = $('be-subs');
+  if (!el) return;
+  const disc = MAT_EDITAL[mat];
+  if (!disc || typeof EDITAL_TREE === 'undefined' || !EDITAL_TREE[disc]){
+    el.innerHTML = '<p class="small" style="margin:0">Esta matéria não tem checklist de edital no app.</p>';
+    return;
+  }
+  const st = forAdmin && adminTarget ? adminTarget.state : S;
+  const sel = selecionados || [];
+  let h = '';
+  EDITAL_TREE[disc].topicos.forEach((t,ti)=>{
+    h += `<div class="be-subs-h">${esc(t.t)}</div>`;
+    t.subs.forEach((sub,si)=>{
+      const k = disc+'|'+ti+'|'+si;
+      const done = !!st.edital[k];
+      h += `<label class="be-sub-item ${done?'done':''}"><input type="checkbox" value="${k}" ${sel.includes(k)?'checked':''}><span>${esc(sub)}${done?' ✓':''}</span></label>`;
+    });
+  });
+  el.innerHTML = h;
 }
 function openBlockEditor(blockId, presetDia, presetQuinz){
   const b = blockId ? S.blocks.find(x=>x.id===blockId) : null;
   openModal(blockEditorHTML(b, presetDia, presetQuinz, false));
+  beSubsInit = (b && b.subs) || [];
   beFillTopics(false, b && b.topicId);
 }
 function readBlockForm(){
@@ -2969,6 +3477,7 @@ function readBlockForm(){
     materia: $('be-materia').value, topicId: $('be-topic').value || null,
     horas: Math.max(0.5, +$('be-horas').value || 1), meta: Math.max(0, +$('be-meta').value || 0),
     obs: $('be-obs').value.trim(),
+    subs: [...document.querySelectorAll('#be-subs input:checked')].map(c=>c.value),
   };
 }
 function saveBlock(blockId, forAdmin){
@@ -3052,8 +3561,8 @@ function renderQuestoes(){
   const errs = S.errors.length;
   let h = simCardHTML();
   if (errs) h += `<div class="card tight"><div class="row"><span style="font-size:22px">🩹</span><div class="grow"><b>Meus erros</b><div class="muted">${errs} questões que você errou</div></div><button class="btn btn-primary btn-sm" onclick="practiceErrors()">Revisar</button></div></div>`;
-  const METASUBJ = {procpen:{name:'Processo Penal',icon:'📜'}, port:{name:'Português',icon:'✏️'}, rlm:{name:'Raciocínio Lógico',icon:'🧮'}, dh:{name:'Direitos Humanos',icon:'🕊️'}};
-  for (const key of ['port','rlm','const','adm','penal','procpen','dh','info']){
+  const METASUBJ = {procpen:{name:'Processo Penal',icon:'📜'}, port:{name:'Português',icon:'✏️'}, rlm:{name:'Raciocínio Lógico',icon:'🧮'}, dh:{name:'Direitos Humanos',icon:'🕊️'}, lesp:{name:'Legislação Especial',icon:'📕'}};
+  for (const key of ['port','rlm','const','adm','penal','procpen','lesp','dh','info']){
     const meta = METASUBJ[key] || SUBJ[key];
     if (!meta) continue;
     const topics = TOPICS.filter(t=>t.id.startsWith(key+'-'));
@@ -3215,6 +3724,24 @@ function hlLei(raw, findTerm, fontPx){
   return segs.map(s => s.hl ? '<mark class="'+s.hl+'">'+s.t+'</mark>' : s.t).join('');
 }
 
+// Links para conferência na fonte oficial
+const JUR_URL_EXATA = {
+  'Súmula Vinculante 25': 'https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=1268',
+  'Súmula 554': 'https://buscadordizerodireito.com.br/jurisprudencia/3015/sumula-554-stf',
+  'Tema 1.087 (repetitivo)': 'https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=1087&cod_tema_final=1087',
+  'Tema 280 (RE 603.616)': 'https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=3774503&numeroProcesso=603616&classeProcesso=RE&numeroTema=280',
+  'ADCs 43, 44 e 54': 'https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADC&numeroProcesso=43',
+  'ADI 2.827': 'https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADI&numeroProcesso=2827',
+};
+function jurURL(j){
+  if (j.u) return j.u;
+  if (JUR_URL_EXATA[j.n]) return JUR_URL_EXATA[j.n];
+  const num = (j.n.match(/\d+/) || [''])[0];
+  if (j.t === 'STJ') return 'https://scon.stj.jus.br/SCON/pesquisar.jsp?b=SUMU&livre=' + num;
+  if (j.n.toLowerCase().indexOf('vinculante') >= 0)
+    return 'https://jurisprudencia.stf.jus.br/pages/search?base=sumulas&queryString=' + encodeURIComponent('súmula vinculante ' + num);
+  return 'https://jurisprudencia.stf.jus.br/pages/search?base=sumulas&queryString=' + encodeURIComponent('súmula ' + num);
+}
 function lsFontPx(){ return S.settings.lsFont || 15.5; }
 function lsFontAdj(d){
   S.settings.lsFont = Math.min(20, Math.max(13, lsFontPx() + d));
@@ -3238,13 +3765,13 @@ function lsExpandAll(){
 }
 function setLeiSeca(tab){
   lsTab = tab; flashIdx = 0; flashFlip = false;
-  ['penal','const','flash'].forEach(x=>$('lst-'+x).classList.toggle('on', x===tab));
+  ['penal','const','lesp','flash'].forEach(x=>$('lst-'+x).classList.toggle('on', x===tab));
   $('ls-tools').classList.toggle('hidden', tab==='flash');
   $('ls-search').classList.toggle('hidden', tab==='flash');
   renderLeiSeca();
 }
 function renderLeiSeca(){
-  ['penal','const','flash'].forEach(x=>$('lst-'+x).classList.toggle('on', x===lsTab));
+  ['penal','const','lesp','flash'].forEach(x=>$('lst-'+x).classList.toggle('on', x===lsTab));
   const el = $('ls-body');
   if (lsTab==='flash'){ renderFlash(); return; }
   const data = CP_LEISECA[lsTab];
@@ -3271,7 +3798,7 @@ function renderLeiSeca(){
   </div>`;
 
   data.grupos.forEach((g,gi)=>{
-    let arts = g.artigos.filter(a=>!filter || (a.art+' '+a.titulo+' '+(a.sub||'')+' '+a.texto+' '+a.exp).toLowerCase().includes(filter));
+    let arts = g.artigos.filter(a=>!filter || (a.art+' '+a.titulo+' '+(a.sub||'')+' '+a.texto+' '+a.exp+' '+(a.jur?a.jur.map(j=>j.n+' '+j.e+' '+(j.o||'')).join(' '):'')).toLowerCase().includes(filter));
     if (lsHotOnly) arts = arts.filter(a=>a.hot);
     if (!arts.length) return;
     const open = filter ? true : !!lsOpen[lsTab+gi];
@@ -3292,6 +3819,7 @@ function renderLeiSeca(){
               <b style="font-size:14px">${esc(a.titulo)}</b>
               ${a.sub?`<div class="small">${esc(a.sub)}</div>`:''}
             </div>
+            ${a.jur?'<span class="tag plain" title="Tem jurisprudência">⚖️'+a.jur.length+'</span>':''}
             ${a.hot?'<span class="tag warn" title="Alta incidência em prova">🔥</span>':''}
             ${lido?'<span class="tag ok">✓</span>':''}
             <span class="muted">${aberto?'▾':'▸'}</span>
@@ -3301,6 +3829,7 @@ function renderLeiSeca(){
             <div class="lei-texto" style="font-size:${fpx}px">${hlLei(a.texto, filter)}</div>
             <div class="lei-label mt12">💡 Como cai na prova</div>
             <div class="lei-exp" style="font-size:${Math.max(13, fpx-1.5)}px">${hlLei(a.exp, filter)}</div>
+            ${a.jur ? `<div class="lei-label mt12">⚖️ Jurisprudência que cai</div>` + a.jur.map(j=>`<div class="jur-item"><span class="jur-badge ${j.t==='STF'?'stf':'stj'}">${j.t}</span><div style="min-width:0"><b>${esc(j.n)}.</b> ${hlLei(j.e, filter)}${j.o?`<div class="jur-obs">💬 ${esc(j.o)}</div>`:''}<a class="jur-link" href="${jurURL(j)}" target="_blank" rel="noopener">🔗 Conferir na fonte oficial</a></div></div>`).join('') : ''}
             <button class="btn ${lido?'btn-ghost':'btn-ok'} btn-sm btn-block mt12" onclick="lsToggleLido('${lsTab}','${esc(a.art)}',event)">${lido?'Desmarcar leitura':'✓ Marcar como lido'}</button>
           </div>`:''}
         </div>`;
@@ -3400,7 +3929,7 @@ function renderStats(){
   const daysStudied = Object.keys(S.done).filter(d=>Object.keys(S.done[d]).length>0).length;
   let edTot=0, edDone=0;
   for (const disc in EDITAL_TREE) EDITAL_TREE[disc].topicos.forEach((t,ti)=>t.subs.forEach((s,si)=>{edTot++; if(S.edital[edKey(disc,ti,si)])edDone++;}));
-  const names = {const:'Constitucional', adm:'Administrativo', penal:'Penal', procpen:'Proc. Penal', info:'Informática', port:'Português', rlm:'Raciocínio Lógico', dh:'Dir. Humanos'};
+  const names = {const:'Constitucional', adm:'Administrativo', penal:'Penal', procpen:'Proc. Penal', info:'Informática', port:'Português', rlm:'Raciocínio Lógico', dh:'Dir. Humanos', lesp:'Leg. Especial'};
   let h = `<div class="stat-tiles mb12">
     <div class="stat-tile"><div class="v">${S.qstats.answered}</div><div class="l">questões feitas</div></div>
     <div class="stat-tile"><div class="v" style="color:${pct>=70?'var(--ok)':pct>=50?'var(--warn)':'var(--err)'}">${pct}%</div><div class="l">de acerto</div></div>
@@ -3604,11 +4133,13 @@ function renderAdminAluno(){
 }
 function adminAddBlock(){
   openModal(blockEditorHTML(null, 0, '', true));
+  beSubsInit = [];
   beFillTopics(true);
 }
 function adminEditBlock(blockId){
   const b = adminTarget.state.blocks.find(x=>x.id===blockId);
   openModal(blockEditorHTML(b, null, null, true));
+  beSubsInit = (b && b.subs) || [];
   beFillTopics(true, b && b.topicId);
 }
 async function adminSaveAluno(){
@@ -3718,7 +4249,14 @@ function genPlan(){
       day.left -= chunk; h -= chunk;
     }
   }
-  S.blocks = blocks.sort((a,b)=>a.dia-b.dia);
+  // distribui os próximos subtópicos pendentes do edital (2 por bloco, em ordem)
+  const filaPorMat = {};
+  blocks.sort((a,b)=>a.dia-b.dia).forEach(b=>{
+    if (!MAT_EDITAL[b.materia]) return;
+    if (!filaPorMat[b.materia]) filaPorMat[b.materia] = pendingSubsFor(b.materia, 0).map(x=>x.k);
+    b.subs = filaPorMat[b.materia].splice(0, 2);
+  });
+  S.blocks = blocks;
 }
 
 // ===== Simulado no formato da banca =====
@@ -3750,7 +4288,7 @@ function simWeights(){
   const per = PERFIS_CARREIRA[S.user.carreira];
   const out = {};
   if (per) for (const m in per){ const sj = matInfo(m).subj; if (sj) out[sj] = (out[sj]||0) + per[m]; }
-  if (!Object.keys(out).length) Object.assign(out, {port:18, rlm:10, const:13, adm:9, penal:21, procpen:11, dh:8, info:10});
+  if (!Object.keys(out).length) Object.assign(out, {port:17, rlm:9, const:12, adm:8, penal:19, procpen:10, lesp:10, dh:7, info:8});
   return out;
 }
 function buildSimPool(banca, n){
@@ -3856,7 +4394,7 @@ function finishSim(porTempo){
     if (!bySubj[sj]) bySubj[sj] = {t:0};
     bySubj[sj].t++;
   });
-  const names = {const:'Constitucional', adm:'Administrativo', penal:'Penal', procpen:'Proc. Penal', info:'Informática', port:'Português', rlm:'Rac. Lógico', dh:'Dir. Humanos'};
+  const names = {const:'Constitucional', adm:'Administrativo', penal:'Penal', procpen:'Proc. Penal', info:'Informática', port:'Português', rlm:'Rac. Lógico', dh:'Dir. Humanos', lesp:'Leg. Especial'};
   $('pl-progress').textContent = 'Concluído' + (porTempo ? ' — tempo esgotado ⏱' : '');
   $('pl-bar').style.width = '100%';
   $('pl-score').textContent = '';
