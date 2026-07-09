@@ -14,7 +14,7 @@
 <title>Estuda Quest — Cronograma de Estudos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
@@ -241,6 +241,150 @@ mark.hx-find{background:#fde047;color:#111827;border-radius:3px;}
 .fcard .f-law{font-size:12px;font-weight:700;opacity:.8;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;}
 .fcard .f-q{font-size:17px;font-weight:700;}
 .fcard .f-a{font-size:14.5px;margin-top:8px;}
+
+/* ============================================================
+   POLISH LAYER — refinamento visual premium
+   ============================================================ */
+:root{
+  --radius:16px;
+  --grad:linear-gradient(135deg,#6366f1 0%,#8b5cf6 60%,#a855f7 100%);
+  --grad-ok:linear-gradient(90deg,#059669,#34d399);
+  --glow:0 8px 24px -8px rgba(99,102,241,.45);
+  --shadow:0 1px 2px rgba(15,20,40,.05),0 10px 28px -14px rgba(15,20,40,.14);
+}
+[data-theme="dark"]{
+  --grad:linear-gradient(135deg,#818cf8 0%,#a78bfa 60%,#c084fc 100%);
+  --glow:0 8px 26px -8px rgba(129,140,248,.5);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -14px rgba(0,0,0,.5);
+}
+*{-webkit-tap-highlight-color:transparent;}
+body{
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  background:
+    radial-gradient(1100px 520px at 110% -8%, rgba(99,102,241,.09), transparent 60%),
+    radial-gradient(900px 480px at -12% 112%, rgba(168,85,247,.07), transparent 55%),
+    var(--bg);
+}
+::selection{background:rgba(99,102,241,.28);}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;border:3px solid var(--bg);}
+::-webkit-scrollbar-track{background:transparent;}
+
+h1,h2,h3,.brand{font-family:'Sora','Inter',system-ui,sans-serif;letter-spacing:-.025em;}
+h1{font-size:23px;}
+
+/* ---- Topbar ---- */
+#topbar{backdrop-filter:blur(14px) saturate(1.4);}
+#topbar .brand .logo{background:var(--grad);box-shadow:var(--glow);border-radius:10px;}
+#topbar .userchip{transition:transform .15s ease, box-shadow .15s ease;}
+#topbar .userchip:active{transform:scale(.96);}
+
+/* ---- Navegação inferior ---- */
+#bottomnav{box-shadow:0 -10px 30px -22px rgba(15,20,40,.5);}
+#bottomnav .inner{padding:3px 4px 0;}
+#bottomnav button{position:relative;border-radius:12px;transition:color .18s ease;}
+#bottomnav button .ic{transition:transform .22s cubic-bezier(.34,1.56,.64,1);}
+#bottomnav button.on .ic{transform:translateY(-2px) scale(1.15);}
+#bottomnav button.on::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:26px;height:3.5px;border-radius:0 0 6px 6px;background:var(--grad);
+}
+
+/* ---- Transições de tela e modal ---- */
+.screen.active{animation:screenIn .30s cubic-bezier(.22,.9,.3,1);}
+@keyframes screenIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+#modal-wrap{backdrop-filter:blur(4px);}
+#modal{animation:modalIn .28s cubic-bezier(.2,.9,.35,1.08);box-shadow:0 -12px 48px -12px rgba(15,20,40,.35);}
+@keyframes modalIn{from{opacity:0;transform:translateY(26px) scale(.985);}to{opacity:1;transform:none;}}
+#toast{border-radius:14px;box-shadow:0 14px 36px -10px rgba(0,0,0,.4);transition:opacity .28s ease, transform .28s ease;transform:translateX(-50%) translateY(8px);}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ---- Cards ---- */
+.card{box-shadow:var(--shadow);transition:transform .18s ease, box-shadow .18s ease;}
+.card[onclick]{cursor:pointer;}
+@media(hover:hover){
+  .card[onclick]:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(15,20,40,.06),0 16px 36px -14px rgba(99,102,241,.25);}
+}
+.stat-tile{border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--line);}
+.stat-tile .v{font-family:'Sora',sans-serif;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* ---- Botões ---- */
+.btn{transition:transform .12s ease, box-shadow .18s ease, filter .15s ease;border-radius:12px;}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:var(--grad);box-shadow:var(--glow);}
+.btn-ok{box-shadow:0 8px 20px -8px rgba(5,150,105,.5);}
+.iconbtn{transition:transform .12s ease, background .15s ease;}
+.iconbtn:active{transform:scale(.9);}
+
+/* ---- Barras de progresso ---- */
+.pbar{height:9px;box-shadow:inset 0 1px 2px rgba(15,20,40,.06);}
+.pbar>div{background:var(--grad);box-shadow:0 0 10px -2px rgba(99,102,241,.55);}
+.pbar.ok>div{background:var(--grad-ok);box-shadow:0 0 10px -2px rgba(5,150,105,.5);}
+
+/* ---- Tabs ---- */
+.tabs{border-radius:13px;}
+.tabs button{transition:color .15s ease, background .2s ease, box-shadow .2s ease;border-radius:10px;}
+
+/* ---- Blocos e checks ---- */
+.block-item{transition:transform .15s ease, box-shadow .15s ease;border-radius:13px;}
+.checkbtn{transition:all .15s ease;}
+.checkbtn.on{animation:pop .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{40%{transform:scale(1.28);}}
+.blk-sub .cb{transition:all .15s ease;}
+.blk-sub.done .cb{animation:pop .28s cubic-bezier(.34,1.56,.64,1);}
+.mini-block{transition:transform .13s ease, box-shadow .15s ease;border-radius:9px;}
+@media(hover:hover){.mini-block:hover{transform:translateY(-1.5px);box-shadow:0 6px 14px -8px rgba(15,20,40,.3);}}
+.daycol{transition:border-color .2s ease, box-shadow .2s ease;border-radius:13px;}
+.daycol.today{border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box, var(--grad) border-box;box-shadow:0 8px 24px -14px rgba(99,102,241,.45);}
+.cal .cal-d{transition:transform .12s ease, box-shadow .15s ease;}
+@media(hover:hover){.cal .cal-d:hover{transform:translateY(-1.5px);box-shadow:0 8px 16px -10px rgba(15,20,40,.3);}}
+.cal .cal-d.today{border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box, var(--grad) border-box;}
+
+/* ---- Player de questões ---- */
+.q-alt{transition:transform .13s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;border-radius:13px;display:flex;align-items:flex-start;}
+@media(hover:hover){.q-alt:hover:not(:disabled){transform:translateX(4px);border-color:var(--accent);box-shadow:0 6px 16px -10px rgba(99,102,241,.4);}}
+.q-alt:disabled{cursor:default;}
+.alt-key{flex:none;display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:9px;background:var(--card2);color:var(--dim);font-weight:800;font-size:12.5px;margin-right:11px;transition:all .15s ease;}
+.q-alt.sel-ok{animation:okPulse .4s ease;}
+.q-alt.sel-ok .alt-key{background:var(--ok);color:#fff;}
+.q-alt.sel-err .alt-key{background:var(--err);color:#fff;}
+@keyframes okPulse{30%{transform:scale(1.015);}}
+.q-exp{animation:screenIn .25s ease;border-radius:0 12px 12px 0;}
+
+/* ---- Lei Seca ---- */
+.art-badge{background:var(--grad);color:#fff;box-shadow:0 4px 10px -4px rgba(99,102,241,.5);}
+[data-theme="dark"] .art-badge{color:#0f1117;}
+.ls-group{border-radius:14px;box-shadow:var(--shadow);transition:box-shadow .2s ease;}
+.a-head2{transition:background .15s ease;}
+@media(hover:hover){.a-head2:hover{background:var(--card2);}}
+.a-body2{animation:screenIn .22s ease;}
+.lei-texto{box-shadow:inset 0 1px 3px rgba(15,20,40,.05);}
+.jur-item{transition:box-shadow .15s ease;}
+.fcard{background:var(--grad);box-shadow:0 18px 44px -14px rgba(109,40,217,.55);transition:transform .15s ease;}
+.fcard:active{transform:scale(.985);}
+
+/* ---- Edital ---- */
+.ed-disc{border-radius:14px;box-shadow:var(--shadow);}
+.ed-sub .cb{transition:all .15s ease;}
+.ed-sub.done .cb{animation:pop .28s cubic-bezier(.34,1.56,.64,1);}
+
+/* ---- Formulários ---- */
+input,select,textarea{transition:border-color .15s ease, box-shadow .15s ease;border-radius:11px;}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3.5px var(--accent-soft);}
+
+/* ---- Login ---- */
+#screen-login .login-logo .big{background:var(--grad);box-shadow:0 16px 40px -10px rgba(99,102,241,.55);animation:float 3.2s ease-in-out infinite;border-radius:20px;}
+@keyframes float{50%{transform:translateY(-7px);}}
+#screen-login h1{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* ---- Admin ---- */
+.avatar-circ{background:var(--grad);color:#fff;box-shadow:0 4px 10px -4px rgba(99,102,241,.45);}
+.adm-row{transition:background .15s ease;border-radius:10px;}
+@media(hover:hover){.adm-row:hover{background:var(--card2);}}
+
+/* ---- Tags ---- */
+.tag{transition:transform .12s ease;}
+
 </style>
 </head>
 <body>
@@ -3058,6 +3202,74 @@ G.forEach(g=>g.artigos.forEach(a=>{
 })();
 
 // ============================================================
+// CONSTITUCIONAL — reforço de literalidade (perfil Instituto AOCP)
+// ============================================================
+(function(){
+const G = CP_LEISECA.const.grupos;
+const grp = t => G.find(g=>g.tema.indexOf(t)>=0);
+
+// ---- Art. 5º: incisos de literalidade que a AOCP cobra ----
+const gLib = grp('Liberdades Públicas');
+if (gLib) gLib.artigos.push(
+  {art:'Art. 5º, XIV e LX', hot:true, sub:'Informação e publicidade', titulo:'Sigilo da fonte e publicidade dos atos',
+   texto:'XIV — é assegurado a todos o acesso à informação e resguardado o sigilo da fonte, quando necessário ao exercício profissional; LX — a lei só poderá restringir a publicidade dos atos processuais quando a defesa da intimidade ou o interesse social o exigirem.',
+   exp:'Duas literalidades favoritas da AOCP: o SIGILO DA FONTE é protegido "quando necessário ao exercício profissional" (jornalista não é obrigado a revelar a fonte). A publicidade processual só cede em DUAS hipóteses: intimidade ou interesse social — a banca acrescenta uma terceira falsa ("segurança nacional") para derrubar.'},
+  {art:'Art. 5º, §§ 1º e 2º', hot:true, sub:'Aplicação e abertura', titulo:'Aplicação imediata e cláusula de abertura',
+   texto:'§ 1º As normas definidoras dos direitos e garantias fundamentais têm aplicação imediata. § 2º Os direitos e garantias expressos nesta Constituição não excluem outros decorrentes do regime e dos princípios por ela adotados, ou dos tratados internacionais em que a República Federativa do Brasil seja parte.',
+   exp:'§1º: aplicação IMEDIATA (o que não impede a existência de normas de eficácia limitada — a doutrina compatibiliza). §2º: o catálogo é ABERTO (não taxativo) — direitos decorrentes do regime, dos princípios e dos TRATADOS. É a porta de entrada dos direitos implícitos.'}
+);
+
+const gPen = grp('Garantias Penais');
+if (gPen) gPen.artigos.push(
+  {art:'Art. 5º, XXXIX a XLI', hot:true, sub:'Legalidade penal', titulo:'Legalidade, irretroatividade e antidiscriminação',
+   texto:'XXXIX — não há crime sem lei anterior que o defina, nem pena sem prévia cominação legal; XL — a lei penal não retroagirá, salvo para beneficiar o réu; XLI — a lei punirá qualquer discriminação atentatória dos direitos e liberdades fundamentais.',
+   exp:'A dupla XXXIX/XL é o espelho constitucional dos arts. 1º e 2º do CP: anterioridade + retroatividade benéfica (única exceção à irretroatividade). O XLI é mandado de criminalização genérico — concretizado, por exemplo, na Lei do Racismo.'},
+  {art:'Art. 5º, LIII', hot:false, sub:'Juiz natural', titulo:'Autoridade competente — juiz e promotor natural',
+   texto:'Ninguém será processado nem sentenciado senão pela autoridade competente.',
+   exp:'É o princípio do JUIZ NATURAL (e, na leitura ampliada, do PROMOTOR natural). Trabalha em par com o XXXVII (vedação ao tribunal de exceção): um proíbe criar órgão depois do fato; o outro garante julgamento pelo órgão previamente competente.'}
+);
+
+// ---- Art. 7º: o rol literal que a AOCP adora ----
+const gSoc = grp('Direitos Sociais');
+if (gSoc) gSoc.artigos.push(
+  {art:'Art. 7º — parte 1', hot:true, sub:'Direitos dos trabalhadores', titulo:'Emprego, FGTS, salário e jornada',
+   texto:'São direitos dos trabalhadores urbanos e rurais, além de outros que visem à melhoria de sua condição social: I — relação de emprego protegida contra despedida arbitrária ou sem justa causa, nos termos de lei complementar; II — seguro-desemprego; III — FGTS; IV — salário mínimo, fixado em lei, nacionalmente unificado, com reajustes periódicos, vedada sua vinculação para qualquer fim; VII — garantia de salário, nunca inferior ao mínimo, para os que percebem remuneração variável; VIII — décimo terceiro salário; IX — remuneração do trabalho noturno superior à do diurno; X — proteção do salário, constituindo crime sua retenção dolosa; XIII — duração do trabalho normal não superior a 8 horas diárias e 44 semanais; XIV — jornada de 6 horas para o trabalho realizado em turnos ininterruptos de revezamento, salvo negociação coletiva.',
+   exp:'Números que a AOCP cobra secos: 8h/dia e 44h/semana; turno ininterrupto = 6h. Salário mínimo: VEDADA a vinculação para qualquer fim (SV 4 conversa com isso). Retenção DOLOSA de salário = crime. Despedida arbitrária: depende de LEI COMPLEMENTAR.'},
+  {art:'Art. 7º — parte 2', hot:true, sub:'Direitos dos trabalhadores', titulo:'Férias, licenças, aviso prévio e menor',
+   texto:'XV — repouso semanal remunerado, preferencialmente aos domingos; XVI — hora extra com acréscimo de, no mínimo, 50%; XVII — férias anuais remuneradas com, pelo menos, 1/3 a mais do que o salário normal; XVIII — licença à gestante, sem prejuízo do emprego e do salário, com a duração de 120 dias; XIX — licença-paternidade, nos termos fixados em lei; XXI — aviso prévio proporcional ao tempo de serviço, sendo no mínimo de 30 dias; XXII — redução dos riscos inerentes ao trabalho; XXVIII — seguro contra acidentes de trabalho, a cargo do empregador, sem excluir a indenização a que este está obrigado, quando incorrer em dolo ou culpa; XXXIII — proibição de trabalho noturno, perigoso ou insalubre a menores de 18 anos e de qualquer trabalho a menores de 16 anos, salvo na condição de aprendiz, a partir de 14 anos.',
+   exp:'A tabela de decoreba: hora extra ≥50%; férias +1/3; licença-gestante 120 DIAS; aviso prévio ≥30 dias; MENOR: noturno/perigoso/insalubre proibido para <18; qualquer trabalho proibido para <16, SALVO aprendiz a partir de 14. O inciso XXXIII é presença quase garantida em prova AOCP.'}
+);
+
+// ---- Art. 37: concurso, acumulação e responsabilidade ----
+const gOrg = grp('Organização do Estado');
+if (gOrg) gOrg.artigos.push(
+  {art:'Art. 37, I a IV e IX', hot:true, sub:'Concurso público', titulo:'Acesso a cargos e validade do concurso',
+   texto:'I — os cargos, empregos e funções públicas são acessíveis aos brasileiros que preencham os requisitos estabelecidos em lei, assim como aos estrangeiros, na forma da lei; II — a investidura em cargo ou emprego público depende de aprovação prévia em concurso público de provas ou de provas e títulos, ressalvadas as nomeações para cargo em comissão declarado em lei de livre nomeação e exoneração; III — o prazo de validade do concurso público será de até 2 anos, prorrogável UMA vez, por igual período; IV — durante o prazo improrrogável previsto no edital de convocação, aquele aprovado em concurso público será convocado com prioridade sobre novos concursados; IX — a lei estabelecerá os casos de contratação por tempo determinado para atender a necessidade temporária de excepcional interesse público.',
+   exp:'Literalidade pura: validade de ATÉ 2 anos, prorrogável UMA vez por IGUAL período (a banca troca por "dois anos prorrogáveis por mais dois, duas vezes"). Concurso de "provas ou provas E títulos" — nunca só de títulos. Estrangeiros: NA FORMA DA LEI (norma de eficácia limitada).'},
+  {art:'Art. 37, XVI, XVII e § 6º', hot:true, sub:'Acumulação e responsabilidade', titulo:'Acumulação de cargos e responsabilidade objetiva',
+   texto:'XVI — é vedada a acumulação remunerada de cargos públicos, exceto, quando houver compatibilidade de horários: a) a de dois cargos de professor; b) a de um cargo de professor com outro técnico ou científico; c) a de dois cargos ou empregos privativos de profissionais de saúde, com profissões regulamentadas — em todos os casos, observado o teto do inciso XI; XVII — a proibição de acumular estende-se a empregos e funções e abrange autarquias, fundações, empresas públicas, sociedades de economia mista, suas subsidiárias e sociedades controladas pelo poder público. § 6º As pessoas jurídicas de direito público e as de direito privado prestadoras de serviços públicos responderão pelos danos que seus agentes, nessa qualidade, causarem a terceiros, assegurado o direito de regresso contra o responsável nos casos de dolo ou culpa.',
+   exp:'As 3 hipóteses de acumulação (professor+professor; professor+técnico/científico; saúde+saúde regulamentadas) SEMPRE com compatibilidade de horários. O §6º é o campeão: responsabilidade OBJETIVA do Estado (risco administrativo) + regresso SUBJETIVO contra o agente (dolo ou culpa). Alcança concessionárias (privadas prestadoras de serviço público), inclusive perante NÃO usuários (STF).'},
+  {art:'Arts. 39 a 41', hot:true, sub:'Servidores', titulo:'Estabilidade — 3 anos e as hipóteses de perda',
+   texto:'Art. 41. São estáveis após 3 (três) anos de efetivo exercício os servidores nomeados para cargo de provimento efetivo em virtude de concurso público. § 1º O servidor público estável só perderá o cargo: I — em virtude de sentença judicial transitada em julgado; II — mediante processo administrativo em que lhe seja assegurada ampla defesa; III — mediante procedimento de avaliação periódica de desempenho, na forma de lei complementar, assegurada ampla defesa. § 4º Como condição para a aquisição da estabilidade, é obrigatória a avaliação especial de desempenho por comissão instituída para essa finalidade.',
+   exp:'Estabilidade: 3 ANOS de efetivo exercício (a EC 19/98 mudou de 2 para 3 — bancas ainda tentam o "2 anos") + avaliação ESPECIAL obrigatória. Perda do cargo do estável: sentença transitada, PAD com ampla defesa ou avaliação periódica (esta depende de LEI COMPLEMENTAR, ainda não editada). Estabilidade é no SERVIÇO; efetividade é no CARGO.'}
+);
+
+// ---- Art. 144, §§ 7º e 8º: guardas municipais ----
+const gSeg = grp('Segurança Pública');
+if (gSeg) gSeg.artigos.push(
+  {art:'Art. 144, §§ 7º e 8º', hot:true, sub:'Guardas municipais', titulo:'Guardas municipais e a lei de organização',
+   texto:'§ 7º A lei disciplinará a organização e o funcionamento dos órgãos responsáveis pela segurança pública, de maneira a garantir a eficiência de suas atividades. § 8º Os Municípios poderão constituir guardas municipais destinadas à proteção de seus bens, serviços e instalações, conforme dispuser a lei.',
+   exp:'As guardas municipais NÃO integram o rol de órgãos do caput (rol taxativo — ADI 2.827): estão no §8º, como faculdade ("PODERÃO constituir") do Município, para proteger BENS, SERVIÇOS e INSTALAÇÕES municipais. O STF, porém, já reconheceu que integram o sistema de segurança pública em sentido amplo e validou seu poder de abordagem em flagrante — a AOCP cobra o texto literal do §8º.'}
+);
+
+// reinjeta jurisprudência (mantém links nos cards que têm julgados)
+G.forEach(g=>g.artigos.forEach(a=>{
+  const j = JURIS['const|'+a.art];
+  if (j) a.jur = j;
+}));
+})();
+
+// ============================================================
 // ESTUDA QUEST — Cronograma de estudos com ciclos de revisão
 // ============================================================
 
@@ -3857,9 +4069,9 @@ function renderPlayer(){
   const banca = q.b ? `<span class="tag plain">${esc(q.b)}</span>` : '';
   let alts = '';
   if (q.t==='cebraspe') {
-    alts = `<button class="q-alt" onclick="answerQ(0)">✔️ CERTO</button><button class="q-alt" onclick="answerQ(1)">❌ ERRADO</button>`;
+    alts = `<button class="q-alt" onclick="answerQ(0)"><span class="alt-key">C</span><span>CERTO</span></button><button class="q-alt" onclick="answerQ(1)"><span class="alt-key">E</span><span>ERRADO</span></button>`;
   } else {
-    alts = (q.o||[]).map((o,i)=>`<button class="q-alt" onclick="answerQ(${i})">${'ABCDE'[i]}) ${esc(o)}</button>`).join('');
+    alts = (q.o||[]).map((o,i)=>`<button class="q-alt" onclick="answerQ(${i})"><span class="alt-key">${'ABCDE'[i]}</span><span>${esc(o)}</span></button>`).join('');
   }
   $('pl-card').innerHTML = `<div class="mb8">${banca} ${q.t==='cebraspe'?'<span class="tag">Certo/Errado</span>':'<span class="tag">Múltipla escolha</span>'}</div>
     <p style="font-size:15.5px;font-weight:500">${esc(q.s)}</p>
@@ -4586,11 +4798,11 @@ function renderSim(){
   $('pl-bar').style.width = Math.round(p.i/p.qs.length*100)+'%';
   let alts = '';
   if (q.t === 'cebraspe'){
-    alts = `<button class="q-alt" onclick="simAnswer(0)">✔️ CERTO</button>
-      <button class="q-alt" onclick="simAnswer(1)">❌ ERRADO</button>
-      <button class="q-alt" style="opacity:.75" onclick="simAnswer(null)">◻️ Deixar em branco</button>`;
+    alts = `<button class="q-alt" onclick="simAnswer(0)"><span class="alt-key">C</span><span>CERTO</span></button>
+      <button class="q-alt" onclick="simAnswer(1)"><span class="alt-key">E</span><span>ERRADO</span></button>
+      <button class="q-alt" style="opacity:.75" onclick="simAnswer(null)"><span class="alt-key">◻</span><span>Deixar em branco</span></button>`;
   } else {
-    alts = (q.o||[]).map((o,i)=>`<button class="q-alt" onclick="simAnswer(${i})">${'ABCDE'[i]}) ${esc(o)}</button>`).join('')
+    alts = (q.o||[]).map((o,i)=>`<button class="q-alt" onclick="simAnswer(${i})"><span class="alt-key">${'ABCDE'[i]}</span><span>${esc(o)}</span></button>`).join('')
       + `<button class="q-alt" style="opacity:.75" onclick="simAnswer(null)">◻️ Pular (em branco)</button>`;
   }
   $('pl-card').innerHTML = `<div class="mb8"><span class="tag plain">${esc(q.b||'')}</span>
